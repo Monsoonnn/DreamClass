@@ -1,0 +1,49 @@
+using com.cyborgAssets.inspectorButtonPro;
+using UnityEngine;
+
+public class PlayerRespawn : NewMonobehavior {
+    [SerializeField] private MetaXRHeadBlocking MetaHead;
+    private SpawnPosition spawnPosition;
+
+    protected override void LoadComponents() {
+        base.LoadComponents();
+        this.LoadMetaHead();
+    }
+
+    protected virtual void LoadMetaHead() { 
+        if(MetaHead != null) return;
+        this.MetaHead = GameObject.FindAnyObjectByType<MetaXRHeadBlocking>();
+        Debug.Log(transform.name + ": LoadMetaHead s", MetaHead);
+    }
+
+
+    [ProButton]
+    public void Respawn() {
+        spawnPosition = GameObject.Find("SpawnPosition")?.GetComponent<SpawnPosition>();
+        if (spawnPosition == null) {
+            Debug.LogWarning("SpawnPosition not found!");
+            return;
+        }
+
+        var cameraRig = GetComponentInChildren<OVRCameraRig>();
+        var locomotor = GetComponentInParent<Locomotor>();
+
+        if (cameraRig == null) {
+            Debug.LogWarning("OVRCameraRig not found!");
+            return;
+        }
+
+        if (locomotor == null) {
+            Debug.LogWarning("Locomotor not found!");
+            return;
+        }
+
+        Vector3 headLocalOffset = cameraRig.centerEyeAnchor.localPosition;
+        Vector3 targetPosition = spawnPosition.transform.position - headLocalOffset;
+        Quaternion targetRotation = spawnPosition.transform.rotation;
+
+        Transform root = locomotor.transform;
+        root.SetPositionAndRotation(targetPosition, targetRotation);
+    }
+
+}
