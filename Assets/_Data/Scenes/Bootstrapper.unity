@@ -246,6 +246,12 @@ MonoBehaviour:
   loadingCanvas: {fileID: 1177890247}
   loadingCamera: {fileID: 1019719784}
   sceneGroups:
+  - GroupName: Testing
+    Scenes:
+    - Reference:
+        asset: {fileID: 102900000, guid: cf53b7c67a3339a4bad11bdc894f9682, type: 3}
+        guid: cf53b7c67a3339a4bad11bdc894f9682
+      SceneType: 5
   - GroupName: Warning
     Scenes:
     - Reference:
@@ -500,7 +506,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2665221582372856539, guid: 491f0ba879c0230449b5ddc0b78565c2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.43
+      value: -4.85
       objectReference: {fileID: 0}
     - target: {fileID: 2665221582372856539, guid: 491f0ba879c0230449b5ddc0b78565c2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -508,7 +514,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2665221582372856539, guid: 491f0ba879c0230449b5ddc0b78565c2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.95
+      value: -0.36
       objectReference: {fileID: 0}
     - target: {fileID: 2665221582372856539, guid: 491f0ba879c0230449b5ddc0b78565c2, type: 3}
       propertyPath: m_LocalRotation.w
@@ -786,7 +792,7 @@ Transform:
   m_GameObject: {fileID: 1455298279}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -3.6399999, y: 0, z: -3.31}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

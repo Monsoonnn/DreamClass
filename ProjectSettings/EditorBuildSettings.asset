@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/_Data/Scenes/Bootstrapper.unity
     guid: b05b37fc66d8f124c8fdb7a9bbfac560
   - enabled: 1
+    path: Assets/_Data/Scenes/Laboratory Scene.unity
+    guid: cf53b7c67a3339a4bad11bdc894f9682
+  - enabled: 1
     path: Assets/_Data/Scenes/Room.unity
     guid: b256d3838de14764aa7ffd91924d610f
   - enabled: 0
