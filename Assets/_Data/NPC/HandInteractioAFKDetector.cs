@@ -26,7 +26,7 @@ public class HandInteractioAFKDetector : MonoBehaviour {
         } else {
             timeSinceLastChange += Time.deltaTime;
             if (timeSinceLastChange >= afkThreshold) {
-                Debug.Log("Hand scale has not changed for 45 seconds");
+               // Debug.Log("Hand scale has not changed for 45 seconds");
                 _ = VoicelineCtrl.Instance.PlayAnimation(VoiceType.loseDirection);
                 timeSinceLastChange = 0f;
             }
@@ -35,11 +35,11 @@ public class HandInteractioAFKDetector : MonoBehaviour {
 
     private bool CheckHandScaleChange() {
         bool changed = false;
-
+        if(leftHand.IsActive() == false && rightHand.IsActive() == false) return false;
         if (leftHand != null) {
             float currentLeftScale = leftHand.HandScale;
             if (currentLeftScale != prevLeftScale) {
-                Debug.Log("Left hand scale changed: " + currentLeftScale);
+               // Debug.Log("Left hand scale changed: " + currentLeftScale);
                 prevLeftScale = currentLeftScale;
                 changed = true;
             }
@@ -48,7 +48,7 @@ public class HandInteractioAFKDetector : MonoBehaviour {
         if (rightHand != null) {
             float currentRightScale = rightHand.HandScale;
             if (currentRightScale != prevRightScale) {
-                Debug.Log("Right hand scale changed: " + currentRightScale);
+               // Debug.Log("Right hand scale changed: " + currentRightScale);
                 prevRightScale = currentRightScale;
                 changed = true;
             }

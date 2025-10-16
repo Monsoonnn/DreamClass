@@ -6,6 +6,7 @@ using System.Collections;
 public class GetWater : NewMonobehavior {
     [SerializeField] private BoxCollider boxCollider;
     [SerializeField] private Slider slider;
+    [SerializeField] private GameController gameController;
 
     [Header("Runtime")]
     [SerializeField] private Bottle bottle;
@@ -13,6 +14,7 @@ public class GetWater : NewMonobehavior {
     [Header("Timing")]
     [SerializeField] private float fillDuration = 5f; // Time to fill the bottle completely
     private Coroutine fillRoutine;
+    private bool isHaveWater = false;
 
     [Header("UI")]
     [SerializeField] private GameObject canvas;
@@ -24,12 +26,20 @@ public class GetWater : NewMonobehavior {
         base.LoadComponents();
         this.LoadBoxCollider();
         this.LoadSlider();
+        this.LoadGameController();
     }
 
     protected virtual void LoadBoxCollider() {
         if (boxCollider != null) return;
         boxCollider = GetComponent<BoxCollider>();
         boxCollider.isTrigger = true;
+    }
+
+    protected virtual void LoadGameController() {
+        if (this.gameController != null) return;
+
+        this.gameController = GameObject.FindAnyObjectByType<GameController>();
+
     }
 
     protected virtual void LoadSlider() {
@@ -57,6 +67,8 @@ public class GetWater : NewMonobehavior {
             return;
         }
 
+        if (bottle.CurrentLiquid == 0) isHaveWater = false;
+
         // Start filling
         fillRoutine = StartCoroutine(FillBottleCoroutine());
     }
@@ -72,9 +84,17 @@ public class GetWater : NewMonobehavior {
 
         // Hide all text when leaving the zone
         HideAllText();
+        HaveWater();
 
         bottle = null;
     }
+
+    private void HaveWater() {
+        if (isHaveWater) return;
+        GuideStepManager.Instance.CompleteStep("GET_WATER");
+        isHaveWater = true;
+    }
+
 
     private IEnumerator FillBottleCoroutine() {
         ShowUIState(loading: true);
@@ -120,4 +140,11 @@ public class GetWater : NewMonobehavior {
         if (successText != null) successText.SetActive(false);
         if (fullText != null) fullText.SetActive(false);
     }
+    public void HideAllUI() {
+        if (canvas != null) canvas.SetActive(false);
+        if (loadingText != null) loadingText.SetActive(false);
+        if (successText != null) successText.SetActive(false);
+        if (fullText != null) fullText.SetActive(false);
+    }
+
 }

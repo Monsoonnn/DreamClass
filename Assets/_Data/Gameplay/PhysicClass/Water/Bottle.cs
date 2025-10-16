@@ -1,12 +1,15 @@
 using com.cyborgAssets.inspectorButtonPro;
+using Oculus.Interaction.HandGrab;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(BoxCollider))]
+[RequireComponent (typeof(ForceHand))]
 public class Bottle : NewMonobehavior {
     [SerializeField] private BoxCollider boxCollider;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private GameObject liquidObject;
+    public ForceHand forceHand;
 
     [Header("Liquid Settings")]
     [SerializeField] private float maxLiquid = 75f;
@@ -20,18 +23,23 @@ public class Bottle : NewMonobehavior {
     [SerializeField] private Vector3 baseScale;
     [SerializeField] private Vector3 basePosition;
 
-   
     private const float positionFactor = 1.2714f;
 
     protected override void LoadComponents() {
         base.LoadComponents();
         this.LoadBoxCollider();
         this.LoadLiquidObject();
+        this.LoadForceHand();
     }
 
     protected virtual void LoadBoxCollider() {
         if (boxCollider != null) return;
         boxCollider = transform.GetComponent<BoxCollider>();
+    }
+
+    protected virtual void LoadForceHand() { 
+        if(forceHand != null) return;
+        forceHand = transform.GetComponent<ForceHand>();
     }
 
     protected virtual void LoadRigidbody() { 
@@ -43,7 +51,7 @@ public class Bottle : NewMonobehavior {
         if (liquidObject != null) return;
         Transform liquid = transform.Find("Liquid");
         if (liquid != null) liquidObject = liquid.gameObject;
-        baseScale = new Vector3(0.8f, 1f, 1f);
+        baseScale = new Vector3(0.8f, 1f, 0.8f);
         basePosition = Vector3.zero;
     }
 

@@ -5,13 +5,16 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 public class Scale : NewMonobehavior {
     [SerializeField] private BoxCollider boxCollider;
+    [SerializeField] private GameController gameController;
 
     [Header("Runtime")]
     [SerializeField] protected Bottle bottle;
     [SerializeField] private Coroutine delayRoutine;
+    public float tempWeight = 0f;
 
     [Header("UI")]
     [SerializeField] private TextMeshPro valueScale;
+    private bool isHaveScale = false;
 
     [Header("Bottle Weight Settings")]
     [SerializeField] private float cupWeight = 80f;     // Empty cup weight (grams)
@@ -21,8 +24,15 @@ public class Scale : NewMonobehavior {
     protected override void LoadComponents() {
         base.LoadComponents();
         this.LoadBoxCollider();
+        this.LoadGameController();
     }
 
+    protected virtual void LoadGameController() {
+        if (this.gameController != null) return;
+
+        this.gameController = GameObject.FindAnyObjectByType<GameController>();
+
+    }
     protected virtual void LoadBoxCollider() {
         if (this.boxCollider != null) return;
         this.boxCollider = GetComponent<BoxCollider>();
@@ -41,7 +51,7 @@ public class Scale : NewMonobehavior {
         if (target == null) return;
 
         bottle = target;
-
+        isHaveScale = false;
         if (delayRoutine != null)
             StopCoroutine(delayRoutine);
 
@@ -70,6 +80,8 @@ public class Scale : NewMonobehavior {
         if (valueScale != null)
             valueScale.text = $"{totalWeight:F0}";
 
+        tempWeight = waterWeight;
+
         Debug.Log($"[Scale] Bottle detected — Water: {currentVolume:F1} ml, Weight: {totalWeight:F1} g");
     }
 
@@ -78,10 +90,25 @@ public class Scale : NewMonobehavior {
 
         if (delayRoutine != null)
             StopCoroutine(delayRoutine);
-
+        CompleteScaled();
         bottle = null;
 
+    }
+    public void ResetDisplay() {
         if (valueScale != null)
             valueScale.text = "0";
     }
+
+    public string GetDisplayValue() {
+        return valueScale != null ? valueScale.text : "0";
+    }
+
+    public void CompleteScaled() {
+        if (isHaveScale) return;
+        isHaveScale = true;
+        GuideStepManager.Instance.CompleteStep("CHECK_SCALE");
+    }
+
+
+
 }
