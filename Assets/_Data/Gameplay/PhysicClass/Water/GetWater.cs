@@ -147,4 +147,8 @@ public class GetWater : NewMonobehavior {
         if (fullText != null) fullText.SetActive(false);
     }
 
+    public void SetIsHaveWater(bool isHaveWater) {
+        this.isHaveWater = isHaveWater;
+    }
+
 }

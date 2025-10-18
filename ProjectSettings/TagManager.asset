@@ -30,6 +30,7 @@ TagManager:
   - QDSUITextInputField
   - SamplesInfoPanel
   - QDSUIToggleCheckboxRadio
+  - Hand
   layers:
   - Default
   - TransparentFX
@@ -37,7 +38,7 @@ TagManager:
   - HiddenMesh
   - Water
   - UI
-  - 
+  - Overlay UI
   - 
   - 
   - 
@@ -45,7 +46,7 @@ TagManager:
   - MirroredCharacter
   - NPC
   - Drawing
-  - 
+  - Hand
   - 
   - 
   - 

@@ -1,13 +1,15 @@
 {
   "dependencies": {
     "com.eflatun.scenereference": "git+https://github.com/starikcetin/Eflatun.SceneReference.git#4.1.1",
-    "com.meta.movement": "https://github.com/oculus-samples/Unity-Movement.git",
-    "com.meta.xr.sdk.all": "74.0.2",
+    "com.meta.xr.sdk.all": "78.0.0",
+    "com.meta.xr.sdk.movement": "https://github.com/oculus-samples/Unity-Movement.git",
+    "com.srcnalt.openai-unity": "https://github.com/srcnalt/OpenAI-Unity.git",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.addressables": "2.2.2",
     "com.unity.collab-proxy": "2.7.1",
     "com.unity.ide.rider": "3.0.31",
     "com.unity.ide.visualstudio": "2.0.23",
+    "com.unity.inputsystem": "1.12.0",
     "com.unity.multiplayer.center": "1.0.0",
     "com.unity.probuilder": "6.0.7",
     "com.unity.render-pipelines.universal": "17.0.3",

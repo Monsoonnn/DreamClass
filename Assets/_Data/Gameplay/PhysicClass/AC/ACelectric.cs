@@ -12,7 +12,7 @@ public class ACelectric : NewMonobehavior {
     [Header("Power Source Settings")]
     public float outputVoltage = 12f;   // Voltage when ON (Volts)
     public float outputCurrent = 1.5f;  // Current when ON (Amperes)
-    public GameController gameController; // Reference to GameController
+    public Experiment gameController; // Reference to GameController
 
     protected override void LoadComponents() {
         base.LoadComponents();
@@ -22,7 +22,7 @@ public class ACelectric : NewMonobehavior {
     protected virtual void LoadGameController() {
         if(this.gameController != null) return;
 
-        this.gameController = GameObject.FindAnyObjectByType<GameController>();
+        this.gameController = GameObject.FindAnyObjectByType<Experiment>();
 
     }
 

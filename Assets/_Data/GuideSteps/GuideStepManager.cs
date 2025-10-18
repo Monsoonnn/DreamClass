@@ -36,6 +36,9 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager> {
         if (allGuides.Count > 0) {
             SetCurrentGuide(allGuides[0].guideID);
         }
+
+        if(gameController == null) gameController = GameObject.FindAnyObjectByType<GameController>();
+
     }
 
     /// <summary>
@@ -213,6 +216,7 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager> {
         // Destroy old runtime copy (just to be clean)
         if (currentGuideRuntime != null)
             Destroy(currentGuideRuntime);
+        if(gameController != null) gameController.StopExperiment();
 
         // Re-instantiate a fresh runtime copy
         currentGuideRuntime = Instantiate(currentGuideAsset);
