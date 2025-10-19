@@ -237,4 +237,7 @@ public class Experiment: GameController {
         return 0f;
     }
 
+    public override string GetExperimentName() {
+        return "NHIET_DUNG_NUOC";
+    }
 }

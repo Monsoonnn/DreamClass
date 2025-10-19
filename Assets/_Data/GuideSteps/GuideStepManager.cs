@@ -3,6 +3,7 @@ using TMPro;
 using System.Collections.Generic;
 using com.cyborgAssets.inspectorButtonPro;
 using System.ComponentModel;
+using System.Linq;
 
 /// <summary>
 /// Controls the logic flow of guide steps across multiple guides.
@@ -13,8 +14,10 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager> {
     public TextMeshProUGUI titleText;
     public TextMeshProUGUI descriptionText;
 
-    [Header("References")]
-    [SerializeField] private GameController gameController;
+    [SerializeField] List<GameController> gameControllerList = new List<GameController>();
+
+    [Header("Active Game")]
+    [SerializeField] public GameController gameController;
 
     [Header("Guides (Asset References)")]
     [Tooltip("All available guide ScriptableObjects")]
@@ -31,14 +34,43 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager> {
     private StepData currentStep;                 // Current active step instance
     private int currentStepIndex = -1;
 
+
+    protected override void LoadComponents() {
+        base.LoadComponents();
+        this.LoadAllGameplay();
+    }
+    [ProButton]
+    protected virtual void LoadAllGameplay() {
+        // If list is null, empty, or contains any null/missing elements
+        if (gameControllerList != null || gameControllerList.Count > 0 || gameControllerList.Any(g => g != null)) return;
+        gameControllerList = FindObjectsByType<GameController>(FindObjectsSortMode.None).ToList();
+    }
+
     protected override void Start() {
         // Auto-load first guide for testing
         if (allGuides.Count > 0) {
             SetCurrentGuide(allGuides[0].guideID);
         }
 
-        if(gameController == null) gameController = GameObject.FindAnyObjectByType<GameController>();
+      /*  if(gameController == null) gameController = GameObject.FindAnyObjectByType<GameController>();*/
 
+    }
+
+    [ProButton]
+    protected virtual void LoadGameplay( string id ) {
+        GameController tempGc = null;
+        foreach (GameController gc in gameControllerList) { 
+            if(gc.GetExperimentName() == id) tempGc = gc;
+        }
+        if (tempGc != null) {
+            if (gameController != null) {
+                gameController.transform.parent.gameObject.SetActive(false);
+                gameController.OnDisableGame();
+            }
+            tempGc.transform.parent.gameObject.SetActive(true);
+            tempGc.OnActiveGame();
+        } 
+        else Debug.LogWarning("[GuideStepManager] No game found with ID: " + id);
     }
 
     /// <summary>
@@ -150,6 +182,29 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager> {
         }
     }
 
+    [ProButton]
+    public void ReactivateStep( string stepID ) {
+        if (currentGuideRuntime == null) {
+            Debug.LogWarning("[GuideStepManager] No active guide!");
+            return;
+        }
+
+        int index = currentGuideRuntime.steps.FindIndex(s => s.stepID == stepID);
+        if (index == -1) {
+            Debug.LogWarning($"[GuideStepManager] Step '{stepID}' not found!");
+            return;
+        }
+
+        // Mark step incomplete
+        currentGuideRuntime.steps[index].isCompleted = false;
+
+        // Activate this step
+        ActivateStep(index);
+
+        Debug.Log($"[GuideStepManager] Reactivated step: {stepID}");
+    }
+
+
     /// <summary>
     /// Roll back one step (if possible).
     /// </summary>
@@ -175,9 +230,6 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager> {
             titleText.text = "Hãy về phía quyển sách để xem kết quả đo nhé!";
         if (descriptionText != null)
             descriptionText.text = "Các bước chuẩn bị đã hoàn thành, bạn hãy di về phía quyển sách để xem kết quả được hiển thị.";
-
-        if (gameController != null)
-            gameController.StartExperiment();
 
         Debug.Log("[GuideStepManager] All steps completed! Experiment started.");
     }

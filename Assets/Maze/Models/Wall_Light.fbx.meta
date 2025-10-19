@@ -105,3 +105,10 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 302221
+  packageName: Maze Modular Puzzle Kit
+  packageVersion: 1.0
+  assetPath: Assets/Maze/Models/Wall_Light.fbx
+  uploadId: 713915

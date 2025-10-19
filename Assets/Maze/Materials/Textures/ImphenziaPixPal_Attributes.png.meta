@@ -134,3 +134,10 @@ TextureImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 302221
+  packageName: Maze Modular Puzzle Kit
+  packageVersion: 1.0
+  assetPath: Assets/Maze/Materials/Textures/ImphenziaPixPal_Attributes.png
+  uploadId: 713915

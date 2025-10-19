@@ -4,15 +4,18 @@ using Oculus.Interaction.HandGrab;
 
 public class XiLanhController : MonoBehaviour {
     [Header("References")]
-    [SerializeField] private Transform pittong;
-    [SerializeField] private Transform grabProxy;
+    [SerializeField] private Transform pittong;        // The piston
+    [SerializeField] private Transform grabProxy;      // The invisible grab handle
     [SerializeField] private HandGrabInteractable grab;
     [SerializeField] private RayInteractable ray;
 
+    [Header("Experiment")]
+    [SerializeField] private Experiment2 experiment;   // Reference to experiment logic
+
     [Header("Y Axis Limit")]
-    [SerializeField] private float minY = -0.555f;
-    [SerializeField] private float maxY = -0.28f;
-    [SerializeField] private float returnSpeed = 3f;
+    public float minY = -0.555f;   // Fully compressed
+    public float maxY = -0.28f;    // Fully extended
+    public float returnSpeed = 3f;
 
     private Vector3 pittongStartLocalPos;
     private Quaternion pittongStartLocalRot;
@@ -22,6 +25,9 @@ public class XiLanhController : MonoBehaviour {
 
     private bool isGrabbed = false;
     private bool isReturning = false;
+
+    public float CurrentVolume { get; private set; } // 0–100 ml
+    private float lastVolume;
 
     private void Start() {
         pittongStartLocalPos = pittong.localPosition;
@@ -34,13 +40,18 @@ public class XiLanhController : MonoBehaviour {
         grab.WhenSelectingInteractorViewRemoved += _ => OnRelease();
         ray.WhenSelectingInteractorViewAdded += _ => OnGrab();
         ray.WhenSelectingInteractorViewRemoved += _ => OnRelease();
+
+        UpdateVolume(); // Initialize
+        lastVolume = CurrentVolume;
     }
 
     private void LateUpdate() {
         if (isGrabbed) {
             UpdatePittongByProxy();
+            UpdateVolumeIfChanged();
         } else if (isReturning) {
             ReturnProxyToPittong();
+            UpdateVolumeIfChanged();
         }
     }
 
@@ -65,13 +76,8 @@ public class XiLanhController : MonoBehaviour {
         isGrabbed = false;
         isReturning = true;
 
-        proxyStartLocalPos = new Vector3(
-            proxyStartLocalPos.x,
-            proxyStartLocalPos.y + (pittong.localPosition.y - pittongStartLocalPos.y),
-            proxyStartLocalPos.z
-        );
-
-        grabProxy.localRotation = proxyStartLocalRot;
+        // Check once on release (ensures player finished moving)
+        EvaluateActionOnRelease();
     }
 
     private void ReturnProxyToPittong() {
@@ -93,8 +99,49 @@ public class XiLanhController : MonoBehaviour {
             Time.deltaTime * returnSpeed
         );
 
-        // Stop returning when close enough
         if (Vector3.Distance(grabProxy.localPosition, targetPos) < 0.001f)
             isReturning = false;
+    }
+
+    private void UpdateVolume() {
+        float normalized = Mathf.InverseLerp(maxY, minY, pittong.localPosition.y);
+        CurrentVolume = Mathf.Lerp(0f, 100f, normalized);
+    }
+
+    private void UpdateVolumeIfChanged() {
+        float previous = lastVolume;
+        UpdateVolume();
+
+        if (Mathf.Abs(CurrentVolume - previous) > 0.5f) {
+            lastVolume = CurrentVolume;
+        }
+    }
+
+    private void EvaluateActionOnRelease() {
+        // Example thresholds (can adjust depending on actual movement range)
+        const float pushThreshold = 20f;   // compressed
+        const float releaseThreshold = 80f; // extended
+
+        // Get current guide step to know what player is supposed to do
+        var manager = experiment.guideStepManager;
+        string stepID = manager.currentStepID;
+
+        if (stepID == "PUSH_XILANH") {
+            if (CurrentVolume <= pushThreshold) {
+                manager.CompleteStep("PUSH_XILANH");
+                Debug.Log("PUSH_XILANH completed");
+            } else {
+                manager.ReactivateStep("PUSH_XILANH");
+                Debug.Log("PUSH_XILANH failed, retrying");
+            }
+        } else if (stepID == "RELEASE_XILANH") {
+            if (CurrentVolume >= releaseThreshold) {
+                manager.CompleteStep("RELEASE_XILANH");
+                Debug.Log("RELEASE_XILANH completed");
+            } else {
+                manager.ReactivateStep("RELEASE_XILANH");
+                Debug.Log("RELEASE_XILANH failed, retrying");
+            }
+        }
     }
 }
