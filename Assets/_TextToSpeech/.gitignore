@@ -1,0 +1,6 @@
+
+# Ignore only this TTS settings asset
+TTSServices.asset
+
+# (Optional) Ignore its meta file too
+TTSServices.asset.meta
