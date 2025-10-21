@@ -27,7 +27,7 @@ public class HandInteractioAFKDetector : MonoBehaviour {
             timeSinceLastChange += Time.deltaTime;
             if (timeSinceLastChange >= afkThreshold) {
                // Debug.Log("Hand scale has not changed for 45 seconds");
-                _ = VoicelineCtrl.Instance.PlayAnimation(VoiceType.loseDirection);
+                _ = VoicelineCtrl.Instance.PlayAnimation(BaseVoiceType.loseDirection);
                 timeSinceLastChange = 0f;
             }
         }

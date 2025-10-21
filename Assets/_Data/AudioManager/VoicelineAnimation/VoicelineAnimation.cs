@@ -6,7 +6,7 @@ using UnityEngine;
 [System.Serializable]
 public class VoicelineAnimation{
     public string name = "New voiceline group";
-    public VoiceType voiceType;
+    public BaseVoiceType voiceType;
     private Animator animator;
     public AudioClip[] audioClips;
     public string animationName = "talking";

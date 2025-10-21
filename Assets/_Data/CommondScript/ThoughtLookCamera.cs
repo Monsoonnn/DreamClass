@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class LookAtCamera : NewMonobehavior {
@@ -19,6 +20,9 @@ public class LookAtCamera : NewMonobehavior {
         }
     }
 
+    private void OnEnable() {
+        if (playerCamera == null) this.LoadCamera();
+    }
     void LateUpdate() {
         
         transform.LookAt(playerCamera);

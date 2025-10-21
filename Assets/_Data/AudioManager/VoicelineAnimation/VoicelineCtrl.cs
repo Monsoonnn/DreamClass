@@ -2,11 +2,11 @@ using com.cyborgAssets.inspectorButtonPro;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public enum VoiceType { 
+public enum BaseVoiceType {
     tutorial,
     idle,
     rightawnser,
-    wrongawnser,   
+    wrongawnser,
     sugggetion,
     afk,
     loseDirection,
@@ -15,7 +15,7 @@ public enum VoiceType {
 }
 
 
-public class VoicelineCtrl : SingletonCtrl<VoicelineCtrl>
+public abstract class VoicelineCtrl : SingletonCtrl<VoicelineCtrl>
 {
     public VoicelineAnimation[] voicelines;
     public Animator animator;
@@ -29,7 +29,7 @@ public class VoicelineCtrl : SingletonCtrl<VoicelineCtrl>
 
 
     [ProButton]
-    public async Task PlayAnimation(VoiceType voiceType) {
+    public virtual async Task PlayAnimation(BaseVoiceType voiceType) {
 
         /*Debug.Log(voiceType.ToString());*/
 
@@ -42,7 +42,7 @@ public class VoicelineCtrl : SingletonCtrl<VoicelineCtrl>
 
     }
 
-    protected virtual VoicelineAnimation GetVoiceline(VoiceType voiceType) {
+    protected virtual VoicelineAnimation GetVoiceline(BaseVoiceType voiceType) {
 
         VoicelineAnimation item = null;
 

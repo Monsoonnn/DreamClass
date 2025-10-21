@@ -27,14 +27,14 @@ namespace GrabQuiz.Animals {
                 this.SetEmoji(2);
                 StartCoroutine(ResetEmojiAfterDelay(1.5f));
                 if (!suggetionCounter.UpdateSuggetion()) {
-                    _ = VoicelineCtrl.Instance.PlayAnimation(VoiceType.wrongawnser);
+                    _ = VoicelineCtrl.Instance.PlayAnimation(BaseVoiceType.wrongawnser);
                 }
                 animalFood.Respawn();
                 return;
             }
             this.SetEmoji(1);
-            if (isTutorial) _ = VoicelineCtrl.Instance.PlayAnimation(VoiceType.tutorialAnswer);
-            else _ = VoicelineCtrl.Instance.PlayAnimation(VoiceType.rightawnser);
+            if (isTutorial) _ = VoicelineCtrl.Instance.PlayAnimation(BaseVoiceType.tutorialAnswer);
+            else _ = VoicelineCtrl.Instance.PlayAnimation(BaseVoiceType.rightawnser);
 
             animalCtrl.SetMoving(false);
             animalFood.Checking();

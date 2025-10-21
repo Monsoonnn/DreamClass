@@ -24,9 +24,9 @@ namespace DrawingSystem {
 
             Debug.Log(gamePlayCtrl.CheckingAnswer());
             if (gamePlayCtrl.CheckingAnswer()) {
-                _ = VoicelineCtrl.Instance.PlayAnimation(VoiceType.rightawnser);
+                _ = VoicelineCtrl.Instance.PlayAnimation(BaseVoiceType.rightawnser);
             } else { 
-                _ = VoicelineCtrl.Instance.PlayAnimation(VoiceType.wrongawnser);
+                _ = VoicelineCtrl.Instance.PlayAnimation(BaseVoiceType.wrongawnser);
             }
             
 

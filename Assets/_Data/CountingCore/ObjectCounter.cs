@@ -57,15 +57,15 @@ namespace CountingCore {
             if (grabableObject.itemGrabCode != this.countingManager.ItemGrabCode) { 
                 Debug.Log("itemGrabCode: " + grabableObject.itemGrabCode + " != " + this.countingManager.ItemGrabCode, gameObject);
                 if(!suggetionCounter.UpdateSuggetion()){
-                    _ = VoicelineCtrl.Instance.PlayAnimation(VoiceType.wrongawnser);
+                    _ = VoicelineCtrl.Instance.PlayAnimation(BaseVoiceType.wrongawnser);
                 }
                 grabableObject.Respawn();
                 return; 
             }
 
             grabableObject.Checking();
-            if(isTutorial) _ = VoicelineCtrl.Instance.PlayAnimation(VoiceType.tutorialAnswer);
-            else _ = VoicelineCtrl.Instance.PlayAnimation(VoiceType.rightawnser);
+            if(isTutorial) _ = VoicelineCtrl.Instance.PlayAnimation(BaseVoiceType.tutorialAnswer);
+            else _ = VoicelineCtrl.Instance.PlayAnimation(BaseVoiceType.rightawnser);
             this.TargetCount--;
 
         }

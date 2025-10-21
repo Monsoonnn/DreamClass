@@ -14,7 +14,7 @@ namespace CountingCore {
             current++;
             if (current == TargetIndex) { 
                 this.ResetSuggetion();
-                _ = VoicelineCtrl.Instance.PlayAnimation(VoiceType.sugggetion);
+                _ = VoicelineCtrl.Instance.PlayAnimation(BaseVoiceType.sugggetion);
                 return true;
             }
 

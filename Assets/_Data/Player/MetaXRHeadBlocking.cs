@@ -19,7 +19,7 @@ public class MetaXRHeadBlocking : MonoBehaviour {
         if (player != null) {
             lastActivityPosition = player.transform.position;
             lastActivityRotation = player.transform.rotation;
-            ScheduleAfkCheck();
+            /*ScheduleAfkCheck();*/
         }
     }
 
@@ -38,7 +38,7 @@ public class MetaXRHeadBlocking : MonoBehaviour {
 
         if (positionUnchanged && rotationUnchanged) {
             isAfk = true;
-            _ = VoicelineCtrl.Instance.PlayAnimation(VoiceType.afk);
+            _ = VoicelineCtrl.Instance.PlayAnimation(BaseVoiceType.afk);
 
             Debug.Log("Player is AFK");
         }
@@ -65,7 +65,7 @@ public class MetaXRHeadBlocking : MonoBehaviour {
     private void Update() {
         if (player == null) return;
 
-        DetectPlayerActivity();
+        /*DetectPlayerActivity();*/
 
         bool collision = DetectHit(transform.position);
         if (!collision) {

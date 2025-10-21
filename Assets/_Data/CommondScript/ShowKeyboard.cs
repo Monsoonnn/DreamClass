@@ -5,7 +5,7 @@ public class ShowKeyboard : NewMonobehavior {
     [SerializeField] private TMP_InputField m_InputField;
     public float distance = 0.5f;
     public float verticalOffset = -0.5f;
-    public  Transform positionSource;
+    public Transform positionSource;
 
     protected override void Start() {
         m_InputField = GetComponent<TMP_InputField>();

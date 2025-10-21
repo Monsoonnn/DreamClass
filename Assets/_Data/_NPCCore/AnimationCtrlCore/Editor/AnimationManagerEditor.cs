@@ -52,8 +52,8 @@ namespace NPCCore.Animation {
                     if (GUILayout.Button("Play Group"))
                         manager.PlaySelectedGroup();
 
-                    if (GUILayout.Button("Play Layer"))
-                        manager.PlaySelectedLayer(editorEnableLoop);
+                    /*if (GUILayout.Button("Play Layer"))
+                        manager.PlaySelectedLayer(editorEnableLoop);*/
                     EditorGUILayout.EndHorizontal();
                 } else {
                     EditorGUILayout.HelpBox("No layer animations found in this group.", MessageType.Info);

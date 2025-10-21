@@ -31,14 +31,14 @@ namespace GrabQuiz.Animals {
         [ProButton]
         public async Task StartTutorial() {
 
-            await voicelineCtrl.PlayAnimation(VoiceType.tutorial);
+            await voicelineCtrl.PlayAnimation(BaseVoiceType.tutorial);
 
             this.playableDirector.Play(); 
         }
 
         public void EndTutorial() {
 
-            _ = voicelineCtrl.PlayAnimation(VoiceType.tutorialAnswer);
+            _ = voicelineCtrl.PlayAnimation(BaseVoiceType.tutorialAnswer);
         }
 
     }

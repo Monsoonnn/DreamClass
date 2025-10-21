@@ -1,16 +1,12 @@
+
+using NPCCore.Animation;
+using NPCCore.Voiceline;
 using UnityEngine;
 
-public class NPCManager : MonoBehaviour
+namespace DreamClass.NPCCore
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public abstract class NPCManager : NewMonobehavior
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public AnimationManager AnimationManager;
     }
 }

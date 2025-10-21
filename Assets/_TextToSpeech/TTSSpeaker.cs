@@ -6,7 +6,7 @@ namespace TextToSpeech {
     [RequireComponent(typeof(AudioSource))]
     public class TTSSpeaker : NewMonobehavior {
         [SerializeField] private AudioSource audioSource;
-        [SerializeField] private FPTVoice defaultVoice = FPTVoice.BanMai;
+        public FPTVoice defaultVoice = FPTVoice.BanMai;
 
 
         protected override void LoadComponents() {

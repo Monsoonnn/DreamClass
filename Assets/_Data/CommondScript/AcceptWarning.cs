@@ -32,7 +32,7 @@ public class AcceptWarning : ButtonAbstact {
        
         interactionCanvas.gameObject.SetActive(false);
         canvas.gameObject.SetActive(false);
-        _ = VoicelineCtrl.Instance.PlayAnimation(VoiceType.tutorialChangeRoom);
+        _ = VoicelineCtrl.Instance.PlayAnimation(BaseVoiceType.tutorialChangeRoom);
         wall.SetActive(false);
     }
 

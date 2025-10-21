@@ -18,10 +18,15 @@ MonoBehaviour:
     - animationName: IdleNoAction
       layer: 0
       transitionTime: 0.1
-    - animationName: IdleQuatTay
+  - groupName: NgoiNoiChuyen
+    layerAnimations:
+    - animationName: NgoiCheoChan
+      layer: 0
+      transitionTime: 0.1
+    - animationName: NgoiNoiChuyen
       layer: 1
       transitionTime: 0.1
-  - groupName: NgoiAction
+  - groupName: NgoiNoiViet
     layerAnimations:
     - animationName: NgoiCheoChan
       layer: 0
@@ -29,30 +34,26 @@ MonoBehaviour:
     - animationName: NgoiViet
       layer: 1
       transitionTime: 0.1
-    - animationName: NgoiNoiChuyen
-      layer: 1
-      transitionTime: 0.1
-  - groupName: DiAction
-    layerAnimations:
-    - animationName: IdleNoAction
-      layer: 0
-      transitionTime: 0.1
-    - animationName: DiBo
-      layer: 0
-      transitionTime: 0.1
-  - groupName: DungAction
-    layerAnimations:
-    - animationName: IdleNoAction
-      layer: 0
-      transitionTime: 0.1
-    - animationName: DungNoiChuyen
-      layer: 0
-      transitionTime: 0.1
-  - groupName: IdleClone
+  - groupName: IdleQuatTay
     layerAnimations:
     - animationName: IdleNoAction
       layer: 0
       transitionTime: 0.1
     - animationName: IdleQuatTay
       layer: 1
+      transitionTime: 0.1
+  - groupName: DiBo
+    layerAnimations:
+    - animationName: DiBo
+      layer: 0
+      transitionTime: 0.1
+  - groupName: NgoiKhong
+    layerAnimations:
+    - animationName: NgoiCheoChan
+      layer: 0
+      transitionTime: 0.1
+  - groupName: DiBo
+    layerAnimations:
+    - animationName: DiBo
+      layer: 0
       transitionTime: 0.1
