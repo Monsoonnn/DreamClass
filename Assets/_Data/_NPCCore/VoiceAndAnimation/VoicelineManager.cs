@@ -43,5 +43,7 @@ namespace NPCCore.Voiceline {
                     return v;
             return null;
         }
+
+        public virtual void CancelAudio() => audioSource.Stop();
     }
 }

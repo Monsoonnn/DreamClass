@@ -7,7 +7,7 @@ namespace DreamClass.Network {
     public class ApiClient : MonoBehaviour {
         [SerializeField] private string baseUrl;
         [SerializeField] private string defaultCookie;
-
+        public string DefaultCookie => defaultCookie;
         public void SetBaseUrl( string url ) => baseUrl = url;
         public void SetCookie( string cookie ) => defaultCookie = cookie;
 

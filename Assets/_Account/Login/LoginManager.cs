@@ -12,7 +12,7 @@ namespace DreamClass.LoginManager {
         [SerializeField] private ApiClient apiClient;
 
         [Header("Session Info")]
-        [SerializeField] private string sessionCookie;
+        private string sessionCookie;
 
         [Header("User Info (Remember Me)")]
         [SerializeField] private bool rememberMe = false;
@@ -35,15 +35,17 @@ namespace DreamClass.LoginManager {
 
         [ProButton]
         public void Login( string email, string password, Action<bool, string> onResult = null, bool remember = false ) {
+            StartCoroutine(DelayedLogin(email, password, onResult, remember));
+        }
+
+        private IEnumerator DelayedLogin( string email, string password, Action<bool, string> onResult, bool remember ) {
+            yield return null; // Wait 1 frame before sending first request
+
             _onLoginResult = onResult;
             rememberMe = remember;
 
             string json = JsonUtility.ToJson(new LoginRequest(email, password));
-            ApiRequest req = new ApiRequest(
-                endpoint: "/api/auth/login",
-                method: "POST",
-                body: json
-            );
+            ApiRequest req = new ApiRequest("/api/auth/login", "POST", json);
 
             StartCoroutine(apiClient.SendRequest(req, OnLoginResponse));
 
@@ -51,11 +53,15 @@ namespace DreamClass.LoginManager {
             else ClearSavedLogin();
         }
 
+
         private void OnLoginResponse( ApiResponse res ) {
             if (res.IsSuccess) {
-                Debug.Log("Login success!");
+                Debug.Log("Login success!");   
                 if (!string.IsNullOrEmpty(res.SetCookie)) {
                     sessionCookie = ParseCookie(res.SetCookie);
+
+                    Debug.Log("Login Cookie: " + sessionCookie);
+
                     apiClient.SetCookie(sessionCookie);
                 }
 
@@ -184,5 +190,9 @@ namespace DreamClass.LoginManager {
         public string GetSavedUsername() => savedUsername;
         public string GetSavedPassword() => savedPassword;
         public bool IsRemembered() => rememberMe;
+        public bool IsLoggedIn() {
+            Debug.Log("Login Cookie: " + sessionCookie);
+            return !string.IsNullOrEmpty(apiClient.DefaultCookie);
+        }
     }
 }

@@ -10,6 +10,8 @@ namespace Systems.SceneManagement {
         [SerializeField] Canvas loadingCanvas;
         [SerializeField] Camera loadingCamera;
         [SerializeField] SceneGroup[] sceneGroups;
+        public SceneGroup[] GetSceneGroups() => sceneGroups;
+
 
         float targetProgress;
         bool isLoading;
@@ -59,6 +61,18 @@ namespace Systems.SceneManagement {
             EnableLoadingCanvas(false);
 
         }
+
+        public async Task LoadSceneGroup( string groupName ) {
+            int index = Array.FindIndex(sceneGroups, g => g.GroupName == groupName);
+
+            if (index < 0) {
+                Debug.LogError($"Scene group '{groupName}' not found!");
+                return;
+            }
+
+            await LoadSceneGroup(index);
+        }
+
 
         void EnableLoadingCanvas( bool enable = true ) {
             isLoading = enable;
