@@ -227,9 +227,14 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager> {
     /// </summary>
     private void FinishGuide() {
         if (titleText != null)
-            titleText.text = "Hãy về phía quyển sách để xem kết quả đo nhé!";
+            titleText.text = "Hãy về phía quyển sách để xem kết quả nhé!";
         if (descriptionText != null)
             descriptionText.text = "Các bước chuẩn bị đã hoàn thành, bạn hãy di về phía quyển sách để xem kết quả được hiển thị.";
+
+        if (gameController is Experiment exp) {
+            exp.StartExperiment();
+        }
+
 
         Debug.Log("[GuideStepManager] All steps completed! Experiment started.");
     }

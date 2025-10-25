@@ -5,6 +5,7 @@ public class Multimeter : NewMonobehavior {
     [Header("Multimeter")]
     public TextMeshProUGUI valueUI;
     public GameObject turnOnBtn;
+    public Experiment experiment;
 
     public bool isOn = false;
 
@@ -14,8 +15,9 @@ public class Multimeter : NewMonobehavior {
     public void TogglePower(bool value) {
         isOn = !isOn;
         turnOnBtn.SetActive(!isOn);
-        if(isOn) GuideStepManager.Instance.CompleteStep("TURNON_OATKE");
-        else GuideStepManager.Instance.ActivateStep("TURNOFF_OATKE");
+        if (isOn) {
+            GuideStepManager.Instance.CompleteStep("TURNON_OATKE");
+        } else GuideStepManager.Instance.ActivateStep("TURNOFF_OATKE");
 
         if (valueUI != null)
             valueUI.text = "--";   

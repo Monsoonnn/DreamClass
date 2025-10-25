@@ -1,39 +1,56 @@
 ﻿using com.cyborgAssets.inspectorButtonPro;
 using UnityEngine;
+using Oculus.Interaction; // optional nếu bạn dùng Meta SDK
 
 public class SimpleTeleport : SingletonCtrl<SimpleTeleport> {
-    [Tooltip("OVRCameraRig để di chuyển")]
-    public Transform player;
+    [Tooltip("OVRCameraRig root (parent of TrackingSpace)")]
+    public OVRCameraRig cameraRig;
 
-    [Tooltip("Vị trí đích để teleport tới")]
+    [Tooltip("Transform đích teleport đến")]
     public Transform targetPosition;
 
-    private Vector3 originalPosition;
+    private Vector3 trackingOffset; // offset của camera bên trong rig
+    private Transform trackingSpace;
 
     protected override void Start() {
-        // Save the starting tracking space position
-        originalPosition = player.localPosition;
-        Debug.Log($"[SimpleTeleport] Original position saved: {originalPosition}");
+        base.Start();
+
+        if (cameraRig == null) {
+            cameraRig = FindObjectOfType<OVRCameraRig>();
+        }
+
+        trackingSpace = cameraRig.trackingSpace;
+        trackingOffset = trackingSpace.localPosition;
+
+        Debug.Log($"[SimpleTeleport] Tracking offset saved: {trackingOffset}");
     }
 
-    // Call this method to teleport instantly
     [ProButton]
     public void Teleport() {
-        if (player == null || targetPosition == null) {
-            Debug.LogWarning("[SimpleTeleport] Missing cameraRig or targetPosition reference!");
+        if (cameraRig == null || targetPosition == null) {
+            Debug.LogWarning("[SimpleTeleport] Missing references!");
             return;
         }
 
-        Vector3 beforePos = player.localPosition;
+        Transform playerRoot = cameraRig.transform;
 
-        player.localPosition = new Vector3(
-            targetPosition.position.x,
-            originalPosition.y,
-            targetPosition.position.z
-        );
+        // Tính offset giữa camera thực tế và rig root
+        Vector3 cameraWorldPos = cameraRig.centerEyeAnchor.position;
+        Vector3 offset = playerRoot.position - cameraWorldPos;
 
-        Vector3 afterPos = player.localPosition;
+        // Teleport toàn bộ rig sao cho camera đặt tại vị trí target
+        Vector3 newRootPos = targetPosition.position + offset;
 
-        Debug.Log($"[SimpleTeleport] Teleported from {beforePos} → {afterPos}");
+        // Giữ nguyên Y gốc của player
+        newRootPos.y = playerRoot.position.y;
+
+        playerRoot.position = newRootPos;
+/*
+        // Reset tracking space về offset ban đầu (nếu có)
+        if (trackingSpace != null)
+            trackingSpace.localPosition = trackingOffset;*/
+
+        Debug.Log($"[SimpleTeleport] Teleported player to {targetPosition.position} (keeping Y), camera aligned.");
     }
+
 }

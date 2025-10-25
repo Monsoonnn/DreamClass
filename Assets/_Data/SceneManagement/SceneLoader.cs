@@ -53,11 +53,20 @@ namespace Systems.SceneManagement {
             progress.Progressed += target => targetProgress = Mathf.Max(target, targetProgress);
             
             EnableLoadingCanvas();
-            PlayerRespawn playerRespawn = GameObject.FindAnyObjectByType<PlayerRespawn>();
-            if (playerRespawn) playerRespawn.Respawn();
+
 
             await manager.LoadScenes(sceneGroups[index], progress);
-           
+
+            RespawnPoint respawn = GameObject.FindAnyObjectByType<RespawnPoint>();
+            if (respawn != null) {
+                respawn.PlayerRespawn();
+                Debug.Log($"[SceneLoader] Player respawned at {respawn.name}");
+            } else {
+                Debug.LogWarning("[SceneLoader] No RespawnPoint found in loaded scenes!");
+            }
+
+
+
             EnableLoadingCanvas(false);
 
         }
@@ -79,7 +88,7 @@ namespace Systems.SceneManagement {
             loadingCanvas.gameObject.SetActive(enable);
             loadingCamera.gameObject.SetActive(enable);
 
-            if (enable) {
+/*            if (enable) {
                
                 Camera activeCam = Camera.main != null ? Camera.main : loadingCamera;
 
@@ -91,7 +100,7 @@ namespace Systems.SceneManagement {
 
                 
                 loadingCanvas.transform.rotation = Quaternion.LookRotation(forward, activeCam.transform.up);
-            }
+            }*/
         }
 
     }
