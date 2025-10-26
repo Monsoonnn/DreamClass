@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace DreamClass.QuestSystem
 {
-    public class QuestCtrl : NewMonobehavior
+    public abstract class QuestCtrl : NewMonobehavior
     {
         [Header("Quest Info")]
         public string QuestId;
@@ -51,7 +51,6 @@ namespace DreamClass.QuestSystem
             if (State != QuestState.IN_PROGRESS) return;
 
             QuestStep step = steps[currentStepIndex];
-            step.OnUpdate(context);
 
             if (step.IsComplete)
             {

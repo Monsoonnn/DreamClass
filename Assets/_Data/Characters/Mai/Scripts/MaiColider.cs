@@ -5,7 +5,7 @@ namespace Characters.Mai
     public class MaiCollider : NewMonobehavior
     {
         [SerializeField] private BoxCollider boxCollider;
-        [SerializeField] private LoginInteraction loginInteraction;
+        [SerializeField] private MaiVocalAnimatorCtrl loginInteraction;
 
         private bool hasGreeted;
 

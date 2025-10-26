@@ -7,6 +7,6 @@ using UnityEngine;
 namespace DreamClass.NPCCore
 {
     public class MaiNPC : NPCManager { 
-        public LoginInteraction loginInteraction;
+        public MaiVocalAnimatorCtrl loginInteraction;
     }
 }

@@ -46,11 +46,18 @@ namespace DreamClass.QuestSystem
         // List of quest IDs that should be spawned (initialized but not yet instantiated)
         public List<string> questsToSpawn = new();
 
+        protected override void Start()
+        {
+            base.Start();
+            this.InitializeFromServerMock();
+        }
+
         #region === INITIALIZATION ===
 
         [ProButton]
         public void InitializeFromServerMock()
         {
+            Debug.Log($"[QuestManager] Fetching quest states from server...");
             StartCoroutine(QuestServerMock.Instance.FetchQuestStates(OnServerDataReceived));
         }
 

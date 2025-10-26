@@ -8,9 +8,9 @@
       "name": "Làm quen với Mai",
       "description": "Mai là cô bạn thân thiện ngồi ở bàn đầu. Hãy tiến lại gần và chào Mai để bắt đầu trò chuyện.",
       "rewardGold": 100,
-      "state": "IN_PROGRESS",
+      "state": "NOT_START",
       "steps": [
-        { "stepId": "S001", "isComplete": true }
+        { "stepId": "S001", "isComplete": false }
       ]
     },
     {

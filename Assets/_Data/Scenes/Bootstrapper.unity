@@ -1078,6 +1078,12 @@ MonoBehaviour:
   loadingCanvas: {fileID: 8602176321004977417}
   loadingCamera: {fileID: 1019719784}
   sceneGroups:
+  - GroupName: LobbyClass
+    Scenes:
+    - Reference:
+        asset: {fileID: 102900000, guid: 0405bbcdfbc7c9e48bada242562d6483, type: 3}
+        guid: 0405bbcdfbc7c9e48bada242562d6483
+      SceneType: 5
   - GroupName: Laboratory
     Scenes:
     - Reference:
@@ -1090,12 +1096,6 @@ MonoBehaviour:
         asset: {fileID: 102900000, guid: 2475dcf948ae4e440b6f0a14b7d52549, type: 3}
         guid: 2475dcf948ae4e440b6f0a14b7d52549
       SceneType: 7
-  - GroupName: LobbyClass
-    Scenes:
-    - Reference:
-        asset: {fileID: 102900000, guid: 0405bbcdfbc7c9e48bada242562d6483, type: 3}
-        guid: 0405bbcdfbc7c9e48bada242562d6483
-      SceneType: 5
   - GroupName: Game2
     Scenes:
     - Reference:

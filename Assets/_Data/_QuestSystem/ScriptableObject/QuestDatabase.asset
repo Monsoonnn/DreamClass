@@ -13,7 +13,4 @@ MonoBehaviour:
   m_Name: QuestDatabase
   m_EditorClassIdentifier: 
   questPrefabs:
-  - {fileID: 7927070919315247764, guid: 0ecc4da14cd4cd64895adbe9a6db54f9, type: 3}
-  - {fileID: 2775913796284250717, guid: 71b88de5934c0ae45801899fd01b55cc, type: 3}
-  - {fileID: 8082534693720737146, guid: 9aeafedd03f86764badd34de62a2d4a9, type: 3}
-  - {fileID: 8082534693720737146, guid: 2406a806f5a472e47a86a91ba702ef48, type: 3}
+  - {fileID: 581625922381216332, guid: 1a26df14b2280384ebbdb6fa4500197d, type: 3}

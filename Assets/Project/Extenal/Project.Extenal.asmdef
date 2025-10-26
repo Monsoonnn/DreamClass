@@ -1,0 +1,22 @@
+{
+    "name": "Project.Extenal",
+    "rootNamespace": "",
+    "references": [
+        "GUID:88b6a96a69c522e46b3504e12b7c9972",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:0df431c3d20aec4448ca9c43e8581976",
+        "GUID:c6727c2813289de4890fc141925806e5"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

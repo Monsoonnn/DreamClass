@@ -2,11 +2,25 @@ using UnityEngine;
 
 namespace DreamClass.QuestSystem
 {
-    public abstract class QuestStep : MonoBehaviour
+    public abstract class QuestStep : NewMonobehavior
     {
         [Header("Step Info")]
         public string StepId;
         public bool IsComplete;
+
+        public QuestCtrl questCtrl;
+
+        protected override void LoadComponents()
+        {
+            base.LoadComponents();
+            this.LoadQuestCtrl();
+        }
+        
+        protected virtual void LoadQuestCtrl()
+        {
+            if (this.questCtrl != null) return;
+            this.questCtrl = transform.parent.GetComponent<QuestCtrl>();
+        }
 
         public virtual void StartStep()
         {
@@ -20,8 +34,8 @@ namespace DreamClass.QuestSystem
         {
             IsComplete = true;
             Debug.Log($"[QuestStep] Completed step: {StepId}");
-            // Publish event with instance
-            QuestEventBus.Instance.Publish("QuestStepCompleted", this);
+            this.questCtrl.UpdateProgress(null);
+
         }
     }
 }
