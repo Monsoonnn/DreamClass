@@ -12,6 +12,11 @@ namespace Characters.Mai
         login,
         fail,
         mutiFail,
+        Q001_Active,
+        Q001_Option1,
+        Q001_Option2,
+        Q001_Option3,
+
     }
     public class MaiVocalAnimatorCtrl : VoicelineCtrl<MaiVoiceType> {
 

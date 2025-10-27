@@ -1,4 +1,6 @@
+﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace DreamClass.QuestSystem
@@ -46,7 +48,7 @@ namespace DreamClass.QuestSystem
             Debug.Log($"[QuestCtrl] Started quest: {QuestName}");
         }
 
-        public void UpdateProgress(object context)
+        public void UpdateProgress()
         {
             if (State != QuestState.IN_PROGRESS) return;
 
@@ -54,7 +56,6 @@ namespace DreamClass.QuestSystem
 
             if (step.IsComplete)
             {
-                step.OnComplete();
                 currentStepIndex++;
 
                 if (currentStepIndex < steps.Count)
@@ -63,16 +64,69 @@ namespace DreamClass.QuestSystem
                 }
                 else
                 {
-                    CompleteQuest();
+                    _ = CompleteQuest();
                 }
             }
         }
 
-        private void CompleteQuest()
-        {
+        // Class cha - QuestCtrl
+        protected virtual async Task CompleteQuest() {
             IsComplete = true;
             State = QuestState.FINISHED;
-            Debug.Log($"[QuestCtrl] Quest '{QuestName}' completed!");
+
+            try {
+                await SyncQuestToServer(); // Update State
+
+                // Hook point cho class con
+                await OnBeforeReward();
+
+                await GiveReward();
+
+                // Hook point sau khi trao thưởng
+                await OnAfterReward();
+
+                await ShowNotification();
+
+                Destroy(this.gameObject);
+                Debug.Log($"[QuestCtrl] Quest '{QuestName}' completed!");
+            }
+            catch (Exception ex) {
+                Debug.LogError($"[QuestCtrl] Error: {ex.Message}");
+            }
         }
+
+        // Virtual hooks để class con override
+        protected virtual async Task OnBeforeReward() {
+            await Task.CompletedTask; // Không làm gì trong base class
+        }
+
+        protected virtual async Task OnAfterReward() {
+            await Task.CompletedTask;
+        }
+
+        // Các phương thức hỗ trợ
+        private async Task SyncQuestToServer() {
+            // Gọi API đồng bộ quest lên server
+            // await YourNetworkManager.SyncQuest(questId);
+            await Task.Delay(500);
+            await Task.CompletedTask; // Placeholder
+        }
+        private async Task GiveReward() {
+            // Logic trao thưởng
+            // await RewardManager.GiveReward(rewardId);
+            await Task.Delay(500);
+            await Task.CompletedTask; // Placeholder
+        }
+        private async Task ShowNotification() {
+            // Hiển thị thông báo
+            // await NotificationManager.Show("Quest completed!");
+            QuestUIComplete.Instance.UpdateUI(QuestName, "00:00", "50", "1");
+
+
+            await Task.Delay(500);
+            await Task.CompletedTask; // Placeholder
+        }
+
+
     }
 }

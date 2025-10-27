@@ -5,5 +5,17 @@ namespace DreamClass.QuestSystem
     {
         public Transform holdUI;
 
+        protected override void LoadComponents()
+        {
+            base.LoadComponents();
+            this.LoadHoldUI();
+        }
+
+        protected virtual void LoadHoldUI()
+        {
+            if(holdUI != null) return;
+            holdUI = transform.parent.parent;
+        }
+
     }
 }

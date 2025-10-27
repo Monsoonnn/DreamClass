@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5838883550786221323}
   - component: {fileID: 217886790358985496}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Step1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf8ac19bacb044e4eacc701f9b4318e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StepId: 
+  StepId: S001
   IsComplete: 0
   questCtrl: {fileID: 581625922381216332}
   optionUI: {fileID: 5403243085002525452}
@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 528790480866701730}
   - component: {fileID: 7527656715672548451}
   - component: {fileID: 7096280845007181784}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 1153468779366739158}
   - component: {fileID: 6679656001754498689}
   - component: {fileID: 6481106415496305350}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -271,7 +271,7 @@ GameObject:
   - component: {fileID: 9098007855956545179}
   - component: {fileID: 8830806937589891126}
   - component: {fileID: 2980943912052328215}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Highlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -347,7 +347,7 @@ GameObject:
   - component: {fileID: 6483755660411276223}
   - component: {fileID: 1824930000982591249}
   - component: {fileID: 5663975679276671552}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Alpha Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -443,7 +443,7 @@ GameObject:
   - component: {fileID: 3541538999820169360}
   - component: {fileID: 4529007274650208049}
   - component: {fileID: 6890401474316196209}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Alpha Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -541,7 +541,7 @@ GameObject:
   - component: {fileID: 3000812117515292443}
   - component: {fileID: 2226772489960087228}
   - component: {fileID: 1927412784343603436}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Op1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -653,9 +653,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 217886790358985496}
-        m_TargetAssemblyTypeName: DreamClass.QuestSystem.Q001.S001, Assembly-CSharp
-        m_MethodName: OnComplete
+      - m_Target: {fileID: 3663206102468836614}
+        m_TargetAssemblyTypeName: DreamClass.QuestSystem.Q001.S001Option, Assembly-CSharp
+        m_MethodName: Option1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -718,7 +718,7 @@ GameObject:
   - component: {fileID: 1062132184846375060}
   - component: {fileID: 4544852854647779710}
   - component: {fileID: 1186678588581266625}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Alpha Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -816,7 +816,7 @@ GameObject:
   - component: {fileID: 2187116415788711545}
   - component: {fileID: 4601269453377225210}
   - component: {fileID: 4279653154063593981}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Op3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -927,7 +927,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7759737691335374591}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3663206102468836614}
+        m_TargetAssemblyTypeName: DreamClass.QuestSystem.Q001.S001Option, Assembly-CSharp
+        m_MethodName: Option3
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!95 &4601269453377225210
 Animator:
   serializedVersion: 7
@@ -980,7 +992,7 @@ GameObject:
   - component: {fileID: 2383246432601248002}
   - component: {fileID: 9179231098439287340}
   - component: {fileID: 6045311075848858395}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Highlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1055,7 +1067,7 @@ GameObject:
   - component: {fileID: 8833753214099418436}
   - component: {fileID: 497358817332317256}
   - component: {fileID: 6165058374530256469}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1191,7 +1203,7 @@ GameObject:
   - component: {fileID: 239370333745812181}
   - component: {fileID: 4754882139202555165}
   - component: {fileID: 7536380471302919398}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1266,7 +1278,7 @@ GameObject:
   - component: {fileID: 4463676800744402677}
   - component: {fileID: 174022310961264668}
   - component: {fileID: 566070482287256082}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1402,7 +1414,7 @@ GameObject:
   - component: {fileID: 1791139030808275288}
   - component: {fileID: 5556509356715326513}
   - component: {fileID: 4433103681400771150}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1477,7 +1489,7 @@ GameObject:
   - component: {fileID: 8995595614544904475}
   - component: {fileID: 9064025673491645197}
   - component: {fileID: 7914464776241405296}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Highlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1557,13 +1569,13 @@ GameObject:
   - component: {fileID: 2743649237164234829}
   - component: {fileID: 581625922381216332}
   - component: {fileID: 6582733990768368358}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Q001 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7506510256650407206
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1572,7 +1584,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4472128367454878007}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 55.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1669,7 +1681,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2124992031448175114}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 217886790358985496}
+        m_TargetAssemblyTypeName: DreamClass.QuestSystem.Q001.S001, Assembly-CSharp
+        m_MethodName: StartStep
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!95 &8670031469344387053
 Animator:
   serializedVersion: 7
@@ -1731,6 +1755,8 @@ MonoBehaviour:
   steps:
   - {fileID: 217886790358985496}
   State: 1
+  holdUI: {fileID: 0}
+  npcCtrl: {fileID: 0}
 --- !u!114 &6582733990768368358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1756,7 +1782,7 @@ GameObject:
   - component: {fileID: 6340972083766698056}
   - component: {fileID: 5960458607039117233}
   - component: {fileID: 6407886547595861736}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1891,7 +1917,8 @@ GameObject:
   m_Component:
   - component: {fileID: 9199707688794593696}
   - component: {fileID: 4014982504117164416}
-  m_Layer: 0
+  - component: {fileID: 3663206102468836614}
+  m_Layer: 5
   m_Name: OptionUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1946,6 +1973,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &3663206102468836614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5403243085002525452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a57ac7c1278d1a6438a93f37157d8517, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  questStep: {fileID: 217886790358985496}
 --- !u!1 &5803954785937508681
 GameObject:
   m_ObjectHideFlags: 0
@@ -1960,7 +2000,7 @@ GameObject:
   - component: {fileID: 1473878116913056302}
   - component: {fileID: 1406019982756673911}
   - component: {fileID: 2679441377755243853}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Op2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2071,7 +2111,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4229208116564961318}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3663206102468836614}
+        m_TargetAssemblyTypeName: DreamClass.QuestSystem.Q001.S001Option, Assembly-CSharp
+        m_MethodName: Option2
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!95 &1406019982756673911
 Animator:
   serializedVersion: 7
@@ -2125,7 +2177,7 @@ GameObject:
   - component: {fileID: 5513993929805762385}
   - component: {fileID: 823097861963057081}
   - component: {fileID: 2087141281756988984}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Alpha Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2220,7 +2272,7 @@ GameObject:
   - component: {fileID: 4379555303942935550}
   - component: {fileID: 3168586708933594481}
   - component: {fileID: 7832300605071390764}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Highlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2295,7 +2347,7 @@ GameObject:
   - component: {fileID: 3392562330682079989}
   - component: {fileID: 4162351158257868882}
   - component: {fileID: 4869344597191856905}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}

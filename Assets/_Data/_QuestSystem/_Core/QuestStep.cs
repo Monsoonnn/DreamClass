@@ -34,7 +34,7 @@ namespace DreamClass.QuestSystem
         {
             IsComplete = true;
             Debug.Log($"[QuestStep] Completed step: {StepId}");
-            this.questCtrl.UpdateProgress(null);
+            this.questCtrl.UpdateProgress();
 
         }
     }

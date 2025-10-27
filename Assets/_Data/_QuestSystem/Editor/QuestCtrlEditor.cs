@@ -246,7 +246,7 @@ namespace DreamClass.QuestSystem
                         if (currentStep != null)
                         {
                             currentStep.IsComplete = true;
-                            quest.UpdateProgress(null);
+                            quest.UpdateProgress();
                         }
                     }
                 }
