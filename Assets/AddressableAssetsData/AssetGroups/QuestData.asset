@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: QuestData
+  m_EditorClassIdentifier: 
+  m_GroupName: QuestData
+  m_GUID: 4fa315074038647419aaa9366327a4e8
+  m_SerializeEntries:
+  - m_GUID: 62d7afb250912a445965980d83aa3738
+    m_Address: Assets/_Data/_QuestSystem/ScriptableObject/QuestDatabase.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: ccf87b842d718d245b094a40e41a76ba, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 811cfbe4403a34946a96ea7ec158e181, type: 2}
+    - {fileID: 11400000, guid: 79ea05c5feda38f4fa20e168dd2a9193, type: 2}

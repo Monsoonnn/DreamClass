@@ -16,7 +16,7 @@ namespace NPCCore.Voiceline {
         public bool disableLoop = true;
         public float crossFade = 0.2f;
 
-        public async Task PlayAsync( AudioSource audioSource, AnimationManager animationManager, bool BackStartGroup = true ) {
+        public async Task PlayAsync( AudioSource audioSource, AnimationManager animationManager, bool disableLoop = false ) {
             if (animationManager == null) {
                 Debug.LogWarning("Missing AnimationManager in Voiceline!");
                 return;
@@ -29,7 +29,7 @@ namespace NPCCore.Voiceline {
                 : null;
 
             // Step 1️ - Play animation (no auto return)
-            animationManager.PlayGroupByName(animationGroupName, false);
+            animationManager.PlayGroupByName(animationGroupName, disableLoop, clip.length);
 
             float waitTime = 0f;
 
@@ -53,9 +53,6 @@ namespace NPCCore.Voiceline {
             // Wait until voice finishes
             await Task.Delay((int)(waitTime * 1000));
 
-            // Step 3️ - Return to Idle after MP3 ends
-            if (BackStartGroup) animationManager.PlayStartGroup();
-            else animationManager.PlayIdle();
             Debug.Log($"[Voiceline] Finished {voiceType}, returned to Idle.");
         }
     }

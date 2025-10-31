@@ -37,6 +37,8 @@ namespace NPCCore.Animation {
                 backRoutine = null;
             }
 
+            Debug.Log($"Disable Loop group: {disableLoop}");
+
             var group = animationSet.GetGroupByIndex(selectedGroupIndex);
             if (group == null || group.layerAnimations.Count == 0) {
                 Debug.LogWarning("No valid animation group selected!");
@@ -54,35 +56,87 @@ namespace NPCCore.Animation {
         private IEnumerator BackToIdleAfterGroup( AnimationSetSO.AnimationGroup group ) {
             float longestClip = 0f;
 
+            // Find longest clip duration
             foreach (var layerAnim in group.layerAnimations) {
                 var clip = FindClipByName(layerAnim.animationName);
                 if (clip != null && clip.length > longestClip)
                     longestClip = clip.length;
             }
 
-            if (longestClip <= 0f) yield break;
+            Debug.Log($"Longest clip duration: {longestClip}");
+
+            if (longestClip <= 0f)
+                yield break;
+
             yield return new WaitForSeconds(longestClip);
 
-            if (returnToStartAnimation && startGroup != null) {
-                PlayGroup(startGroup);
-                Debug.Log($"Returned to Start Animation: {startGroup.groupName}");
-            } else {
-                foreach (var layerAnim in group.layerAnimations) {
-                    int layerIndex = animator.GetLayerIndex(layerAnim.layer.ToString());
-                    if (layerIndex < 0) layerIndex = 0;
+            // Determine base and non-base layers
+            int baseLayerIndex = animator.GetLayerIndex(AnimationSetSO.AnimationLayer.Base.ToString());
+            if (baseLayerIndex < 0) baseLayerIndex = 0;
 
-                    if (layerAnim.layer == AnimationSetSO.AnimationLayer.Base) {
-                        var idleGroup = animationSet.GetGroup("Idle");
-                        if (idleGroup != null && idleGroup.layerAnimations.Count > 0) {
-                            var idleAnim = idleGroup.layerAnimations[0];
-                            animator.CrossFade(idleAnim.animationName, idleAnim.transitionTime, layerIndex);
-                            Debug.Log($"Returned to Idle: {idleAnim.animationName}");
-                        }
-                    } else {
-                        animator.CrossFade("Empty", 0.2f, layerIndex);
-                        Debug.Log($"Returned to Empty (Layer: {layerAnim.layer})");
-                    }
+            // --- Base Layer ---
+            if (returnToStartAnimation && startGroup != null) {
+                var baseAnim = startGroup.GetAnimationByLayer(AnimationSetSO.AnimationLayer.Base);
+                if (baseAnim != null)
+                    animator.CrossFade(baseAnim.animationName, baseAnim.transitionTime, baseLayerIndex);
+                Debug.Log($"Returned Base Layer to StartGroup: {startGroup.groupName}");
+            } else {
+                var idleGroup = animationSet.GetGroup("Idle");
+                if (idleGroup != null) {
+                    var idleAnim = idleGroup.GetAnimationByLayer(AnimationSetSO.AnimationLayer.Base);
+                    if (idleAnim != null)
+                        animator.CrossFade(idleAnim.animationName, idleAnim.transitionTime, baseLayerIndex);
                 }
+                Debug.Log("Returned Base Layer to Idle");
+            }
+
+            // --- Other Layers ---
+            int totalLayers = animator.layerCount;
+            for (int i = 0; i < totalLayers; i++) {
+                if (i == baseLayerIndex) continue; // Skip base
+                animator.CrossFade("empty", 0.2f, i);
+                Debug.Log($"Cleared Layer {i} to Empty");
+            }
+
+            backRoutine = null;
+        }
+
+        private IEnumerator BackToIdleAfterGroup( AnimationSetSO.AnimationGroup group, float clipDuration ) {
+            if (clipDuration > 0f)
+                Debug.Log($"Longest clip duration: {clipDuration}");
+            yield return new WaitForSeconds(clipDuration);
+
+
+
+
+            yield return new WaitForSeconds(clipDuration);
+
+            // Determine base and non-base layers
+            int baseLayerIndex = animator.GetLayerIndex(AnimationSetSO.AnimationLayer.Base.ToString());
+            if (baseLayerIndex < 0) baseLayerIndex = 0;
+
+            // --- Base Layer ---
+            if (returnToStartAnimation && startGroup != null) {
+                var baseAnim = startGroup.GetAnimationByLayer(AnimationSetSO.AnimationLayer.Base);
+                if (baseAnim != null)
+                    animator.CrossFade(baseAnim.animationName, baseAnim.transitionTime, baseLayerIndex);
+                Debug.Log($"Returned Base Layer to StartGroup: {startGroup.groupName}");
+            } else {
+                var idleGroup = animationSet.GetGroup("Idle");
+                if (idleGroup != null) {
+                    var idleAnim = idleGroup.GetAnimationByLayer(AnimationSetSO.AnimationLayer.Base);
+                    if (idleAnim != null)
+                        animator.CrossFade(idleAnim.animationName, idleAnim.transitionTime, baseLayerIndex);
+                }
+                Debug.Log("Returned Base Layer to Idle");
+            }
+
+            // --- Other Layers ---
+            int totalLayers = animator.layerCount;
+            for (int i = 0; i < totalLayers; i++) {
+                if (i == baseLayerIndex) continue; // Skip base
+                animator.CrossFade("empty", 0.2f, i);
+                Debug.Log($"Cleared Layer {i} to Empty");
             }
 
             backRoutine = null;
@@ -160,12 +214,15 @@ namespace NPCCore.Animation {
 
         public AnimationClip FindClipByName( string name ) {
             if (animator == null || animator.runtimeAnimatorController == null) return null;
-            foreach (var clip in animator.runtimeAnimatorController.animationClips)
+            foreach (var clip in animator.runtimeAnimatorController.animationClips) {
                 if (clip.name == name) return clip;
+                Debug.Log($"AnimatorClip: {clip.name}");
+            }
+                
             return null;
         }
 
-        public void PlayGroupByName( string groupName, bool disableLoop = false ) {
+        public void PlayGroupByName( string groupName, bool disableLoop = false , float clipDuration = 0f) {
             var group = animationSet.GetGroup(groupName);
             if (group == null) {
                 Debug.LogWarning($"Group '{groupName}' not found in AnimationSet!");
@@ -179,8 +236,11 @@ namespace NPCCore.Animation {
 
             PlayGroup(group);
 
-            if (disableLoop)
+            if (disableLoop && clipDuration > 0f)
+                backRoutine = StartCoroutine(BackToIdleAfterGroup(group, clipDuration - 1f));
+            else if(disableLoop && clipDuration <= 0f)
                 backRoutine = StartCoroutine(BackToIdleAfterGroup(group));
+
         }
 
         public void PlayIdle() {
@@ -192,5 +252,7 @@ namespace NPCCore.Animation {
         public void PlayStartGroup() { 
             this.PlayGroup(startGroup);
         }
+
+
     }
 }

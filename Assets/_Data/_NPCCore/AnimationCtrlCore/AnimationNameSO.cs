@@ -27,6 +27,9 @@ namespace NPCCore.Animation {
             [Tooltip("Tên logic của nhóm animation (ví dụ: Idle, Talk, Walk...)")]
             public string groupName = "Idle";
             public List<LayerAnimation> layerAnimations = new List<LayerAnimation>();
+            public LayerAnimation GetAnimationByLayer( AnimationLayer layer ) {
+                return layerAnimations.Find(a => a.layer == layer);
+            }
         }
 
         [Header("List of Animation Groups")]
@@ -47,6 +50,7 @@ namespace NPCCore.Animation {
             return groups[index];
         }
 
-        
+
+
     }
 }

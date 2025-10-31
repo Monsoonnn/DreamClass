@@ -1,0 +1,581 @@
+﻿//The implementation is based on this article:http://rbarraza.com/html5-canvas-pageflip/
+//As the rbarraza.com website is not live anymore you can get an archived version from web archive 
+//or check an archived version that I uploaded on my website: https://dandarawy.com/html5-canvas-pageflip/
+
+using UnityEngine;
+using System.Collections;
+using UnityEngine.UI;
+using UnityEngine.Events;
+public enum FlipMode
+{
+    RightToLeft,
+    LeftToRight
+}
+
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Events;
+
+[ExecuteInEditMode]
+public class BookVR : MonoBehaviour {
+    [Header("VR Settings")]
+    public OVRInput.Controller vrController = OVRInput.Controller.RTouch;
+    public LayerMask bookLayer;
+    public float rayDistance = 10f;
+    public bool showDebugRay = true;
+
+    [Header("Book Settings")]
+    public Canvas canvas;
+    [SerializeField]
+    RectTransform BookPanel;
+    public Sprite background;
+    public Sprite[] bookPages;
+    public bool interactable = true;
+    public bool enableShadowEffect = true;
+
+    public int currentPage = 0;
+    public int TotalPageCount {
+        get { return bookPages.Length; }
+    }
+
+    public Vector3 EndBottomLeft { get { return ebl; } }
+    public Vector3 EndBottomRight { get { return ebr; } }
+    public float Height { get { return BookPanel.rect.height; } }
+
+    public Image ClippingPlane;
+    public Image NextPageClip;
+    public Image Shadow;
+    public Image ShadowLTR;
+    public Image Left;
+    public Image LeftNext;
+    public Image Right;
+    public Image RightNext;
+    public UnityEvent OnFlip;
+
+    float radius1, radius2;
+    Vector3 sb, st, c, ebr, ebl, f;
+    bool pageDragging = false;
+    FlipMode mode;
+
+    // VR specific
+    private OVRCameraRig cameraRig;
+    private Transform controllerAnchor;
+    private bool isGrippingRightPage = false;
+    private bool isGrippingLeftPage = false;
+    private LineRenderer debugLineRenderer;
+
+    void Start() {
+        if (!canvas) canvas = GetComponentInParent<Canvas>();
+        if (!canvas) Debug.LogError("Book should be a child to canvas");
+
+        Left.gameObject.SetActive(false);
+        Right.gameObject.SetActive(false);
+        UpdateSprites();
+        CalcCurlCriticalPoints();
+
+        // Delay VR initialization để OVR có thời gian khởi tạo
+        StartCoroutine(DelayedVRInitialization());
+
+        float pageWidth = BookPanel.rect.width / 2.0f;
+        float pageHeight = BookPanel.rect.height;
+        NextPageClip.rectTransform.sizeDelta = new Vector2(pageWidth, pageHeight + pageHeight * 2);
+        ClippingPlane.rectTransform.sizeDelta = new Vector2(pageWidth * 2 + pageHeight, pageHeight + pageHeight * 2);
+
+        float hyp = Mathf.Sqrt(pageWidth * pageWidth + pageHeight * pageHeight);
+        float shadowPageHeight = pageWidth / 2 + hyp;
+
+        Shadow.rectTransform.sizeDelta = new Vector2(pageWidth, shadowPageHeight);
+        Shadow.rectTransform.pivot = new Vector2(1, (pageWidth / 2) / shadowPageHeight);
+
+        ShadowLTR.rectTransform.sizeDelta = new Vector2(pageWidth, shadowPageHeight);
+        ShadowLTR.rectTransform.pivot = new Vector2(0, (pageWidth / 2) / shadowPageHeight);
+
+        // Setup debug line renderer (optional)
+        if (showDebugRay) {
+            SetupDebugLineRenderer();
+        }
+    }
+
+    System.Collections.IEnumerator DelayedVRInitialization() {
+        // Đợi 1 frame để OVR khởi tạo
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(0.5f);
+
+        InitializeVR();
+    }
+
+    void InitializeVR() {
+        cameraRig = FindObjectOfType<OVRCameraRig>();
+
+        if (cameraRig != null) {
+            UpdateControllerAnchor();
+            Debug.Log($"VR initialized successfully. Using {vrController}");
+
+            // KIỂM TRA: Book KHÔNG được là con của anchor
+            if (transform.IsChildOf(cameraRig.rightHandAnchor) ||
+                transform.IsChildOf(cameraRig.leftHandAnchor)) {
+                Debug.LogError("❌ LỖI: Book object KHÔNG được là con của Controller Anchor! " +
+                              "Hãy kéo Book ra ngoài khỏi OVRCameraRig hierarchy!");
+            }
+
+            // KIỂM TRA: Canvas setup
+            if (canvas != null && canvas.transform.IsChildOf(cameraRig.transform)) {
+                Debug.LogWarning("⚠️ CẢNH BÁO: Canvas đang là con của OVRCameraRig. " +
+                                "Nên để Canvas độc lập với World Space Render Mode.");
+            }
+        } else {
+            Debug.LogError("OVRCameraRig không tìm thấy trong scene! Đảm bảo bạn đã thêm OVRCameraRig.");
+        }
+    }
+
+    void UpdateControllerAnchor() {
+        if (cameraRig == null) return;
+
+        controllerAnchor = (vrController == OVRInput.Controller.RTouch)
+            ? cameraRig.rightHandAnchor
+            : cameraRig.leftHandAnchor;
+
+        if (controllerAnchor == null) {
+            Debug.LogError($"Controller anchor for {vrController} không tìm thấy!");
+        } else {
+            Debug.Log($"Controller anchor found: {controllerAnchor.name} at position {controllerAnchor.position}");
+        }
+    }
+
+    void SetupDebugLineRenderer() {
+        GameObject lineObj = new GameObject("DebugRay");
+        lineObj.transform.SetParent(transform);
+        debugLineRenderer = lineObj.AddComponent<LineRenderer>();
+        debugLineRenderer.startWidth = 0.01f;
+        debugLineRenderer.endWidth = 0.01f;
+        debugLineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+        debugLineRenderer.startColor = Color.red;
+        debugLineRenderer.endColor = Color.yellow;
+        debugLineRenderer.positionCount = 2;
+    }
+
+    private void CalcCurlCriticalPoints() {
+        sb = new Vector3(0, -BookPanel.rect.height / 2);
+        ebr = new Vector3(BookPanel.rect.width / 2, -BookPanel.rect.height / 2);
+        ebl = new Vector3(-BookPanel.rect.width / 2, -BookPanel.rect.height / 2);
+        st = new Vector3(0, BookPanel.rect.height / 2);
+        radius1 = Vector2.Distance(sb, ebr);
+        float pageWidth = BookPanel.rect.width / 2.0f;
+        float pageHeight = BookPanel.rect.height;
+        radius2 = Mathf.Sqrt(pageWidth * pageWidth + pageHeight * pageHeight);
+    }
+
+    void Update() {
+        if (!interactable) return;
+
+        HandleVRInput();
+
+        if (pageDragging) {
+            UpdateBook();
+        }
+
+        // Update debug ray - với kiểm tra NaN
+        if (showDebugRay && debugLineRenderer != null && controllerAnchor != null) {
+            Ray ray = GetControllerRay();
+            if (!float.IsNaN(ray.origin.x) && !float.IsNaN(ray.direction.x)) {
+                debugLineRenderer.SetPosition(0, ray.origin);
+                debugLineRenderer.SetPosition(1, ray.origin + ray.direction * rayDistance);
+            }
+        }
+    }
+
+    void HandleVRInput() {
+        if (controllerAnchor == null) {
+            return; // Không log warning liên tục
+        }
+
+        // Kiểm tra position hợp lệ
+        if (float.IsNaN(controllerAnchor.position.x) ||
+            float.IsNaN(controllerAnchor.position.y) ||
+            float.IsNaN(controllerAnchor.position.z)) {
+            return; // Bỏ qua frame này nếu position không hợp lệ
+        }
+
+        // Kiểm tra trigger được nhấn
+        bool triggerPressed = OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, vrController);
+        bool triggerDown = OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, vrController);
+        bool triggerUp = OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger, vrController);
+
+        // Raycast từ controller
+        Ray ray = GetControllerRay();
+
+        // Kiểm tra ray direction hợp lệ
+        if (float.IsNaN(ray.direction.x) || ray.direction.magnitude < 0.1f) {
+            return;
+        }
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, rayDistance, bookLayer)) {
+            if (triggerDown && !pageDragging) {
+                // Xác định xem đang point vào trang nào
+                Vector3 localPoint = BookPanel.InverseTransformPoint(hit.point);
+
+                if (localPoint.x > 0) // Right page
+                {
+                    isGrippingRightPage = true;
+                    OnVRDragRightPage(hit.point);
+                } else // Left page
+                  {
+                    isGrippingLeftPage = true;
+                    OnVRDragLeftPage(hit.point);
+                }
+            }
+        }
+
+        if (triggerUp && pageDragging) {
+            OnVRRelease();
+        }
+    }
+
+    Ray GetControllerRay() {
+        if (controllerAnchor != null) {
+            Vector3 pos = controllerAnchor.position;
+            Vector3 fwd = controllerAnchor.forward;
+
+            // Kiểm tra giá trị hợp lệ
+            if (!float.IsNaN(pos.x) && !float.IsNaN(fwd.x) && fwd.magnitude > 0.1f) {
+                return new Ray(pos, fwd);
+            }
+        }
+
+        // Fallback: Trả về ray từ camera
+        if (Camera.main != null) {
+            return new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+        }
+
+        return new Ray(Vector3.zero, Vector3.forward);
+    }
+
+    public Vector3 TransformVRPoint( Vector3 worldPoint ) {
+        if (canvas.renderMode == RenderMode.WorldSpace) {
+            Vector2 localPos = BookPanel.InverseTransformPoint(worldPoint);
+            return localPos;
+        } else if (canvas.renderMode == RenderMode.ScreenSpaceCamera) {
+            Vector3 screenPos = canvas.worldCamera.WorldToScreenPoint(worldPoint);
+            Vector3 worldPos = canvas.worldCamera.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, canvas.planeDistance));
+            Vector2 localPos = BookPanel.InverseTransformPoint(worldPos);
+            return localPos;
+        } else {
+            Vector2 localPos = BookPanel.InverseTransformPoint(worldPoint);
+            return localPos;
+        }
+    }
+
+    public void UpdateBook() {
+        // Lấy vị trí hiện tại từ raycast
+        Ray ray = GetControllerRay();
+        RaycastHit hit;
+
+        Vector3 targetPoint;
+        if (Physics.Raycast(ray, out hit, rayDistance, bookLayer)) {
+            targetPoint = TransformVRPoint(hit.point);
+        } else {
+            targetPoint = f; // Giữ nguyên vị trí cũ nếu không hit
+        }
+
+        f = Vector3.Lerp(f, targetPoint, Time.deltaTime * 10);
+
+        if (mode == FlipMode.RightToLeft)
+            UpdateBookRTLToPoint(f);
+        else
+            UpdateBookLTRToPoint(f);
+    }
+
+    public void OnVRDragRightPage( Vector3 worldPoint ) {
+        if (currentPage >= bookPages.Length) return;
+        Vector3 p = TransformVRPoint(worldPoint);
+        DragRightPageToPoint(p);
+    }
+
+    public void OnVRDragLeftPage( Vector3 worldPoint ) {
+        if (currentPage <= 0) return;
+        Vector3 p = TransformVRPoint(worldPoint);
+        DragLeftPageToPoint(p);
+    }
+
+    public void OnVRRelease() {
+        isGrippingRightPage = false;
+        isGrippingLeftPage = false;
+        ReleasePage();
+    }
+
+    // Debug visualization
+    void OnDrawGizmos() {
+        if (controllerAnchor != null && showDebugRay) {
+            // CHỈ ĐỌC, KHÔNG GHI vào controller anchor
+            Vector3 pos = controllerAnchor.position;
+            Vector3 fwd = controllerAnchor.forward;
+
+            if (!float.IsNaN(pos.x) && !float.IsNaN(fwd.x)) {
+                Gizmos.color = Color.red;
+                Gizmos.DrawRay(pos, fwd * rayDistance);
+                Gizmos.DrawWireSphere(pos, 0.05f);
+            }
+        }
+    }
+
+    // === CÁC HÀM GỐC TỪ BOOK.CS ===
+
+    public void UpdateBookLTRToPoint( Vector3 followLocation ) {
+        mode = FlipMode.LeftToRight;
+        f = followLocation;
+        ShadowLTR.transform.SetParent(ClippingPlane.transform, true);
+        ShadowLTR.transform.localPosition = new Vector3(0, 0, 0);
+        ShadowLTR.transform.localEulerAngles = new Vector3(0, 0, 0);
+        Left.transform.SetParent(ClippingPlane.transform, true);
+
+        Right.transform.SetParent(BookPanel.transform, true);
+        Right.transform.localEulerAngles = Vector3.zero;
+        LeftNext.transform.SetParent(BookPanel.transform, true);
+
+        c = Calc_C_Position(followLocation);
+        Vector3 t1;
+        float clipAngle = CalcClipAngle(c, ebl, out t1);
+        clipAngle = (clipAngle + 180) % 180;
+
+        ClippingPlane.transform.localEulerAngles = new Vector3(0, 0, clipAngle - 90);
+        ClippingPlane.transform.position = BookPanel.TransformPoint(t1);
+
+        Left.transform.position = BookPanel.TransformPoint(c);
+        float C_T1_dy = t1.y - c.y;
+        float C_T1_dx = t1.x - c.x;
+        float C_T1_Angle = Mathf.Atan2(C_T1_dy, C_T1_dx) * Mathf.Rad2Deg;
+        Left.transform.localEulerAngles = new Vector3(0, 0, C_T1_Angle - 90 - clipAngle);
+
+        NextPageClip.transform.localEulerAngles = new Vector3(0, 0, clipAngle - 90);
+        NextPageClip.transform.position = BookPanel.TransformPoint(t1);
+        LeftNext.transform.SetParent(NextPageClip.transform, true);
+        Right.transform.SetParent(ClippingPlane.transform, true);
+        Right.transform.SetAsFirstSibling();
+
+        ShadowLTR.rectTransform.SetParent(Left.rectTransform, true);
+    }
+
+    public void UpdateBookRTLToPoint( Vector3 followLocation ) {
+        mode = FlipMode.RightToLeft;
+        f = followLocation;
+        Shadow.transform.SetParent(ClippingPlane.transform, true);
+        Shadow.transform.localPosition = Vector3.zero;
+        Shadow.transform.localEulerAngles = Vector3.zero;
+        Right.transform.SetParent(ClippingPlane.transform, true);
+
+        Left.transform.SetParent(BookPanel.transform, true);
+        Left.transform.localEulerAngles = Vector3.zero;
+        RightNext.transform.SetParent(BookPanel.transform, true);
+        c = Calc_C_Position(followLocation);
+        Vector3 t1;
+        float clipAngle = CalcClipAngle(c, ebr, out t1);
+        if (clipAngle > -90) clipAngle += 180;
+
+        ClippingPlane.rectTransform.pivot = new Vector2(1, 0.35f);
+        ClippingPlane.transform.localEulerAngles = new Vector3(0, 0, clipAngle + 90);
+        ClippingPlane.transform.position = BookPanel.TransformPoint(t1);
+
+        Right.transform.position = BookPanel.TransformPoint(c);
+        float C_T1_dy = t1.y - c.y;
+        float C_T1_dx = t1.x - c.x;
+        float C_T1_Angle = Mathf.Atan2(C_T1_dy, C_T1_dx) * Mathf.Rad2Deg;
+        Right.transform.localEulerAngles = new Vector3(0, 0, C_T1_Angle - (clipAngle + 90));
+
+        NextPageClip.transform.localEulerAngles = new Vector3(0, 0, clipAngle + 90);
+        NextPageClip.transform.position = BookPanel.TransformPoint(t1);
+        RightNext.transform.SetParent(NextPageClip.transform, true);
+        Left.transform.SetParent(ClippingPlane.transform, true);
+        Left.transform.SetAsFirstSibling();
+
+        Shadow.rectTransform.SetParent(Right.rectTransform, true);
+    }
+
+    private float CalcClipAngle( Vector3 c, Vector3 bookCorner, out Vector3 t1 ) {
+        Vector3 t0 = (c + bookCorner) / 2;
+        float T0_CORNER_dy = bookCorner.y - t0.y;
+        float T0_CORNER_dx = bookCorner.x - t0.x;
+        float T0_CORNER_Angle = Mathf.Atan2(T0_CORNER_dy, T0_CORNER_dx);
+
+        float T1_X = t0.x - T0_CORNER_dy * Mathf.Tan(T0_CORNER_Angle);
+        T1_X = normalizeT1X(T1_X, bookCorner, sb);
+        t1 = new Vector3(T1_X, sb.y, 0);
+
+        float T0_T1_dy = t1.y - t0.y;
+        float T0_T1_dx = t1.x - t0.x;
+        float T0_T1_Angle = Mathf.Atan2(T0_T1_dy, T0_T1_dx) * Mathf.Rad2Deg;
+        return T0_T1_Angle;
+    }
+
+    private float normalizeT1X( float t1, Vector3 corner, Vector3 sb ) {
+        if (t1 > sb.x && sb.x > corner.x) return sb.x;
+        if (t1 < sb.x && sb.x < corner.x) return sb.x;
+        return t1;
+    }
+
+    private Vector3 Calc_C_Position( Vector3 followLocation ) {
+        Vector3 c;
+        f = followLocation;
+        float F_SB_dy = f.y - sb.y;
+        float F_SB_dx = f.x - sb.x;
+        float F_SB_Angle = Mathf.Atan2(F_SB_dy, F_SB_dx);
+        Vector3 r1 = new Vector3(radius1 * Mathf.Cos(F_SB_Angle), radius1 * Mathf.Sin(F_SB_Angle), 0) + sb;
+
+        float F_SB_distance = Vector2.Distance(f, sb);
+        if (F_SB_distance < radius1)
+            c = f;
+        else
+            c = r1;
+
+        float F_ST_dy = c.y - st.y;
+        float F_ST_dx = c.x - st.x;
+        float F_ST_Angle = Mathf.Atan2(F_ST_dy, F_ST_dx);
+        Vector3 r2 = new Vector3(radius2 * Mathf.Cos(F_ST_Angle), radius2 * Mathf.Sin(F_ST_Angle), 0) + st;
+        float C_ST_distance = Vector2.Distance(c, st);
+        if (C_ST_distance > radius2)
+            c = r2;
+        return c;
+    }
+
+    public void DragRightPageToPoint( Vector3 point ) {
+        if (currentPage >= bookPages.Length) return;
+        pageDragging = true;
+        mode = FlipMode.RightToLeft;
+        f = point;
+
+        NextPageClip.rectTransform.pivot = new Vector2(0, 0.12f);
+        ClippingPlane.rectTransform.pivot = new Vector2(1, 0.35f);
+
+        Left.gameObject.SetActive(true);
+        Left.rectTransform.pivot = new Vector2(0, 0);
+        Left.transform.position = RightNext.transform.position;
+        Left.transform.eulerAngles = new Vector3(0, 0, 0);
+        Left.sprite = (currentPage < bookPages.Length) ? bookPages[currentPage] : background;
+        Left.transform.SetAsFirstSibling();
+
+        Right.gameObject.SetActive(true);
+        Right.transform.position = RightNext.transform.position;
+        Right.transform.eulerAngles = new Vector3(0, 0, 0);
+        Right.sprite = (currentPage < bookPages.Length - 1) ? bookPages[currentPage + 1] : background;
+
+        RightNext.sprite = (currentPage < bookPages.Length - 2) ? bookPages[currentPage + 2] : background;
+
+        LeftNext.transform.SetAsFirstSibling();
+        if (enableShadowEffect) Shadow.gameObject.SetActive(true);
+        UpdateBookRTLToPoint(f);
+    }
+
+    public void DragLeftPageToPoint( Vector3 point ) {
+        if (currentPage <= 0) return;
+        pageDragging = true;
+        mode = FlipMode.LeftToRight;
+        f = point;
+
+        NextPageClip.rectTransform.pivot = new Vector2(1, 0.12f);
+        ClippingPlane.rectTransform.pivot = new Vector2(0, 0.35f);
+
+        Right.gameObject.SetActive(true);
+        Right.transform.position = LeftNext.transform.position;
+        Right.sprite = bookPages[currentPage - 1];
+        Right.transform.eulerAngles = new Vector3(0, 0, 0);
+        Right.transform.SetAsFirstSibling();
+
+        Left.gameObject.SetActive(true);
+        Left.rectTransform.pivot = new Vector2(1, 0);
+        Left.transform.position = LeftNext.transform.position;
+        Left.transform.eulerAngles = new Vector3(0, 0, 0);
+        Left.sprite = (currentPage >= 2) ? bookPages[currentPage - 2] : background;
+
+        LeftNext.sprite = (currentPage >= 3) ? bookPages[currentPage - 3] : background;
+
+        RightNext.transform.SetAsFirstSibling();
+        if (enableShadowEffect) ShadowLTR.gameObject.SetActive(true);
+        UpdateBookLTRToPoint(f);
+    }
+
+    public void ReleasePage() {
+        if (pageDragging) {
+            pageDragging = false;
+            float distanceToLeft = Vector2.Distance(c, ebl);
+            float distanceToRight = Vector2.Distance(c, ebr);
+            if (distanceToRight < distanceToLeft && mode == FlipMode.RightToLeft)
+                TweenBack();
+            else if (distanceToRight > distanceToLeft && mode == FlipMode.LeftToRight)
+                TweenBack();
+            else
+                TweenForward();
+        }
+    }
+
+    Coroutine currentCoroutine;
+
+    void UpdateSprites() {
+        LeftNext.sprite = (currentPage > 0 && currentPage <= bookPages.Length) ? bookPages[currentPage - 1] : background;
+        RightNext.sprite = (currentPage >= 0 && currentPage < bookPages.Length) ? bookPages[currentPage] : background;
+    }
+
+    public void TweenForward() {
+        if (mode == FlipMode.RightToLeft)
+            currentCoroutine = StartCoroutine(TweenTo(ebl, 0.15f, () => { Flip(); }));
+        else
+            currentCoroutine = StartCoroutine(TweenTo(ebr, 0.15f, () => { Flip(); }));
+    }
+
+    void Flip() {
+        if (mode == FlipMode.RightToLeft)
+            currentPage += 2;
+        else
+            currentPage -= 2;
+
+        LeftNext.transform.SetParent(BookPanel.transform, true);
+        Left.transform.SetParent(BookPanel.transform, true);
+        LeftNext.transform.SetParent(BookPanel.transform, true);
+        Left.gameObject.SetActive(false);
+        Right.gameObject.SetActive(false);
+        Right.transform.SetParent(BookPanel.transform, true);
+        RightNext.transform.SetParent(BookPanel.transform, true);
+        UpdateSprites();
+        Shadow.gameObject.SetActive(false);
+        ShadowLTR.gameObject.SetActive(false);
+        if (OnFlip != null)
+            OnFlip.Invoke();
+    }
+
+    public void TweenBack() {
+        if (mode == FlipMode.RightToLeft) {
+            currentCoroutine = StartCoroutine(TweenTo(ebr, 0.15f, () => {
+                UpdateSprites();
+                RightNext.transform.SetParent(BookPanel.transform);
+                Right.transform.SetParent(BookPanel.transform);
+                Left.gameObject.SetActive(false);
+                Right.gameObject.SetActive(false);
+                pageDragging = false;
+            }));
+        } else {
+            currentCoroutine = StartCoroutine(TweenTo(ebl, 0.15f, () => {
+                UpdateSprites();
+                LeftNext.transform.SetParent(BookPanel.transform);
+                Left.transform.SetParent(BookPanel.transform);
+                Left.gameObject.SetActive(false);
+                Right.gameObject.SetActive(false);
+                pageDragging = false;
+            }));
+        }
+    }
+
+    public System.Collections.IEnumerator TweenTo( Vector3 to, float duration, System.Action onFinish ) {
+        int steps = (int)(duration / 0.025f);
+        Vector3 displacement = (to - f) / steps;
+        for (int i = 0; i < steps - 1; i++) {
+            if (mode == FlipMode.RightToLeft)
+                UpdateBookRTLToPoint(f + displacement);
+            else
+                UpdateBookLTRToPoint(f + displacement);
+
+            yield return new WaitForSeconds(0.025f);
+        }
+        if (onFinish != null)
+            onFinish();
+    }
+}

@@ -1,40 +1,54 @@
 {
-  "playerId": "P001",
-  "playerName": "Quang Anh",
-  "gold": 500,
-  "quests": [
-    {
-      "questId": "Q001",
-      "name": "Làm quen với Mai",
-      "description": "Mai là cô bạn thân thiện ngồi ở bàn đầu. Hãy tiến lại gần và chào Mai để bắt đầu trò chuyện.",
-      "rewardGold": 100,
-      "state": "NOT_START",
-      "steps": [
-        { "stepId": "S001", "isComplete": false }
-      ]
-    },
-    {
-      "questId": "Q002",
-      "name": "Làm quen với Dũng",
-      "description": "Dũng là bạn yêu thích thí nghiệm. Hãy đến chỗ Dũng để tìm hiểu khu vực thực hành.",
-      "rewardGold": 50,
-      "state": "NOT_START",
-      "steps": [
-        { "stepId": "S001", "isComplete": true }
-      ]
-    },
-    {
-      "questId": "Q003",
-      "name": "Làm quen với Quý",
-      "description": "Quý là bạn tỉ mỉ và thích ghi chép. Hãy nói chuyện với Quý để học cách lưu tiến trình học của bạn.",
-      "rewardGold": 70,
-      "state": "IN_PROGRESS",
-      "steps": [
-        { "stepId": "S001", "isComplete": true },
-        { "stepId": "S002", "isComplete": false },
-        { "stepId": "S003", "isComplete": false }
-      ]
-    }
-
-  ]
+    "playerId": "P001",
+    "playerName": "Quang Anh",
+    "gold": 500,
+    "quests": [
+        {
+            "questId": "Q001",
+            "name": "Làm quen với Mai",
+            "description": "Mai là cô bạn thân thiện ngồi ở bàn đầu. Hãy tiến lại gần và chào Mai để bắt đầu trò chuyện.",
+            "rewardGold": 100,
+            "state": "NOT_START",
+            "steps": [
+                {
+                    "stepId": "S001",
+                    "isComplete": false
+                }
+            ]
+        },
+        {
+            "questId": "Q002",
+            "name": "Làm quen với Dũng",
+            "description": "Dũng là bạn yêu thích thí nghiệm. Hãy đến chỗ Dũng để tìm hiểu khu vực thực hành.",
+            "rewardGold": 50,
+            "state": "NOT_START",
+            "steps": [
+                {
+                    "stepId": "S001",
+                    "isComplete": true
+                }
+            ]
+        },
+        {
+            "questId": "Q003",
+            "name": "Làm quen với Quý",
+            "description": "Quý là bạn tỉ mỉ và thích ghi chép. Hãy nói chuyện với Quý để học cách lưu tiến trình học của bạn.",
+            "rewardGold": 70,
+            "state": "IN_PROGRESS",
+            "steps": [
+                {
+                    "stepId": "S001",
+                    "isComplete": true
+                },
+                {
+                    "stepId": "S002",
+                    "isComplete": false
+                },
+                {
+                    "stepId": "S003",
+                    "isComplete": false
+                }
+            ]
+        }
+    ]
 }

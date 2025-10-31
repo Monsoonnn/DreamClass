@@ -1,12 +1,12 @@
-using com.cyborgAssets.inspectorButtonPro;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using NPCCore.Animation;
 using DreamClass.NPCCore;
-using System.Collections.Generic;
+using com.cyborgAssets.inspectorButtonPro;
 
 namespace NPCCore.Voiceline {
-    public abstract class VoicelineCtrl<TVoiceType> : NewMonobehavior {
+    public abstract class VoicelineManager<TVoiceType> : NewMonobehavior, ICharacterVoiceline {
         [Header("Voicelines")]
         public VoicelineAnimation<TVoiceType>[] voicelines;
         [SerializeField] private AudioSource audioSource;
@@ -14,11 +14,11 @@ namespace NPCCore.Voiceline {
 
         protected override void LoadComponents() {
             base.LoadComponents();
-            this.LoadAudioScoure();
+            this.LoadAudioSource();
             this.LoadNPCManager();
         }
 
-        protected virtual void LoadAudioScoure() {
+        protected virtual void LoadAudioSource() {
             if (audioSource != null) return;
             audioSource = GetComponent<AudioSource>();
         }
@@ -28,14 +28,13 @@ namespace NPCCore.Voiceline {
             NPCManager = transform.parent.GetComponent<NPCManager>();
         }
 
-        [ProButton]
-        public virtual async Task PlayAnimation( TVoiceType voiceType , bool BackStartGroup = true ) {
-            var voiceline = GetVoiceline(voiceType);
-            if (voiceline != null)
-                await voiceline.PlayAsync(audioSource, NPCManager.AnimationManager , BackStartGroup);
-            else
-                Debug.LogWarning($"Voiceline {voiceType} not found!");
+        [ProButton] public virtual async Task PlayAnimation( TVoiceType voiceType, bool disableLoop = false ) { 
+            var voiceline = GetVoiceline(voiceType); 
+            if (voiceline != null) 
+                await voiceline.PlayAsync(audioSource, NPCManager.AnimationManager, disableLoop); 
+            else Debug.LogWarning($"Voiceline {voiceType} not found!"); 
         }
+
 
         protected virtual VoicelineAnimation<TVoiceType> GetVoiceline( TVoiceType type ) {
             foreach (var v in voicelines)
@@ -45,5 +44,18 @@ namespace NPCCore.Voiceline {
         }
 
         public virtual void CancelAudio() => audioSource.Stop();
+
+        // Interface method — convert from string -> enum
+        public async Task PlayAnimation( string voiceKey , bool disableLoop = false ) {
+            try {
+                if (System.Enum.TryParse(typeof(TVoiceType), voiceKey, out var parsed))
+                    await PlayAnimation((TVoiceType)parsed, disableLoop);
+                else
+                    Debug.LogWarning($"[VoicelineManager] Invalid voice key '{voiceKey}' for {typeof(TVoiceType).Name}");
+            }
+            catch (System.Exception ex) {
+                Debug.LogError($"[VoicelineManager] Failed to play '{voiceKey}': {ex.Message}");
+            }
+        }
     }
 }

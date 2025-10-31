@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Characters.Mai
 {
-    public enum MaiVoiceType {
+/*    public enum MaiVoiceType {
         success,
         login,
         fail,
@@ -17,8 +17,10 @@ namespace Characters.Mai
         Q001_Option2,
         Q001_Option3,
 
-    }
-    public class MaiVocalAnimatorCtrl : VoicelineCtrl<MaiVoiceType> {
+    }*/
+
+
+    public class MaiVocalAnimatorCtrl : VoicelineManager<MaiVoiceType>, ICharacterVoiceline {
 
 
         public override async Task PlayAnimation( MaiVoiceType voiceType, bool BackStartGroup = true ) {

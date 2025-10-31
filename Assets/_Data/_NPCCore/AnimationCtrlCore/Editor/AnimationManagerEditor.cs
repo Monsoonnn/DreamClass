@@ -5,7 +5,7 @@ namespace NPCCore.Animation {
     [CustomEditor(typeof(AnimationManager))]
     public class AnimationManagerEditor : Editor {
         // Editor-only parameter
-        private bool editorEnableLoop = true;
+        private bool disableLoop = true;
 
         public override void OnInspectorGUI() {
             var manager = (AnimationManager)target;
@@ -45,12 +45,12 @@ namespace NPCCore.Animation {
                     GUILayout.Space(5);
 
                     // --- Parameter input ---
-                    editorEnableLoop = EditorGUILayout.Toggle("Enable Loop", editorEnableLoop);
+                    disableLoop = EditorGUILayout.Toggle("Enable Loop", disableLoop);
 
                     // --- Buttons ---
                     EditorGUILayout.BeginHorizontal();
                     if (GUILayout.Button("Play Group"))
-                        manager.PlaySelectedGroup();
+                        manager.PlaySelectedGroup(disableLoop);
 
                     /*if (GUILayout.Button("Play Layer"))
                         manager.PlaySelectedLayer(editorEnableLoop);*/

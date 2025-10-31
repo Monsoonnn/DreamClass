@@ -8,7 +8,8 @@ namespace Systems.SceneManagement {
     public class SceneGroup {
         public string GroupName = "New Scene Group";
         public List<SceneData> Scenes;
-        
+        public List<string> RequiredQuests = new List<string>();
+
         public string FindSceneNameByType(SceneType sceneType) {
             return Scenes.FirstOrDefault(scene => scene.SceneType == sceneType)?.Reference.Name;
         }

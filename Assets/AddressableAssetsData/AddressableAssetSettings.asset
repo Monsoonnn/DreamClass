@@ -15,9 +15,9 @@ MonoBehaviour:
   m_DefaultGroup: 23af3bd934b41cb499d6b1925e0c0330
   m_currentHash:
     serializedVersion: 2
-    Hash: 00000000000000000000000000000000
+    Hash: dfe528c416a97de29f38f74e1bccb9e1
   m_OptimizeCatalogSize: 0
-  m_BuildRemoteCatalog: 0
+  m_BuildRemoteCatalog: 1
   m_CatalogRequestsTimeout: 0
   m_DisableCatalogUpdateOnStart: 0
   m_InternalIdNamingMode: 0
@@ -34,7 +34,7 @@ MonoBehaviour:
   m_EnableJsonCatalog: 0
   m_NonRecursiveBuilding: 1
   m_AllowNestedBundleFolders: 0
-  m_CCDEnabled: 0
+  m_CCDEnabled: 1
   m_maxConcurrentWebRequests: 3
   m_UseUWRForLocalBundles: 0
   m_BundleTimeout: 0
@@ -49,11 +49,12 @@ MonoBehaviour:
   mBuiltInBundleCustomNaming: 
   m_MonoScriptBundleNaming: 0
   m_CheckForContentUpdateRestrictionsOption: 0
+  m_BuildAndReleaseBinFileOption: 0
   m_MonoScriptBundleCustomNaming: 
   m_RemoteCatalogBuildPath:
-    m_Id: 
+    m_Id: 410333fdbd11061449f2e823fa76a224
   m_RemoteCatalogLoadPath:
-    m_Id: 
+    m_Id: 7b62aec93b99a134b8cac7283ec644bf
   m_ContentStateBuildPathProfileVariableName: <default settings path>
   m_CustomContentStateBuildPath: 
   m_ContentStateBuildPath: 
@@ -61,6 +62,7 @@ MonoBehaviour:
   m_overridePlayerVersion: '[UnityEditor.PlayerSettings.bundleVersion]'
   m_GroupAssets:
   - {fileID: 11400000, guid: 80374181e2ae5f142af68c861d1af736, type: 2}
+  - {fileID: 11400000, guid: 2d05d532f190cfb4a8e08868fa6f992c, type: 2}
   - {fileID: 11400000, guid: 387414bb37680fd4484ed27353885de5, type: 2}
   m_BuildSettings:
     m_LogResourceManagerExceptions: 1
@@ -72,15 +74,17 @@ MonoBehaviour:
       m_ProfileName: Default
       m_Values:
       - m_Id: 410333fdbd11061449f2e823fa76a224
-        m_Value: 'ServerData/[BuildTarget]'
+        m_Value: CCDBuildData/e7d749d3-36f5-4822-914b-e981b600e765/4883004c-c159-4d70-ae3d-2901cf14cad0/latest
       - m_Id: 7b62aec93b99a134b8cac7283ec644bf
-        m_Value: 'http://[PrivateIpAddress]:[HostingServicePort]'
+        m_Value: https://b51f54d9-093f-4022-add6-41af66bfc96f.client-api.unity3dusercontent.com/client_api/v1/environments/dev/buckets/4883004c-c159-4d70-ae3d-2901cf14cad0/release_by_badge/latest/entry_by_path/content/?path=
       - m_Id: 939707c414bba234487a7091691e4d5d
         m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
       - m_Id: a662d69982b1ebe4b9cbf48e54ba1203
         m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
       - m_Id: c3298568d1d65d94cb3ce9c694c1519e
         m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: e009e38f628fb9247967a60d54e63b8b
+        m_Value: dev
     m_ProfileEntryNames:
     - m_Id: 410333fdbd11061449f2e823fa76a224
       m_Name: Remote.BuildPath
@@ -96,6 +100,9 @@ MonoBehaviour:
       m_InlineUsage: 0
     - m_Id: c3298568d1d65d94cb3ce9c694c1519e
       m_Name: BuildTarget
+      m_InlineUsage: 0
+    - m_Id: e009e38f628fb9247967a60d54e63b8b
+      m_Name: EnvironmentName
       m_InlineUsage: 0
     m_ProfileVersion: 1
   m_LabelTable:
@@ -114,3 +121,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a38be3e76cee613448d70f77b930fdd4, type: 2}
   - {fileID: 11400000, guid: 08517618d34147a408927778a86b3fa6, type: 2}
   m_ActiveProfileId: 8df72a3f0d71241478a9bb5976cb6dfe
+  m_CcdManagedData:
+    EnvironmentId: 
+    EnvironmentName: 
+    BucketId: 
+    Badge: 
+    State: 0

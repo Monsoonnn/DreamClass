@@ -2,7 +2,10 @@ using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-
+using DreamClass.QuestSystem;
+using DreamClass.QuestSystem.Systems.Quest;
+using System.Linq;
+using System.Reflection;
 namespace Systems.SceneManagement {
     public class SceneLoader : MonoBehaviour { 
         [SerializeField] Image loadingBar;
@@ -79,8 +82,47 @@ namespace Systems.SceneManagement {
                 return;
             }
 
-            await LoadSceneGroup(index);
+            var group = sceneGroups[index];
+
+
+            if (group.RequiredQuests != null && group.RequiredQuests.Count > 0) {
+                if (!QuestPermissionManager.Instance.HasAll(group.RequiredQuests)) {
+                    string missing = string.Join(", ", group.RequiredQuests.Where(q => !QuestPermissionManager.Instance.HasCompleted(q)));
+                    Debug.LogWarning($"[SceneLoader] Access denied. Missing quests: {missing}");
+                    return;
+                } else {
+                    Debug.Log($"[SceneLoader] Access granted for group '{groupName}'.");
+                }
+            }
+
+            loadingBar.fillAmount = 0f;
+            targetProgress = 1f;
+
+            if (index < 0 || index >= sceneGroups.Length) {
+                Debug.LogError("Invalid scene group index: " + index);
+                return;
+            }
+
+            LoadingProgress progress = new LoadingProgress();
+            progress.Progressed += target => targetProgress = Mathf.Max(target, targetProgress);
+
+            EnableLoadingCanvas();
+
+
+            await manager.LoadScenes(sceneGroups[index], progress);
+
+            RespawnPoint respawn = GameObject.FindAnyObjectByType<RespawnPoint>();
+            if (respawn != null) {
+                respawn.PlayerRespawn();
+                Debug.Log($"[SceneLoader] Player respawned at {respawn.name}");
+            } else {
+                Debug.LogWarning("[SceneLoader] No RespawnPoint found in loaded scenes!");
+            }
+
+            EnableLoadingCanvas(false);
+
         }
+
 
 
         void EnableLoadingCanvas( bool enable = true ) {

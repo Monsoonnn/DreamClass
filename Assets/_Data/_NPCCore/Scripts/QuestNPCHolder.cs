@@ -16,6 +16,10 @@ namespace DreamClass.NPCCore {
 
             // Wait until QuestManager is ready (data loaded)
             QuestManager.OnReady += OnQuestManagerReady;
+
+            if (QuestManager.Instance != null && QuestManager.Instance.questStates.Count > 0) {
+                OnQuestManagerReady();
+            }
         }
 
         private void OnDestroy() {
@@ -44,6 +48,8 @@ namespace DreamClass.NPCCore {
                 // Only spawn if quest is not started or currently in progress
                 if (state == QuestState.NOT_START || state == QuestState.IN_PROGRESS) {
                     SpawnQuestObject(questId);
+                } else {
+                    Debug.Log($"<color=green>[QuestNPCHolder] Quest {questId} skipped, state: {state}</color>");
                 }
             }
         }
@@ -55,11 +61,17 @@ namespace DreamClass.NPCCore {
                 return;
             }
 
+            // Spawn quest prefab
             QuestCtrl quest = Instantiate(prefab, spawnParent);
             quest.name = $"[Quest] {prefab.QuestName}";
             quest.gameObject.SetActive(true);
 
+            if(quest is QuestType1 s001) {
+                s001.npcCtrl = GetComponent<NPCManager>();
+            }
+
             Debug.Log($"[{name}] Spawned quest '{quest.QuestName}' ({questId})");
         }
+
     }
 }

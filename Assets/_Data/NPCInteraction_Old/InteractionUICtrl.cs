@@ -1,7 +1,10 @@
 using UnityEngine;
 
-public class InteractionUICtrl: NewMonobehavior
-{
+public interface IInteractionUI {
+    void ShowUI();
+}
+
+public class InteractionUICtrl: NewMonobehavior, IInteractionUI {
     public Canvas canvas;
     public bool isInteract = false;
     protected override void LoadComponents() {
@@ -19,12 +22,15 @@ public class InteractionUICtrl: NewMonobehavior
         
         if (canvas != null)
             canvas.gameObject.SetActive(isInteract);
-
         
         isInteract = false;
     }
 
     public void ToggleCanvas() {
         this.canvas.gameObject.SetActive(true);
+    }
+
+    public void ShowUI() {
+        isInteract = true;
     }
 }

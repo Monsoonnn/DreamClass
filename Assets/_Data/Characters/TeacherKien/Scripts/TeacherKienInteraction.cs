@@ -11,7 +11,7 @@ namespace Characters.TeacherKien
         fail,
         guide,
     }
-    public class TeacherKienInteraction : VoicelineCtrl<ThayKienVoiceType> {
+    public class TeacherKienInteraction : VoicelineManager<ThayKienVoiceType> {
 
         public override async Task PlayAnimation( ThayKienVoiceType voiceType, bool BackStartGroup = true ) {
             /*Debug.Log($"[Mai] Playing voice: {voiceType}");*/

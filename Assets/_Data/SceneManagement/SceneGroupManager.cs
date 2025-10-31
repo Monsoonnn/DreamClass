@@ -56,7 +56,7 @@ namespace Systems.SceneManagement {
             // Wait until all AsyncOperations in the group are done
             while (!operationGroup.IsDone || !handleGroup.IsDone) {
                 progress?.Report((operationGroup.Progress + handleGroup.Progress) / 2);
-                await Task.Delay(1000);
+                await Task.Delay(100);
             }
 
             Scene activeScene = SceneManager.GetSceneByName(ActiveSceneGroup.FindSceneNameByType(SceneType.ActiveScene));
@@ -110,7 +110,7 @@ namespace Systems.SceneManagement {
             }
 
             // Optional: UnloadUnusedAssets - unloads all unused assets from memory
-            /*await Resources.UnloadUnusedAssets();*/
+            await Resources.UnloadUnusedAssets();
         }
     }
     

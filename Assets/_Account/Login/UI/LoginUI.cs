@@ -25,7 +25,7 @@ namespace DreamClass.LoginManager {
                 loginManagerUI.notificationUI.logOutBtn.gameObject.SetActive(true);
 
                 if (maiNPC != null)
-                    _ = maiNPC.loginInteraction.PlayAnimation(Characters.Mai.MaiVoiceType.success);
+                    _ = maiNPC.characterVoiceline.PlayAnimation(Characters.Mai.MaiVoiceType.success);
 
                 Debug.Log(response);
             } else {
@@ -35,9 +35,9 @@ namespace DreamClass.LoginManager {
 
                 if (maiNPC != null) {
                     if (failCount >= 3)
-                        _ = maiNPC.loginInteraction.PlayAnimation(Characters.Mai.MaiVoiceType.mutiFail);
+                        _ = maiNPC.characterVoiceline.PlayAnimation(Characters.Mai.MaiVoiceType.mutiFail);
                     else
-                        _ = maiNPC.loginInteraction.PlayAnimation(Characters.Mai.MaiVoiceType.fail);
+                        _ = maiNPC.characterVoiceline.PlayAnimation(Characters.Mai.MaiVoiceType.fail);
                 }
 
                 Debug.Log($"Login failed {failCount} times. Response: {response}");

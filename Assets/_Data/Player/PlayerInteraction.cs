@@ -17,11 +17,10 @@ namespace playerCtrl {
             
             Collider[] objs = Physics.OverlapSphere(loc, _collisionRadius, _collisionLayers, QueryTriggerInteraction.Ignore);
             foreach (var obj in objs) {
-                
-                InteractionUICtrl npc = obj.GetComponent<InteractionUICtrl>();
-                if (npc != null) {
-                    npc.isInteract = true;
-                }
+
+                var interactable = obj.GetComponent<IInteractionUI>();
+                if (interactable != null)
+                    interactable.ShowUI();
             }
         }
     }
