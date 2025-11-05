@@ -6,8 +6,13 @@ using DreamClass.QuestSystem;
 using DreamClass.QuestSystem.Systems.Quest;
 using System.Linq;
 using System.Reflection;
-namespace Systems.SceneManagement {
-    public class SceneLoader : MonoBehaviour { 
+using playerCtrl;
+using System.Collections.Generic;
+using DreamClass.Locomotion;
+namespace Systems.SceneManagement
+{
+    public class SceneLoader : MonoBehaviour
+    {
         [SerializeField] Image loadingBar;
         [SerializeField] float fillSpeed = 0.5f;
         [SerializeField] Canvas loadingCanvas;
@@ -20,51 +25,59 @@ namespace Systems.SceneManagement {
         bool isLoading;
 
         public readonly SceneGroupManager manager = new SceneGroupManager();
-        
-        void Awake() {
+
+        void Awake()
+        {
             // TODO can remove
             /*manager.OnSceneLoaded += sceneName => Debug.Log("Loaded: " + sceneName);
             manager.OnSceneUnloaded += sceneName => Debug.Log("Unloaded: " + sceneName);
             manager.OnSceneGroupLoaded += () => Debug.Log("Scene group loaded");*/
         }
 
-        async void Start() {
+        async void Start()
+        {
             await LoadSceneGroup(0);
         }
-        
-        void Update() {
+
+        void Update()
+        {
             if (!isLoading) return;
-            
+
             float currentFillAmount = loadingBar.fillAmount;
             float progressDifference = Mathf.Abs(currentFillAmount - targetProgress);
 
             float dynamicFillSpeed = progressDifference * fillSpeed;
-    
+
             loadingBar.fillAmount = Mathf.Lerp(currentFillAmount, targetProgress, Time.deltaTime * dynamicFillSpeed);
         }
 
-        public async Task LoadSceneGroup(int index) {
+        public async Task LoadSceneGroup(int index)
+        {
             loadingBar.fillAmount = 0f;
             targetProgress = 1f;
 
-            if (index < 0 || index >= sceneGroups.Length) {
+            if (index < 0 || index >= sceneGroups.Length)
+            {
                 Debug.LogError("Invalid scene group index: " + index);
                 return;
             }
 
             LoadingProgress progress = new LoadingProgress();
             progress.Progressed += target => targetProgress = Mathf.Max(target, targetProgress);
-            
+
             EnableLoadingCanvas();
 
 
             await manager.LoadScenes(sceneGroups[index], progress);
 
             RespawnPoint respawn = GameObject.FindAnyObjectByType<RespawnPoint>();
-            if (respawn != null) {
+            if (respawn != null)
+            {
                 respawn.PlayerRespawn();
                 Debug.Log($"[SceneLoader] Player respawned at {respawn.name}");
-            } else {
+            }
+            else
+            {
                 Debug.LogWarning("[SceneLoader] No RespawnPoint found in loaded scenes!");
             }
 
@@ -74,10 +87,12 @@ namespace Systems.SceneManagement {
 
         }
 
-        public async Task LoadSceneGroup( string groupName ) {
+        public async Task LoadSceneGroup(string groupName)
+        {
             int index = Array.FindIndex(sceneGroups, g => g.GroupName == groupName);
 
-            if (index < 0) {
+            if (index < 0)
+            {
                 Debug.LogError($"Scene group '{groupName}' not found!");
                 return;
             }
@@ -85,20 +100,41 @@ namespace Systems.SceneManagement {
             var group = sceneGroups[index];
 
 
-            if (group.RequiredQuests != null && group.RequiredQuests.Count > 0) {
-                if (!QuestPermissionManager.Instance.HasAll(group.RequiredQuests)) {
-                    string missing = string.Join(", ", group.RequiredQuests.Where(q => !QuestPermissionManager.Instance.HasCompleted(q)));
+            if (group.RequiredQuests != null && group.RequiredQuests.Count > 0)
+            {
+                if (!QuestPermissionManager.Instance.HasAll(group.RequiredQuests))
+                {
+                    List<string> missingQuests = group.RequiredQuests
+                        .Where(q => !QuestPermissionManager.Instance.HasCompleted(q))
+                        .ToList();
+
+                    string missing = string.Join(", ", missingQuests);
                     Debug.LogWarning($"[SceneLoader] Access denied. Missing quests: {missing}");
+                    List<string> questName = new List<string>();
+                    if(QuestManager.Instance != null)
+                    {
+                        questName = QuestManager.Instance.GetQuestNames(missingQuests);
+                    }
+                    // Gửi cảnh báo VR
+                    if (VRAlertInstance.Instance != null)
+                    {
+                        VRAlertInstance.Instance.CreateAlerts(questName);
+                    }
+
                     return;
-                } else {
+                }
+                else
+                {
                     Debug.Log($"[SceneLoader] Access granted for group '{groupName}'.");
                 }
             }
 
+
             loadingBar.fillAmount = 0f;
             targetProgress = 1f;
 
-            if (index < 0 || index >= sceneGroups.Length) {
+            if (index < 0 || index >= sceneGroups.Length)
+            {
                 Debug.LogError("Invalid scene group index: " + index);
                 return;
             }
@@ -112,10 +148,13 @@ namespace Systems.SceneManagement {
             await manager.LoadScenes(sceneGroups[index], progress);
 
             RespawnPoint respawn = GameObject.FindAnyObjectByType<RespawnPoint>();
-            if (respawn != null) {
+            if (respawn != null)
+            {
                 respawn.PlayerRespawn();
                 Debug.Log($"[SceneLoader] Player respawned at {respawn.name}");
-            } else {
+            }
+            else
+            {
                 Debug.LogWarning("[SceneLoader] No RespawnPoint found in loaded scenes!");
             }
 
@@ -125,34 +164,37 @@ namespace Systems.SceneManagement {
 
 
 
-        void EnableLoadingCanvas( bool enable = true ) {
+        void EnableLoadingCanvas(bool enable = true)
+        {
             isLoading = enable;
             loadingCanvas.gameObject.SetActive(enable);
             loadingCamera.gameObject.SetActive(enable);
 
-/*            if (enable) {
-               
-                Camera activeCam = Camera.main != null ? Camera.main : loadingCamera;
+            /*            if (enable) {
 
-                
-                Vector3 forward = activeCam.transform.forward;
-                Vector3 position = activeCam.transform.position + forward * 2.25f;
+                            Camera activeCam = Camera.main != null ? Camera.main : loadingCamera;
 
-                loadingCanvas.transform.position = position;
 
-                
-                loadingCanvas.transform.rotation = Quaternion.LookRotation(forward, activeCam.transform.up);
-            }*/
+                            Vector3 forward = activeCam.transform.forward;
+                            Vector3 position = activeCam.transform.position + forward * 2.25f;
+
+                            loadingCanvas.transform.position = position;
+
+
+                            loadingCanvas.transform.rotation = Quaternion.LookRotation(forward, activeCam.transform.up);
+                        }*/
         }
 
     }
-    
-    public class LoadingProgress : IProgress<float> {
+
+    public class LoadingProgress : IProgress<float>
+    {
         public event Action<float> Progressed;
 
         const float ratio = 1f;
 
-        public void Report(float value) {
+        public void Report(float value)
+        {
             Progressed?.Invoke(value / ratio);
         }
     }

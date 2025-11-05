@@ -1,0 +1,69 @@
+using UnityEngine;
+using System.Collections.Generic;
+using TMPro;
+using com.cyborgAssets.inspectorButtonPro;
+
+namespace playerCtrl
+{
+    public class VRAlertInstance : SingletonCtrl<VRAlertInstance>
+    {
+        [Header("Alert Settings")]
+        public GameObject alertPrefab;      // Prefab cảnh báo
+        public Transform alertParent;       // Vị trí spawn
+        public int maxAlerts = 3;           // Giới hạn tối đa
+        public float autoRemoveDelay = 3f;  // Thời gian tự xóa
+
+        private readonly List<GameObject> activeAlerts = new List<GameObject>();
+
+
+        protected override void Awake() {
+            base.Awake();
+            this.gameObject.SetActive(false);
+        }
+
+        /// <summary>
+        /// Sinh danh sách cảnh báo từ list tên nhiệm vụ, tự động xóa sau delay.
+        /// </summary>
+        [ProButton]
+        public void CreateAlerts(List<string> questNames)
+        {
+            if (questNames == null || questNames.Count == 0)
+                return;
+
+            foreach (string questName in questNames)
+            {
+                if (activeAlerts.Count >= maxAlerts)
+                {
+                    Debug.LogWarning("VRAlertInstance: Alert limit reached!");
+                    break;
+                }
+
+                GameObject newAlert = Instantiate(alertPrefab, alertParent ? alertParent : transform);
+                newAlert.name = "VRAlert_" + questName;
+                newAlert.GetComponentInChildren<TextMeshProUGUI>().text = questName;
+                newAlert.SetActive(true);
+
+                activeAlerts.Add(newAlert);
+
+                // Dùng Invoke để tự xóa sau autoRemoveDelay giây
+                Invoke(nameof(RemoveLastAlert), autoRemoveDelay);
+            }
+
+            gameObject.SetActive(activeAlerts.Count > 0);
+        }
+
+        // Hàm xóa alert đầu tiên (hoặc cũ nhất) còn tồn tại
+        private void RemoveLastAlert()
+        {
+            if (activeAlerts.Count == 0)
+                return;
+
+            var alert = activeAlerts[0];
+            activeAlerts.RemoveAt(0);
+            if (alert != null)
+                Destroy(alert);
+
+            gameObject.SetActive(activeAlerts.Count > 0);
+        }
+    }
+}

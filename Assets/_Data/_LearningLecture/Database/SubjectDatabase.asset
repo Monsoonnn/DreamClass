@@ -1,0 +1,128 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7811ddc1c6875df41a6203abb2dd2bfe, type: 3}
+  m_Name: SubjectDatabase
+  m_EditorClassIdentifier: 
+  csvFile: {fileID: 4900000, guid: 8cea14a64172f6b4d8873e5bf1514587, type: 3}
+  filePath: 
+  subjects:
+  - name: VatLy
+    description: "V\u1EADt L\xFD"
+    lectures:
+    - chapter: 1
+      groupName: "Dao \u0111\u1ED9ng"
+      lectureName: "B\xE0i 1: Dao \u0111\u1ED9ng \u0111i\u1EC1u h\xF2a"
+      page: 6
+    - chapter: 1
+      groupName: "Dao \u0111\u1ED9ng"
+      lectureName: "B\xE0i 2: M\xF4 t\u1EA3 dao \u0111\u1ED9ng \u0111i\u1EC1u h\xF2a"
+      page: 10
+    - chapter: 1
+      groupName: "Dao \u0111\u1ED9ng"
+      lectureName: "B\xE0i 4: B\xE0i t\u1EADp v\u1EC1 dao \u0111\u1ED9ng \u0111i\u1EC1u
+        h\xF2a"
+      page: 17
+    - chapter: 1
+      groupName: "Dao \u0111\u1ED9ng"
+      lectureName: "B\xE0i 5: \u0110\u1ED9ng n\u0103ng - Th\u1EBF n\u0103ng - S\u1EF1
+        chuy\u1EC3n ho\xE1 n\u0103ng l\u01B0\u1EE3ng"
+      page: 20
+    - chapter: 1
+      groupName: "Dao \u0111\u1ED9ng"
+      lectureName: "B\xE0i 6: Dao \u0111\u1ED9ng t\u1EAFt d\u1EA7n - C\u1ED9ng h\u01B0\u1EDFng"
+      page: 24
+    - chapter: 1
+      groupName: "Dao \u0111\u1ED9ng"
+      lectureName: "B\xE0i 7: B\xE0i t\u1EADp v\u1EC1 chuy\u1EC3n n\u0103ng l\u01B0\u1EE3ng"
+      page: 28
+    - chapter: 2
+      groupName: "S\xF3ng"
+      lectureName: "B\xE0i 8: M\xF4 t\u1EA3 s\xF3ng"
+      page: 32
+    - chapter: 2
+      groupName: "S\xF3ng"
+      lectureName: "B\xE0i 9: S\xF3ng ngang - S\xF3ng d\u1ECDc"
+      page: 37
+    - chapter: 2
+      groupName: "S\xF3ng"
+      lectureName: "B\xE0i 10: Th\u1EF1c h\xE0nh: \u0110o t\u1EA7n s\u1ED1 s\xF3ng
+        \xE2m"
+      page: 41
+    - chapter: 2
+      groupName: "S\xF3ng"
+      lectureName: "B\xE0i 11: S\xF3ng \u0111i\u1EC7n t\u1EEB"
+      page: 44
+    - chapter: 2
+      groupName: "S\xF3ng"
+      lectureName: "B\xE0i 12: Giao thoa s\xF3ng"
+      page: 48
+    - chapter: 2
+      groupName: "S\xF3ng"
+      lectureName: "B\xE0i 13: S\xF3ng d\u1EEBng"
+      page: 52
+    - chapter: 2
+      groupName: "S\xF3ng"
+      lectureName: "B\xE0i 14: B\xE0i t\u1EADp s\xF3ng"
+      page: 55
+    - chapter: 2
+      groupName: "S\xF3ng"
+      lectureName: "B\xE0i 15: Th\u1EF1c h\xE0nh: \u0110o t\u1ED1c \u0111\u1ED9 truy\u1EC1n
+        \xE2m"
+      page: 58
+    - chapter: 3
+      groupName: "\u0110i\u1EC7n tr\u01B0\u1EDDng"
+      lectureName: "B\xE0i 16: L\u1EF1c t\u01B0\u01A1ng t\xE1c gi\u1EEFa hai \u0111i\u1EC7n
+        t\xEDch"
+      page: 61
+    - chapter: 3
+      groupName: "\u0110i\u1EC7n tr\u01B0\u1EDDng"
+      lectureName: "B\xE0i 17: Kh\xE1i ni\u1EC7m \u0111i\u1EC7n tr\u01B0\u1EDDng"
+      page: 65
+    - chapter: 3
+      groupName: "\u0110i\u1EC7n tr\u01B0\u1EDDng"
+      lectureName: "B\xE0i 18: \u0110i\u1EC7n tr\u01B0\u1EDDng \u0111\u1EC1u"
+      page: 71
+    - chapter: 3
+      groupName: "\u0110i\u1EC7n tr\u01B0\u1EDDng"
+      lectureName: "B\xE0i 19: Th\u1EBF n\u0103ng \u0111i\u1EC7n"
+      page: 76
+    - chapter: 3
+      groupName: "\u0110i\u1EC7n tr\u01B0\u1EDDng"
+      lectureName: "B\xE0i 20: \u0110i\u1EC7n th\u1EBF"
+      page: 79
+    - chapter: 3
+      groupName: "\u0110i\u1EC7n tr\u01B0\u1EDDng"
+      lectureName: "B\xE0i 21: T\u1EE5 \u0111i\u1EC7n"
+      page: 83
+    - chapter: 4
+      groupName: "D\xF2ng \u0111i\u1EC7n"
+      lectureName: "B\xE0i 22: C\u01B0\u1EDDng \u0111\u1ED9 d\xF2ng \u0111i\u1EC7n"
+      page: 91
+    - chapter: 4
+      groupName: "D\xF2ng \u0111i\u1EC7n"
+      lectureName: "B\xE0i 23: \u0110i\u1EC7n tr\u1EDF - \u0110\u1ECBnh lu\u1EADt
+        Ohm"
+      page: 95
+    - chapter: 4
+      groupName: "D\xF2ng \u0111i\u1EC7n"
+      lectureName: "B\xE0i 24: Ngu\u1ED3n \u0111i\u1EC7n"
+      page: 102
+    - chapter: 4
+      groupName: "D\xF2ng \u0111i\u1EC7n"
+      lectureName: "B\xE0i 25: N\u0103ng l\u01B0\u1EE3ng \u0111i\u1EC7n v\xE0 c\xF4ng
+        su\u1EA5t \u0111i\u1EC7n"
+      page: 106
+    - chapter: 4
+      groupName: "D\xF2ng \u0111i\u1EC7n"
+      lectureName: "B\xE0i 26: Th\u1EF1c h\xE0nh: \u0110o su\u1EA5t \u0111i\u1EC7n
+        \u0111\u1ED9ng"
+      page: 111

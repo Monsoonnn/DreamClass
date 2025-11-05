@@ -4,18 +4,28 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using Oculus.Interaction.Input;
 
-public enum FlipMode {
+public enum FlipMode
+{
     RightToLeft,
     LeftToRight
 }
 
 [ExecuteInEditMode]
-public class BookVR : MonoBehaviour {
+public class BookVR : MonoBehaviour
+{
     [Header("VR Settings")]
-    public OVRInput.Controller vrController = OVRInput.Controller.RTouch;
+    public bool enableBothControllers = true;
     public LayerMask bookLayer;
     public float rayDistance = 10f;
     public bool showDebugRay = true;
+
+    private Transform rightControllerAnchor;
+    private Transform leftControllerAnchor;
+    private bool isRightControllerGripping = false;
+    private bool isLeftControllerGripping = false;
+
+    private LineRenderer rightDebugLineRenderer;
+    private LineRenderer leftDebugLineRenderer;
 
     [Header("Hand Tracking")]
     public bool enableHandTracking = true;
@@ -34,25 +44,23 @@ public class BookVR : MonoBehaviour {
     [Header("Book Settings")]
     public Canvas canvas;
     [SerializeField] RectTransform BookPanel;
-    public Sprite background;
-    public Sprite[] bookPages;
     public bool interactable = true;
-    public bool enableShadowEffect = true;
 
-    public int currentPage = 0;
-    public int TotalPageCount { get { return bookPages.Length; } }
+    [Header("Sprite Manager")]
+    public BookSpriteManager spriteManager;
+
+    public int CurrentPage
+    {
+        get { return spriteManager != null ? spriteManager.CurrentPage : 0; }
+        set { if (spriteManager != null) spriteManager.CurrentPage = value; }
+    }
+    public int TotalPageCount { get { return spriteManager != null ? spriteManager.TotalPageCount : 0; } }
     public Vector3 EndBottomLeft { get { return ebl; } }
     public Vector3 EndBottomRight { get { return ebr; } }
     public float Height { get { return BookPanel.rect.height; } }
 
     public Image ClippingPlane;
     public Image NextPageClip;
-    public Image Shadow;
-    public Image ShadowLTR;
-    public Image Left;
-    public Image LeftNext;
-    public Image Right;
-    public Image RightNext;
     public UnityEvent OnFlip;
 
     float radius1, radius2;
@@ -60,7 +68,6 @@ public class BookVR : MonoBehaviour {
     bool pageDragging = false;
     FlipMode mode;
 
-    // VR specific
     private OVRCameraRig cameraRig;
     private Transform controllerAnchor;
     private bool isGrippingRightPage = false;
@@ -68,22 +75,27 @@ public class BookVR : MonoBehaviour {
     private LineRenderer debugLineRenderer;
     private LineRenderer handDebugLineRenderer;
 
-    // Hand tracking - FIXED: Store bone IDs instead of Transform references
     public const OVRSkeleton.BoneId INDEX_TIP_BONE = OVRSkeleton.BoneId.Hand_IndexTip;
     private bool isHandTrackingActive = false;
     private bool isPinchGrabbing = false;
     private Vector3 lastHandHitPoint;
     private Plane bookPlane;
 
-    void Start() {
+    void Start()
+    {
         if (!canvas) canvas = GetComponentInParent<Canvas>();
         if (!canvas) Debug.LogError("Book should be a child to canvas");
 
-        Left.gameObject.SetActive(false);
-        Right.gameObject.SetActive(false);
-        UpdateSprites();
-        CalcCurlCriticalPoints();
+        if (spriteManager == null)
+        {
+            spriteManager = GetComponentInChildren<BookSpriteManager>();
+            if (spriteManager == null)
+            {
+                Debug.LogError("BookSpriteManager not found! Please add it to the GameObject.");
+            }
+        }
 
+        CalcCurlCriticalPoints();
         StartCoroutine(DelayedVRInitialization());
 
         float pageWidth = BookPanel.rect.width / 2.0f;
@@ -91,16 +103,8 @@ public class BookVR : MonoBehaviour {
         NextPageClip.rectTransform.sizeDelta = new Vector2(pageWidth, pageHeight + pageHeight * 2);
         ClippingPlane.rectTransform.sizeDelta = new Vector2(pageWidth * 2 + pageHeight, pageHeight + pageHeight * 2);
 
-        float hyp = Mathf.Sqrt(pageWidth * pageWidth + pageHeight * pageHeight);
-        float shadowPageHeight = pageWidth / 2 + hyp;
-
-        Shadow.rectTransform.sizeDelta = new Vector2(pageWidth, shadowPageHeight);
-        Shadow.rectTransform.pivot = new Vector2(1, (pageWidth / 2) / shadowPageHeight);
-
-        ShadowLTR.rectTransform.sizeDelta = new Vector2(pageWidth, shadowPageHeight);
-        ShadowLTR.rectTransform.pivot = new Vector2(0, (pageWidth / 2) / shadowPageHeight);
-
-        if (showDebugRay) {
+        if (showDebugRay)
+        {
             SetupDebugLineRenderer();
             SetupHandDebugLineRenderer();
         }
@@ -108,24 +112,31 @@ public class BookVR : MonoBehaviour {
         bookPlane = new Plane(BookPanel.transform.forward, BookPanel.transform.position);
     }
 
-    IEnumerator DelayedVRInitialization() {
+    IEnumerator DelayedVRInitialization()
+    {
         yield return new WaitForEndOfFrame();
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(2f);
         InitializeVR();
     }
 
-    void InitializeVR() {
+    void InitializeVR()
+    {
         cameraRig = FindObjectOfType<OVRCameraRig>();
-        if (cameraRig != null) {
-            UpdateControllerAnchor();
+        if (cameraRig != null)
+        {
+            rightControllerAnchor = cameraRig.rightHandAnchor;
+            leftControllerAnchor = cameraRig.leftHandAnchor;
+
             if (enableHandTracking) InitializeHandTracking();
-        } else {
+        }
+        else
+        {
             Debug.LogError("OVRCameraRig not found!");
         }
     }
 
-    void InitializeHandTracking() {
-
+    void InitializeHandTracking()
+    {
         var scoure = GameObject.FindObjectsOfType<FromOVRHandDataSource>();
 
         if (rightHand == null)
@@ -133,7 +144,7 @@ public class BookVR : MonoBehaviour {
         if (leftHand == null)
             leftHand = scoure[0].GetComponent<OVRHand>();
 
-       var scoureSkeleton = GameObject.FindObjectsOfType<OVRSkeleton>();
+        var scoureSkeleton = GameObject.FindObjectsOfType<OVRSkeleton>();
 
         if (rightHandSkeleton == null && rightHand != null)
             rightHandSkeleton = scoureSkeleton[0];
@@ -143,12 +154,8 @@ public class BookVR : MonoBehaviour {
         Debug.Log(rightHand != null || leftHand != null ? "✓ Hand tracking initialized" : "Hand tracking not found");
     }
 
-    void UpdateControllerAnchor() {
-        if (cameraRig == null) return;
-        controllerAnchor = (vrController == OVRInput.Controller.RTouch) ? cameraRig.rightHandAnchor : cameraRig.leftHandAnchor;
-    }
-
-    void SetupDebugLineRenderer() {
+    void SetupDebugLineRenderer()
+    {
         GameObject lineObj = new GameObject("ControllerDebugRay");
         lineObj.transform.SetParent(transform);
         debugLineRenderer = lineObj.AddComponent<LineRenderer>();
@@ -160,7 +167,8 @@ public class BookVR : MonoBehaviour {
         debugLineRenderer.positionCount = 2;
     }
 
-    void SetupHandDebugLineRenderer() {
+    void SetupHandDebugLineRenderer()
+    {
         GameObject lineObj = new GameObject("HandDebugRay");
         lineObj.transform.SetParent(transform);
         handDebugLineRenderer = lineObj.AddComponent<LineRenderer>();
@@ -172,7 +180,8 @@ public class BookVR : MonoBehaviour {
         handDebugLineRenderer.positionCount = 2;
     }
 
-    void CalcCurlCriticalPoints() {
+    void CalcCurlCriticalPoints()
+    {
         sb = new Vector3(0, -BookPanel.rect.height / 2);
         ebr = new Vector3(BookPanel.rect.width / 2, -BookPanel.rect.height / 2);
         ebl = new Vector3(-BookPanel.rect.width / 2, -BookPanel.rect.height / 2);
@@ -183,26 +192,32 @@ public class BookVR : MonoBehaviour {
         radius2 = Mathf.Sqrt(pageWidth * pageWidth + pageHeight * pageHeight);
     }
 
-    void Update() {
+    void Update()
+    {
         if (!interactable) return;
 
         bookPlane.SetNormalAndPosition(BookPanel.transform.forward, BookPanel.transform.position);
         isHandTrackingActive = IsHandTrackingActive();
 
-        if (isHandTrackingActive && enableHandTracking) {
+        if (isHandTrackingActive && enableHandTracking)
+        {
             HandleHandTrackingInput();
-        } else {
+        }
+        else
+        {
             HandleControllerInput();
         }
 
-        if (pageDragging) {
+        if (pageDragging)
+        {
             UpdateBook();
         }
 
         UpdateDebugRays();
     }
 
-    bool IsHandTrackingActive() {
+    bool IsHandTrackingActive()
+    {
         if (rightHand != null && rightHand.IsTracked && rightHand.HandConfidence == OVRHand.TrackingConfidence.High)
             return true;
         if (leftHand != null && leftHand.IsTracked && leftHand.HandConfidence == OVRHand.TrackingConfidence.High)
@@ -210,70 +225,59 @@ public class BookVR : MonoBehaviour {
         return false;
     }
 
-    // FIXED: Get bone transform safely each time
-    Transform GetFingerTip( OVRHand hand ) {
+    Transform GetFingerTip(OVRHand hand)
+    {
         if (hand == null) return null;
 
         OVRSkeleton skeleton = (hand == rightHand) ? rightHandSkeleton : leftHandSkeleton;
         if (skeleton == null || skeleton.Bones == null || skeleton.Bones.Count == 0) return null;
 
-        foreach (var bone in skeleton.Bones) {
-            if (bone.Id == INDEX_TIP_BONE) {
+        foreach (var bone in skeleton.Bones)
+        {
+            if (bone.Id == INDEX_TIP_BONE)
+            {
                 return bone.Transform;
             }
         }
         return null;
     }
 
-    Transform GetFingerTipAlt( OVRSkeleton skeleton ) {
-        if (skeleton == null) return null;
-
-        var bones = skeleton.Bones;
-        if (bones == null || bones.Count == 0) return null;
-
-        foreach (var bone in bones) {
-            if (bone.Id == INDEX_TIP_BONE) {
-                return bone.Transform;
-            }
-        }
-        return null;
-    }
-
-    void HandleHandTrackingInput() {
+    void HandleHandTrackingInput()
+    {
         OVRHand activeHand = GetActiveHand();
         if (activeHand == null) return;
 
         Transform fingerTip = GetFingerTip(activeHand);
         if (fingerTip == null) return;
 
-        // Kiểm tra cả pinch và grab
         float pinchStrength = activeHand.GetFingerPinchStrength(OVRHand.HandFinger.Index);
         bool isPinching = pinchStrength > pinchThresholdToGrab;
-        bool isGrabbing = IsHandGrabbing(activeHand);  
+        bool isGrabbing = IsHandGrabbing(activeHand);
 
-        // Raycast từ ngón tay
         Ray fingerRay = new Ray(fingerTip.position, fingerTip.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(fingerRay, out hit, handRaycastDistance, bookLayer)) {
-            // Chấp nhận cả pinch hoặc grab
-            if ((isPinching || isGrabbing) && !pageDragging) {  
+        if (Physics.Raycast(fingerRay, out hit, handRaycastDistance, bookLayer))
+        {
+            if ((isPinching || isGrabbing) && !pageDragging)
+            {
                 OnHandGrabPage(hit.point, activeHand);
             }
         }
 
-        // Poke detection
-        if (enablePokeInteraction) {
-            HandlePokeInteraction(fingerTip, activeHand, isPinching || isGrabbing);  
+        if (enablePokeInteraction)
+        {
+            HandlePokeInteraction(fingerTip, activeHand, isPinching || isGrabbing);
         }
 
-        // Release khi cả pinch và grab đều thả
-        if (!isPinching && !isGrabbing && pageDragging && isPinchGrabbing) {  
+        if (!isPinching && !isGrabbing && pageDragging && isPinchGrabbing)
+        {
             OnHandRelease();
         }
     }
 
-    bool IsHandGrabbing( OVRHand hand ) {
+    bool IsHandGrabbing(OVRHand hand)
+    {
         if (hand == null) return false;
 
         float middleCurl = hand.GetFingerPinchStrength(OVRHand.HandFinger.Middle);
@@ -282,40 +286,38 @@ public class BookVR : MonoBehaviour {
         float thumbCurl = hand.GetFingerPinchStrength(OVRHand.HandFinger.Thumb);
         float indexCurl = hand.GetFingerPinchStrength(OVRHand.HandFinger.Index);
 
-        // Grab = tất cả ngón đều curl mạnh
-        /*float avgCurl = (middleCurl + ringCurl + pinkyCurl) / 3f;*/
-
         float avgCurl = (middleCurl + ringCurl + pinkyCurl + thumbCurl + indexCurl) / 5f;
-
-        //Debug.Log("IsHandGrabbing: " + (avgCurl > grabThreshold) + "AVG: " + avgCurl);
-
         return avgCurl > grabThreshold;
     }
 
-
-
-    void HandlePokeInteraction( Transform fingerTip, OVRHand hand, bool isPinching ) {
+    void HandlePokeInteraction(Transform fingerTip, OVRHand hand, bool isPinching)
+    {
         float distanceToPlane = bookPlane.GetDistanceToPoint(fingerTip.position);
 
-        if (Mathf.Abs(distanceToPlane) < pokeDepthThreshold) {
+        if (Mathf.Abs(distanceToPlane) < pokeDepthThreshold)
+        {
             Vector3 projectedPoint = bookPlane.ClosestPointOnPlane(fingerTip.position);
             Vector3 localPoint = BookPanel.InverseTransformPoint(projectedPoint);
 
-            if (IsPointInBookBounds(localPoint)) {
-                if (isPinching && !pageDragging) {
+            if (IsPointInBookBounds(localPoint))
+            {
+                if (isPinching && !pageDragging)
+                {
                     OnHandGrabPage(projectedPoint, hand);
                 }
             }
         }
     }
 
-    bool IsPointInBookBounds( Vector3 localPoint ) {
+    bool IsPointInBookBounds(Vector3 localPoint)
+    {
         float halfWidth = BookPanel.rect.width / 2;
         float halfHeight = BookPanel.rect.height / 2;
         return Mathf.Abs(localPoint.x) <= halfWidth && Mathf.Abs(localPoint.y) <= halfHeight;
     }
 
-    OVRHand GetActiveHand() {
+    OVRHand GetActiveHand()
+    {
         if (rightHand != null && rightHand.IsTracked && rightHand.HandConfidence == OVRHand.TrackingConfidence.High)
             return rightHand;
         if (leftHand != null && leftHand.IsTracked && leftHand.HandConfidence == OVRHand.TrackingConfidence.High)
@@ -323,128 +325,215 @@ public class BookVR : MonoBehaviour {
         return null;
     }
 
-    void OnHandGrabPage( Vector3 worldPoint, OVRHand hand ) {
+    void OnHandGrabPage(Vector3 worldPoint, OVRHand hand)
+    {
         Vector3 localPoint = BookPanel.InverseTransformPoint(worldPoint);
 
-        if (localPoint.x > 0) {
-            if (currentPage >= bookPages.Length) return;
+        if (localPoint.x > 0)
+        {
+            if (!spriteManager.CanFlipRight()) return;
             isGrippingRightPage = true;
             isPinchGrabbing = true;
             OnVRDragRightPage(worldPoint);
-        } else {
-            if (currentPage <= 0) return;
+        }
+        else
+        {
+            if (!spriteManager.CanFlipLeft()) return;
             isGrippingLeftPage = true;
             isPinchGrabbing = true;
             OnVRDragLeftPage(worldPoint);
         }
 
         lastHandHitPoint = worldPoint;
-        Debug.Log($"✓ Hand grabbed {(localPoint.x > 0 ? "right" : "left")} page");
+        
     }
 
-    void OnHandRelease() {
+    void OnHandRelease()
+    {
         isPinchGrabbing = false;
         ReleasePage();
-        Debug.Log("✓ Hand released page");
+        
     }
 
-    void HandleControllerInput() {
-        if (controllerAnchor == null || !IsControllerValid()) return;
+    void HandleControllerInput()
+    {
+        if (!IsControllerValid(rightControllerAnchor) && !IsControllerValid(leftControllerAnchor))
+            return;
 
-        bool triggerPressed = OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, vrController);
-        bool triggerDown = OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, vrController);
-        bool triggerUp = OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger, vrController);
+        // Xử lý tay phải - CẢ 2 HƯỚNG
+        if (IsControllerValid(rightControllerAnchor))
+        {
+            HandleSingleController(
+                OVRInput.Controller.RTouch,
+                rightControllerAnchor,
+                ref isRightControllerGripping
+            );
+        }
 
-        Ray ray = GetControllerRay();
+        // Xử lý tay trái - CẢ 2 HƯỚNG (nếu bật chế độ 2 tay)
+        if (enableBothControllers && IsControllerValid(leftControllerAnchor))
+        {
+            HandleSingleController(
+                OVRInput.Controller.LTouch,
+                leftControllerAnchor,
+                ref isLeftControllerGripping
+            );
+        }
+    }
+
+    void HandleSingleController(OVRInput.Controller controller, Transform anchor, ref bool isGripping)
+    {
+        bool triggerPressed = OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, controller);
+        bool triggerDown = OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, controller);
+        bool triggerUp = OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger, controller);
+
+        Ray ray = new Ray(anchor.position, anchor.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, rayDistance, bookLayer)) {
-            if (triggerDown && !pageDragging) {
+        if (Physics.Raycast(ray, out hit, rayDistance, bookLayer))
+        {
+            if (triggerDown && !pageDragging)
+            {
                 Vector3 localPoint = BookPanel.InverseTransformPoint(hit.point);
-                if (localPoint.x > 0) {
-                    isGrippingRightPage = true;
+
+                // CẢ 2 CONTROLLER ĐỀU CÓ THỂ LẬT CẢ 2 HƯỚNG
+                // Dựa vào vị trí chạm (localPoint.x) để quyết định hướng lật
+                if (localPoint.x > 0)
+                {
+                    // Chạm vào trang phải -> lật từ phải sang trái
+                    if (!spriteManager.CanFlipRight()) return;
+                    isGripping = true;
                     OnVRDragRightPage(hit.point);
-                } else {
-                    isGrippingLeftPage = true;
+                    
+                }
+                else
+                {
+                    // Chạm vào trang trái -> lật từ trái sang phải
+                    if (!spriteManager.CanFlipLeft()) return;
+                    isGripping = true;
                     OnVRDragLeftPage(hit.point);
+                    
                 }
             }
         }
 
-        if (triggerUp && pageDragging) {
+        if (triggerUp && isGripping)
+        {
+            isGripping = false;
             OnVRRelease();
         }
     }
 
-    bool IsControllerValid() {
+    bool IsControllerValid(Transform anchor)
+    {
+        if (anchor == null) return false;
+        return !float.IsNaN(anchor.position.x) &&
+               !float.IsNaN(anchor.position.y) &&
+               !float.IsNaN(anchor.position.z);
+    }
+
+    bool IsControllerValid()
+    {
         return !float.IsNaN(controllerAnchor.position.x) &&
                !float.IsNaN(controllerAnchor.position.y) &&
                !float.IsNaN(controllerAnchor.position.z);
     }
 
-    Ray GetControllerRay() {
-        if (controllerAnchor != null && IsControllerValid()) {
+    Ray GetControllerRay()
+    {
+        if (controllerAnchor != null && IsControllerValid())
+        {
             return new Ray(controllerAnchor.position, controllerAnchor.forward);
         }
-        if (Camera.main != null) {
+        if (Camera.main != null)
+        {
             return new Ray(Camera.main.transform.position, Camera.main.transform.forward);
         }
         return new Ray(Vector3.zero, Vector3.forward);
     }
 
-    void UpdateDebugRays() {
+    void UpdateDebugRays()
+    {
         if (!showDebugRay) return;
 
-        // Controller ray
-        if (debugLineRenderer != null && controllerAnchor != null && IsControllerValid()) {
+        if (debugLineRenderer != null && controllerAnchor != null && IsControllerValid())
+        {
             Ray ray = GetControllerRay();
             debugLineRenderer.SetPosition(0, ray.origin);
             debugLineRenderer.SetPosition(1, ray.origin + ray.direction * rayDistance);
             debugLineRenderer.enabled = !isHandTrackingActive;
         }
 
-        // Hand tracking ray - ✅ FIXED: Get finger tip fresh
-        if (handDebugLineRenderer != null && isHandTrackingActive) {
+        if (handDebugLineRenderer != null && isHandTrackingActive)
+        {
             OVRHand activeHand = GetActiveHand();
             Transform fingerTip = GetFingerTip(activeHand);
 
-            if (fingerTip != null) {
+            if (fingerTip != null)
+            {
                 handDebugLineRenderer.SetPosition(0, fingerTip.position);
                 handDebugLineRenderer.SetPosition(1, fingerTip.position + fingerTip.forward * handRaycastDistance);
                 handDebugLineRenderer.enabled = true;
-            } else {
+            }
+            else
+            {
                 handDebugLineRenderer.enabled = false;
             }
-        } else if (handDebugLineRenderer != null) {
+        }
+        else if (handDebugLineRenderer != null)
+        {
             handDebugLineRenderer.enabled = false;
         }
     }
 
-    public Vector3 TransformVRPoint( Vector3 worldPoint ) {
+    public Vector3 TransformVRPoint(Vector3 worldPoint)
+    {
         Vector2 localPos = BookPanel.InverseTransformPoint(worldPoint);
         return localPos;
     }
 
-    public void UpdateBook() {
+    public void UpdateBook()
+    {
         Ray ray;
         Vector3 targetPoint;
 
-        if (isHandTrackingActive && isPinchGrabbing) {
-            // ✅ FIXED: Get finger tip fresh each frame
+        if (isHandTrackingActive && isPinchGrabbing)
+        {
             OVRHand activeHand = GetActiveHand();
             Transform fingerTip = GetFingerTip(activeHand);
-
-            if (fingerTip != null) {
+            if (fingerTip != null)
+            {
                 targetPoint = TransformVRPoint(bookPlane.ClosestPointOnPlane(fingerTip.position));
-            } else {
+            }
+            else
+            {
                 targetPoint = f;
             }
-        } else {
-            ray = GetControllerRay();
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, rayDistance, bookLayer)) {
-                targetPoint = TransformVRPoint(hit.point);
-            } else {
+        }
+        else
+        {
+            Transform activeController = null;
+
+            if (isRightControllerGripping && IsControllerValid(rightControllerAnchor))
+                activeController = rightControllerAnchor;
+            else if (isLeftControllerGripping && IsControllerValid(leftControllerAnchor))
+                activeController = leftControllerAnchor;
+
+            if (activeController != null)
+            {
+                ray = new Ray(activeController.position, activeController.forward);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, rayDistance, bookLayer))
+                {
+                    targetPoint = TransformVRPoint(hit.point);
+                }
+                else
+                {
+                    targetPoint = f;
+                }
+            }
+            else
+            {
                 targetPoint = f;
             }
         }
@@ -457,72 +546,79 @@ public class BookVR : MonoBehaviour {
             UpdateBookLTRToPoint(f);
     }
 
-    public void OnVRDragRightPage( Vector3 worldPoint ) {
-        if (currentPage >= bookPages.Length) return;
+    public void OnVRDragRightPage(Vector3 worldPoint)
+    {
+        if (!spriteManager.CanFlipRight()) return;
         Vector3 p = TransformVRPoint(worldPoint);
         DragRightPageToPoint(p);
     }
 
-    public void OnVRDragLeftPage( Vector3 worldPoint ) {
-        if (currentPage <= 0) return;
+    public void OnVRDragLeftPage(Vector3 worldPoint)
+    {
+        if (!spriteManager.CanFlipLeft()) return;
         Vector3 p = TransformVRPoint(worldPoint);
         DragLeftPageToPoint(p);
     }
 
-    public void OnVRRelease() {
+    public void OnVRRelease()
+    {
         isGrippingRightPage = false;
         isGrippingLeftPage = false;
         ReleasePage();
     }
 
-    void OnDrawGizmos() {
+    void OnDrawGizmos()
+    {
         if (!showDebugRay) return;
 
-        // Controller ray
-        if (controllerAnchor != null && IsControllerValid() && !isHandTrackingActive) {
+        if (controllerAnchor != null && IsControllerValid() && !isHandTrackingActive)
+        {
             Gizmos.color = Color.red;
             Gizmos.DrawRay(controllerAnchor.position, controllerAnchor.forward * rayDistance);
             Gizmos.DrawWireSphere(controllerAnchor.position, 0.02f);
         }
 
-        // Hand tracking ray - ✅ FIXED: Get finger tip fresh
-        if (isHandTrackingActive) {
+        if (isHandTrackingActive)
+        {
             OVRHand activeHand = GetActiveHand();
             Transform fingerTip = GetFingerTip(activeHand);
 
-            if (fingerTip != null) {
+            if (fingerTip != null)
+            {
                 Gizmos.color = Color.cyan;
                 Gizmos.DrawRay(fingerTip.position, fingerTip.forward * handRaycastDistance);
                 Gizmos.DrawWireSphere(fingerTip.position, 0.01f);
 
-                if (enablePokeInteraction) {
+                if (enablePokeInteraction)
+                {
                     Gizmos.color = Color.green;
                     Gizmos.DrawWireSphere(fingerTip.position, pokeDepthThreshold);
                 }
             }
         }
 
-        // Draw book plane
-        if (BookPanel != null) {
+        if (BookPanel != null)
+        {
             Gizmos.color = Color.yellow;
             Gizmos.matrix = BookPanel.transform.localToWorldMatrix;
             Gizmos.DrawWireCube(Vector3.zero, new Vector3(BookPanel.rect.width, BookPanel.rect.height, 0.01f));
         }
     }
 
-    // === ORIGINAL BOOK FUNCTIONS ===
-    // (Keep all existing UpdateBookLTRToPoint, UpdateBookRTLToPoint, DragRightPageToPoint, etc.)
+    // === BOOK ANIMATION FUNCTIONS ===
 
-    public void UpdateBookLTRToPoint( Vector3 followLocation ) {
+    public void UpdateBookLTRToPoint(Vector3 followLocation)
+    {
         mode = FlipMode.LeftToRight;
         f = followLocation;
-        ShadowLTR.transform.SetParent(ClippingPlane.transform, true);
-        ShadowLTR.transform.localPosition = Vector3.zero;
-        ShadowLTR.transform.localEulerAngles = Vector3.zero;
-        Left.transform.SetParent(ClippingPlane.transform, true);
-        Right.transform.SetParent(BookPanel.transform, true);
-        Right.transform.localEulerAngles = Vector3.zero;
-        LeftNext.transform.SetParent(BookPanel.transform, true);
+
+        spriteManager.ShadowLTR.transform.SetParent(ClippingPlane.transform, true);
+        spriteManager.ShadowLTR.transform.localPosition = Vector3.zero;
+        spriteManager.ShadowLTR.transform.localEulerAngles = Vector3.zero;
+        spriteManager.Left.transform.SetParent(ClippingPlane.transform, true);
+        spriteManager.Right.transform.SetParent(BookPanel.transform, true);
+        spriteManager.Right.transform.localEulerAngles = Vector3.zero;
+        spriteManager.LeftNext.transform.SetParent(BookPanel.transform, true);
 
         c = Calc_C_Position(followLocation);
         Vector3 t1;
@@ -531,31 +627,33 @@ public class BookVR : MonoBehaviour {
 
         ClippingPlane.transform.localEulerAngles = new Vector3(0, 0, clipAngle - 90);
         ClippingPlane.transform.position = BookPanel.TransformPoint(t1);
-        Left.transform.position = BookPanel.TransformPoint(c);
+        spriteManager.Left.transform.position = BookPanel.TransformPoint(c);
 
         float C_T1_dy = t1.y - c.y;
         float C_T1_dx = t1.x - c.x;
         float C_T1_Angle = Mathf.Atan2(C_T1_dy, C_T1_dx) * Mathf.Rad2Deg;
-        Left.transform.localEulerAngles = new Vector3(0, 0, C_T1_Angle - 90 - clipAngle);
+        spriteManager.Left.transform.localEulerAngles = new Vector3(0, 0, C_T1_Angle - 90 - clipAngle);
 
         NextPageClip.transform.localEulerAngles = new Vector3(0, 0, clipAngle - 90);
         NextPageClip.transform.position = BookPanel.TransformPoint(t1);
-        LeftNext.transform.SetParent(NextPageClip.transform, true);
-        Right.transform.SetParent(ClippingPlane.transform, true);
-        Right.transform.SetAsFirstSibling();
-        ShadowLTR.rectTransform.SetParent(Left.rectTransform, true);
+        spriteManager.LeftNext.transform.SetParent(NextPageClip.transform, true);
+        spriteManager.Right.transform.SetParent(ClippingPlane.transform, true);
+        spriteManager.Right.transform.SetAsFirstSibling();
+        spriteManager.ShadowLTR.rectTransform.SetParent(spriteManager.Left.rectTransform, true);
     }
 
-    public void UpdateBookRTLToPoint( Vector3 followLocation ) {
+    public void UpdateBookRTLToPoint(Vector3 followLocation)
+    {
         mode = FlipMode.RightToLeft;
         f = followLocation;
-        Shadow.transform.SetParent(ClippingPlane.transform, true);
-        Shadow.transform.localPosition = Vector3.zero;
-        Shadow.transform.localEulerAngles = Vector3.zero;
-        Right.transform.SetParent(ClippingPlane.transform, true);
-        Left.transform.SetParent(BookPanel.transform, true);
-        Left.transform.localEulerAngles = Vector3.zero;
-        RightNext.transform.SetParent(BookPanel.transform, true);
+
+        spriteManager.Shadow.transform.SetParent(ClippingPlane.transform, true);
+        spriteManager.Shadow.transform.localPosition = Vector3.zero;
+        spriteManager.Shadow.transform.localEulerAngles = Vector3.zero;
+        spriteManager.Right.transform.SetParent(ClippingPlane.transform, true);
+        spriteManager.Left.transform.SetParent(BookPanel.transform, true);
+        spriteManager.Left.transform.localEulerAngles = Vector3.zero;
+        spriteManager.RightNext.transform.SetParent(BookPanel.transform, true);
 
         c = Calc_C_Position(followLocation);
         Vector3 t1;
@@ -565,22 +663,23 @@ public class BookVR : MonoBehaviour {
         ClippingPlane.rectTransform.pivot = new Vector2(1, 0.35f);
         ClippingPlane.transform.localEulerAngles = new Vector3(0, 0, clipAngle + 90);
         ClippingPlane.transform.position = BookPanel.TransformPoint(t1);
-        Right.transform.position = BookPanel.TransformPoint(c);
+        spriteManager.Right.transform.position = BookPanel.TransformPoint(c);
 
         float C_T1_dy = t1.y - c.y;
         float C_T1_dx = t1.x - c.x;
         float C_T1_Angle = Mathf.Atan2(C_T1_dy, C_T1_dx) * Mathf.Rad2Deg;
-        Right.transform.localEulerAngles = new Vector3(0, 0, C_T1_Angle - (clipAngle + 90));
+        spriteManager.Right.transform.localEulerAngles = new Vector3(0, 0, C_T1_Angle - (clipAngle + 90));
 
         NextPageClip.transform.localEulerAngles = new Vector3(0, 0, clipAngle + 90);
         NextPageClip.transform.position = BookPanel.TransformPoint(t1);
-        RightNext.transform.SetParent(NextPageClip.transform, true);
-        Left.transform.SetParent(ClippingPlane.transform, true);
-        Left.transform.SetAsFirstSibling();
-        Shadow.rectTransform.SetParent(Right.rectTransform, true);
+        spriteManager.RightNext.transform.SetParent(NextPageClip.transform, true);
+        spriteManager.Left.transform.SetParent(ClippingPlane.transform, true);
+        spriteManager.Left.transform.SetAsFirstSibling();
+        spriteManager.Shadow.rectTransform.SetParent(spriteManager.Right.rectTransform, true);
     }
 
-    float CalcClipAngle( Vector3 c, Vector3 bookCorner, out Vector3 t1 ) {
+    float CalcClipAngle(Vector3 c, Vector3 bookCorner, out Vector3 t1)
+    {
         Vector3 t0 = (c + bookCorner) / 2;
         float T0_CORNER_dy = bookCorner.y - t0.y;
         float T0_CORNER_dx = bookCorner.x - t0.x;
@@ -593,13 +692,15 @@ public class BookVR : MonoBehaviour {
         return Mathf.Atan2(T0_T1_dy, T0_T1_dx) * Mathf.Rad2Deg;
     }
 
-    float normalizeT1X( float t1, Vector3 corner, Vector3 sb ) {
+    float normalizeT1X(float t1, Vector3 corner, Vector3 sb)
+    {
         if (t1 > sb.x && sb.x > corner.x) return sb.x;
         if (t1 < sb.x && sb.x < corner.x) return sb.x;
         return t1;
     }
 
-    Vector3 Calc_C_Position( Vector3 followLocation ) {
+    Vector3 Calc_C_Position(Vector3 followLocation)
+    {
         f = followLocation;
         float F_SB_dy = f.y - sb.y;
         float F_SB_dx = f.x - sb.x;
@@ -617,8 +718,10 @@ public class BookVR : MonoBehaviour {
         return c;
     }
 
-    public void DragRightPageToPoint( Vector3 point ) {
-        if (currentPage >= bookPages.Length) return;
+    public void DragRightPageToPoint(Vector3 point)
+    {
+        if (!spriteManager.CanFlipRight()) return;
+
         pageDragging = true;
         mode = FlipMode.RightToLeft;
         f = point;
@@ -626,26 +729,14 @@ public class BookVR : MonoBehaviour {
         NextPageClip.rectTransform.pivot = new Vector2(0, 0.12f);
         ClippingPlane.rectTransform.pivot = new Vector2(1, 0.35f);
 
-        Left.gameObject.SetActive(true);
-        Left.rectTransform.pivot = new Vector2(0, 0);
-        Left.transform.position = RightNext.transform.position;
-        Left.transform.eulerAngles = Vector3.zero;
-        Left.sprite = (currentPage < bookPages.Length) ? bookPages[currentPage] : background;
-        Left.transform.SetAsFirstSibling();
-
-        Right.gameObject.SetActive(true);
-        Right.transform.position = RightNext.transform.position;
-        Right.transform.eulerAngles = Vector3.zero;
-        Right.sprite = (currentPage < bookPages.Length - 1) ? bookPages[currentPage + 1] : background;
-        RightNext.sprite = (currentPage < bookPages.Length - 2) ? bookPages[currentPage + 2] : background;
-
-        LeftNext.transform.SetAsFirstSibling();
-        if (enableShadowEffect) Shadow.gameObject.SetActive(true);
+        spriteManager.SetupRightPageDrag();
         UpdateBookRTLToPoint(f);
     }
 
-    public void DragLeftPageToPoint( Vector3 point ) {
-        if (currentPage <= 0) return;
+    public void DragLeftPageToPoint(Vector3 point)
+    {
+        if (!spriteManager.CanFlipLeft()) return;
+
         pageDragging = true;
         mode = FlipMode.LeftToRight;
         f = point;
@@ -653,26 +744,14 @@ public class BookVR : MonoBehaviour {
         NextPageClip.rectTransform.pivot = new Vector2(1, 0.12f);
         ClippingPlane.rectTransform.pivot = new Vector2(0, 0.35f);
 
-        Right.gameObject.SetActive(true);
-        Right.transform.position = LeftNext.transform.position;
-        Right.sprite = bookPages[currentPage - 1];
-        Right.transform.eulerAngles = Vector3.zero;
-        Right.transform.SetAsFirstSibling();
-
-        Left.gameObject.SetActive(true);
-        Left.rectTransform.pivot = new Vector2(1, 0);
-        Left.transform.position = LeftNext.transform.position;
-        Left.transform.eulerAngles = Vector3.zero;
-        Left.sprite = (currentPage >= 2) ? bookPages[currentPage - 2] : background;
-        LeftNext.sprite = (currentPage >= 3) ? bookPages[currentPage - 3] : background;
-
-        RightNext.transform.SetAsFirstSibling();
-        if (enableShadowEffect) ShadowLTR.gameObject.SetActive(true);
+        spriteManager.SetupLeftPageDrag();
         UpdateBookLTRToPoint(f);
     }
 
-    public void ReleasePage() {
-        if (pageDragging) {
+    public void ReleasePage()
+    {
+        if (pageDragging)
+        {
             pageDragging = false;
             float distanceToLeft = Vector2.Distance(c, ebl);
             float distanceToRight = Vector2.Distance(c, ebr);
@@ -687,64 +766,47 @@ public class BookVR : MonoBehaviour {
 
     Coroutine currentCoroutine;
 
-    void UpdateSprites() {
-        LeftNext.sprite = (currentPage > 0 && currentPage <= bookPages.Length) ? bookPages[currentPage - 1] : background;
-        RightNext.sprite = (currentPage >= 0 && currentPage < bookPages.Length) ? bookPages[currentPage] : background;
-    }
-
-    public void TweenForward() {
+    public void TweenForward()
+    {
         if (mode == FlipMode.RightToLeft)
             currentCoroutine = StartCoroutine(TweenTo(ebl, 0.15f, () => { Flip(); }));
         else
             currentCoroutine = StartCoroutine(TweenTo(ebr, 0.15f, () => { Flip(); }));
     }
 
-    void Flip() {
-        if (mode == FlipMode.RightToLeft)
-            currentPage += 2;
-        else
-            currentPage -= 2;
-
-        LeftNext.transform.SetParent(BookPanel.transform, true);
-        Left.transform.SetParent(BookPanel.transform, true);
-        LeftNext.transform.SetParent(BookPanel.transform, true);
-        Left.gameObject.SetActive(false);
-        Right.gameObject.SetActive(false);
-        Right.transform.SetParent(BookPanel.transform, true);
-        RightNext.transform.SetParent(BookPanel.transform, true);
-        UpdateSprites();
-        Shadow.gameObject.SetActive(false);
-        ShadowLTR.gameObject.SetActive(false);
+    void Flip()
+    {
+        spriteManager.FlipForward(mode);
         if (OnFlip != null)
             OnFlip.Invoke();
     }
 
-    public void TweenBack() {
-        if (mode == FlipMode.RightToLeft) {
-            currentCoroutine = StartCoroutine(TweenTo(ebr, 0.15f, () => {
-                UpdateSprites();
-                RightNext.transform.SetParent(BookPanel.transform);
-                Right.transform.SetParent(BookPanel.transform);
-                Left.gameObject.SetActive(false);
-                Right.gameObject.SetActive(false);
+    public void TweenBack()
+    {
+        if (mode == FlipMode.RightToLeft)
+        {
+            currentCoroutine = StartCoroutine(TweenTo(ebr, 0.15f, () =>
+            {
+                spriteManager.ResetPagesAfterTweenBack(mode, BookPanel.transform);
                 pageDragging = false;
             }));
-        } else {
-            currentCoroutine = StartCoroutine(TweenTo(ebl, 0.15f, () => {
-                UpdateSprites();
-                LeftNext.transform.SetParent(BookPanel.transform);
-                Left.transform.SetParent(BookPanel.transform);
-                Left.gameObject.SetActive(false);
-                Right.gameObject.SetActive(false);
+        }
+        else
+        {
+            currentCoroutine = StartCoroutine(TweenTo(ebl, 0.15f, () =>
+            {
+                spriteManager.ResetPagesAfterTweenBack(mode, BookPanel.transform);
                 pageDragging = false;
             }));
         }
     }
 
-    public IEnumerator TweenTo( Vector3 to, float duration, System.Action onFinish ) {
+    public IEnumerator TweenTo(Vector3 to, float duration, System.Action onFinish)
+    {
         int steps = (int)(duration / 0.025f);
         Vector3 displacement = (to - f) / steps;
-        for (int i = 0; i < steps - 1; i++) {
+        for (int i = 0; i < steps - 1; i++)
+        {
             if (mode == FlipMode.RightToLeft)
                 UpdateBookRTLToPoint(f + displacement);
             else

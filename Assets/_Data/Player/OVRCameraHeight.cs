@@ -1,20 +1,24 @@
 using UnityEngine;
 
 public class OVRCameraHeight : MonoBehaviour {
+    [Header("Height Settings")]
     public bool useRealHeight = true;
     public float simulatedHeight = 1.75f;
+
+    [Header("Height Limits")]
+    public bool limitHeight = true;        // Enable height clamping
+    public float minAllowedHeight = 1.4f;  // Minimum allowed height
+    public float maxAllowedHeight = 1.8f;  // Maximum allowed height
 
     private OVRCameraRig cameraRig;
 
     void Start() {
-
         cameraRig = GetComponent<OVRCameraRig>();
 
         if (cameraRig == null) {
             Debug.LogError("OVRCameraRig not found under player!");
             return;
         }
-
     }
 
     void Update() {
@@ -25,14 +29,24 @@ public class OVRCameraHeight : MonoBehaviour {
         if (cameraRig == null) return;
 
         if (useRealHeight) {
-/*            // Reset to default, HMD height will drive camera
-            cameraRig.trackingSpace.localPosition = Vector3.zero;*/
-/*            Debug.Log("Using real HMD height");*/
-        } else {
-            // Apply simulated height for seated/simulator mode
-            cameraRig.trackingSpace.localPosition = new Vector3(0f, simulatedHeight, 0f);
+            // Real HMD mode
+            Transform centerEye = cameraRig.centerEyeAnchor;
+            if (centerEye != null && limitHeight) {
+                float currentHeight = centerEye.localPosition.y;
+                float clampedHeight = Mathf.Clamp(currentHeight, minAllowedHeight, maxAllowedHeight);
 
-           /* Debug.Log("Simulated player height: " + simulatedHeight + " m");*/
+                // Adjust tracking space to keep head within bounds
+                float offset = clampedHeight - currentHeight;
+                cameraRig.trackingSpace.localPosition += new Vector3(0f, offset, 0f);
+            }
+        } else {
+            // Simulated mode
+            float clampedSimHeight = simulatedHeight;
+
+            if (limitHeight)
+                clampedSimHeight = Mathf.Clamp(simulatedHeight, minAllowedHeight, maxAllowedHeight);
+
+            cameraRig.trackingSpace.localPosition = new Vector3(0f, clampedSimHeight, 0f);
         }
     }
 }

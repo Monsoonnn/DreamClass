@@ -4,14 +4,17 @@ using com.cyborgAssets.inspectorButtonPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace DreamClass.QuestSystem {
+namespace DreamClass.QuestSystem
+{
     [System.Serializable]
-    public class QuestStateInfo {
+    public class QuestStateInfo
+    {
         public string questId;
         public QuestState state;
     }
 
-    public class QuestManager : SingletonCtrl<QuestManager> {
+    public class QuestManager : SingletonCtrl<QuestManager>
+    {
         [Header("Quest Database")]
         [SerializeField] private QuestDatabase questDatabase;
         public QuestDatabase QuestDatabase => questDatabase;
@@ -23,7 +26,8 @@ namespace DreamClass.QuestSystem {
 
         public static event Action OnReady;
 
-        protected override void Start() {
+        protected override void Start()
+        {
             base.Start();
             DontDestroyOnLoad(gameObject);
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -35,16 +39,19 @@ namespace DreamClass.QuestSystem {
         #region === INITIALIZATION ===
 
         [ProButton]
-        public void InitializeFromServerMock() {
+        public void InitializeFromServerMock()
+        {
             Debug.Log("[QuestManager] Fetching quest states from server...");
             StartCoroutine(QuestServerMock.Instance.FetchQuestStates(OnServerDataReceived));
         }
 
-        private void OnServerDataReceived( PlayerQuestJson playerData ) {
+        private void OnServerDataReceived(PlayerQuestJson playerData)
+        {
             questStates.Clear();
             questDataCache.Clear();
 
-            foreach (var quest in playerData.quests) {
+            foreach (var quest in playerData.quests)
+            {
                 questDataCache[quest.questId] = quest;
 
                 if (System.Enum.TryParse(quest.state, out QuestState parsedState))
@@ -65,15 +72,18 @@ namespace DreamClass.QuestSystem {
         #region === QUEST CONTROL ===
 
         [ProButton]
-        public void StartQuest( string questId ) {
+        public void StartQuest(string questId)
+        {
             QuestCtrl prefab = questDatabase.GetQuestPrefabById(questId);
-            if (prefab == null) {
+            if (prefab == null)
+            {
                 Debug.LogWarning($"[QuestManager] Quest {questId} not found in database.");
                 return;
             }
 
             Transform parent = FindQuestHolder();
-            if (parent == null) {
+            if (parent == null)
+            {
                 Debug.LogWarning("[QuestManager] No QuestHolder found in scene.");
                 return;
             }
@@ -86,7 +96,8 @@ namespace DreamClass.QuestSystem {
             Debug.Log($"[QuestManager] Quest started: {quest.QuestName}");
         }
 
-        public void CompleteQuest( string questId ) {
+        public void CompleteQuest(string questId)
+        {
             SetQuestState(questId, QuestState.FINISHED);
             // TO DO SERVER FETCH
             // MOCK SCRIPT 
@@ -98,13 +109,37 @@ namespace DreamClass.QuestSystem {
 
         #region === QUEST STATE & INFO ===
 
-        public QuestState GetQuestState( string questId ) {
+        public QuestState GetQuestState(string questId)
+        {
             return questStates.TryGetValue(questId, out var state)
                 ? state
                 : QuestState.NOT_PREMISE;
         }
 
-        public void SetQuestState( string questId, QuestState state ) {
+        public List<string> GetQuestNames(List<string> questIds)
+        {
+            List<string> questNames = new List<string>();
+            if (questIds == null || questIds.Count == 0) return questNames;
+
+            foreach (var id in questIds)
+            {
+                // Lấy quest prefab hoặc data từ database
+                var questPrefab = questDatabase.GetQuestPrefabById(id);
+                if (questPrefab != null && !string.IsNullOrEmpty(questPrefab.QuestName))
+                {
+                    questNames.Add(questPrefab.QuestName);
+                }
+                else
+                {
+                    questNames.Add($"Unknown Quest ({id})");
+                }
+            }
+
+            return questNames;
+        }
+
+        public void SetQuestState(string questId, QuestState state)
+        {
             questStates[questId] = state;
         }
 
@@ -112,7 +147,8 @@ namespace DreamClass.QuestSystem {
 
         #region === SCENE LOAD HANDLING ===
 
-        private void OnSceneLoaded( Scene scene, LoadSceneMode mode ) {
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
             Debug.Log($"[QuestManager] Scene loaded: {scene.name} -> clearing scene-specific quest objects");
 
             // Không giữ reference quest nào => chỉ cần dọn object tồn tại trong scene
@@ -120,10 +156,11 @@ namespace DreamClass.QuestSystem {
             foreach (var quest in existingQuests)
                 Destroy(quest.gameObject);
 
-           // OnReady?.Invoke();
+            // OnReady?.Invoke();
         }
 
-        private Transform FindQuestHolder() {
+        private Transform FindQuestHolder()
+        {
             GameObject holder = GameObject.Find("QuestHolder");
             return holder ? holder.transform : null;
         }
@@ -133,7 +170,8 @@ namespace DreamClass.QuestSystem {
         #region === DEBUG ===
 
         [ProButton]
-        public void LogQuestStatus() {
+        public void LogQuestStatus()
+        {
             Debug.Log("=== QUEST STATUS ===");
             foreach (var kvp in questStates)
                 Debug.Log($"- {kvp.Key}: {kvp.Value}");

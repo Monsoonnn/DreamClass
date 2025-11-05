@@ -47,7 +47,7 @@ TagManager:
   - NPC
   - Drawing
   - Hand
-  - 
+  - Book
   - 
   - 
   - 
@@ -67,6 +67,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: FrontBook
+    uniqueID: 3479192287
     locked: 0
   m_RenderingLayers:
   - Default
