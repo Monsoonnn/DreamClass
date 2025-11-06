@@ -3,6 +3,8 @@ using TMPro;
 using System.Collections.Generic;
 using com.cyborgAssets.inspectorButtonPro;
 using DreamClass.Subjects;
+using System.Collections;
+using DreamClass.LearningLecture;
 
 namespace DreamClass.Lecture
 {
@@ -12,17 +14,25 @@ namespace DreamClass.Lecture
     public class LearningModeManager : MonoBehaviour
     {
         #region Data: Mode
-        public enum LearningMode { KiemTra, OnTap }
-        
+        public enum LearningMode { None, KiemTra, OnTap }
+
         [Header("Current Mode")]
         public LearningMode currentMode;
+
+        public ExamModeManager examManager;
 
         public void SetMode(LearningMode mode)
         {
             currentMode = mode;
-            Debug.Log($"Mode changed to: {mode}");
         }
 
+
+        public void SetOnTapMode() => SetMode(LearningMode.OnTap);
+        public void SetKiemTraMode()
+        {
+            SetMode(LearningMode.KiemTra);
+            examManager.StartExam();
+        } 
         public LearningMode GetMode() => currentMode;
         #endregion
 
@@ -75,6 +85,9 @@ namespace DreamClass.Lecture
 
             currentLectureIndex = index;
             currentLecture = currentSubject.lectures[index];
+
+            StartCoroutine(DelayedJump(currentLecture.page));
+
             Debug.Log($"Current lecture set to: {currentLecture.lectureName} (Page: {currentLecture.page})");
         }
 
@@ -85,8 +98,29 @@ namespace DreamClass.Lecture
             {
                 currentLectureIndex = currentSubject.lectures.IndexOf(lecture);
             }
+
+            // Gọi coroutine delay
+            StartCoroutine(DelayedJump(lecture.page));
+
             Debug.Log($"Current lecture set to: {currentLecture.lectureName}");
         }
+
+        private IEnumerator DelayedJump(int page)
+        {
+            // Wait for 0.5 seconds
+            yield return new WaitForSeconds(1.5f);
+
+            // Jump to page after delay
+            var autoFlip = bookCtrl.bookObject.GetComponentInChildren<AutoFlipVR>();
+            if (autoFlip != null)
+            {
+                autoFlip.JumpToPage(page);
+            }
+
+            Debug.Log($"LearningModeManager: Jumped to page: {page}");
+
+        }
+
 
         public CSVLectureInfo GetCurrentLecture() => currentLecture;
 
@@ -102,6 +136,8 @@ namespace DreamClass.Lecture
         public GameObject subjectSelectionPanel;
         public GameObject lectureSelectionPanel;
 
+        public LearningBookCtrl bookCtrl;
+
         private GameObject currentActivePanel;
 
         /// <summary>
@@ -116,6 +152,12 @@ namespace DreamClass.Lecture
             {
                 targetPanel.SetActive(true);
                 currentActivePanel = targetPanel;
+                SetCanvasInteractionActive(true);
+            }
+            else
+            {   
+                currentActivePanel = null;
+                SetCanvasInteractionActive(false);
             }
         }
 
@@ -129,8 +171,28 @@ namespace DreamClass.Lecture
         public void ShowLectureSelection() => SwapToPanel(lectureSelectionPanel);
 
         [ProButton]
+        public void ShowBookPanel()
+        {
+            SwapToPanel(null);
+            bookCtrl.SwitchToBookMode();
+        }
+
+        [ProButton]
         public void HideAllPanels() => SwapToPanel(null);
         #endregion
+
+        [Header("Canvas Interaction")]
+        public GameObject rayCanvasInteraction;
+        public GameObject pokeCanvasInteraction;
+
+        private void SetCanvasInteractionActive(bool active)
+        {
+            if (rayCanvasInteraction != null)
+                rayCanvasInteraction.SetActive(active);
+
+            if (pokeCanvasInteraction != null)
+                pokeCanvasInteraction.SetActive(active);
+        }
 
         #region Debug
 

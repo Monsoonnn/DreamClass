@@ -1,0 +1,131 @@
+{
+  "quizId": "VL11_KiemTra_Chuong1_2",
+  "quizTitle": "Kiểm tra tổng hợp: Dao động và Sóng",
+  "questions": [
+    {
+      "questionId": "Q1_MCQ",
+      "questionType": "MultipleChoice",
+      "prompt": "Theo Bài 1, dao động điều hoà là gì?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Dao động trong đó li độ của vật là một hàm cosin (hay sin) của thời gian."
+        },
+        {
+          "id": "B",
+          "text": "Dao động có biên độ giảm dần theo thời gian."
+        },
+        {
+          "id": "C",
+          "text": "Dao động chịu tác dụng của một ngoại lực cưỡng bức tuần hoàn."
+        }
+      ],
+      "correctAnswerId": "A"
+    },
+    {
+      "questionId": "Q2_Matching",
+      "questionType": "Matching",
+      "prompt": "Ghép đúng loại sóng (Bài 9) với phương dao động của phần tử môi trường.",
+      "draggables": [
+        {
+          "id": "drag1",
+          "text": "Sóng ngang"
+        },
+        {
+          "id": "drag2",
+          "text": "Sóng dọc"
+        }
+      ],
+      "dropTargets": [
+        {
+          "id": "target1",
+          "text": "Phương dao động TRÙNG với phương truyền sóng."
+        },
+        {
+          "id": "target2",
+          "text": "Phương dao động VUÔNG GÓC với phương truyền sóng."
+        }
+      ],
+      "correctPairs": [
+        {
+          "draggableId": "drag1",
+          "targetId": "target2"
+        },
+        {
+          "draggableId": "drag2",
+          "targetId": "target1"
+        }
+      ]
+    },
+    {
+      "questionId": "Q3_Sequencing",
+      "questionType": "Sequencing",
+      "prompt": "Sắp xếp các bước chính của thí nghiệm tạo sóng dừng trên dây (Bài 13).",
+      "items": [
+        {
+          "id": "step1",
+          "text": "Giữ cho dây căng, đầu P mắc vào ròng rọc, đầu rung mắc vào dây."
+        },
+        {
+          "id": "step2",
+          "text": "Cho bộ rung hoạt động."
+        },
+        {
+          "id": "step3",
+          "text": "Điều chỉnh tần số của bộ rung cho đến khi trên dây xuất hiện nút và bụng sóng."
+        }
+      ],
+      "correctSequence": [
+        "step1",
+        "step2",
+        "step3"
+      ]
+    },
+    {
+      "questionId": "Q4_3D_ID",
+      "questionType": "3DIdentification",
+      "prompt": "Xác định các bộ phận trong thí nghiệm giao thoa sóng nước (Hình 12.1).",
+      "modelAsset": "Prefabs/ThiNghiem_GiaoThoaSong",
+      "hotspots": [
+        {
+          "id": "h1",
+          "coordinates": {
+            "x": 0.5,
+            "y": 1.2,
+            "z": 0.1
+          }
+        },
+        {
+          "id": "h2",
+          "coordinates": {
+            "x": 0.0,
+            "y": 0.5,
+            "z": 0.0
+          }
+        },
+        {
+          "id": "h3",
+          "coordinates": {
+            "x": 0.5,
+            "y": 2.0,
+            "z": 0.1
+          }
+        }
+      ],
+      "subQuestions": [
+        {
+          "prompt": "Hãy chỉ vào 'Cần rung có gắn hai quả cầu S1, S2'.",
+          "correctHotspotId": "h1"
+        },
+        {
+          "prompt": "Hãy chỉ vào 'Đèn chiếu'.",
+          "correctHotspotId": "h3"
+        },
+        {
+          "prompt": "Hãy chỉ vào 'Khay nước'.",
+          "correctHotspotId": "h2"
+        }
+      ]
+    }
+  ]
+}

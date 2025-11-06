@@ -159,6 +159,7 @@ namespace DreamClass.Lecture
         {
             if (manager == null) return;
 
+            manager.ShowBookPanel();
             manager.SetCurrentLecture(index);
             CSVLectureInfo lecture = manager.GetCurrentLecture();
             if (lecture != null)

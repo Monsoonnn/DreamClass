@@ -2,11 +2,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
-public class BookSpriteManager : MonoBehaviour {
+public class BookSpriteManager : MonoBehaviour
+{
     [Header("Sprite Settings")]
     public Sprite background;
     public Sprite[] bookPages;
-    
+
     [Header("UI References")]
     public Image ClippingPlane;
     public Image NextPageClip;
@@ -16,13 +17,13 @@ public class BookSpriteManager : MonoBehaviour {
     public Image LeftNext;
     public Image Right;
     public Image RightNext;
-    
+
     [Header("Settings")]
     public bool enableShadowEffect = true;
-    
+
     public int currentPage = 2;
     private FlipMode mode;
-    
+
     // Lưu trữ vị trí và rotation ban đầu
     private Vector3 leftNextInitialPosition;
     private Quaternion leftNextInitialRotation;
@@ -30,70 +31,81 @@ public class BookSpriteManager : MonoBehaviour {
     private Quaternion rightNextInitialRotation;
     private Transform leftNextInitialParent;
     private Transform rightNextInitialParent;
-    
-    public int CurrentPage {
+
+    public int CurrentPage
+    {
         get { return currentPage; }
         set { currentPage = value; }
     }
-    
-    public int TotalPageCount {
+
+    public int TotalPageCount
+    {
         get { return bookPages.Length; }
     }
-    
-    void Start() {
+
+    void Start()
+    {
         Left.gameObject.SetActive(false);
         Right.gameObject.SetActive(false);
-        
+
         // Lưu trữ vị trí và rotation ban đầu
         SaveInitialTransforms();
-        
+
         UpdateSprites();
     }
-    
-    void SaveInitialTransforms() {
-        if (LeftNext != null) {
+
+    void SaveInitialTransforms()
+    {
+        if (LeftNext != null)
+        {
             leftNextInitialPosition = LeftNext.transform.localPosition;
             leftNextInitialRotation = LeftNext.transform.localRotation;
             leftNextInitialParent = LeftNext.transform.parent;
-            Debug.Log($"✓ Saved LeftNext initial: pos={leftNextInitialPosition}, rot={leftNextInitialRotation.eulerAngles}");
+            //Debug.Log($"✓ Saved LeftNext initial: pos={leftNextInitialPosition}, rot={leftNextInitialRotation.eulerAngles}");
         }
-        
-        if (RightNext != null) {
+
+        if (RightNext != null)
+        {
             rightNextInitialPosition = RightNext.transform.localPosition;
             rightNextInitialRotation = RightNext.transform.localRotation;
             rightNextInitialParent = RightNext.transform.parent;
-            Debug.Log($"✓ Saved RightNext initial: pos={rightNextInitialPosition}, rot={rightNextInitialRotation.eulerAngles}");
+            //Debug.Log($"✓ Saved RightNext initial: pos={rightNextInitialPosition}, rot={rightNextInitialRotation.eulerAngles}");
         }
     }
-    
-    public void ResetNextPagesToInitial() {
-        if (LeftNext != null) {
+
+    public void ResetNextPagesToInitial()
+    {
+        if (LeftNext != null)
+        {
             LeftNext.transform.SetParent(leftNextInitialParent);
             LeftNext.transform.localPosition = leftNextInitialPosition;
             LeftNext.transform.localRotation = leftNextInitialRotation;
             LeftNext.transform.localScale = Vector3.one;
         }
-        
-        if (RightNext != null) {
+
+        if (RightNext != null)
+        {
             RightNext.transform.SetParent(rightNextInitialParent);
             RightNext.transform.localPosition = rightNextInitialPosition;
             RightNext.transform.localRotation = rightNextInitialRotation;
             RightNext.transform.localScale = Vector3.one;
         }
-        
-        Debug.Log("✓ Reset LeftNext & RightNext to initial transforms");
+
+        //Debug.Log("✓ Reset LeftNext & RightNext to initial transforms");
     }
-    
-    public void UpdateSprites() {
+
+    public void UpdateSprites()
+    {
         LeftNext.sprite = (currentPage > 0 && currentPage <= bookPages.Length) ? bookPages[currentPage - 1] : background;
         RightNext.sprite = (currentPage >= 0 && currentPage < bookPages.Length) ? bookPages[currentPage] : background;
     }
-    
-    public void SetupRightPageDrag() {
+
+    public void SetupRightPageDrag()
+    {
         if (currentPage >= bookPages.Length) return;
 
-        Debug.Log("SetupRightPageDrag");
-        
+        //Debug.Log("SetupRightPageDrag");
+
         Right.gameObject.SetActive(true);
         Right.transform.position = RightNext.transform.position;
         Right.transform.eulerAngles = Vector3.zero;
@@ -109,14 +121,15 @@ public class BookSpriteManager : MonoBehaviour {
         Left.sprite = (currentPage < bookPages.Length) ? bookPages[currentPage] : background;
         Left.transform.SetAsFirstSibling();
 
-        
+
         if (enableShadowEffect) Shadow.gameObject.SetActive(true);
     }
-    
-    public void SetupLeftPageDrag() {
+
+    public void SetupLeftPageDrag()
+    {
         if (currentPage <= 0) return;
-        
-        Debug.Log("SetupLeftPageDrag");
+
+        //Debug.Log("SetupLeftPageDrag");
 
         Left.gameObject.SetActive(true);
         Left.rectTransform.pivot = new Vector2(1, 0);
@@ -134,12 +147,13 @@ public class BookSpriteManager : MonoBehaviour {
         RightNext.transform.SetAsFirstSibling();
         if (enableShadowEffect) ShadowLTR.gameObject.SetActive(true);
     }
-    
-    public void FlipForward(FlipMode flipMode) {
 
-        Debug.Log("Flip Forward");
+    public void FlipForward(FlipMode flipMode)
+    {
+
+        //Debug.Log("Flip Forward");
         mode = flipMode;
-        
+
         if (mode == FlipMode.RightToLeft)
             currentPage += 2;
         else
@@ -152,40 +166,60 @@ public class BookSpriteManager : MonoBehaviour {
         Right.gameObject.SetActive(false);
         Right.transform.SetParent(transform, true);
         RightNext.transform.SetParent(transform, true);
-        
+
         // Reset về vị trí ban đầu sau khi flip
         ResetNextPagesToInitial();
-        
+
         UpdateSprites();
         Shadow.gameObject.SetActive(false);
         ShadowLTR.gameObject.SetActive(false);
     }
-    
-    public void ResetPagesAfterTweenBack(FlipMode flipMode, Transform bookPanel) {
+
+    public void ResetPagesAfterTweenBack(FlipMode flipMode, Transform bookPanel)
+    {
         mode = flipMode;
-        
+
         UpdateSprites();
-        
-        if (mode == FlipMode.RightToLeft) {
+
+        if (mode == FlipMode.RightToLeft)
+        {
             RightNext.transform.SetParent(bookPanel);
             Right.transform.SetParent(bookPanel);
-        } else {
+        }
+        else
+        {
             LeftNext.transform.SetParent(bookPanel);
             Left.transform.SetParent(bookPanel);
         }
-        
+
         Left.gameObject.SetActive(false);
         Right.gameObject.SetActive(false);
-        
+
         // Reset về vị trí ban đầu sau khi tween back
         ResetNextPagesToInitial();
     }
-    
-    public bool CanFlipRight() {
+
+    public bool CanFlipRight()
+    {
         return currentPage < bookPages.Length - 1;
     }
-    
-    public bool CanFlipLeft() {
+
+    public bool CanFlipLeft()
+    {
         return currentPage > 2;
     }
+    // This updates the page display (left-right sprites)
+    public void ShowPage(int pageIndex)
+    {
+        CurrentPage = pageIndex;
+        UpdateSprites();
+    }
+
+    // Ensure the visual elements update correctly (shadows, clipping, etc.)
+    public void RefreshBookState()
+    {
+        UpdateSprites();
+        //UpdateShadows();
+    }
+
 }

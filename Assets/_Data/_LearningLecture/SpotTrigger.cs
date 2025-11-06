@@ -2,6 +2,7 @@ using DreamClass.LearningLecture;
 using DreamClass.Lecture;
 using Unity.VisualScripting;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace DreamClass.LearingLecture
 {
@@ -12,6 +13,8 @@ namespace DreamClass.LearingLecture
         [SerializeField] private GameObject spotTag;
         [SerializeField] private LearningModeManager learningModeManager;
         [SerializeField] private OVRButtonToggleSelf menuToggleSelf;
+
+        [SerializeField] private List<GameObject> menuLectures;
         [SerializeField] private string triggerTag = "Player";
 
         private bool isInside = false;
@@ -35,7 +38,7 @@ namespace DreamClass.LearingLecture
         protected virtual void OnTriggerEnter(Collider other)
         {
             if (!other.CompareTag(triggerTag)) return;
-            if (isInside) return; // Prevent repeated calls
+            if (isInside) return;
 
             isInside = true;
 
@@ -55,7 +58,8 @@ namespace DreamClass.LearingLecture
                 menuToggleSelf.toggleOnPress = true;
                 menuToggleSelf.gameObject.SetActive(true);
             }
-                
+
+
         }
 
         protected virtual void OnTriggerExit(Collider other)
@@ -69,11 +73,26 @@ namespace DreamClass.LearingLecture
             if (!spotTag.activeSelf)
                 spotTag.SetActive(true);
 
-            if(learningModeManager != null)
+            if (learningModeManager != null)
+            {
+                if (learningModeManager.currentMode == LearningModeManager.LearningMode.OnTap)
+                {
+                    learningModeManager.SetMode(LearningModeManager.LearningMode.None);
+                }
                 learningModeManager.HideAllPanels();
+            }
 
-            if(menuToggleSelf != null)
+
+            if (menuToggleSelf != null)
                 menuToggleSelf.toggleOnPress = false;
+
+            // Hide menuLectures on exit
+            foreach (var menu in menuLectures)
+            {
+                if (menu != null)
+                    menu.SetActive(false); // Hide the menu
+            }
         }
+
     }
 }

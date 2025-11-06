@@ -49,6 +49,9 @@ public class BookVR : MonoBehaviour
     [Header("Sprite Manager")]
     public BookSpriteManager spriteManager;
 
+    [Header("Auto Flip Page")]
+    public AutoFlipVR autoFlipVR;
+
     public int CurrentPage
     {
         get { return spriteManager != null ? spriteManager.CurrentPage : 0; }
@@ -345,14 +348,14 @@ public class BookVR : MonoBehaviour
         }
 
         lastHandHitPoint = worldPoint;
-        
+
     }
 
     void OnHandRelease()
     {
         isPinchGrabbing = false;
         ReleasePage();
-        
+
     }
 
     void HandleControllerInput()
@@ -404,7 +407,7 @@ public class BookVR : MonoBehaviour
                     if (!spriteManager.CanFlipRight()) return;
                     isGripping = true;
                     OnVRDragRightPage(hit.point);
-                    
+
                 }
                 else
                 {
@@ -412,7 +415,7 @@ public class BookVR : MonoBehaviour
                     if (!spriteManager.CanFlipLeft()) return;
                     isGripping = true;
                     OnVRDragLeftPage(hit.point);
-                    
+
                 }
             }
         }
@@ -816,4 +819,22 @@ public class BookVR : MonoBehaviour
         if (onFinish != null)
             onFinish();
     }
+
+    // Set page instantly without animation
+    public void SetPageInstant(int page)
+    {
+        // Clamp to valid range
+        page = Mathf.Clamp(page, 0, TotalPageCount - 1);
+
+        CurrentPage = page;
+
+        // Update the displayed sprites
+        spriteManager.ShowPage(CurrentPage);
+
+        // Force UI refresh
+        spriteManager.RefreshBookState();
+
+        //Debug.Log($"[BookVR] Instantly set page to: {CurrentPage}");
+    }
+
 }
