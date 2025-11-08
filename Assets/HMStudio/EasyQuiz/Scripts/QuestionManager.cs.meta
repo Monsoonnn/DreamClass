@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 23fe590a232660445a0b997fcabd76dc
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 310768
+  packageName: Easy Quiz - Quick data survey
+  packageVersion: 1.0.0
+  assetPath: Assets/HMStudio/EasyQuiz/Scripts/QuestionManager.cs
+  uploadId: 734176

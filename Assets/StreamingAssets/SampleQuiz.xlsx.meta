@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: d9a09cd5b99569e4abb9ba7a18439cbb
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 310768
+  packageName: Easy Quiz - Quick data survey
+  packageVersion: 1.0.0
+  assetPath: Assets/StreamingAssets/SampleQuiz.xlsx
+  uploadId: 734176

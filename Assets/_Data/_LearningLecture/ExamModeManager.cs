@@ -1,26 +1,34 @@
 using UnityEngine;
 using UnityEngine.Playables;
 using com.cyborgAssets.inspectorButtonPro;
+using HMStudio.EasyQuiz;  // Import namespace quiz
 
 namespace DreamClass.LearningLecture
 {
     public class ExamModeManager : NewMonobehavior
     {
         [SerializeField] private PlayableDirector startAnimation;
+        [SerializeField] private QuestionManager questionManager;
+
+        [SerializeField] private ExamUIManager examUIManager;
+
+        [SerializeField] private GameObject quizObject;
         
         private bool isExamActive = false;
-
 
         protected override void Start()
         {
             base.Start();
             EndExam();
+            RestartAnimation(); 
+
+            // Subscribe event hoàn thành quiz
+            if (questionManager != null)
+            {
+                questionManager.OnQuizComplete += ReceiveQuizResult;
+            }
         }
 
-
-        /// <summary>
-        /// Bắt đầu chế độ Exam - Chạy animation start
-        /// </summary>
         [ProButton]
         public void StartExam()
         {
@@ -32,18 +40,50 @@ namespace DreamClass.LearningLecture
 
             isExamActive = true;
             
-            // Reset animation về đầu và chạy
+            // Reset và play animation
             startAnimation.time = 0;
             startAnimation.Play();
+            
+            // Chờ animation hoàn thành rồi start quiz
+            startAnimation.stopped += OnStartAnimationCompleted;
             
             Debug.Log("Exam Started - Animation Playing");
         }
 
-        /// <summary>
-        /// Kết thúc Exam - Reset animation về trạng thái ban đầu
-        /// </summary>
+        private void OnStartAnimationCompleted(PlayableDirector director)
+        {
+            startAnimation.stopped -= OnStartAnimationCompleted;  
+        }
+
+
+        [ProButton]
+        public void StartQuiz()
+        {
+             if (questionManager != null)
+            {
+                quizObject.SetActive(true);
+                questionManager.StartQuiz();  
+            }
+            else
+            {
+                Debug.LogError("QuestionManager not assigned!");
+            }
+        }
+
         [ProButton]
         public void EndExam()
+        {
+
+            quizObject.SetActive(false);
+            examUIManager.HideAllPanels();
+
+            Debug.Log("Exam Ended - Animation Reset to Initial State");
+        }
+
+        public bool IsExamActive() => isExamActive;
+
+
+        private void RestartAnimation()
         {
             if (startAnimation == null)
             {
@@ -53,23 +93,36 @@ namespace DreamClass.LearningLecture
 
             isExamActive = false;
             
-            // Dừng animation
             startAnimation.Stop();
-            
-            // Reset về time = 0 (trạng thái ban đầu)
             startAnimation.time = 0;
-            
-            // Evaluate để áp dụng trạng thái ban đầu
             startAnimation.Evaluate();
-            
-            Debug.Log("Exam Ended - Animation Reset to Initial State");
+        }
+        // Xử lý result từ quiz
+        private void ReceiveQuizResult(float score)
+        {
+            Debug.Log($"Quiz Completed! Score: {score:P2}");  // Format % (ví dụ: 75.00%)
+
+            // Kiểm tra pass/fail (tùy chỉnh threshold)
+            if (score >= 0.7f)
+            {
+                Debug.Log("Pass! Congratulations.");
+                // Có thể trigger animation pass hoặc event khác
+            }
+            else
+            {
+                Debug.Log("Fail. Try again.");
+                // Trigger retry hoặc fail animation
+            }
+
+            EndExam();  // Tự động end exam sau khi có result
         }
 
-        /// <summary>
-        /// Kiểm tra trạng thái Exam
-        /// </summary>
-        public bool IsExamActive() => isExamActive;
-
-
+        protected virtual void OnDestroy()
+        {
+            if (questionManager != null)
+            {
+                questionManager.OnQuizComplete -= ReceiveQuizResult;
+            }
+        }
     }
 }

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 206020a05d400164289da16239a8d736
+timeCreated: 1458221532
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 310768
+  packageName: Easy Quiz - Quick data survey
+  packageVersion: 1.0.0
+  assetPath: Assets/HMStudio/EasyQuiz/Texture/MainCameraViewTexture.renderTexture
+  uploadId: 734176

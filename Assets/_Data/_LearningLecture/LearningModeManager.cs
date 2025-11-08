@@ -19,7 +19,7 @@ namespace DreamClass.Lecture
         [Header("Current Mode")]
         public LearningMode currentMode;
 
-        public ExamModeManager examManager;
+        public ExamUIManager examUIManager;
 
         public void SetMode(LearningMode mode)
         {
@@ -31,7 +31,7 @@ namespace DreamClass.Lecture
         public void SetKiemTraMode()
         {
             SetMode(LearningMode.KiemTra);
-            examManager.StartExam();
+            examUIManager.ShowSubjectSelection();
         } 
         public LearningMode GetMode() => currentMode;
         #endregion

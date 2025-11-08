@@ -80,52 +80,6 @@
         "step2",
         "step3"
       ]
-    },
-    {
-      "questionId": "Q4_3D_ID",
-      "questionType": "3DIdentification",
-      "prompt": "Xác định các bộ phận trong thí nghiệm giao thoa sóng nước (Hình 12.1).",
-      "modelAsset": "Prefabs/ThiNghiem_GiaoThoaSong",
-      "hotspots": [
-        {
-          "id": "h1",
-          "coordinates": {
-            "x": 0.5,
-            "y": 1.2,
-            "z": 0.1
-          }
-        },
-        {
-          "id": "h2",
-          "coordinates": {
-            "x": 0.0,
-            "y": 0.5,
-            "z": 0.0
-          }
-        },
-        {
-          "id": "h3",
-          "coordinates": {
-            "x": 0.5,
-            "y": 2.0,
-            "z": 0.1
-          }
-        }
-      ],
-      "subQuestions": [
-        {
-          "prompt": "Hãy chỉ vào 'Cần rung có gắn hai quả cầu S1, S2'.",
-          "correctHotspotId": "h1"
-        },
-        {
-          "prompt": "Hãy chỉ vào 'Đèn chiếu'.",
-          "correctHotspotId": "h3"
-        },
-        {
-          "prompt": "Hãy chỉ vào 'Khay nước'.",
-          "correctHotspotId": "h2"
-        }
-      ]
     }
   ]
 }

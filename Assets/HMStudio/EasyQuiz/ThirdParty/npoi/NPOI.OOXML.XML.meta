@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bca88ab818993004ea87e6f9613dafd8
+timeCreated: 1455499659
+licenseType: Store
+TextScriptImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 310768
+  packageName: Easy Quiz - Quick data survey
+  packageVersion: 1.0.0
+  assetPath: Assets/HMStudio/EasyQuiz/ThirdParty/npoi/NPOI.OOXML.XML
+  uploadId: 734176

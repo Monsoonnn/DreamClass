@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 081b1a7ad8e21eb4abd07c473d991035, type: 3}
+  m_Name: QuizDatabase
+  m_EditorClassIdentifier: 
+  subjects:
+  - Name: "V\u1EADt l\xFD"
+    Chapters:
+    - Name: "Ch\u01B0\u01A1ng 1"
+      ExcelPath: Assets/_Data/_LearningLecture/QuizDataBase/Chapter1.xlsx
+    - Name: "Ch\u01B0\u01A1ng 2"
+      ExcelPath: Assets/_Data/_LearningLecture/QuizDataBase/Chapter2.xlsx
+    - Name: "Ch\u01B0\u01A1ng 3"
+      ExcelPath: Assets/_Data/_LearningLecture/QuizDataBase/Chapter3.xlsx
+    - Name: "Ch\u01B0\u01A1ng 4"
+      ExcelPath: Assets/_Data/_LearningLecture/QuizDataBase/Chapter4.xlsx
