@@ -44,7 +44,7 @@ namespace DreamClass.QuestSystem
             State = newState;
         }
 
-        public void StartQuest()
+        public virtual void StartQuest()
         {
             if (State == QuestState.NOT_PREMISE)
             {
@@ -105,7 +105,8 @@ namespace DreamClass.QuestSystem
 
                 await ShowNotification();
 
-                Destroy(this.gameObject);
+                this.gameObject.SetActive(false);
+                Destroy(this.gameObject, 2f);
                 Debug.Log($"[QuestCtrl] Quest '{QuestName}' completed!");
             }
             catch (Exception ex) {

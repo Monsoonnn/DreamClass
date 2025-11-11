@@ -52,9 +52,16 @@ namespace DreamClass.NPCCore {
             LookAtTarget(cam.transform);
         }
 
-        public virtual void ResetRotation() {
+        public virtual void ResetRotation()
+        {
             if (Model == null) return;
             Model.localRotation = Quaternion.identity;
+        }
+        
+        public virtual void Rotation(Quaternion rotation)
+        {
+            if(Model == null) return;
+            Model.localRotation = rotation;
         }
     }
 }

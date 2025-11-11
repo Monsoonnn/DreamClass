@@ -29,7 +29,7 @@ namespace DreamClass.Locomotion
 
         private Transform playerRoot;
         private Transform centerEye;
-        private UnityEngine.CharacterController characterController;
+        private OVRPlayerController characterController;
         private bool isSubscribed;
         private bool hasPlayerController;
 
@@ -67,7 +67,7 @@ namespace DreamClass.Locomotion
                 // Nếu có OVRPlayerController, nó là root
                 playerRoot = playerController.transform;
                 hasPlayerController = true;
-                characterController = playerController.GetComponent<UnityEngine.CharacterController>();
+                characterController = playerController.GetComponent<OVRPlayerController>();
                 
                 if (showDebugLogs)
                     Debug.Log("[SimpleTeleport] Using OVRPlayerController as player root");

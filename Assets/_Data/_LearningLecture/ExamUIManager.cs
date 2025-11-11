@@ -23,6 +23,20 @@ namespace DreamClass.LearningLecture
         public GameObject subjectSelectionPanel;
         public GameObject chapterSelectionPanel;
 
+        [Header("Canvas Interaction")]
+        public GameObject rayCanvasInteraction;
+        public GameObject pokeCanvasInteraction;
+
+        private void SetCanvasInteractionActive(bool active)
+        {
+            if (rayCanvasInteraction != null)
+                rayCanvasInteraction.SetActive(active);
+
+            if (pokeCanvasInteraction != null)
+                pokeCanvasInteraction.SetActive(active);
+        }
+
+
         private GameObject currentActivePanel;
 
         public void SetCurrentSubject(int index)
@@ -74,10 +88,12 @@ namespace DreamClass.LearningLecture
             {
                 targetPanel.SetActive(true);
                 currentActivePanel = targetPanel;
+                 SetCanvasInteractionActive(true);
             }
             else
             {
                 currentActivePanel = null;
+                SetCanvasInteractionActive(false);
             }
         }
         #endregion

@@ -15,3 +15,5 @@ MonoBehaviour:
   questPrefabs:
   - {fileID: 581625922381216332, guid: 1a26df14b2280384ebbdb6fa4500197d, type: 3}
   - {fileID: 1391789915808182964, guid: 71b88de5934c0ae45801899fd01b55cc, type: 3}
+  - {fileID: 5082230844006074832, guid: 682e47d892de3ed4eb16e9807acf24f4, type: 3}
+  - {fileID: 8555122655022811561, guid: 682e47d892de3ed4eb16e9807acf24f4, type: 3}

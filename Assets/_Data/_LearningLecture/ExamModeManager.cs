@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.Playables;
 using com.cyborgAssets.inspectorButtonPro;
 using HMStudio.EasyQuiz;  // Import namespace quiz
+using Characters.TeacherQuang;
+using DreamClass.NPCCore;
 
 namespace DreamClass.LearningLecture
 {
@@ -14,7 +16,11 @@ namespace DreamClass.LearningLecture
 
         [SerializeField] private GameObject quizObject;
         
+        [SerializeField] private NPCManager npcManager;
+
         private bool isExamActive = false;
+
+        private Quaternion rotaionAnimtion;
 
         protected override void Start()
         {
@@ -52,7 +58,9 @@ namespace DreamClass.LearningLecture
 
         private void OnStartAnimationCompleted(PlayableDirector director)
         {
-            startAnimation.stopped -= OnStartAnimationCompleted;  
+            startAnimation.stopped -= OnStartAnimationCompleted;
+            npcManager.CharacterVoiceline.PlayAnimation(TeacherQuang.Call.ToString(), true);
+            rotaionAnimtion = npcManager.Model.rotation;
         }
 
 
@@ -76,6 +84,7 @@ namespace DreamClass.LearningLecture
 
             quizObject.SetActive(false);
             examUIManager.HideAllPanels();
+            // npcManager.ResetRotation();
 
             Debug.Log("Exam Ended - Animation Reset to Initial State");
         }
@@ -100,18 +109,22 @@ namespace DreamClass.LearningLecture
         // Xử lý result từ quiz
         private void ReceiveQuizResult(float score)
         {
-            Debug.Log($"Quiz Completed! Score: {score:P2}");  // Format % (ví dụ: 75.00%)
+            Debug.Log($"Quiz Completed! Score: {score:P2}");  
 
-            // Kiểm tra pass/fail (tùy chỉnh threshold)
-            if (score >= 0.7f)
+            npcManager.LookAtPlayer();
+
+            if (score <= 0.7f)
             {
-                Debug.Log("Pass! Congratulations.");
-                // Có thể trigger animation pass hoặc event khác
+                npcManager.CharacterVoiceline.PlayAnimation(TeacherQuang.Fail.ToString(), true);
+            }
+            else if (score > 0.7f && score <= 1f)
+            {
+                npcManager.CharacterVoiceline.PlayAnimation(TeacherQuang._70Pass.ToString(), true);
             }
             else
             {
-                Debug.Log("Fail. Try again.");
-                // Trigger retry hoặc fail animation
+                npcManager.CharacterVoiceline.PlayAnimation(TeacherQuang._100Pass.ToString(), true);
+                
             }
 
             EndExam();  // Tự động end exam sau khi có result

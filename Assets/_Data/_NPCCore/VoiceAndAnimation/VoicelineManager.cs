@@ -19,7 +19,11 @@ namespace NPCCore.Voiceline {
         }
 
         protected virtual void LoadAudioSource() {
-            if (audioSource != null) return;
+            if (audioSource != null)
+            {
+                if (audioSource.clip != null) audioSource.Stop();
+                return;
+            }
             audioSource = GetComponent<AudioSource>();
         }
 

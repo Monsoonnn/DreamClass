@@ -53,6 +53,8 @@ namespace NPCCore.Voiceline {
             // Wait until voice finishes
             await Task.Delay((int)(waitTime * 1000));
 
+            audioSource.Stop(); // Clear audio source
+
             Debug.Log($"[Voiceline] Finished {voiceType}, returned to Idle.");
         }
     }

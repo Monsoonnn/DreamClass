@@ -25,7 +25,7 @@
             "steps": [
                 {
                     "stepId": "S001",
-                    "isComplete": true
+                    "isComplete": false
                 }
             ]
         },
@@ -49,6 +49,60 @@
                     "isComplete": false
                 }
             ]
+        },
+        {
+            "questId": "Q101",
+            "name": "Thực hành: Nhiệt lượng riêng của nước",
+            "description": "Tiến hành đo nhiệt lượng để xác định nhiệt dung riêng của nước.",
+            "rewardGold": 80,
+            "state": "NOT_START",
+            "steps": [
+                {
+                    "stepId": "S101",
+                    "description": "Chuẩn bị nước, nhiệt kế và nguồn nhiệt.",
+                    "isComplete": false
+                },
+                {
+                    "stepId": "S102",
+                    "description": "Đo khối lượng nước trong cốc và ghi lại.",
+                    "isComplete": false
+                },
+                {
+                    "stepId": "S103",
+                    "description": "Đun nóng và đo sự thay đổi nhiệt độ theo thời gian.",
+                    "isComplete": false
+                },
+                {
+                    "stepId": "S104",
+                    "description": "Tính nhiệt lượng và so sánh với lý thuyết.",
+                    "isComplete": false
+                }
+            ]
+        },
+        {
+            "questId": "Q102",
+            "name": "Thực hành: Nội năng của khí",
+            "description": "Quan sát sự thay đổi nội năng khi nén khí trong xilanh.",
+            "rewardGold": 85,
+            "state": "NOT_START",
+            "steps": [
+                {
+                    "stepId": "S301",
+                    "description": "Chuẩn bị xilanh và nhiệt kế tiếp xúc.",
+                    "isComplete": false
+                },
+                {
+                    "stepId": "S302",
+                    "description": "Nén khí nhanh và quan sát sự tăng nhiệt độ.",
+                    "isComplete": true
+                },
+                {
+                    "stepId": "S303",
+                    "description": "Giải thích vì sao nội năng tăng khi thực hiện công lên khí.",
+                    "isComplete": false
+                }
+            ]
         }
     ]
 }
+

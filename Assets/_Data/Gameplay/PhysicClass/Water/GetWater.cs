@@ -50,7 +50,7 @@ public class GetWater : NewMonobehavior {
     }
 
     private void OnTriggerEnter( Collider other ) {
-        Debug.Log("OnTriggerEnter");
+        //Debug.Log("OnTriggerEnter");
         
         Bottle target = other.GetComponent<Bottle>();
         if (target == null) return;
@@ -74,7 +74,7 @@ public class GetWater : NewMonobehavior {
     }
 
     private void OnTriggerExit( Collider other ) {
-        Debug.Log("OnTriggerExit");
+        //Debug.Log("OnTriggerExit");
         if (bottle == null || other.gameObject != bottle.gameObject) return;
 
         if (fillRoutine != null) {
