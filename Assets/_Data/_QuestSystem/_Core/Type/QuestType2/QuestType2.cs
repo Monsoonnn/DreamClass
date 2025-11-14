@@ -1,110 +1,147 @@
 using DreamClass.QuestSystem;
 using System.Threading.Tasks;
 using UnityEngine;
-
-/// <summary>
-/// Quest Type 2: Kiểm soát Experiment và Guide Steps
-/// Tích hợp với GuideStepManager và GameController
-/// </summary>
 namespace DreamClass.QuestSystem
 {
     public class QuestType2 : QuestCtrl
-{
-    [Header("Experiment Control")]
-    [SerializeField] private string experimentID; // Ví dụ: "NHIET_DUNG_NUOC"
-    [SerializeField] private GameController experimentController;
-    
-    [Header("Guide Integration")]
-    [SerializeField] private string guideID; // ID của Guide tương ứng
-    [SerializeField] private bool autoLoadGuide = true;
-
-    protected override void LoadComponents()
     {
-        base.LoadComponents();
-        LoadExperimentController();
-    }
+        [Header("Experiment Control")]
+        [SerializeField] private string experimentID;
+        [SerializeField] private GameController experimentController;
 
-    protected virtual void LoadExperimentController()
-    {
-        if (experimentController != null) return;
-        
-        // Tìm Experiment controller theo ID
-        GameController[] controllers = GuideStepManager.Instance.GameControllerList.ToArray();
-        foreach (var ctrl in controllers)
+        [Header("Guide Integration")]
+        [SerializeField] private string guideID;
+        [SerializeField] private bool autoLoadGuide = true;
+
+        protected override void LoadComponents()
         {
-            if (ctrl.GetExperimentName() == experimentID)
+            base.LoadComponents();
+            LoadExperimentController();
+        }
+
+        protected virtual void LoadExperimentController()
+        {
+            if (experimentController != null) return;
+
+            GameController[] controllers = GuideStepManager.Instance.GameControllerList.ToArray();
+            foreach (var ctrl in controllers)
             {
-                experimentController = ctrl;
-                Debug.Log($"[QuestType2] Found experiment controller: {experimentID}");
-                break;
+                if (ctrl.GetExperimentName() == experimentID)
+                {
+                    experimentController = ctrl;
+                    Debug.Log($"[QuestType2] Found experiment controller: {experimentID}");
+                    break;
+                }
+            }
+
+            if (experimentController == null)
+            {
+                Debug.LogWarning($"[QuestType2] Experiment controller '{experimentID}' not found!");
             }
         }
 
-        if (experimentController == null)
+        public override void StartQuest()
         {
-            Debug.LogWarning($"[QuestType2] Experiment controller '{experimentID}' not found!");
-        }
-    }
+           
+            // Đăng ký quest này với GuideStepManager
+            GuideStepManager.Instance?.SetCurrentQuest(this);
 
-    public override void StartQuest()
-    {
-        base.StartQuest();
-        // Load Guide nếu cần
-        if (autoLoadGuide && !string.IsNullOrEmpty(guideID))
-        {
-            GuideStepManager.Instance?.SetCurrentGuide(guideID);
-            Debug.Log($"[QuestType2] Loaded guide: {guideID}");
-        }
+            // Load Guide
+            if (autoLoadGuide && !string.IsNullOrEmpty(guideID))
+            {
+                GuideStepManager.Instance?.SetCurrentGuide(guideID);
+                Debug.Log($"[QuestType2] Loaded guide: {guideID}");
+            }
 
-        // Setup experiment
-        if (experimentController != null)
-        {
-            //experimentController.SetupExperiment();
-            Debug.Log($"[QuestType2] Setup experiment: {experimentID}");
-        }
+            // Setup experiment
+            if (experimentController != null)
+            {
+                experimentController.SetupExperiment();
+                Debug.Log($"[QuestType2] Setup experiment: {experimentID}");
+            }
 
-        base.StartQuest();
-    }
-
-    protected override async Task OnBeforeReward()
-    {
-        // Dừng experiment trước khi trao thưởng
-        if (experimentController != null 
-            //&& experimentController.IsExperimentRunning()
-        )
-        {
-            experimentController.StopExperiment();
-            Debug.Log($"[QuestType2] Stopped experiment before reward");
+            base.StartQuest();
+            
         }
 
-        await Task.CompletedTask;
-    }
-
-    protected override async Task OnAfterReward()
-    {
-        // Restart guide nếu muốn
-        if (GuideStepManager.Instance != null)
+        /// <summary>
+        /// Callback khi quest được restart từ GuideStepManager
+        /// </summary>
+        private void OnQuestRestarted()
         {
-            // GuideStepManager.Instance.RestartGuide();
+            Debug.Log($"[QuestType2] Quest restarted callback");
+
+            ResetQuestVariables();
         }
 
-        await base.OnAfterReward();
-    }
+        /// <summary>
+        /// Override để reset các biến specific của quest
+        /// </summary>
+        protected virtual void ResetQuestVariables()
+        {
+            this.SetComplete(false);
+            State = QuestState.NOT_START;
 
-    // Utility methods để các Step có thể gọi
-    public void CompleteGuideStep(string stepID)
-    {
-        GuideStepManager.Instance?.CompleteStep(stepID);
-    }
+            // Reset step progress
+            for (int i = 0; i < steps.Count; i++)
+            {
+                steps[i].IsComplete = false;
+            }
 
-    public void ActivateGuideStep(string stepID)
-    {
-        GuideStepManager.Instance?.ActivateStep(stepID);
-    }
+            currentStepIndex = 0;
+            steps[currentStepIndex].StartStep();
 
-    public GameController GetExperimentController()
-    {
-        return experimentController;
+        }
+
+        protected override async Task OnBeforeReward()
+        {
+            if (experimentController != null && experimentController.IsExperimentRunning())
+            {
+                experimentController.StopExperiment();
+                Debug.Log($"[QuestType2] Stopped experiment before reward");
+            }
+
+            await Task.CompletedTask;
+        }
+
+        protected override async Task OnAfterReward()
+        {
+            await base.OnAfterReward();
+        }
+
+        // Utility methods
+        public void CompleteGuideStep(string stepID)
+        {
+            GuideStepManager.Instance?.CompleteStep(stepID);
+        }
+
+        public void ActivateGuideStep(string stepID)
+        {
+            GuideStepManager.Instance?.ActivateStep(stepID);
+        }
+
+        public GameController GetExperimentController()
+        {
+            return experimentController;
+        }
+
+        public string GetExperimentID()
+        {
+            return experimentID;
+        }
+
+        public string GetGuideID()
+        {
+            return guideID;
+        }
+
+        // Cleanup
+        private void OnDestroy()
+        {
+            if (experimentController != null)
+            {
+                experimentController.StopAllTracking();
+            }
+        }
     }
-}
 }

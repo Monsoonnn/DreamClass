@@ -313,9 +313,9 @@ public class ExperimentQuestStep : QuestStep
         {
             expController.StopAllTracking();
         }
-        
-        UnsubscribeFromGameControllerEvents();
         OnComplete();
+        UnsubscribeFromGameControllerEvents();
+        
     }
 
     /// <summary>

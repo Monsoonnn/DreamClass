@@ -14,18 +14,19 @@ public abstract class GameController : NewMonobehavior {
     public event Action<bool> OnExperimentStateChanged; 
     public event Action<bool> OnProgressTracking;
     public event Action OnExperimentCompleted;
+    public event Action OnExperimentReset; // NEW: Event khi reset
     
-    // NEW: Event cho Guide Step tracking
+    // Event cho Guide Step tracking
     public event Action<string, bool> OnGuideStepStatusChanged;
 
-    // NEW: Tracking configuration
+    // Tracking configuration
     private bool isTrackingActive = false;
     private HashSet<string> trackedStepIDs = new HashSet<string>();
-    private Dictionary<string, bool> lastStepStatus = new Dictionary<string, bool>(); // Cache status
+    private Dictionary<string, bool> lastStepStatus = new Dictionary<string, bool>();
     private Coroutine trackingCoroutine;
     
     [Header("Tracking Settings")]
-     private float trackingInterval = 0.5f; 
+    private float trackingInterval = 0.5f; 
 
     private Coroutine progressCoroutine;
 
@@ -44,7 +45,7 @@ public abstract class GameController : NewMonobehavior {
     public virtual void SetupExperiment()
     {
         this.transform.parent.gameObject.SetActive(true);
-        Debug.Log($"[GameController] SetupExperiment not implemented for {GetExperimentName()}");
+        Debug.Log($"[GameController] SetupExperiment for {GetExperimentName()}");
     }
 
     public virtual void StartExperiment() {
@@ -60,6 +61,49 @@ public abstract class GameController : NewMonobehavior {
         this.transform.parent.gameObject.SetActive(false);
         Debug.Log($"[GameController] Stopped experiment: {GetExperimentName()}");
         OnExperimentStateChanged?.Invoke(false);
+    }
+
+    /// <summary>
+    /// NEW: Reset toàn bộ experiment về trạng thái ban đầu và setup lại
+    /// </summary>
+    public virtual void ResetExperiment()
+    {
+        Debug.Log($"[GameController] Resetting experiment: {GetExperimentName()}");
+
+        // 1. Stop experiment nếu đang chạy
+        if (isExperimentRunning)
+        {
+            isExperimentRunning = false;
+            OnExperimentStateChanged?.Invoke(false);
+        }
+
+        // 2. Stop tất cả tracking
+        StopAllTracking();
+
+        // 3. Clear tracking data
+        trackedStepIDs.Clear();
+        lastStepStatus.Clear();
+
+        // 4. Call virtual method để subclass reset các biến riêng
+        OnResetExperimentInternal();
+
+        // 5. Trigger event
+        OnExperimentReset?.Invoke();
+
+        Debug.Log($"[GameController] Experiment reset and setup complete: {GetExperimentName()}");
+    }
+
+    /// <summary>
+    /// Virtual method để các class con override
+    /// Override method này để reset các biến specific của experiment
+    /// </summary>
+    protected virtual void OnResetExperimentInternal()
+    {
+        // Override trong class con (Experiment) để reset:
+        // - Nhiệt độ
+        // - Vị trí vật phẩm
+        // - Trạng thái UI
+        // - Các biến khác...
     }
 
     public abstract string GetExperimentName();
@@ -80,7 +124,7 @@ public abstract class GameController : NewMonobehavior {
         OnExperimentCompleted?.Invoke();
     }
 
-    // ===== NEW TRACKING METHODS =====
+    // ===== TRACKING METHODS =====
     
     /// <summary>
     /// Bắt đầu tracking một hoặc nhiều Guide Steps
@@ -127,6 +171,7 @@ public abstract class GameController : NewMonobehavior {
     {
         isTrackingActive = false;
         trackedStepIDs.Clear();
+        lastStepStatus.Clear();
         
         if (trackingCoroutine != null)
         {
@@ -149,18 +194,15 @@ public abstract class GameController : NewMonobehavior {
         {
             if (guideStepManager != null && guideStepManager.CurrentGuideRuntime != null)
             {
-                // Tạo copy của HashSet để tránh modification exception
                 string[] stepIDsSnapshot = new string[trackedStepIDs.Count];
                 trackedStepIDs.CopyTo(stepIDsSnapshot);
                 
                 foreach (string stepID in stepIDsSnapshot)
                 {
-                    // Check xem step còn trong tracking set không (có thể đã bị remove)
                     if (!trackedStepIDs.Contains(stepID)) continue;
                     
                     bool isCompleted = CheckGuideStepStatus(stepID);
                     
-                    // Notify về status change
                     OnGuideStepStatusChanged?.Invoke(stepID, isCompleted);
                 }
             }

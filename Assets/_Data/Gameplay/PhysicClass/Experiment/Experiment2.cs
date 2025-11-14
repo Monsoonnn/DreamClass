@@ -10,7 +10,6 @@ public class Experiment2 : GameController {
     
 
     private float currentTemp;
-    private bool isRunning;
     private Coroutine experimentRoutine;
 
 
@@ -21,7 +20,7 @@ public class Experiment2 : GameController {
             StopCoroutine(experimentRoutine);
 
         resultBook.Restart();
-        isRunning = true;
+        isExperimentRunning = true;
         currentTemp = 25f;
 
         experimentRoutine = StartCoroutine(RunExperiment());
@@ -29,15 +28,17 @@ public class Experiment2 : GameController {
 
     [ProButton]
     public override void StopExperiment() {
-        isRunning = false;
+        isExperimentRunning = false;
         if (experimentRoutine != null)
             StopCoroutine(experimentRoutine);
+        NotifyExperimentCompleted();
         experimentRoutine = null;
+        Debug.Log($"[Experiment2] {this.gameObject.name} Experiment stopped!");
     }
 
     private IEnumerator RunExperiment() {
         float randomScaleTemp = Random.Range(0.8f, 5f);
-        while (isRunning) {
+        while (isExperimentRunning) {
             // Đọc thể tích hiện tại (0–100 ml)
             float volume = xiLanhController.CurrentVolume;
 

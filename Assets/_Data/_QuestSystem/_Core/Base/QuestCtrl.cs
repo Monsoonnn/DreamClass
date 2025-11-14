@@ -20,8 +20,12 @@ namespace DreamClass.QuestSystem
         [Header("Runtime State")]
         public QuestState State = QuestState.NOT_START;
 
-        private int currentStepIndex = 0;
+        public int currentStepIndex = 0;
+
+
         public bool IsComplete { get; private set; }
+
+
 
         [Header("Reference")]
         private TMP_Text titleText;
@@ -43,6 +47,10 @@ namespace DreamClass.QuestSystem
         {
             State = newState;
         }
+        public void SetComplete(bool isComplete)
+        {
+            IsComplete = isComplete;
+        }
 
         public virtual void StartQuest()
         {
@@ -60,10 +68,10 @@ namespace DreamClass.QuestSystem
 
             IsComplete = false;
             currentStepIndex = 0;
-            steps[currentStepIndex].StartStep();
             State = QuestState.IN_PROGRESS;
+            steps[currentStepIndex].StartStep();
+  
 
-            Debug.Log($"[QuestCtrl] Started quest: {QuestName}");
         }
 
         public void UpdateProgress()
@@ -78,13 +86,14 @@ namespace DreamClass.QuestSystem
 
                 if (currentStepIndex < steps.Count)
                 {
+                    Debug.LogWarning($"[QuestCtrl] Step {step.StepId} completed!");
                     steps[currentStepIndex].StartStep();
                 }
                 else
                 {
                     _ = CompleteQuest();
                 }
-            }
+            } 
         }
 
         // Class cha - QuestCtrl

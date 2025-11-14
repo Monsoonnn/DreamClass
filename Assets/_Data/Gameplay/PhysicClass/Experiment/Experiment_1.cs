@@ -46,6 +46,8 @@ public class Experiment : GameController
     public override void SetupExperiment()
     {
         base.SetupExperiment();
+
+        Debug.Log($"[Experiment] Setup experiment: {GetExperimentName()}");
         // Reset all states
         isStart = false;
         voltage = 0f;
@@ -58,8 +60,7 @@ public class Experiment : GameController
         if (bottle != null)
         {
             bottle.UpdateLiquidLevel(initialBottleLiquid);
-            if (bottle.forceHand != null)
-                bottle.forceHand.DetachFromHand();
+            bottle.ResetPosition();
         }
 
         if (calorimeter != null)

@@ -99,9 +99,12 @@ public class ForceHand : NewMonobehavior {
 
         if (IsHandTrackingActive() && handInteractor != null) {
             handInteractor.ForceRelease();
+            grabInteractable.Rigidbody.isKinematic = false;
             Debug.Log("[ForceHand] Detached HandGrabInteractor");
         } else if (IsControllerActive() && controllerInteractor != null) {
+
             controllerInteractor.ForceRelease();
+            grabInteractable.Rigidbody.isKinematic = false;
             Debug.Log("[ForceHand] Detached GrabInteractor");
         } else {
             Debug.LogWarning("[ForceHand] No active interactor to detach!");

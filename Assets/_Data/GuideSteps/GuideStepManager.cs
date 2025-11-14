@@ -2,26 +2,32 @@
 using TMPro;
 using System.Collections.Generic;
 using com.cyborgAssets.inspectorButtonPro;
-using System.ComponentModel;
 using System.Linq;
 using System;
 using System.Collections;
+using DreamClass.QuestSystem;
+using playerCtrl;
+using Unity.VisualScripting;
 
 /// <summary>
 /// Controls the logic flow of guide steps across multiple guides.
-/// Uses runtime copies of GuideData to avoid modifying the original assets.
+/// Quản lý Quest hiện tại và xử lý restart/abandon
 /// </summary>
-public class GuideStepManager : SingletonCtrl<GuideStepManager> {
+public class GuideStepManager : SingletonCtrl<GuideStepManager>
+{
     [Header("UI")]
     public TextMeshProUGUI titleText;
     public TextMeshProUGUI descriptionText;
 
     [SerializeField] List<GameController> gameControllerList = new List<GameController>();
-
     public List<GameController> GameControllerList => gameControllerList;
 
     [Header("Active Game")]
     [SerializeField] public GameController gameController;
+
+    [Header("Current Quest")]
+    [SerializeField] private QuestType2 currentQuest; // Quest đang active
+    public QuestType2 CurrentQuest => currentQuest;
 
     [Header("Guides (Asset References)")]
     [Tooltip("All available guide ScriptableObjects")]
@@ -33,10 +39,10 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager> {
     public string currentStatus;
 
     // Internal runtime data
-    private GuideData currentGuideAsset;          // Reference to original SO
+    private GuideData currentGuideAsset;
     private GuideData currentGuideRuntime;
-    public GuideData CurrentGuideRuntime => currentGuideRuntime;        // Instantiated runtime copy
-    private StepData currentStep;                 // Current active step instance
+    public GuideData CurrentGuideRuntime => currentGuideRuntime;
+    private StepData currentStep;
     private int currentStepIndex = -1;
 
     private Coroutine coroutine = null;
@@ -47,11 +53,261 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager> {
     public event Action<string> OnGuideStarted;
     public event Action<string> OnGuideFinished;
 
-    // <summary>
-    /// UPDATE method CompleteStep() hiện tại
-    /// Thêm event trigger
+    // ===== QUEST MANAGEMENT =====
+
+    /// <summary>
+    /// Set quest hiện tại
+    /// Nếu quest cũ chưa hoàn thành -> Restart và cảnh báo
     /// </summary>
-    public void CompleteStep_Updated(string stepID)
+    public void SetCurrentQuest(QuestType2 newQuest)
+    {
+        // Kiểm tra nếu có quest cũ đang chạy
+        if (currentQuest != null && currentQuest != newQuest)
+        {
+            // Check xem quest cũ đã hoàn thành chưa
+            if (!IsCurrentQuestCompleted())
+            {
+                RestartQuest();
+                AbandonQuest();
+            }
+        }
+
+        // Set quest mới
+        currentQuest = newQuest;
+
+        Debug.Log($"[GuideStepManager] Current quest set to: {newQuest?.gameObject.name}");
+    }
+
+    /// <summary>
+    /// HÀM 1: RESTART QUEST
+    /// - Reset experiment về trạng thái ban đầu
+    /// - Reset guide về bước đầu
+    /// - Quest vẫn active
+    /// </summary>
+    [ProButton]
+    public void RestartQuest()
+    {
+        if (currentQuest == null)
+        {
+            Debug.LogWarning("[GuideStepManager] No current quest to restart!");
+            return;
+        }
+
+        Debug.Log($"[GuideStepManager] ===== RESTARTING QUEST: {currentQuest.gameObject.name} =====");
+
+        // 1. Reset Experiment
+        var experimentController = currentQuest.GetExperimentController();
+        if (experimentController != null)
+        {
+            experimentController.ResetExperiment();
+            experimentController.SetupExperiment();
+        }
+
+        // 2. Reset Guide về bước đầu
+        RestartGuide();
+
+        // 3. Thông báo cho quest biết đã restart
+        currentQuest.SendMessage("OnQuestRestarted", SendMessageOptions.DontRequireReceiver);
+
+        Debug.Log($"[GuideStepManager] Quest restarted successfully");
+    }
+
+    /// <summary>
+    /// HÀM 2: ABANDON QUEST (TỪ BỎ QUEST)
+    /// - Reset toàn bộ
+    /// - SetActive(false) GameObject quest
+    /// - Clear current quest reference
+    /// </summary>
+    [ProButton]
+    public void AbandonQuest()
+    {
+        if (currentQuest == null)
+        {
+            Debug.LogWarning("[GuideStepManager] No current quest to abandon!");
+            return;
+        }
+
+        // Check xem quest cũ đã hoàn thành chưa
+        if (!IsCurrentQuestCompleted())
+        {
+            // Cảnh báo quest cũ chưa hoàn thành
+            string questName = currentQuest.gameObject.name;
+            VRAlertInstance.Instance?.CreateAlerts(new List<string> {
+                    $"Chưa hoàn thành: \n{questName}"
+                }, "Bạn đang từ bỏ nhiệm vụ sau", "Từ bỏ nhiệm vụ sẽ không lưu tiến độ");
+
+            Debug.LogWarning($"[GuideStepManager] Quest '{questName}' not completed yet!");
+
+            // Restart quest cũ
+            RestartQuest();
+        }
+
+
+        Debug.Log($"[GuideStepManager] ===== ABANDONING QUEST: {currentQuest.gameObject.name} =====");
+
+        // 1. Stop experiment
+        var experimentController = currentQuest.GetExperimentController();
+        if (experimentController != null)
+        {
+            if (experimentController.IsExperimentRunning())
+            {
+                experimentController.StopExperiment();
+            }
+            experimentController.StopAllTracking();
+            experimentController.transform.parent.gameObject.SetActive(false);
+        }
+
+        // 2. Reset guide
+        RestartGuide();
+        RestartTitle(0f);
+
+        // 3. Deactivate quest GameObject
+        GameObject questObject = currentQuest.gameObject;
+        currentQuest = null; // Clear reference trước khi deactivate
+        questObject.SetActive(true);
+
+        Debug.Log($"[GuideStepManager] Quest abandoned and deactivated");
+    }
+
+    /// <summary>
+    /// Kiểm tra quest hiện tại đã hoàn thành chưa
+    /// </summary>
+    public bool IsCurrentQuestCompleted()
+    {
+        if (currentQuest == null) return true;
+
+        // Check tất cả steps đã completed chưa
+        if (currentGuideRuntime != null && currentGuideRuntime.steps.Count > 0)
+        {
+            return currentGuideRuntime.steps.All(step => step.isCompleted);
+        }
+
+        return false;
+    }
+
+    // ===== ORIGINAL METHODS =====
+
+    protected override void LoadComponents()
+    {
+        base.LoadComponents();
+        this.LoadAllGameplay();
+    }
+
+    [ProButton]
+    protected virtual void LoadAllGameplay()
+    {
+        if (gameControllerList != null && gameControllerList.Count > 0 && gameControllerList.Any(g => g != null)) return;
+        gameControllerList = FindObjectsByType<GameController>(FindObjectsSortMode.None).ToList();
+    }
+
+    protected override void Start()
+    {
+        // Auto-load first guide for testing if needed
+    }
+
+    [ProButton]
+    protected virtual void LoadGameplay(string id)
+    {
+        GameController tempGc = null;
+        foreach (GameController gc in gameControllerList)
+        {
+            if (gc.GetExperimentName() == id) tempGc = gc;
+        }
+        if (tempGc != null)
+        {
+            if (gameController != null)
+            {
+                gameController.transform.parent.gameObject.SetActive(false);
+                gameController.OnDisableGame();
+            }
+            tempGc.transform.parent.gameObject.SetActive(true);
+            tempGc.OnActiveGame();
+        }
+        else Debug.LogWarning("[GuideStepManager] No game found with ID: " + id);
+    }
+
+    [ProButton]
+    public void SetCurrentGuide(string guideID)
+    {
+        GuideData found = allGuides.Find(g => g.guideID == guideID);
+        if (found == null)
+        {
+            Debug.LogWarning($"[GuideStepManager] Guide '{guideID}' not found!");
+            return;
+        }
+
+        currentGuideRuntime = Instantiate(found);
+        currentGuideAsset = found;
+        currentGuideID = guideID;
+
+        Debug.Log($"[GuideStepManager] Switched to guide: {guideID}");
+        OnGuideStarted?.Invoke(guideID);
+
+        if (currentGuideRuntime.steps.Count > 0)
+            ActivateStep(0);
+    }
+    [ProButton]
+    public void ActivateStep(int index)
+    {
+        if (currentGuideRuntime == null || currentGuideRuntime.steps.Count == 0)
+        {
+            Debug.LogWarning("[GuideStepManager] No active guide!");
+            return;
+        }
+
+        if (index < 0 || index >= currentGuideRuntime.steps.Count)
+        {
+            Debug.LogWarning("[GuideStepManager] Invalid step index!");
+            return;
+        }
+
+        int rollbackIndex = FindLastUncompletedStepBefore(index);
+        if (rollbackIndex != -1 && rollbackIndex < index)
+        {
+            Debug.LogWarning($"[GuideStepManager] Cannot activate step {index}, previous step {rollbackIndex} not completed! Rolling back...");
+            ActivateStep(rollbackIndex);
+            return;
+        }
+
+        StepData step = currentGuideRuntime.steps[index];
+        currentStep = step;
+        currentStepIndex = index;
+        currentStepID = step.stepID;
+        step.isCompleted = false;
+
+        if (titleText != null) titleText.text = step.title;
+        if (descriptionText != null) descriptionText.text = step.description;
+
+        if (step.highlightTarget != null)
+            Debug.Log($"Highlighting target: {step.highlightTarget.name}");
+
+        currentStatus = $"{currentGuideID} / Step {index + 1}: {step.stepID}";
+        Debug.Log($"[GuideStepManager] Activated step: {step.stepID}");
+
+        OnStepActivated?.Invoke(step.stepID);
+    }
+
+    [ProButton]
+    public void ActivateStep(string stepID)
+    {
+        if (currentGuideRuntime == null || currentGuideRuntime.steps.Count == 0)
+        {
+            Debug.LogWarning("[GuideStepManager] No active guide!");
+            return;
+        }
+
+        int index = currentGuideRuntime.steps.FindIndex(s => s.stepID == stepID);
+        if (index == -1)
+        {
+            Debug.LogWarning($"[GuideStepManager] Step '{stepID}' not found in guide '{currentGuideID}'!");
+            return;
+        }
+
+        ActivateStep(index);
+    }
+
+    [ProButton]
+    public void CompleteStep(string stepID)
     {
         if (currentStep == null)
         {
@@ -68,263 +324,7 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager> {
         currentStep.isCompleted = true;
         Debug.Log($"[GuideStepManager] Step completed: {currentStep.stepID}");
 
-        // ===== TRIGGER EVENT =====
         OnStepCompleted?.Invoke(stepID);
-        // =========================
-
-        int nextIndex = FindNextUncompletedStepAfter(currentStepIndex);
-
-        if (nextIndex != -1)
-        {
-            ActivateStep(nextIndex);
-        }
-        else
-        {
-            FinishGuide();
-        }
-    }
-
-    /// <summary>
-    /// UPDATE method ActivateStep() hiện tại
-    /// Thêm event trigger
-    /// </summary>
-    public void ActivateStep_Updated(int index)
-    {
-        if (currentGuideRuntime == null || currentGuideRuntime.steps.Count == 0)
-        {
-            Debug.LogWarning("[GuideStepManager] No active guide!");
-            return;
-        }
-
-        if (index < 0 || index >= currentGuideRuntime.steps.Count)
-        {
-            Debug.LogWarning("[GuideStepManager] Invalid step index!");
-            return;
-        }
-
-        // Ensure previous steps are completed
-        int rollbackIndex = FindLastUncompletedStepBefore(index);
-        if (rollbackIndex != -1 && rollbackIndex < index)
-        {
-            Debug.LogWarning($"[GuideStepManager] Cannot activate step {index}, previous step {rollbackIndex} not completed! Rolling back...");
-            ActivateStep(rollbackIndex);
-            return;
-        }
-
-        StepData step = currentGuideRuntime.steps[index];
-        currentStep = step;
-        currentStepIndex = index;
-        currentStepID = step.stepID;
-        step.isCompleted = false;
-
-        // Update UI
-        if (titleText != null) titleText.text = step.title;
-        if (descriptionText != null) descriptionText.text = step.description;
-
-        // Visual hint
-        if (step.highlightTarget != null)
-            Debug.Log($"Highlighting target: {step.highlightTarget.name}");
-
-        currentStatus = $"{currentGuideID} / Step {index + 1}: {step.stepID}";
-        Debug.Log($"[GuideStepManager] Activated step: {step.stepID}");
-
-        // ===== TRIGGER EVENT =====
-        OnStepActivated?.Invoke(step.stepID);
-        // =========================
-    }
-
-    /// <summary>
-    /// UPDATE method SetCurrentGuide() hiện tại
-    /// Thêm event trigger
-    /// </summary>
-    public void SetCurrentGuide_Updated(string guideID)
-    {
-        GuideData found = allGuides.Find(g => g.guideID == guideID);
-        if (found == null)
-        {
-            Debug.LogWarning($"[GuideStepManager] Guide '{guideID}' not found!");
-            return;
-        }
-
-        // Create a runtime copy
-        currentGuideRuntime = Instantiate(found);
-        currentGuideAsset = found;
-        currentGuideID = guideID;
-
-        Debug.Log($"[GuideStepManager] Switched to guide: {guideID}");
-
-        // ===== TRIGGER EVENT =====
-        OnGuideStarted?.Invoke(guideID);
-        // =========================
-
-        // Start at first step if available
-        if (currentGuideRuntime.steps.Count > 0)
-            ActivateStep(0);
-    }
-
-    /// <summary>
-    /// UPDATE method FinishGuide() hiện tại
-    /// Thêm event trigger
-    /// </summary>
-    private void FinishGuide_Updated()
-    {
-        if (titleText != null)
-            titleText.text = "Hãy về phía quyển sách để xem kết quả nhé!";
-        if (descriptionText != null)
-            descriptionText.text = "Các bước chuẩn bị đã hoàn thành, bạn hãy di về phía quyển sách để xem kết quả được hiển thị.";
-
-        if (gameController is Experiment exp)
-        {
-            exp.StartExperiment();
-        }
-
-        Debug.Log("[GuideStepManager] All steps completed! Experiment started.");
-
-        // ===== TRIGGER EVENT =====
-        OnGuideFinished?.Invoke(currentGuideID);
-        // =========================
-    }
-
-
-    protected override void LoadComponents()
-    {
-        base.LoadComponents();
-        this.LoadAllGameplay();
-    }
-    
-    [ProButton]
-    protected virtual void LoadAllGameplay() {
-        // If list is null, empty, or contains any null/missing elements
-        if (gameControllerList != null || gameControllerList.Count > 0 || gameControllerList.Any(g => g != null)) return;
-        gameControllerList = FindObjectsByType<GameController>(FindObjectsSortMode.None).ToList();
-    }
-
-    protected override void Start() {
-        // // Auto-load first guide for testing
-        // if (allGuides.Count > 0) {
-        //     SetCurrentGuide(allGuides[0].guideID);
-        // }
-
-      /*  if(gameController == null) gameController = GameObject.FindAnyObjectByType<GameController>();*/
-
-    }
-
-    [ProButton]
-    protected virtual void LoadGameplay( string id ) {
-        GameController tempGc = null;
-        foreach (GameController gc in gameControllerList) { 
-            if(gc.GetExperimentName() == id) tempGc = gc;
-        }
-        if (tempGc != null) {
-            if (gameController != null) {
-                gameController.transform.parent.gameObject.SetActive(false);
-                gameController.OnDisableGame();
-            }
-            tempGc.transform.parent.gameObject.SetActive(true);
-            tempGc.OnActiveGame();
-        } 
-        else Debug.LogWarning("[GuideStepManager] No game found with ID: " + id);
-    }
-
-    /// <summary>
-    /// Switches to a new guide by ID, creating a runtime copy to prevent asset modification.
-    /// </summary>
-    [ProButton]
-    public void SetCurrentGuide( string guideID ) {
-        GuideData found = allGuides.Find(g => g.guideID == guideID);
-        if (found == null) {
-            Debug.LogWarning($"[GuideStepManager] Guide '{guideID}' not found!");
-            return;
-        }
-
-        // Create a runtime copy
-        currentGuideRuntime = Instantiate(found);
-        currentGuideAsset = found;
-        currentGuideID = guideID;
-
-        Debug.Log($"[GuideStepManager] Switched to guide: {guideID}");
-
-        // Start at first step if available
-        if (currentGuideRuntime.steps.Count > 0)
-            ActivateStep(0);
-    }
-
-    /// <summary>
-    /// Activates a step by index (within runtime copy).
-    /// </summary>
-    public void ActivateStep( int index ) {
-        if (currentGuideRuntime == null || currentGuideRuntime.steps.Count == 0) {
-            Debug.LogWarning("[GuideStepManager] No active guide!");
-            return;
-        }
-
-        if (index < 0 || index >= currentGuideRuntime.steps.Count) {
-            Debug.LogWarning("[GuideStepManager] Invalid step index!");
-            return;
-        }
-
-        // Ensure previous steps are completed
-        int rollbackIndex = FindLastUncompletedStepBefore(index);
-        if (rollbackIndex != -1 && rollbackIndex < index) {
-            Debug.LogWarning($"[GuideStepManager] Cannot activate step {index}, previous step {rollbackIndex} not completed! Rolling back...");
-            ActivateStep(rollbackIndex);
-            return;
-        }
-
-        StepData step = currentGuideRuntime.steps[index];
-        currentStep = step;
-        currentStepIndex = index;
-        currentStepID = step.stepID;
-        step.isCompleted = false;
-
-        // Update UI
-        if (titleText != null) titleText.text = step.title;
-        if (descriptionText != null) descriptionText.text = step.description;
-
-        // Visual hint
-        if (step.highlightTarget != null)
-            Debug.Log($"Highlighting target: {step.highlightTarget.name}");
-
-        currentStatus = $"{currentGuideID} / Step {index + 1}: {step.stepID}";
-        Debug.Log($"[GuideStepManager] Activated step: {step.stepID}");
-    }
-
-    /// <summary>
-    /// Activates a step by its stepID.
-    /// </summary>
-    [ProButton]
-    public void ActivateStep( string stepID ) {
-        if (currentGuideRuntime == null || currentGuideRuntime.steps.Count == 0) {
-            Debug.LogWarning("[GuideStepManager] No active guide!");
-            return;
-        }
-
-        int index = currentGuideRuntime.steps.FindIndex(s => s.stepID == stepID);
-        if (index == -1) {
-            Debug.LogWarning($"[GuideStepManager] Step '{stepID}' not found in guide '{currentGuideID}'!");
-            return;
-        }
-
-        ActivateStep(index);
-    }
-
-    /// <summary>
-    /// Completes the current step and moves to the next uncompleted one.
-    /// </summary>
-    [ProButton]
-    public void CompleteStep( string stepID ) {
-        if (currentStep == null ) {
-            Debug.LogWarning("[GuideStepManager] No active step!");
-            return;
-        }
-
-        if (currentStep.stepID != stepID ) {
-            Debug.LogWarning($"[GuideStepManager] Tried to complete '{stepID}', but current step is '{currentStep.stepID}'!");
-            return;
-        }
-
-        currentStep.isCompleted = true;
-        Debug.Log($"[GuideStepManager] Step completed: {currentStep.stepID}");
 
         int nextIndex = FindNextUncompletedStepAfter(currentStepIndex);
 
@@ -339,34 +339,32 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager> {
     }
 
     [ProButton]
-    public void ReactivateStep( string stepID ) {
-        if (currentGuideRuntime == null) {
+    public void ReactivateStep(string stepID)
+    {
+        if (currentGuideRuntime == null)
+        {
             Debug.LogWarning("[GuideStepManager] No active guide!");
             return;
         }
 
         int index = currentGuideRuntime.steps.FindIndex(s => s.stepID == stepID);
-        if (index == -1) {
+        if (index == -1)
+        {
             Debug.LogWarning($"[GuideStepManager] Step '{stepID}' not found!");
             return;
         }
 
-        // Mark step incomplete
         currentGuideRuntime.steps[index].isCompleted = false;
-
-        // Activate this step
         ActivateStep(index);
 
         Debug.Log($"[GuideStepManager] Reactivated step: {stepID}");
     }
 
-
-    /// <summary>
-    /// Roll back one step (if possible).
-    /// </summary>
     [ProButton]
-    public void RollbackStep() {
-        if (currentStepIndex <= 0) {
+    public void RollbackStep()
+    {
+        if (currentStepIndex <= 0)
+        {
             Debug.LogWarning("[GuideStepManager] Already at first step!");
             return;
         }
@@ -378,41 +376,32 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager> {
         Debug.Log($"[GuideStepManager] Rolled back to step: {currentStep.stepID}");
     }
 
-    /// <summary>
-    /// Finishes the current guide and triggers the experiment.
-    /// </summary>
-    private void FinishGuide() {
+    private void FinishGuide()
+    {
         if (titleText != null)
             titleText.text = "Hãy về phía quyển sách để xem kết quả nhé!";
         if (descriptionText != null)
             descriptionText.text = "Các bước chuẩn bị đã hoàn thành, bạn hãy di về phía quyển sách để xem kết quả được hiển thị.";
 
-        // if (gameController is Experiment exp) {
-        //     exp.StartExperiment();
-        // }
-
-
         Debug.Log("[GuideStepManager] All steps completed! Experiment started.");
+
+        OnGuideFinished?.Invoke(currentGuideID);
     }
 
-    /// <summary>
-    /// Finds the last uncompleted step before a given index.
-    /// Returns -1 if all previous are done.
-    /// </summary>
-    private int FindLastUncompletedStepBefore( int index ) {
-        for (int i = index - 1; i >= 0; i--) {
+    private int FindLastUncompletedStepBefore(int index)
+    {
+        for (int i = index - 1; i >= 0; i--)
+        {
             if (!currentGuideRuntime.steps[i].isCompleted)
                 return i;
         }
         return -1;
     }
 
-    /// <summary>
-    /// Finds the next uncompleted step after a given index.
-    /// Returns -1 if all remaining are done.
-    /// </summary>
-    private int FindNextUncompletedStepAfter( int index ) {
-        for (int i = index + 1; i < currentGuideRuntime.steps.Count; i++) {
+    private int FindNextUncompletedStepAfter(int index)
+    {
+        for (int i = index + 1; i < currentGuideRuntime.steps.Count; i++)
+        {
             if (!currentGuideRuntime.steps[i].isCompleted)
                 return i;
         }
@@ -428,21 +417,15 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager> {
             return;
         }
 
-        // Destroy old runtime copy (just to be clean)
         if (currentGuideRuntime != null)
             Destroy(currentGuideRuntime);
-        if (gameController != null) gameController.StopExperiment();
 
-        // Re-instantiate a fresh runtime copy
         currentGuideRuntime = Instantiate(currentGuideAsset);
         currentStep = null;
         currentStepIndex = -1;
         currentStepID = "";
         currentStatus = $"{currentGuideID} (Restarted)";
 
-        Debug.Log($"[GuideStepManager] Restarted guide: {currentGuideID}");
-
-        // Start again from first step
         if (currentGuideRuntime.steps.Count > 0)
             ActivateStep(0);
     }
@@ -466,6 +449,7 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager> {
         if (descriptionText != null)
             descriptionText.text = "";
     }
+
     public void StopCouroutine()
     {
         if (coroutine != null)

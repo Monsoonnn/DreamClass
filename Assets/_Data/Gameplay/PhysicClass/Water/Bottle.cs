@@ -23,13 +23,26 @@ public class Bottle : NewMonobehavior {
     [SerializeField] private Vector3 baseScale;
     [SerializeField] private Vector3 basePosition;
 
+    private Vector3 basePositionOrigin;
+    private Vector3 baseScaleOrigin;
+
+    private Quaternion baseRotationOrigin;
+
     private const float positionFactor = 1.2714f;
 
-    protected override void LoadComponents() {
+    protected override void LoadComponents()
+    {
         base.LoadComponents();
         this.LoadBoxCollider();
         this.LoadLiquidObject();
         this.LoadForceHand();
+        this.LoadBaseTransform();
+    }
+    
+    protected virtual void LoadBaseTransform() {
+        basePositionOrigin = this.transform.position;
+        baseScaleOrigin = this.transform.localScale;
+        baseRotationOrigin = this.transform.rotation;
     }
 
     protected virtual void LoadBoxCollider() {
@@ -56,22 +69,30 @@ public class Bottle : NewMonobehavior {
     }
 
     [ProButton]
-    public void UpdateLiquidLevel( float newLiquid ) {
+    public void UpdateLiquidLevel(float newLiquid)
+    {
         if (liquidObject == null) return;
 
-        if(newLiquid > 0) liquidObject.SetActive(true);
+        if (newLiquid > 0) liquidObject.SetActive(true);
         else liquidObject.SetActive(false);
 
         currentLiquid = Mathf.Clamp(newLiquid, 0f, maxLiquid);
 
-       
+
         float ratio = currentLiquid / maxLiquid;
-        
+
         float scaleY = ratio;
 
         float offsetY = (1 - scaleY) * positionFactor;
 
         liquidObject.transform.localScale = new Vector3(baseScale.x, baseScale.y * scaleY, baseScale.z);
         liquidObject.transform.localPosition = new Vector3(basePosition.x, basePosition.y + offsetY, basePosition.z);
+    }
+    
+    public void ResetPosition() {
+        this.transform.position = basePositionOrigin;
+        this.transform.localScale = baseScaleOrigin;
+        this.transform.rotation = baseRotationOrigin;
+        this.gameObject.SetActive(true);
     }
 }

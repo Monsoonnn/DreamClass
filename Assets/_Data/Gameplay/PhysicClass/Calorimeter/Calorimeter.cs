@@ -5,7 +5,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(BoxCollider))]
 public class Calorimeter : NewMonobehavior {
     [SerializeField] private BoxCollider boxCollider;
-    [SerializeField] private Transform holdBottlePosition;
+    public Transform holdBottlePosition;
 
     [Header("Stored Bottle")]
     [SerializeField] private Bottle bottle; // The permanent bottle stored inside
@@ -96,7 +96,7 @@ public class Calorimeter : NewMonobehavior {
         if (tempBottle != null) {
             bottle = tempBottle;
             tempBottle = null;
-            SetBottle();
+            SetBottle(false);
             ShowUIState(success: true);
             GuideStepManager.Instance.CompleteStep("PLACEON_BINHDO");
             Debug.Log("Bottle stored successfully!");
@@ -106,11 +106,11 @@ public class Calorimeter : NewMonobehavior {
         checkStayRoutine = null;
     }
 
-    protected virtual void SetBottle() { 
+    public virtual void SetBottle(bool state ) { 
         bottle.forceHand.DetachFromHand();
         bottle.transform.position = holdBottlePosition.position;
         bottle.transform.rotation = holdBottlePosition.rotation;
-        bottle.gameObject.SetActive(false);
+        bottle.gameObject.SetActive(state);
     }
 
 
