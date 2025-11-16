@@ -28,12 +28,12 @@ public class Experiment2 : GameController {
 
     [ProButton]
     public override void StopExperiment() {
-        isExperimentRunning = false;
         if (experimentRoutine != null)
             StopCoroutine(experimentRoutine);
         NotifyExperimentCompleted();
         experimentRoutine = null;
         Debug.Log($"[Experiment2] {this.gameObject.name} Experiment stopped!");
+        base.StopExperiment();
     }
 
     private IEnumerator RunExperiment() {

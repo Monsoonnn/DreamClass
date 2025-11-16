@@ -56,7 +56,7 @@ namespace DreamClass.Locomotion
             }
 
             // Thực hiện teleport
-            handler.ManualTeleportToTransform(respawnTarget);
+            handler.ManualTeleport(respawnTarget.position, respawnTarget.rotation);
 
             // Restore setting cũ
             handler.SetKeepOriginalRotation(originalKeepRotation);

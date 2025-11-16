@@ -165,7 +165,7 @@ namespace HMStudio.EasyQuiz
         public string GetStatistic()
         {
             int total = GetTotalQuestions();
-            return $"Correct {correctAnswersCount} / {total}";
+            return $"Tỉ lệ đúng: {correctAnswersCount} / {total}";
         }
 
         /// <summary>

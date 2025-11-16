@@ -3,75 +3,97 @@ using com.cyborgAssets.inspectorButtonPro;
 using DreamClass.QuestSystem;
 using UnityEngine;
 
-namespace DreamClass.NPCCore {
-    public class QuestNPCHolder : NewMonobehavior {
-        [Header("Quest IDs Linked to This NPC")]
-        public List<string> questIds = new List<string>();
+namespace DreamClass.NPCCore
+{
+    public class QuestNPCHolder : NewMonobehavior
+    {
 
-        [Header("Spawn Parent")]
-        public Transform spawnParent;
+        [Header("Quest Groups")]
+        public List<QuestSpawnGroup> questGroups = new List<QuestSpawnGroup>();
 
-        protected override void Start() {
+        protected override void Start()
+        {
             base.Start();
 
-            // Wait until QuestManager is ready (data loaded)
             QuestManager.OnReady += OnQuestManagerReady;
 
-            if (QuestManager.Instance != null && QuestManager.Instance.questStates.Count > 0) {
+            if (QuestManager.Instance != null && QuestManager.Instance.questStates.Count > 0)
+            {
                 OnQuestManagerReady();
             }
         }
 
-        private void OnDestroy() {
+        private void OnDestroy()
+        {
             QuestManager.OnReady -= OnQuestManagerReady;
         }
 
-        private void OnQuestManagerReady() {
+        private void OnQuestManagerReady()
+        {
             SpawnQuests();
         }
 
         [ProButton]
-        public void SpawnQuests() {
-            if (spawnParent == null) {
-                Debug.LogWarning($"[{name}] Missing spawnParent.");
-                return;
-            }
+        public void SpawnQuests()
+        {
 
-            if (QuestManager.Instance == null) {
+            if (QuestManager.Instance == null)
+            {
                 Debug.LogWarning($"[{name}] QuestManager not ready yet.");
                 return;
             }
 
-            foreach (string questId in questIds) {
-                var state = QuestManager.Instance.GetQuestState(questId);
+            foreach (var group in questGroups)
+            {
+                if (group.spawnParent == null)
+                {
+                    Debug.LogWarning($"[{name}] Group {group.groupName} has no spawnParent.");
+                    continue;
+                }
 
-                // Only spawn if quest is not started or currently in progress
-                if (state == QuestState.NOT_START || state == QuestState.IN_PROGRESS) {
-                    SpawnQuestObject(questId);
-                } else {
-                    Debug.Log($"<color=green>[QuestNPCHolder] Quest {questId} skipped, state: {state}</color>");
+                foreach (string questId in group.questIds)
+                {
+                    var state = QuestManager.Instance.GetQuestState(questId);
+
+                    if (state == QuestState.NOT_START || state == QuestState.IN_PROGRESS)
+                    {
+                        SpawnQuestObject(group.spawnParent, questId);
+                    }
+                    else
+                    {
+                        Debug.Log($"<color=green>[QuestNPCHolder] Skip {questId}, state: {state}</color>");
+                    }
                 }
             }
         }
 
-        private void SpawnQuestObject( string questId ) {
+        private void SpawnQuestObject(Transform parent, string questId)
+        {
             QuestCtrl prefab = QuestManager.Instance.QuestDatabase.GetQuestPrefabById(questId);
-            if (prefab == null) {
-                Debug.LogWarning($"[{name}] Quest prefab not found for {questId}.");
+            if (prefab == null)
+            {
+                Debug.LogWarning($"[{name}] Prefab not found for quest {questId}");
                 return;
             }
 
-            // Spawn quest prefab
-            QuestCtrl quest = Instantiate(prefab, spawnParent);
+            QuestCtrl quest = Instantiate(prefab, parent);
             quest.name = $"[Quest] {prefab.QuestName}";
             quest.gameObject.SetActive(true);
 
-            if(quest is QuestType1 s001) {
+            if (quest is QuestType1 s001)
+            {
                 s001.npcCtrl = GetComponent<NPCManager>();
             }
 
             Debug.Log($"[{name}] Spawned quest '{quest.QuestName}' ({questId})");
         }
-
     }
+    [System.Serializable]
+    public class QuestSpawnGroup
+    {
+        public string groupName;
+        public Transform spawnParent;
+        public List<string> questIds = new List<string>();
+    }
+
 }

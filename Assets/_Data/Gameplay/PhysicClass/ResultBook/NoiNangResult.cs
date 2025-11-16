@@ -15,8 +15,8 @@ public class NoiNangRes : NewMonobehavior {
 
     protected override void Start() {
         ResetUI();
-        inputTempBefore.onEndEdit.AddListener(OnBeforeEntered);
-        inputTempAfter.onEndEdit.AddListener(OnAfterEntered);
+        inputTempBefore.onValueChanged.AddListener(OnBeforeEntered);
+        inputTempAfter.onValueChanged.AddListener(OnAfterEntered);
     }
 
     private void OnBeforeEntered( string value ) {
@@ -72,13 +72,13 @@ public class NoiNangRes : NewMonobehavior {
 
     [ProButton]
     public virtual void SimulateInputBefore( float value = 22.3f ) {
-        inputTempBefore.text = value.ToString("F1") + "°C";
+        inputTempBefore.text = value.ToString("F1") + "ï¿½C";
         OnBeforeEntered(inputTempBefore.text);
     }
 
     [ProButton]
     public virtual void SimulateInputAfter( float value = 25.5f ) {
-        inputTempAfter.text = value.ToString("F1") + "°C";
+        inputTempAfter.text = value.ToString("F1") + "ï¿½C";
         OnAfterEntered(inputTempAfter.text);
     }
 }

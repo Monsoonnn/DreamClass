@@ -1,9 +1,14 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using UnityEngine;
 using Oculus.Interaction;
 using Oculus.Interaction.Locomotion;
 
 namespace DreamClass.Locomotion
 {
+    /// <summary>
+    /// SimpleTeleport - Ưu tiên OVRPlayerController, fallback FirstPersonLocomotor
+    /// </summary>
     public class SimpleTeleport : SingletonCtrl<SimpleTeleport>
     {
         [Header("References")]
@@ -13,8 +18,11 @@ namespace DreamClass.Locomotion
         [Tooltip("OVRCameraRig root")]
         [SerializeField] private OVRCameraRig cameraRig;
 
-        [Tooltip("OVRPlayerController (nếu có)")]
+        [Tooltip("OVRPlayerController (ưu tiên) - optional")]
         [SerializeField] private OVRPlayerController playerController;
+
+        [Tooltip("FirstPersonLocomotor (fallback) - optional")]
+        [SerializeField] private FirstPersonLocomotor locomotor;
 
         [Header("Teleport Settings")]
         [Tooltip("Giữ hướng nhìn ban đầu (ignore target rotation)")]
@@ -23,15 +31,21 @@ namespace DreamClass.Locomotion
         [Tooltip("Align feet thay vì eye level")]
         [SerializeField] private bool alignFeet = true;
 
+        [Header("FirstPersonLocomotor Fix")]
+        [Tooltip("Fix player origin sync issue khi dùng FirstPersonLocomotor")]
+        [SerializeField] private bool fixFirstPersonLocomotor = true;
+
+        [Tooltip("Delay (seconds) trước khi fix")]
+        [SerializeField] private float fixDelay = 0.05f;
+
         [Header("Debug")]
         [Tooltip("Hiển thị debug logs")]
         [SerializeField] private bool showDebugLogs = true;
 
         private Transform playerRoot;
         private Transform centerEye;
-        private OVRPlayerController characterController;
+        private Transform playerOrigin;
         private bool isSubscribed;
-        private bool hasPlayerController;
 
 
         protected override void Start()
@@ -41,50 +55,52 @@ namespace DreamClass.Locomotion
             SubscribeToTeleportEvents();
         }
 
-
+        private void OnDestroy()
+        {
+            UnsubscribeFromTeleportEvents();
+        }
 
         private void InitializeReferences()
         {
             // Tự động tìm references nếu chưa assign
             if (cameraRig == null)
             {
-                cameraRig = FindObjectOfType<OVRCameraRig>();
+                cameraRig = FindAnyObjectByType<OVRCameraRig>();
             }
 
             if (teleportInteractor == null)
             {
-                teleportInteractor = FindObjectOfType<TeleportInteractor>();
+                teleportInteractor = FindAnyObjectByType<TeleportInteractor>();
             }
 
             if (playerController == null)
             {
-                playerController = FindObjectOfType<OVRPlayerController>();
+                playerController = FindAnyObjectByType<OVRPlayerController>();
             }
 
-            // Determine player root hierarchy
+            if (locomotor == null)
+            {
+                locomotor = FindAnyObjectByType<FirstPersonLocomotor>();
+            }
+
+            // Xác định locomotion system (ưu tiên OVRPlayerController)
             if (playerController != null)
             {
-                // Nếu có OVRPlayerController, nó là root
                 playerRoot = playerController.transform;
-                hasPlayerController = true;
-                characterController = playerController.GetComponent<OVRPlayerController>();
-                
                 if (showDebugLogs)
-                    Debug.Log("[SimpleTeleport] Using OVRPlayerController as player root");
+                    Debug.Log("[SimpleTeleport] Using OVRPlayerController");
             }
             else if (cameraRig != null)
             {
-                // Nếu không, dùng CameraRig
                 playerRoot = cameraRig.transform;
-                hasPlayerController = false;
-                
                 if (showDebugLogs)
-                    Debug.Log("[SimpleTeleport] Using OVRCameraRig as player root");
+                    Debug.LogWarning("[SimpleTeleport] No locomotor found, using CameraRig transform");
             }
 
             if (cameraRig != null)
             {
                 centerEye = cameraRig.centerEyeAnchor;
+                playerOrigin = cameraRig.transform.parent != null ? cameraRig.transform.parent : cameraRig.transform;
             }
 
             // Validate
@@ -126,22 +142,32 @@ namespace DreamClass.Locomotion
         /// </summary>
         private void HandleLocomotionEvent(LocomotionEvent locomotionEvent)
         {
-            // Bỏ qua nếu không phải teleport
             if (locomotionEvent.Translation == LocomotionEvent.TranslationType.None)
             {
-                Debug.Log("[SimpleTeleport] Teleport denied or blocked");
+                if (showDebugLogs)
+                    Debug.Log("[SimpleTeleport] Teleport denied or blocked");
                 return;
             }
 
             Pose targetPose = locomotionEvent.Pose;
-            PerformCustomTeleport(targetPose, locomotionEvent);
+            PerformTeleport(targetPose, locomotionEvent);
         }
 
         /// <summary>
-        /// Logic teleport với FIX offset XZ plane
-        /// Support cả OVRPlayerController và OVRCameraRig
+        /// Perform teleport - ưu tiên OVRPlayerController
         /// </summary>
-        private void PerformCustomTeleport(Pose targetPose, LocomotionEvent locomotionEvent)
+        private void PerformTeleport(Pose targetPose, LocomotionEvent locomotionEvent)
+        {
+            PerformOVRTeleport(targetPose, locomotionEvent);
+            PerformLocomotorTeleport(targetPose, locomotionEvent);
+        }
+
+        #region OVRPlayerController Teleport
+
+        /// <summary>
+        /// Teleport sử dụng OVRPlayerController
+        /// </summary>
+        private void PerformOVRTeleport(Pose targetPose, LocomotionEvent locomotionEvent)
         {
             if (playerRoot == null || centerEye == null)
             {
@@ -149,18 +175,18 @@ namespace DreamClass.Locomotion
                 return;
             }
 
-            // CRITICAL: Set Teleported flag để OVRPlayerController không override rotation
-            if (hasPlayerController && playerController != null)
+            // Set Teleported flag để OVRPlayerController không override rotation
+            if (playerController != null)
             {
                 playerController.Teleported = true;
             }
 
-            // Disable CharacterController nếu có
+            // Disable CharacterController để teleport
             bool wasControllerEnabled = false;
-            if (hasPlayerController && characterController != null)
+            if (playerController != null)
             {
-                wasControllerEnabled = characterController.enabled;
-                characterController.enabled = false;
+                wasControllerEnabled = playerController.enabled;
+                playerController.enabled = false;
             }
 
             Vector3 targetPosition = targetPose.position;
@@ -171,19 +197,15 @@ namespace DreamClass.Locomotion
 
             if (locomotionEvent.Translation == LocomotionEvent.TranslationType.AbsoluteEyeLevel)
             {
-                // Eye level mode: align head to target
+                // Eye level mode
                 Vector3 headOffset = centerEye.position - playerRoot.position;
                 finalPosition = targetPosition - headOffset;
             }
             else if (alignFeet)
             {
-                // Feet mode: FIX - chỉ tính offset trên XZ plane
+                // Feet mode: tính offset trên XZ plane
                 Vector3 cameraWorldPos = centerEye.position;
-                
-                // Project camera position xuống mặt phẳng XZ (cùng Y với player root)
                 Vector3 cameraFlatPos = new Vector3(cameraWorldPos.x, playerRoot.position.y, cameraWorldPos.z);
-                
-                // Tính offset chỉ trên XZ plane
                 Vector3 offset = playerRoot.position - cameraFlatPos;
                 
                 finalPosition = targetPosition + offset;
@@ -203,7 +225,6 @@ namespace DreamClass.Locomotion
                 float targetYaw = targetRotation.eulerAngles.y;
                 float deltaYaw = targetYaw - currentYaw;
 
-                // Chuẩn hóa góc về [-180, 180]
                 while (deltaYaw > 180f) deltaYaw -= 360f;
                 while (deltaYaw < -180f) deltaYaw += 360f;
 
@@ -211,32 +232,124 @@ namespace DreamClass.Locomotion
             }
 
             // Re-enable CharacterController
-            if (hasPlayerController && characterController != null)
+            if (playerController != null)
             {
-                characterController.enabled = wasControllerEnabled;
+                playerController.enabled = wasControllerEnabled;
             }
 
-            // NOTE: Teleported flag sẽ tự reset về false sau 1 frame trong OVRPlayerController.UpdateTransform()
-
             if (showDebugLogs)
-                Debug.Log($"[SimpleTeleport] Teleported to {targetPosition}");
+                Debug.Log($"[SimpleTeleport] OVR teleport to {targetPosition}");
         }
 
-        // ============================================
-        // PUBLIC API (giống SimpleTeleport gốc)
-        // ============================================
+        #endregion
+
+        #region FirstPersonLocomotor Teleport
 
         /// <summary>
-        /// Manual teleport (giống SimpleTeleport.Teleport)
+        /// Teleport sử dụng FirstPersonLocomotor + fix sync
         /// </summary>
+        private void PerformLocomotorTeleport(Pose targetPose, LocomotionEvent originalEvent)
+        {
+            if (locomotor == null)
+            {
+                Debug.LogWarning("[SimpleTeleport] FirstPersonLocomotor not found!");
+                return;
+            }
+
+            // Xác định translation type
+            LocomotionEvent.TranslationType translationType = alignFeet
+                ? LocomotionEvent.TranslationType.Absolute
+                : LocomotionEvent.TranslationType.AbsoluteEyeLevel;
+
+            // Xác định rotation type
+            LocomotionEvent.RotationType rotationType = keepOriginalRotation
+                ? LocomotionEvent.RotationType.None
+                : LocomotionEvent.RotationType.Absolute;
+
+            // Tạo LocomotionEvent
+            LocomotionEvent customEvent = new LocomotionEvent(
+                GetHashCode(),
+                targetPose,
+                translationType,
+                rotationType
+            );
+
+            // Pass event đến FirstPersonLocomotor
+            locomotor.HandleLocomotionEvent(customEvent);
+
+            // Fix player origin sync
+            if (fixFirstPersonLocomotor)
+            {
+                StartCoroutine(FixPlayerOriginSync(targetPose, translationType, rotationType));
+            }
+
+            if (showDebugLogs)
+                Debug.Log($"[SimpleTeleport] FirstPersonLocomotor teleport to {targetPose.position}");
+        }
+
+        /// <summary>
+        /// Fix player origin sync sau khi FirstPersonLocomotor xử lý
+        /// </summary>
+        private IEnumerator FixPlayerOriginSync(Pose targetPose, 
+            LocomotionEvent.TranslationType translationType,
+            LocomotionEvent.RotationType rotationType)
+        {
+            yield return new WaitForSeconds(fixDelay);
+
+            if (playerOrigin == null || centerEye == null || playerRoot == null)
+            {
+                yield break;
+            }
+
+            Vector3 currentCameraPos = centerEye.position;
+            Vector3 currentCameraFlatPos = new Vector3(currentCameraPos.x, playerOrigin.position.y, currentCameraPos.z);
+
+            Vector3 newOriginPos = playerOrigin.position;
+
+            if (translationType == LocomotionEvent.TranslationType.Absolute && alignFeet)
+            {
+                // Feet mode: Camera phải ở đúng target position
+                Vector3 offset = currentCameraFlatPos - targetPose.position;
+                newOriginPos = playerOrigin.position - offset;
+                newOriginPos.y = playerOrigin.position.y;
+            }
+            else if (translationType == LocomotionEvent.TranslationType.AbsoluteEyeLevel)
+            {
+                // Eye level mode
+                Vector3 headOffset = centerEye.position - playerOrigin.position;
+                newOriginPos = targetPose.position - headOffset;
+            }
+
+            playerOrigin.position = newOriginPos;
+
+            // Fix rotation
+            if (rotationType == LocomotionEvent.RotationType.Absolute && !keepOriginalRotation)
+            {
+                float currentYaw = centerEye.rotation.eulerAngles.y;
+                float targetYaw = targetPose.rotation.eulerAngles.y;
+                float deltaYaw = targetYaw - currentYaw;
+
+                while (deltaYaw > 180f) deltaYaw -= 360f;
+                while (deltaYaw < -180f) deltaYaw += 360f;
+
+                playerOrigin.Rotate(0f, deltaYaw, 0f, Space.World);
+            }
+
+            if (showDebugLogs)
+                Debug.Log($"[SimpleTeleport] Fixed player origin sync");
+        }
+
+        #endregion
+
+        // ============================================
+        // PUBLIC API
+        // ============================================
+
         public void Teleport(Vector3 worldPosition, Quaternion worldRotation)
         {
             ManualTeleport(worldPosition, worldRotation);
         }
 
-        /// <summary>
-        /// Manual teleport đến Transform (giống SimpleTeleport.TeleportToTarget)
-        /// </summary>
         public void TeleportToTarget(Transform target)
         {
             if (target != null)
@@ -245,93 +358,19 @@ namespace DreamClass.Locomotion
             }
         }
 
-        /// <summary>
-        /// Set target và teleport ngay
-        /// </summary>
         public void SetTargetAndTeleport(Transform target)
         {
             TeleportToTarget(target);
         }
 
-        // ============================================
-        // INTERNAL METHODS
-        // ============================================
-
-        /// <summary>
-        /// Manual teleport implementation
-        /// FIX: Tính offset đúng trên XZ plane để không bị ảnh hưởng khi xoay đầu
-        /// Support cả OVRPlayerController và OVRCameraRig
-        /// </summary>
         public void ManualTeleport(Vector3 worldPosition, Quaternion worldRotation)
         {
-            if (playerRoot == null || centerEye == null)
-            {
-                Debug.LogWarning("[SimpleTeleport] Missing references!");
-                return;
-            }
+            Pose targetPose = new Pose(worldPosition, worldRotation);
+            ManualOVRTeleport(targetPose);
+            ManualLocomotorTeleport(targetPose);
 
-            // CRITICAL: Set Teleported flag để OVRPlayerController không override rotation
-            if (hasPlayerController && playerController != null)
-            {
-                playerController.Teleported = true;
-            }
-
-            // Disable CharacterController nếu có (để tránh collision khi teleport)
-            bool wasControllerEnabled = false;
-            if (hasPlayerController && characterController != null)
-            {
-                wasControllerEnabled = characterController.enabled;
-                characterController.enabled = false;
-            }
-
-            // Lấy vị trí camera hiện tại
-            Vector3 cameraWorldPos = centerEye.position;
-            
-            // Project camera position xuống mặt phẳng XZ (cùng độ cao với player root)
-            // Điều này đảm bảo offset không bị ảnh hưởng khi player ngước/cúi đầu
-            Vector3 cameraFlatPos = new Vector3(cameraWorldPos.x, playerRoot.position.y, cameraWorldPos.z);
-            
-            // Tính offset chỉ trên XZ plane
-            Vector3 offset = playerRoot.position - cameraFlatPos;
-
-            // Vị trí mới = target + offset (để camera đứng đúng tại target)
-            Vector3 newRootPos = worldPosition + offset;
-            
-            // Giữ nguyên Y của player root
-            newRootPos.y = playerRoot.position.y;
-
-            playerRoot.position = newRootPos;
-
-            // Xoay nếu cần
-            if (!keepOriginalRotation)
-            {
-                // Chỉ lấy yaw (góc xoay quanh trục Y)
-                float currentYaw = centerEye.rotation.eulerAngles.y;
-                float targetYaw = worldRotation.eulerAngles.y;
-                float deltaYaw = targetYaw - currentYaw;
-
-                // Chuẩn hóa góc về [-180, 180]
-                while (deltaYaw > 180f) deltaYaw -= 360f;
-                while (deltaYaw < -180f) deltaYaw += 360f;
-
-                playerRoot.Rotate(0f, deltaYaw, 0f, Space.World);
-            }
-
-            // Re-enable CharacterController
-            if (hasPlayerController && characterController != null)
-            {
-                characterController.enabled = wasControllerEnabled;
-            }
-
-            // NOTE: Teleported flag sẽ tự reset về false sau 1 frame trong OVRPlayerController.UpdateTransform()
-
-            if (showDebugLogs)
-                Debug.Log($"[SimpleTeleport] Manual teleport to {worldPosition}");
         }
 
-        /// <summary>
-        /// Manual teleport đến Transform
-        /// </summary>
         public void ManualTeleportToTransform(Transform target)
         {
             if (target != null)
@@ -340,8 +379,96 @@ namespace DreamClass.Locomotion
             }
         }
 
+        #region Manual Teleport Implementations
+
+        private void ManualOVRTeleport(Pose targetPose)
+        {
+            if (playerRoot == null || centerEye == null)
+            {
+                Debug.LogWarning("[SimpleTeleport] Missing references!");
+                return;
+            }
+
+            if (playerController != null)
+            {
+                playerController.Teleported = true;
+            }
+
+            bool wasControllerEnabled = false;
+            if (playerController != null)
+            {
+                wasControllerEnabled = playerController.enabled;
+                playerController.enabled = false;
+            }
+
+            Vector3 cameraWorldPos = centerEye.position;
+            Vector3 cameraFlatPos = new Vector3(cameraWorldPos.x, playerRoot.position.y, cameraWorldPos.z);
+            Vector3 offset = playerRoot.position - cameraFlatPos;
+
+            Vector3 newRootPos = targetPose.position + offset;
+            newRootPos.y = playerRoot.position.y;
+
+            playerRoot.position = newRootPos;
+
+            if (!keepOriginalRotation)
+            {
+                float currentYaw = centerEye.rotation.eulerAngles.y;
+                float targetYaw = targetPose.rotation.eulerAngles.y;
+                float deltaYaw = targetYaw - currentYaw;
+
+                while (deltaYaw > 180f) deltaYaw -= 360f;
+                while (deltaYaw < -180f) deltaYaw += 360f;
+
+                playerRoot.Rotate(0f, deltaYaw, 0f, Space.World);
+            }
+
+            if (playerController != null)
+            {
+                playerController.enabled = wasControllerEnabled;
+            }
+
+            if (showDebugLogs)
+                Debug.Log($"[SimpleTeleport] Manual OVR teleport to {targetPose.position}");
+        }
+
+        private void ManualLocomotorTeleport(Pose targetPose)
+        {
+            if (locomotor == null)
+            {
+                Debug.LogWarning("[SimpleTeleport] FirstPersonLocomotor not found!");
+                return;
+            }
+
+            LocomotionEvent.TranslationType translationType = alignFeet
+                ? LocomotionEvent.TranslationType.Absolute
+                : LocomotionEvent.TranslationType.AbsoluteEyeLevel;
+
+            LocomotionEvent.RotationType rotationType = keepOriginalRotation
+                ? LocomotionEvent.RotationType.None
+                : LocomotionEvent.RotationType.Absolute;
+
+            LocomotionEvent locomotionEvent = new LocomotionEvent(
+                GetHashCode(),
+                targetPose,
+                translationType,
+                rotationType
+            );
+
+            locomotor.HandleLocomotionEvent(locomotionEvent);
+
+            if (fixFirstPersonLocomotor)
+            {
+                StartCoroutine(FixPlayerOriginSync(targetPose, translationType, rotationType));
+            }
+
+            if (showDebugLogs)
+                Debug.Log($"[SimpleTeleport] Manual FirstPersonLocomotor teleport to {targetPose.position}");
+        }
+
+        #endregion
+
         // ============================================
-        // SETTERS
+        // SETTERS & GETTERS
         // ============================================
 
         public void SetKeepOriginalRotation(bool value)
@@ -354,9 +481,24 @@ namespace DreamClass.Locomotion
             alignFeet = value;
         }
 
+        public void SetFixFirstPersonLocomotor(bool value)
+        {
+            fixFirstPersonLocomotor = value;
+        }
+
+        public void SetFixDelay(float delay)
+        {
+            fixDelay = Mathf.Max(0f, delay);
+        }
+
         public bool GetKeepOriginalRotation()
         {
             return keepOriginalRotation;
+        }
+
+        public bool GetAlignFeet()
+        {
+            return alignFeet;
         }
 
         public Transform GetPlayerRoot()
@@ -369,14 +511,14 @@ namespace DreamClass.Locomotion
             return centerEye;
         }
 
+        public FirstPersonLocomotor GetLocomotor()
+        {
+            return locomotor;
+        }
+
         public OVRPlayerController GetPlayerController()
         {
             return playerController;
-        }
-
-        public bool HasPlayerController()
-        {
-            return hasPlayerController;
         }
     }
 }
