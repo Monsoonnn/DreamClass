@@ -41,7 +41,6 @@ public class ExperimentQuestStep : QuestStep
 
     private QuestType2 questType2;
     private bool isMonitoring = false;
-    private bool hasSubscribed = false;
     private GameController expController;
 
     public enum ExperimentAction
@@ -89,31 +88,24 @@ public class ExperimentQuestStep : QuestStep
     }
 
     /// <summary>
-    /// Subscribe to GameController events (không bị ảnh hưởng bởi disable)
+    /// Subscribe to GameController events
     /// </summary>
     private void SubscribeToGameControllerEvents()
     {
-        if (hasSubscribed || expController == null) return;
+        if (expController == null) return;
 
-        // Subscribe to tracking events
         expController.OnGuideStepStatusChanged += HandleGuideStepStatusChanged;
         expController.OnExperimentStateChanged += HandleExperimentStateChanged;
         expController.OnExperimentCompleted += HandleExperimentCompleted;
-        
-        hasSubscribed = true;
-        Debug.Log($"[ExperimentQuestStep] Subscribed to GameController events");
     }
 
     private void UnsubscribeFromGameControllerEvents()
     {
-        if (!hasSubscribed || expController == null) return;
+        if (expController == null) return;
 
         expController.OnGuideStepStatusChanged -= HandleGuideStepStatusChanged;
         expController.OnExperimentStateChanged -= HandleExperimentStateChanged;
         expController.OnExperimentCompleted -= HandleExperimentCompleted;
-        
-        hasSubscribed = false;
-        Debug.Log($"[ExperimentQuestStep] Unsubscribed from GameController events");
     }
 
     /// <summary>
@@ -305,7 +297,6 @@ public class ExperimentQuestStep : QuestStep
 
     private void CompleteStep()
     {
-        //Debug.Log($"[ExperimentQuestStep] Completed step: {StepId}");
         isMonitoring = false;
         
         // Dừng tracking từ GameController
@@ -313,9 +304,11 @@ public class ExperimentQuestStep : QuestStep
         {
             expController.StopAllTracking();
         }
-        OnComplete();
+        
+        // UNSUBSCRIBE ngay khi complete để tránh memory leak
         UnsubscribeFromGameControllerEvents();
         
+        OnComplete();
     }
 
     /// <summary>

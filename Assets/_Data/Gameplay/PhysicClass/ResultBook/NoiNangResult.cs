@@ -1,6 +1,7 @@
 using com.cyborgAssets.inspectorButtonPro;
 using TMPro;
 using UnityEngine;
+using System.Collections;
 
 public class NoiNangRes : NewMonobehavior {
     [Header("Input Fields")]
@@ -11,12 +12,24 @@ public class NoiNangRes : NewMonobehavior {
     [SerializeField] private TextMeshProUGUI noiNangBefore;
     [SerializeField] private TextMeshProUGUI noiNangAfter;
 
+    [Header("Delay Settings")]
+    [SerializeField] private float delayBeforeStop = 5f; // Delay trước khi stop experiment
+
     [SerializeField] private Experiment2 experiment;
 
     protected override void Start() {
         ResetUI();
         inputTempBefore.onValueChanged.AddListener(OnBeforeEntered);
         inputTempAfter.onValueChanged.AddListener(OnAfterEntered);
+    }
+
+    private void OnDestroy()
+    {
+        // Remove listeners để tránh memory leak
+        if (inputTempBefore != null)
+            inputTempBefore.onValueChanged.RemoveListener(OnBeforeEntered);
+        if (inputTempAfter != null)
+            inputTempAfter.onValueChanged.RemoveListener(OnAfterEntered);
     }
 
     private void OnBeforeEntered( string value ) {
@@ -37,7 +50,6 @@ public class NoiNangRes : NewMonobehavior {
     private void OnAfterEntered( string value ) {
         if (string.IsNullOrWhiteSpace(value)) return;
 
-
         experiment.guideStepManager.CompleteStep("TEMP_AFTER");
 
         // Show result
@@ -49,7 +61,15 @@ public class NoiNangRes : NewMonobehavior {
         inputTempBefore.gameObject.SetActive(false);
         inputTempAfter.gameObject.SetActive(false);
 
-        experiment.StopExperiment();
+        // Delay rồi mới stop (coroutine sẽ chạy ngay cả khi object bị deactivate sau)
+        StartCoroutine(DelayedStopExperiment());
+    }
+    
+    private IEnumerator DelayedStopExperiment()
+    {
+        yield return new WaitForSeconds(delayBeforeStop);
+        if (experiment != null)
+            experiment.StopExperiment();
     }
 
     [ProButton]

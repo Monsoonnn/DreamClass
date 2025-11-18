@@ -43,22 +43,21 @@ namespace DreamClass.QuestSystem
         public override void StartQuest()
         {
            
+           GuideStepManager stepManager = GuideStepManager.Instance;
             // Đăng ký quest này với GuideStepManager
-            GuideStepManager.Instance?.SetCurrentQuest(this);
-
+            stepManager.SetCurrentQuest(this);
             // Load Guide
             if (autoLoadGuide && !string.IsNullOrEmpty(guideID))
             {
-                GuideStepManager.Instance?.SetCurrentGuide(guideID);
-                Debug.Log($"[QuestType2] Loaded guide: {guideID}");
+                stepManager.LoadGameplay(guideID);
             }
 
-            // Setup experiment
-            if (experimentController != null)
-            {
-                experimentController.SetupExperiment();
-                Debug.Log($"[QuestType2] Setup experiment: {experimentID}");
-            }
+            // // Setup experiment
+            // if (experimentController != null)
+            // {
+            //     experimentController.SetupExperiment();
+            //     //Debug.Log($"[QuestType2] Setup experiment: {experimentID}");
+            // }
 
             base.StartQuest();
             

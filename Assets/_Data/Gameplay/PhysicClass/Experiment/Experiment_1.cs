@@ -4,18 +4,20 @@ using System.Collections;
 
 public class Experiment : GameController
 {
-    [Header("Experiment State")]
-    public bool isStart = false;
     private Coroutine heatingCoroutine;
 
     [Header("Experiment Objects")]
     public Multimeter multimeter;
     public ACelectric acelectric;
     public Calorimeter calorimeter;
-    public Bottle bottle;
-    public GetWater waterSource;
+    public WaterCup waterCup;           // Changed from Bottle
+    public WaterStream waterStream;     // Changed from GetWater
     public Scale scale;
     public Thermometer thermometer;
+    
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip startExperimentSound;
 
     [Header("Result Table")]
     public ResultBook resultBook;
@@ -27,14 +29,14 @@ public class Experiment : GameController
 
     [Header("Thermal Parameters")]
     private float waterMass = 0.2f;          // kg
-    private float specificHeat = 4200f;      // J/kg�C
-    private float environmentTemp = 25f;     // �C
+    private float specificHeat = 4200f;      // J/kg°C
+    private float environmentTemp = 25f;     // °C
     private float heatLossK = 0.01f;         // heat loss coefficient
     private float currentTemp;              // current water temperature
     private float timeElapsed;              // elapsed experiment time
 
     [Header("Initial Setup")]
-    [SerializeField] private float initialBottleLiquid = 0f;
+    [SerializeField] private float initialWaterAmount = 0f;     // Changed from initialBottleLiquid
     [SerializeField] private float initialTemperature = 25f;
 
     protected override void Start()
@@ -49,18 +51,26 @@ public class Experiment : GameController
 
         Debug.Log($"[Experiment] Setup experiment: {GetExperimentName()}");
         // Reset all states
-        isStart = false;
+        isExperimentRunning = false;
         voltage = 0f;
         current = 0f;
         power = 0f;
         timeElapsed = 0f;
         currentTemp = initialTemperature;
 
-        // Reset all devices
-        if (bottle != null)
+        // Reset water cup
+        if (waterCup != null)
         {
-            bottle.UpdateLiquidLevel(initialBottleLiquid);
-            bottle.ResetPosition();
+            waterCup.SetAmount(initialWaterAmount);
+            waterCup.SetIsHaveWater(false);
+            waterCup.gameObject.SetActive(true);
+        }
+
+        // Reset water stream
+        if (waterStream != null)
+        {
+            waterStream.StopFlow();
+            waterStream.SetFlowing(true);
         }
 
         if (calorimeter != null)
@@ -68,13 +78,6 @@ public class Experiment : GameController
             calorimeter.HideAllUI();
             calorimeter.ClearBottle();
         }
-
-        if (waterSource != null)
-        {
-            waterSource.HideAllUI();
-            waterSource.SetIsHaveWater(false);
-        }
-
 
         if (scale != null)
             scale.ResetDisplay();
@@ -85,16 +88,19 @@ public class Experiment : GameController
             multimeter.ResetStep();
         }
 
-
         if (thermometer != null)
-            thermometer.valueText.text = $"{currentTemp:F2}�C";
+            thermometer.valueText.text = $"{currentTemp:F2}°C";
+            
         GuideStepManager.Instance.ActivateStep(0);
         isExperimentRunning = false;
+
+        
     }
+
     [ProButton]
     public void CalculatePower()
     {
-        if (!isStart)
+        if (!isExperimentRunning)
         {
             Debug.LogWarning("Experiment not started yet!");
             return;
@@ -110,97 +116,109 @@ public class Experiment : GameController
     [ProButton]
     public override void StartExperiment()
     {
-        if (isStart) return;
+        if (isExperimentRunning) return;
 
-        // Ensure bottle exists in calorimeter
-        if (calorimeter == null || calorimeter.Bottle == null)
+        // Ensure water cup exists and has water
+        if (waterCup == null)
         {
-            Debug.LogWarning("No bottle in calorimeter!");
+            Debug.LogWarning("No water cup assigned!");
             return;
         }
 
-        // Get the current bottle
-        bottle = calorimeter.Bottle;
+        if (waterCup.IsEmpty())
+        {
+            Debug.LogWarning("Water cup is empty! Please fill it first.");
+            return;
+        }
 
-        // --- NEW: Get water mass from Scale reading ---
+        // Get water mass from Scale reading
         float measuredWeight = GetMeasuredWaterMassFromScale(); // returns kg
 
         if (measuredWeight <= 0f)
         {
-            Debug.LogWarning("Scale has no valid measurement � please weigh the bottle first!");
+            Debug.LogWarning("Scale has no valid measurement – please weigh the water cup first!");
             return;
         }
 
         waterMass = measuredWeight;
-
-        // Start experiment
-        isStart = true;
         timeElapsed = 0f;
         power = voltage * current;
 
         if (multimeter != null)
             multimeter.UpdateDisplay(power);
+        
+        // Play start experiment sound
+        if (audioSource != null && startExperimentSound != null)
+        {
+            audioSource.clip = startExperimentSound;
+            audioSource.Play();
+        }
 
-        Debug.Log($"Experiment started! Water mass = {waterMass:F3} kg, initial temp = {currentTemp:F2}�C");
-        if (resultBook != null) resultBook.AddResult(1, 25, power);
-
-        heatingCoroutine = StartCoroutine(SimulateHeating());
+        Debug.Log($"Experiment started! Water mass = {waterMass:F3} kg, initial temp = {currentTemp:F2}°C");
+        
+        if (resultBook != null) 
+            resultBook.AddResult(1, currentTemp, power);
         isExperimentRunning = true;
+        heatingCoroutine = StartCoroutine(SimulateHeating());
+       
         base.StartExperiment();
     }
-
 
     [ProButton]
     public override void StopExperiment()
     {
-
-        isStart = false;
+        
         if (heatingCoroutine != null)
         {
             StopCoroutine(heatingCoroutine);
             heatingCoroutine = null;
         }
+        
+        // Stop audio
+        if (audioSource != null && audioSource.isPlaying)
+        {
+            audioSource.Stop();
+        }
 
         SetupExperiment();
-        resultBook.ClearResults();
-        isExperimentRunning = false;
+        
+        if (resultBook != null)
+            resultBook.ClearResults();
+            
         base.StopExperiment();
         Debug.Log("Experiment stopped!");
-
     }
 
     /// <summary>
     /// Coroutine to simulate water heating over time
     /// </summary>
-    /// 
     public float totalSimulationTime = 180f; // 3 minutes (adjustable)
+    
     [ProButton]
     private IEnumerator SimulateHeating()
     {
         float simulationStep = 0.1f;     // Simulation step time (seconds)
-        float recordInterval = 5f;      // Time interval to record data to ResultBook
+        float recordInterval = 2.5f;       // Time interval to record data to ResultBook
         float nextRecordTime = recordInterval;
-        
 
         // Ensure the power display is initialized
         if (multimeter != null)
             multimeter.UpdateDisplay(power);
 
-        while (isStart)
+        while (isExperimentRunning)
         {
             timeElapsed += simulationStep;
 
             // Stop condition
             if (timeElapsed >= totalSimulationTime)
             {
-                isStart = false;
+                isExperimentRunning = false;
                 NotifyExperimentCompleted();
                 Debug.Log($"[SimulateHeating] Simulation finished after {timeElapsed:F1}s.");
-
                 yield break;
             }
 
-            // Random power fluctuation 5%
+            // Random power fluctuation ±5%
             float fluctuation = Random.Range(-0.05f, 0.05f);
             float currentPower = power * (1f + fluctuation);
 
@@ -214,17 +232,16 @@ public class Experiment : GameController
             float dT = dTdt + simulationScale;
             currentTemp += dT;
 
-            // Add result 
+            // Record data at intervals
             if (timeElapsed >= nextRecordTime)
             {
                 // Update thermometer UI
                 if (thermometer != null)
-                    thermometer.valueText.text = $"{currentTemp:F2}�C";
+                    thermometer.valueText.text = $"{currentTemp:F2}°C";
 
                 // Update multimeter UI
                 if (multimeter != null)
                     multimeter.UpdateDisplay(currentPower);
-
 
                 if (resultBook != null)
                 {
@@ -233,15 +250,9 @@ public class Experiment : GameController
                 }
             }
 
-            // Log to console
-            //Debug.Log($"t={timeElapsed:F1}s | P={currentPower:F2}W | T={currentTemp:F2}�C");
-
             yield return new WaitForSeconds(simulationStep);
         }
     }
-
-
-
 
     public float GetMeasuredWaterMassFromScale()
     {
@@ -263,6 +274,22 @@ public class Experiment : GameController
         return 0f;
     }
 
+    // Helper method to check if water cup is ready for experiment
+    public bool IsWaterCupReady()
+    {
+        if (waterCup == null) return false;
+        
+        // Check if cup has enough water (at least 50% full)
+        return waterCup.GetFillPercentage() >= 0.5f;
+    }
+
+    // Method to get current water amount from cup
+    public float GetWaterAmount()
+    {
+        if (waterCup == null) return 0f;
+        return waterCup.GetCurrentAmount();
+    }
+
     public override string GetExperimentName()
     {
         return "NHIET_DUNG_NUOC";
@@ -270,6 +297,6 @@ public class Experiment : GameController
 
     public override bool IsExperimentRunning()
     {
-        return isStart;
+        return isExperimentRunning;
     }
 }

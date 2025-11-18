@@ -8,11 +8,11 @@ public class Calorimeter : NewMonobehavior {
     public Transform holdBottlePosition;
 
     [Header("Stored Bottle")]
-    [SerializeField] private Bottle bottle; // The permanent bottle stored inside
-    public Bottle Bottle => bottle;
+    [SerializeField] private WaterCup waterCup; // The permanent bottle stored inside
+    public WaterCup WaterCup => waterCup;
 
     [Header("Temporary Bottle")]
-    [SerializeField] private Bottle tempBottle; // The temporary bottle currently inside the trigger
+    [SerializeField] private WaterCup tempWaterCup; // The temporary bottle currently inside the trigger
 
     [Header("Timing")]
     [SerializeField] private float stayDuration = 2f; // Time required to confirm placement
@@ -46,17 +46,17 @@ public class Calorimeter : NewMonobehavior {
     private void OnTriggerEnter( Collider other ) {
         //Debug.Log("OnTriggerEnter");
 
-        Bottle target = other.GetComponent<Bottle>();
+        WaterCup target = other.GetComponent<WaterCup>();
         if (target == null) return;
 
         // If a bottle is already stored -> show button only
-        if (bottle != null) {
+        if (waterCup != null) {
             ShowStoredBottleUI();
             return;
         }
 
         // Assign temp bottle and start countdown
-        tempBottle = target;
+        tempWaterCup = target;
         if (canvas != null) canvas.SetActive(true);
 
         if (checkStayRoutine != null)
@@ -68,7 +68,7 @@ public class Calorimeter : NewMonobehavior {
     private void OnTriggerExit( Collider other ) {
        /* Debug.Log("OnTriggerExit");*/
 
-        if (tempBottle == null || other.gameObject != tempBottle.gameObject) return;
+        if (tempWaterCup == null || other.gameObject != tempWaterCup.gameObject) return;
 
         // Cancel current countdown
         if (checkStayRoutine != null) {
@@ -77,7 +77,7 @@ public class Calorimeter : NewMonobehavior {
         }
 
         HideAllText();
-        tempBottle = null;
+        tempWaterCup = null;
     }
 
     private IEnumerator CheckBottleStayCoroutine() {
@@ -85,7 +85,7 @@ public class Calorimeter : NewMonobehavior {
 
         float timer = 0f;
 
-        while (timer < stayDuration && tempBottle != null) {
+        while (timer < stayDuration && tempWaterCup != null) {
             timer += Time.deltaTime;
             if (slider != null)
                 slider.value = timer / stayDuration;
@@ -93,9 +93,9 @@ public class Calorimeter : NewMonobehavior {
         }
 
         // If bottle stayed long enough -> confirm placement
-        if (tempBottle != null) {
-            bottle = tempBottle;
-            tempBottle = null;
+        if (tempWaterCup != null) {
+            waterCup = tempWaterCup;
+            tempWaterCup = null;
             SetBottle(false);
             ShowUIState(success: true);
             GuideStepManager.Instance.CompleteStep("PLACEON_BINHDO");
@@ -107,10 +107,10 @@ public class Calorimeter : NewMonobehavior {
     }
 
     public virtual void SetBottle(bool state ) { 
-        bottle.forceHand.DetachFromHand();
-        bottle.transform.position = holdBottlePosition.position;
-        bottle.transform.rotation = holdBottlePosition.rotation;
-        bottle.gameObject.SetActive(state);
+        waterCup.forceHand.DetachFromHand();
+        waterCup.transform.position = holdBottlePosition.position;
+        waterCup.transform.rotation = holdBottlePosition.rotation;
+        waterCup.gameObject.SetActive(state);
     }
 
 
@@ -136,11 +136,11 @@ public class Calorimeter : NewMonobehavior {
 
     public void GetBottle() {
         // Allow user to get the stored bottle out
-        if (bottle == null) return;
+        if (waterCup == null) return;
         Debug.Log("Get bottle");
-        bottle.gameObject.SetActive(true);
-        bottle.forceHand.AttachToHand();
-        bottle = null; // Remove reference
+        waterCup.gameObject.SetActive(true);
+        //bottle.forceHand.AttachToHand();
+        waterCup = null; // Remove reference
         HideAllText();
     }
     public void HideAllUI() {
@@ -151,8 +151,8 @@ public class Calorimeter : NewMonobehavior {
     }
 
     public void ClearBottle() {
-        bottle = null;
-        tempBottle = null;
+        waterCup = null;
+        tempWaterCup = null;
     }
 
 }

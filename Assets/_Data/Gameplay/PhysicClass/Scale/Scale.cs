@@ -8,7 +8,7 @@ public class Scale : NewMonobehavior {
     [SerializeField] private GameController gameController;
 
     [Header("Runtime")]
-    [SerializeField] protected Bottle bottle;
+    [SerializeField] protected WaterCup bottle;
     [SerializeField] private Coroutine delayRoutine;
     public float tempWeight = 0f;
 
@@ -47,7 +47,7 @@ public class Scale : NewMonobehavior {
     }
 
     private void OnTriggerEnter( Collider other ) {
-        Bottle target = other.GetComponent<Bottle>();
+        WaterCup target = other.GetComponent<WaterCup>();
         if (target == null) return;
 
         bottle = target;
@@ -65,7 +65,7 @@ public class Scale : NewMonobehavior {
         if (bottle == null) yield break;
 
         // Get the current fill ratio of the bottle
-        float fillRatio = bottle.CurrentLiquid / bottle.MaxLiquid;
+        float fillRatio = bottle.GetCurrentAmount() / bottle.GetMaxCapacity();
 
         // Calculate current water volume (ml)
         float currentVolume = fullVolume * fillRatio;
@@ -82,7 +82,7 @@ public class Scale : NewMonobehavior {
 
         tempWeight = waterWeight;
 
-        Debug.Log($"[Scale] Bottle detected — Water: {currentVolume:F1} ml, Weight: {totalWeight:F1} g");
+        Debug.Log($"[Scale] Bottle detected ï¿½ Water: {currentVolume:F1} ml, Weight: {totalWeight:F1} g");
     }
 
     private void OnTriggerExit( Collider other ) {

@@ -206,7 +206,7 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager>
     }
 
     [ProButton]
-    protected virtual void LoadGameplay(string id)
+    public virtual void LoadGameplay(string id)
     {
         GameController tempGc = null;
         foreach (GameController gc in gameControllerList)
