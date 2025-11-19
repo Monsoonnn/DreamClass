@@ -9,12 +9,17 @@
             "description": "Mai là cô bạn thân thiện ngồi ở bàn đầu. Hãy tiến lại gần và chào Mai để bắt đầu trò chuyện.",
             "rewardGold": 100,
             "state": "NOT_START",
+            "prerequisiteQuestIds": [],
             "steps": [
                 {
                     "stepId": "S001",
+                    "description": "Nói chuyện với Mai",
                     "isComplete": false
                 }
-            ]
+            ],
+            "isActive": false,
+            "isDailyQuest": true,
+            "dailyQuestType": "AUTO_ASSIGN"
         },
         {
             "questId": "Q002",
@@ -25,9 +30,13 @@
             "steps": [
                 {
                     "stepId": "S001",
+                    "description": "Nói chuyện với Dũng",
                     "isComplete": false
                 }
-            ]
+            ],
+            "isActive": false,
+            "isDailyQuest": false,
+            "dailyQuestType": "NPC_INTERACTION"
         },
         {
             "questId": "Q003",
@@ -59,25 +68,23 @@
             "steps": [
                 {
                     "stepId": "S101",
-                    "description": "Chuẩn bị nước, nhiệt kế và nguồn nhiệt.",
+                    "description": "Lấy nước và đo khối lượng ban đầu, sau đó bỏ vào bình đo nhiệt.",
                     "isComplete": false
                 },
                 {
                     "stepId": "S102",
-                    "description": "Đo khối lượng nước trong cốc và ghi lại.",
+                    "description": "Bật nguồn điện và oát kế",
                     "isComplete": false
                 },
                 {
                     "stepId": "S103",
-                    "description": "Đun nóng và đo sự thay đổi nhiệt độ theo thời gian.",
-                    "isComplete": false
-                },
-                {
-                    "stepId": "S104",
-                    "description": "Tính nhiệt lượng và so sánh với lý thuyết.",
+                    "description": "Ghi lại nhiệt độ nước sau mỗi 5/s trong vòng 10 phút.",
                     "isComplete": false
                 }
-            ]
+            ],
+            "isActive": false,
+            "isDailyQuest": true,
+            "dailyQuestType": "AUTO_ASSIGN"
         },
         {
             "questId": "Q102",
@@ -98,10 +105,13 @@
                 },
                 {
                     "stepId": "S303",
-                    "description": "Giải thích vì sao nội năng tăng khi thực hiện công lên khí.",
+                    "description": "Ghi lại nhiệt độ sau khi nén và so sánh với nhiệt độ ban đầu.",
                     "isComplete": false
                 }
-            ]
+            ],
+            "isActive": false,
+            "isDailyQuest": true,
+            "dailyQuestType": "AUTO_ASSIGN"
         }
     ]
 }

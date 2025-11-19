@@ -13,6 +13,7 @@ public class ExperimentQuestStepEditor : Editor
     private SerializedProperty minCompletedCountProp;
     private SerializedProperty actionTypeProp;
     private SerializedProperty requireExperimentRunningProp;
+    private SerializedProperty skipServerUpdateProp;
 
     // Colors
     private Color headerColor = new Color(0.3f, 0.5f, 0.8f, 0.3f);
@@ -28,6 +29,7 @@ public class ExperimentQuestStepEditor : Editor
         minCompletedCountProp = serializedObject.FindProperty("minCompletedCount");
         actionTypeProp = serializedObject.FindProperty("actionType");
         requireExperimentRunningProp = serializedObject.FindProperty("requireExperimentRunning");
+        skipServerUpdateProp = serializedObject.FindProperty("skipServerUpdate");
     }
 
     public override void OnInspectorGUI()
@@ -72,6 +74,16 @@ public class ExperimentQuestStepEditor : Editor
             EditorGUI.indentLevel--;
             
             DrawActionHint(action);
+        }
+
+        EditorGUILayout.Space(10);
+
+        // ===== SERVER SYNC SETTINGS =====
+        DrawHeader("Server Sync Settings");
+        EditorGUILayout.PropertyField(skipServerUpdateProp, new GUIContent("Skip Server Update", "If enabled, this step won't be synced to server"));
+        if (skipServerUpdateProp.boolValue)
+        {
+            DrawWarningBox("⚠ This step will NOT be synchronized with the server");
         }
 
         EditorGUILayout.Space(10);

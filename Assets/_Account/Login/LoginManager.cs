@@ -13,6 +13,7 @@ namespace DreamClass.LoginManager {
 
         [Header("Session Info")]
         private string sessionCookie;
+        private string playerId;
 
         [Header("User Info (Remember Me)")]
         [SerializeField] private bool rememberMe = false;
@@ -33,9 +34,29 @@ namespace DreamClass.LoginManager {
             LoadSavedLogin();
         }
 
-        [ProButton]
+        protected override void Start()
+        {
+            base.Start();
+            // Auto-login if credentials were saved
+            if (rememberMe && !string.IsNullOrEmpty(savedUsername) && !string.IsNullOrEmpty(savedPassword))
+            {
+                Debug.Log("[LoginManager] Auto-logging in with saved credentials...");
+                Login(savedUsername, savedPassword, remember: true);
+            }
+        }
+
         public void Login( string email, string password, Action<bool, string> onResult = null, bool remember = false ) {
             StartCoroutine(DelayedLogin(email, password, onResult, remember));
+        }
+
+        [ProButton]
+        public void QuickLogin() {
+            // Dùng saved credentials nếu có, ngược lại dùng default test account
+            string email = string.IsNullOrEmpty(savedUsername) ? "test@example.com" : savedUsername;
+            string password = string.IsNullOrEmpty(savedPassword) ? "password123" : savedPassword;
+            
+            Debug.Log($"[LoginManager] Quick Login with: {email}");
+            Login(email, password, onResult: null, remember: false);
         }
 
         private IEnumerator DelayedLogin( string email, string password, Action<bool, string> onResult, bool remember ) {
@@ -65,6 +86,28 @@ namespace DreamClass.LoginManager {
                     apiClient.SetCookie(sessionCookie);
                 }
 
+                // Parse playerId from response
+                try
+                {
+                    LoginResponse loginResponse = JsonUtility.FromJson<LoginResponse>(res.Text);
+                    if (loginResponse != null && loginResponse.data != null && !string.IsNullOrEmpty(loginResponse.data.playerId))
+                    {
+                        playerId = loginResponse.data.playerId;
+                        Debug.Log($"[LoginManager] PlayerId: {playerId}");
+                    }
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogWarning($"[LoginManager] Failed to parse playerId from response: {e.Message}");
+                }
+
+                // Initialize quests after successful login
+                var questManager = DreamClass.QuestSystem.QuestManager.Instance;
+                if (questManager != null)
+                {
+                    questManager.InitializeQuests();
+                }
+
                 _onLoginResult?.Invoke(true, res.Text);
             } else {
                 Debug.LogError($"Login failed: {res.StatusCode}");
@@ -72,11 +115,17 @@ namespace DreamClass.LoginManager {
             }
         }
 
-        [ProButton]
+
         public void Logout( Action<bool, string> onResult = null ) {
             _onLogoutResult = onResult;
             ApiRequest req = new ApiRequest("/api/auth/logout", "POST");
             StartCoroutine(apiClient.SendRequest(req, OnLogoutResponse));
+        }
+
+        [ProButton]
+        public void QuickLogout() {
+            Debug.Log("[LoginManager] Quick Logout");
+            Logout(onResult: null);
         }
 
         private void OnLogoutResponse( ApiResponse res ) {
@@ -186,13 +235,41 @@ namespace DreamClass.LoginManager {
             }
         }
 
+        [System.Serializable]
+        private class LoginResponse
+        {
+            public string message;
+            public LoginData data;
+
+            [System.Serializable]
+            public class LoginData
+            {
+                public string id;
+                public string name;
+                public string email;
+                public string role;
+                public string playerId;
+            }
+        }
+
         // Public getters
         public string GetSavedUsername() => savedUsername;
         public string GetSavedPassword() => savedPassword;
         public bool IsRemembered() => rememberMe;
+        public string GetPlayerId() => playerId;
         public bool IsLoggedIn() {
             Debug.Log("Login Cookie: " + sessionCookie);
             return !string.IsNullOrEmpty(apiClient.DefaultCookie);
+        }
+
+        private void OnApplicationQuit()
+        {
+            // Logout when game closes if user was logged in but "Remember Me" is OFF
+            if (IsLoggedIn() && !rememberMe)
+            {
+                Debug.Log("[LoginManager] Logging out on application quit (Remember Me OFF)");
+                Logout();
+            }
         }
     }
 }

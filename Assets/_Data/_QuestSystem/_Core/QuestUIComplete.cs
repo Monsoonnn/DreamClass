@@ -45,6 +45,8 @@ namespace DreamClass.QuestSystem {
             this.questName.text = "Nhiệm vụ: " + questName;
             this.timeComplete.text = timeComplete;
             this.dreamPoint.text = dreamPoint;
+            
+            
             this.ranking.text = ranking;
             this.gameObject.SetActive(true);
 

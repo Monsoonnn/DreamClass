@@ -30,12 +30,14 @@ namespace DreamClass.QuestSystem
         [Header("Reference")]
         private TMP_Text titleText;
 
-        protected override void LoadComponents() {
+        protected override void LoadComponents()
+        {
             base.LoadComponents();
             this.LoadTitleText();
         }
 
-        protected virtual void LoadTitleText() {
+        protected virtual void LoadTitleText()
+        {
             if (titleText != null) return;
             titleText = this.transform.Find("Text")?.GetComponent<TMP_Text>();
             titleText.text = QuestName;
@@ -69,9 +71,44 @@ namespace DreamClass.QuestSystem
             IsComplete = false;
             currentStepIndex = 0;
             State = QuestState.IN_PROGRESS;
-            steps[currentStepIndex].StartStep();
-  
 
+            // Start quest on server if using Server API and logged in
+            if (QuestManager.Instance != null && QuestManager.Instance.IsUsingServerAPI)
+            {
+                StartCoroutine(StartQuestOnServerAsync());
+            }
+
+            steps[currentStepIndex].StartStep();
+        }
+
+        private System.Collections.IEnumerator StartQuestOnServerAsync()
+        {
+            // Gọi QuestManager để start quest trên server
+            // QuestManager sẽ handle việc gọi StartQuestOnServer() API
+            DreamClass.Network.ApiClient apiClient = FindFirstObjectByType<DreamClass.Network.ApiClient>();
+            if (apiClient == null)
+            {
+                Debug.LogError("[QuestCtrl] ApiClient not found.");
+                yield break;
+            }
+
+            string endpoint = $"/api/quests/my-quests/{QuestId}/start";
+            DreamClass.Network.ApiRequest request = new DreamClass.Network.ApiRequest(endpoint, "POST");
+
+            DreamClass.Network.ApiResponse response = null;
+            yield return apiClient.StartCoroutine(apiClient.SendRequest(request, r =>
+            {
+                response = r;
+            }));
+
+            if (response != null && response.IsSuccess)
+            {
+                Debug.Log($"[QuestCtrl] Quest '{QuestName}' synchronized with server successfully");
+            }
+            else
+            {
+                Debug.LogError($"[QuestCtrl] Failed to sync quest with server: {response?.Error}");
+            }
         }
 
         public void UpdateProgress()
@@ -93,71 +130,144 @@ namespace DreamClass.QuestSystem
                 {
                     _ = CompleteQuest();
                 }
-            } 
+            }
         }
 
         // Class cha - QuestCtrl
-        protected virtual async Task CompleteQuest() {
+        protected virtual async Task CompleteQuest()
+        {
             IsComplete = true;
             State = QuestState.FINISHED;
 
-            try {
-                await SyncQuestToServer(); // Update State
+            try
+            {
 
-                // Hook point cho class con
-                await OnBeforeReward();
+                var (isSuccess, questData) = await WaitForServerConfirmation();
 
-                await GiveReward();
+                if (isSuccess && questData != null)
+                {
+                    Debug.Log($"[QuestCtrl] QuestData: {JsonUtility.ToJson(questData)}");
+                    await SyncQuestToServer();
+                    await OnBeforeReward();
+                    await GiveReward();
+                    await OnAfterReward();
+                    await ShowNotification(questData);
 
-                // Hook point sau khi trao thưởng
-                await OnAfterReward();
 
-                await ShowNotification();
-
-                this.gameObject.SetActive(false);
-                Destroy(this.gameObject, 2f);
-                Debug.Log($"[QuestCtrl] Quest '{QuestName}' completed!");
+                    this.gameObject.SetActive(false);
+                    Destroy(this.gameObject, 2f);
+                }
+                else
+                {
+                    Debug.LogWarning($"[QuestCtrl] Quest completion failed on server. Reactivating quest '{QuestName}'...");
+                    IsComplete = false;
+                    State = QuestState.NOT_START;
+                    this.gameObject.SetActive(true);
+                }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 Debug.LogError($"[QuestCtrl] Error: {ex.Message}");
             }
         }
 
+        private async Task<(bool success, QuestDataJson data)> WaitForServerConfirmation()
+        {
+            bool? result = null;
+            QuestDataJson questData = null;
+
+            QuestManager.Instance.CompleteQuest(QuestId, (success, data) =>
+            {
+                result = success;
+                questData = data;
+            });
+
+            // Wait for server response (max 10 seconds)
+            float timeout = 10f;
+            float elapsed = 0f;
+            while (result == null && elapsed < timeout)
+            {
+                await Task.Delay(100);
+                elapsed += 0.1f;
+            }
+
+            if (result == null)
+            {
+                Debug.LogError("[QuestCtrl] Server confirmation timeout!");
+                return (false, null);
+            }
+
+            return (result.Value, questData);
+        }
+
         // Virtual hooks để class con override
-        protected virtual async Task OnBeforeReward() {
+        protected virtual async Task OnBeforeReward()
+        {
             await Task.CompletedTask; // Không làm gì trong base class
         }
 
-        protected virtual async Task OnAfterReward() {
-            QuestManager.Instance.CompleteQuest(QuestId);
+        protected virtual async Task OnAfterReward()
+        {
+            // Note: CompleteQuest() is now called in WaitForServerConfirmation()
             QuestPermissionManager.Instance.MarkCompleted(QuestId);
             await Task.CompletedTask;
         }
 
         // Các phương thức hỗ trợ
-        private async Task SyncQuestToServer() {
+        private async Task SyncQuestToServer()
+        {
             // Gọi API đồng bộ quest lên server
             // await YourNetworkManager.SyncQuest(questId);
             await Task.Delay(500);
             await Task.CompletedTask; // Placeholder
         }
-        private async Task GiveReward() {
+        private async Task GiveReward()
+        {
             // Logic trao thưởng
             // await RewardManager.GiveReward(rewardId);
             await Task.Delay(500);
             await Task.CompletedTask; // Placeholder
         }
-        private async Task ShowNotification() {
-            // Hiển thị thông báo
-            // await NotificationManager.Show("Quest completed!");
-            QuestUIComplete.Instance.UpdateUI(QuestName, "00:00", "50", "1");
-           
+        private async Task ShowNotification(QuestDataJson questData)
+        {
+            string completedTime = "";
+            int rewardGold = 0;
+
+            if (questData != null)
+            {
+                rewardGold = questData.rewardGold;
+                if (!string.IsNullOrEmpty(questData.completedAt))
+                {
+                    if (DateTime.TryParse(questData.completedAt, out DateTime parsedDate))
+                    {
+                        // completedTime = parsedDate.ToString("dd/MM/yyyy HH:mm:ss");
+                        // Hoặc các format khác:
+                        completedTime = parsedDate.ToString("dd/MM/yyyy");
+                        // completedTime = parsedDate.ToString("dd-MM-yyyy HH:mm");
+                        // completedTime = parsedDate.ToString("yyyy-MM-dd HH:mm:ss");
+                    }
+                }
+            }
+            else
+            {
+                Debug.LogWarning("[QuestCtrl] No quest data available for notification");
+            }
+
+            // Hiển thị UI với dữ liệu từ API
+            QuestUIComplete.Instance.UpdateUI(QuestName, completedTime, rewardGold.ToString(), "1");
 
             await Task.Delay(500);
-            await Task.CompletedTask; // Placeholder
         }
 
 
+        public string GetCurrentStep()
+        {
+            if (currentStepIndex < steps.Count)
+            {
+                return steps[currentStepIndex].StepId;
+            }
+            return null;
+        }
 
 
 

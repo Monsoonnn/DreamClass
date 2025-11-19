@@ -82,6 +82,7 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager>
     /// HÀM 1: RESTART QUEST
     /// - Reset experiment về trạng thái ban đầu
     /// - Reset guide về bước đầu
+    /// - Restart toàn bộ steps trên server
     /// - Quest vẫn active
     /// </summary>
     [ProButton]
@@ -106,7 +107,17 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager>
         // 2. Reset Guide về bước đầu
         RestartGuide();
 
-        // 3. Thông báo cho quest biết đã restart
+        // 3. Restart quest steps trên server
+        if (currentGuideRuntime != null)
+        {
+            foreach (var step in currentQuest.steps)
+            {
+                if(step.HasSkipServerUpdateFlag()) continue;
+                QuestManager.Instance?.RestartQuestStep(currentQuest.QuestId, step.StepId.ToString());
+            }
+        }
+
+        // 4. Thông báo cho quest biết đã restart
         currentQuest.SendMessage("OnQuestRestarted", SendMessageOptions.DontRequireReceiver);
 
         Debug.Log($"[GuideStepManager] Quest restarted successfully");
@@ -114,7 +125,8 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager>
 
     /// <summary>
     /// HÀM 2: ABANDON QUEST (TỪ BỎ QUEST)
-    /// - Reset toàn bộ
+    /// - Reset experiment và guide
+    /// - Gọi Quest system để abandon trên server
     /// - SetActive(false) GameObject quest
     /// - Clear current quest reference
     /// </summary>
@@ -142,10 +154,24 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager>
             RestartQuest();
         }
 
-
         Debug.Log($"[GuideStepManager] ===== ABANDONING QUEST: {currentQuest.gameObject.name} =====");
 
-        // 1. Stop experiment
+        string questId = currentQuest.QuestId;
+        
+        // 1. Call Quest system to abandon on server
+        // QuestManager.Instance?.AbandonQuest(questId, (success) =>
+        // {
+        //     if (success)
+        //     {
+        //         Debug.Log($"[GuideStepManager] Quest abandoned on server successfully");
+        //     }
+        //     else
+        //     {
+        //         Debug.LogError($"[GuideStepManager] Failed to abandon quest on server");
+        //     }
+        // });
+
+        // 2. Stop experiment
         var experimentController = currentQuest.GetExperimentController();
         if (experimentController != null)
         {
@@ -157,14 +183,14 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager>
             experimentController.transform.parent.gameObject.SetActive(false);
         }
 
-        // 2. Reset guide
+        // 3. Reset guide
         RestartGuide();
         RestartTitle(0f);
 
-        // 3. Deactivate quest GameObject
+        // 4. Deactivate quest GameObject
         GameObject questObject = currentQuest.gameObject;
         currentQuest = null; // Clear reference trước khi deactivate
-        questObject.SetActive(true);
+        questObject.SetActive(false);
 
         Debug.Log($"[GuideStepManager] Quest abandoned and deactivated");
     }

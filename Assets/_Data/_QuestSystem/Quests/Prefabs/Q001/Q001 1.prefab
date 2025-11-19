@@ -1768,10 +1768,11 @@ MonoBehaviour:
   QuestName: "L\xE0m quen v\u1EDBi Mai"
   Description: "Mai l\xE0 c\xF4 b\u1EA1n th\xE2n thi\u1EC7n ng\u1ED3i \u1EDF b\xE0n
     \u0111\u1EA7u. H\xE3y ti\u1EBFn l\u1EA1i g\u1EA7n v\xE0 ch\xE0o Mai \u0111\u1EC3
-    b\u1EAFt \u0111\u1EA7u tr\xF2 chuy\u1EC7n."
+    b\u1EAFt \u0111\u1EA7u tr\xF2 chuy\u1EC7n v\u1EDBi c\xF4 \u1EA5y."
   steps:
   - {fileID: 217886790358985496}
   State: 1
+  currentStepIndex: 0
   holdUI: {fileID: 0}
   npcCtrl: {fileID: 0}
 --- !u!114 &6582733990768368358
@@ -2002,6 +2003,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   questStep: {fileID: 217886790358985496}
+  isCompleted: 0
   voiceEnumSource: {fileID: 11400000, guid: 12ad12b9890e8a44f9ca90967bb9c9d8, type: 2}
   voiceValue: Q001_Option1
 --- !u!1 &5803954785937508681

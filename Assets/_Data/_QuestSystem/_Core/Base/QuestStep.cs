@@ -34,8 +34,29 @@ namespace DreamClass.QuestSystem
         {
             IsComplete = true;
             Debug.Log($"[QuestStep] Completed step: {StepId}");
+            
+            // Check if this step should skip server update
+            bool shouldUpdateServer = !HasSkipServerUpdateFlag();
+            
+            // Update step on server if using Server API (unless skipped)
+            if (shouldUpdateServer && questCtrl != null)
+            {
+                QuestManager.Instance?.UpdateStepOnServer(questCtrl.QuestId, StepId);
+            }
+            
             this.questCtrl.UpdateProgress();
-
+        }
+        
+        public virtual bool HasSkipServerUpdateFlag()
+        {
+            // Allow derived classes to override this behavior
+            // For ExperimentQuestStep, check its SkipServerUpdate property
+            var experimentStep = this as ExperimentQuestStep;
+            if (experimentStep != null)
+            {
+                return experimentStep.SkipServerUpdate;
+            }
+            return false;
         }
     }
 }

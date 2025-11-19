@@ -53,6 +53,7 @@ MonoBehaviour:
   - TURNON_AC
   - TURNON_OATKE
   completionRequirement: 0
+  skipServerUpdate: 0
   minCompletedCount: 1
   actionType: 0
   requireExperimentRunning: 0
@@ -212,7 +213,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1100458787585686373
 RectTransform:
   m_ObjectHideFlags: 0
@@ -223,7 +224,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 348120751064174984}
   - {fileID: 5126133811871874098}
@@ -385,7 +386,7 @@ MonoBehaviour:
   - {fileID: 7592573359012366324}
   - {fileID: 5633267306301651723}
   - {fileID: 351234193267246481}
-  State: 1
+  State: 2
   currentStepIndex: 0
   experimentID: NHIET_DUNG_NUOC
   experimentController: {fileID: 0}
@@ -442,6 +443,7 @@ MonoBehaviour:
   targetGuideStepID: 
   targetGuideStepIDs: []
   completionRequirement: 0
+  skipServerUpdate: 0
   minCompletedCount: 1
   actionType: 2
   requireExperimentRunning: 0
@@ -496,6 +498,7 @@ MonoBehaviour:
   targetGuideStepID: 
   targetGuideStepIDs: []
   completionRequirement: 0
+  skipServerUpdate: 1
   minCompletedCount: 1
   actionType: 3
   requireExperimentRunning: 1
@@ -550,6 +553,7 @@ MonoBehaviour:
   targetGuideStepID: 
   targetGuideStepIDs: []
   completionRequirement: 0
+  skipServerUpdate: 1
   minCompletedCount: 1
   actionType: 1
   requireExperimentRunning: 0
@@ -848,6 +852,7 @@ MonoBehaviour:
   - CHECK_SCALE
   - PLACEON_BINHDO
   completionRequirement: 0
+  skipServerUpdate: 0
   minCompletedCount: 1
   actionType: 0
   requireExperimentRunning: 0

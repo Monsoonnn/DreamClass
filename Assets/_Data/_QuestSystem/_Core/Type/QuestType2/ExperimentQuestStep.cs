@@ -16,6 +16,12 @@ public class ExperimentQuestStep : QuestStep
     [Tooltip("Yêu cầu hoàn thành tất cả hay chỉ một trong số các steps")]
     [SerializeField] private CompletionRequirement completionRequirement = CompletionRequirement.All;
 
+    [Header("Server Sync Settings")]
+    [Tooltip("Bỏ qua cập nhật step này lên server (dùng khi server không hỗ trợ)")]
+    [SerializeField] private bool skipServerUpdate = false;
+
+    public bool SkipServerUpdate => skipServerUpdate;
+
     public enum TrackingMode
     {
         None,

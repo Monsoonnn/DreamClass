@@ -3,6 +3,7 @@ using UnityEditor;
 using System.IO;
 using System.Collections.Generic;
 using DreamClass.Network;
+using LoginMgrNS = DreamClass.LoginManager;
 
 namespace DreamClass.QuestSystem
 {
@@ -27,12 +28,31 @@ namespace DreamClass.QuestSystem
         private SyncMode syncMode = SyncMode.LocalJSON;
         private string jsonPath = "Assets/_Data/_QuestSystem/Mock/QuestMock.json";
         private ApiClient apiClient;
-        private string questEndpoint = "/api/quests";
+        private string questEndpoint = "/api/quests/my-quests";
+        private string dailyQuestEndpoint = "/api/quests/daily";
+        
+        // API response wrapper - data contains array of QuestDataJson directly
+        [System.Serializable]
+        private class ApiQuestResponse
+        {
+            public string message;
+            public int count;
+            public QuestDataJson[] data;  // Array of quests directly, not wrapped in PlayerQuestJson
+        }
+        
+        // Daily quests response wrapper (same format)
+        [System.Serializable]
+        private class ApiDailyQuestsResponse
+        {
+            public string message;
+            public int count;
+            public QuestDataJson[] data;  // Same format as normal quests
+        }
 
         private void OnEnable()
         {
             // Try to find ApiClient in scene
-            apiClient = FindObjectOfType<ApiClient>();
+            apiClient = Object.FindFirstObjectByType<ApiClient>();
         }
 
         public override void OnInspectorGUI()
@@ -672,6 +692,32 @@ namespace DreamClass.QuestSystem
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             EditorGUILayout.LabelField("🌐 Server API", EditorStyles.boldLabel);
 
+            // Check login status
+            bool isLoggedIn = LoginMgrNS.LoginManager.Instance != null && LoginMgrNS.LoginManager.Instance.IsLoggedIn();
+            
+            if (!isLoggedIn)
+            {
+                EditorGUILayout.HelpBox("⚠️ You must login first to fetch quests from server.", MessageType.Warning);
+                EditorGUILayout.Space(5);
+                
+                if (GUILayout.Button("🔐 Quick Login", GUILayout.Height(40)))
+                {
+                    if (LoginMgrNS.LoginManager.Instance != null)
+                    {
+                        LoginMgrNS.LoginManager.Instance.QuickLogin();
+                        EditorUtility.DisplayDialog("Login", "Login request sent. Please wait a moment for session to establish.", "OK");
+                    }
+                    else
+                    {
+                        EditorUtility.DisplayDialog("Error", "LoginManager not found in scene.", "OK");
+                    }
+                }
+                
+                EditorGUILayout.Space(10);
+                EditorGUILayout.LabelField("Or switch to Local JSON mode:", EditorStyles.miniLabel);
+                return;
+            }
+
             // ApiClient field
             apiClient = (ApiClient)EditorGUILayout.ObjectField("API Client:", apiClient, typeof(ApiClient), true);
             
@@ -680,7 +726,7 @@ namespace DreamClass.QuestSystem
                 EditorGUILayout.HelpBox("ApiClient not found. Please assign or add ApiClient to scene.", MessageType.Warning);
                 if (GUILayout.Button("Find ApiClient in Scene"))
                 {
-                    apiClient = FindObjectOfType<ApiClient>();
+                    apiClient = Object.FindFirstObjectByType<ApiClient>();
                     if (apiClient == null)
                     {
                         EditorUtility.DisplayDialog("Not Found", "No ApiClient found in scene.", "OK");
@@ -688,19 +734,53 @@ namespace DreamClass.QuestSystem
                 }
             }
 
-            // Endpoint
+            EditorGUILayout.Space(5);
+            EditorGUILayout.LabelField("Normal Quests", EditorStyles.boldLabel);
+            // Endpoint - Normal Quests
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Endpoint:", GUILayout.Width(80));
             questEndpoint = EditorGUILayout.TextField(questEndpoint);
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.Space(5);
+            EditorGUILayout.LabelField("Daily Quests", EditorStyles.boldLabel);
+            // Endpoint - Daily Quests
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Daily Endpoint:", GUILayout.Width(80));
+            dailyQuestEndpoint = EditorGUILayout.TextField(dailyQuestEndpoint);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.Space(10);
 
             GUI.enabled = apiClient != null;
+            EditorGUILayout.BeginHorizontal();
+            
+            // Fetch Normal Quests
             GUI.backgroundColor = new Color(0.3f, 0.7f, 1f);
-            if (GUILayout.Button("🌐 Fetch & Sync from Server", GUILayout.Height(35)))
+            if (GUILayout.Button("📥 Fetch Normal Quests", GUILayout.Height(35)))
             {
-                FetchAndSyncFromServer(database);
+                FetchAndSyncFromServer(database, questEndpoint, false);
+            }
+            
+            // Fetch Daily Quests
+            GUI.backgroundColor = new Color(0.7f, 0.3f, 1f);
+            if (GUILayout.Button("📅 Fetch Daily Quests", GUILayout.Height(35)))
+            {
+                FetchAndSyncFromServer(database, dailyQuestEndpoint, true);
+            }
+            
+            GUI.backgroundColor = Color.white;
+            EditorGUILayout.EndHorizontal();
+            
+            EditorGUILayout.Space(5);
+            
+            // Fetch Both
+            GUI.backgroundColor = new Color(0.2f, 0.8f, 0.2f);
+            if (GUILayout.Button("🌐 Fetch & Sync Both (Normal + Daily)", GUILayout.Height(35)))
+            {
+                FetchAndSyncFromServer(database, questEndpoint, false);
+                EditorGUILayout.Space(5);
+                FetchAndSyncFromServer(database, dailyQuestEndpoint, true);
             }
             GUI.backgroundColor = Color.white;
             GUI.enabled = true;
@@ -760,7 +840,7 @@ namespace DreamClass.QuestSystem
             }
         }
 
-        private void FetchAndSyncFromServer(QuestDatabase database)
+        private void FetchAndSyncFromServer(QuestDatabase database, string endpoint, bool isDaily)
         {
             if (apiClient == null)
             {
@@ -770,31 +850,92 @@ namespace DreamClass.QuestSystem
 
             EditorUtility.DisplayProgressBar("Fetching from Server", "Preparing request...", 0.1f);
 
-            ApiRequest request = new ApiRequest(questEndpoint, "GET");
+            ApiRequest request = new ApiRequest(endpoint, "GET");
 
-            apiClient.StartCoroutine(apiClient.SendRequest(request, response =>
+            apiClient.StartCoroutine(FetchAndSyncCoroutine(database, request, isDaily));
+        }
+
+        private System.Collections.IEnumerator FetchAndSyncCoroutine(QuestDatabase database, ApiRequest request, bool isDaily)
+        {
+            ApiResponse response = null;
+
+            // Send request and wait for response
+            yield return apiClient.StartCoroutine(apiClient.SendRequest(request, r =>
             {
-                EditorUtility.ClearProgressBar();
-
-                if (response.IsSuccess)
-                {
-                    try
-                    {
-                        PlayerQuestJson playerData = JsonUtility.FromJson<PlayerQuestJson>(response.Text);
-                        SyncQuestData(database, playerData);
-                    }
-                    catch (System.Exception e)
-                    {
-                        EditorUtility.DisplayDialog("Error", $"Failed to parse response:\n{e.Message}", "OK");
-                        Debug.LogError($"[Editor] Parse error: {e}");
-                    }
-                }
-                else
-                {
-                    EditorUtility.DisplayDialog("Error", $"Request failed:\n{response.Error}", "OK");
-                    Debug.LogError($"[Editor] Request error: {response.Error}");
-                }
+                response = r;
             }));
+
+            // Now response should be populated
+            EditorUtility.ClearProgressBar();
+
+            if (response == null)
+            {
+                EditorUtility.DisplayDialog("Error", "No response received from server", "OK");
+                Debug.LogError("[Editor] Response is null after request");
+                yield break;
+            }
+
+            if (string.IsNullOrEmpty(response.Text))
+            {
+                EditorUtility.DisplayDialog("Error", $"Empty response from server. Status: {response.StatusCode}", "OK");
+                Debug.LogError($"[Editor] Response.Text is empty. Status: {response.StatusCode}, Error: {response.Error}");
+                yield break;
+            }
+
+            if (response.IsSuccess)
+            {
+                try
+                {
+                    if (isDaily)
+                    {
+                        // Parse daily quests response (array of QuestDataJson)
+                        ApiDailyQuestsResponse dailyResponse = JsonUtility.FromJson<ApiDailyQuestsResponse>(response.Text);
+                        
+                        if (dailyResponse.data != null && dailyResponse.data.Length > 0)
+                        {
+                            // Wrap quest array in PlayerQuestJson structure
+                            PlayerQuestJson mergedData = new PlayerQuestJson();
+                            mergedData.quests = new List<QuestDataJson>(dailyResponse.data);
+                            
+                            Debug.Log($"[Editor] Loaded {mergedData.quests.Count} daily quests");
+                            SyncQuestData(database, mergedData);
+                        }
+                        else
+                        {
+                            EditorUtility.DisplayDialog("Error", "No daily quest data found in response", "OK");
+                        }
+                    }
+                    else
+                    {
+                        // Parse normal quests response (array of QuestDataJson)
+                        ApiQuestResponse apiResponse = JsonUtility.FromJson<ApiQuestResponse>(response.Text);
+                        
+                        if (apiResponse.data != null && apiResponse.data.Length > 0)
+                        {
+                            // Wrap quest array in PlayerQuestJson structure
+                            PlayerQuestJson mergedData = new PlayerQuestJson();
+                            mergedData.quests = new List<QuestDataJson>(apiResponse.data);
+                            
+                            Debug.Log($"[Editor] Loaded {mergedData.quests.Count} normal quests");
+                            SyncQuestData(database, mergedData);
+                        }
+                        else
+                        {
+                            EditorUtility.DisplayDialog("Error", "No quest data found in response", "OK");
+                        }
+                    }
+                }
+                catch (System.Exception e)
+                {
+                    EditorUtility.DisplayDialog("Error", $"Failed to parse response:\n{e.Message}", "OK");
+                    Debug.LogError($"[Editor] Parse error: {e}");
+                }
+            }
+            else
+            {
+                EditorUtility.DisplayDialog("Error", $"Request failed:\n{response.Error}", "OK");
+                Debug.LogError($"[Editor] Request error: {response.Error}");
+            }
         }
 
         private void SyncQuestData(QuestDatabase database, PlayerQuestJson playerData)

@@ -147,6 +147,9 @@ namespace DreamClass.QuestSystem
         public string name;
         public string description;
         public int rewardGold;
+        
+        public string completedAt;
+
         public string state;
         public List<QuestStepJson> steps;
     }
