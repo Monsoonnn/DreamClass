@@ -78,7 +78,45 @@ namespace DreamClass.QuestSystem
                 StartCoroutine(StartQuestOnServerAsync());
             }
 
+            // Hide UICanvas from NPCManager holder before starting animation
+            HideNPCUICanvas();
+
             steps[currentStepIndex].StartStep();
+        }
+
+        /// <summary>
+        /// Hide UICanvas from NPC that holds this quest
+        /// Only works for QuestType1
+        /// </summary>
+        protected virtual void HideNPCUICanvas()
+        {
+            // Only hide UICanvas for QuestType1
+            if (!(this is QuestType1)) return;
+
+            // Find parent NPC that has NPCManager
+            DreamClass.NPCCore.NPCManager npcManager = transform.parent?.GetComponent<DreamClass.NPCCore.NPCManager>();
+            if (npcManager != null)
+            {
+                npcManager.SetUICanvasActive(false);
+                Debug.Log($"[QuestCtrl] Hidden UICanvas for quest '{QuestName}'");
+            }
+        }
+
+        /// <summary>
+        /// Show UICanvas from NPC that holds this quest
+        /// Only works for QuestType1
+        /// </summary>
+        public virtual void ShowNPCUICanvas()
+        {
+            // Only show UICanvas for QuestType1
+            if (!(this is QuestType1)) return;
+
+            DreamClass.NPCCore.NPCManager npcManager = transform.parent?.GetComponent<DreamClass.NPCCore.NPCManager>();
+            if (npcManager != null)
+            {
+                npcManager.SetUICanvasActive(true);
+                Debug.Log($"[QuestCtrl] Showed UICanvas for quest '{QuestName}'");
+            }
         }
 
         private System.Collections.IEnumerator StartQuestOnServerAsync()

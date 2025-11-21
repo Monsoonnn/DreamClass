@@ -4,6 +4,7 @@ using com.cyborgAssets.inspectorButtonPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using LoginMgrNS = DreamClass.LoginManager;
+using DreamClass.Network;
 
 namespace DreamClass.QuestSystem
 {
@@ -294,50 +295,42 @@ namespace DreamClass.QuestSystem
             // Start quest on server if using Server API
             if (useServerAPI && LoginMgrNS.LoginManager.Instance != null && LoginMgrNS.LoginManager.Instance.IsLoggedIn())
             {
-                StartCoroutine(StartQuestOnServer(questId));
+                StartQuestOnServer(questId);
             }
 
             Debug.Log($"[QuestManager] Quest started: {quest.QuestName}");
         }
 
-        private System.Collections.IEnumerator StartQuestOnServer(string questId)
+        private void StartQuestOnServer(string questId)
         {
-            DreamClass.Network.ApiClient apiClient = FindFirstObjectByType<DreamClass.Network.ApiClient>();
-            if (apiClient == null)
-            {
-                Debug.LogError("[QuestManager] ApiClient not found.");
-                yield break;
-            }
-
+            string requestId = $"StartQuest_{questId}";
             string endpoint = $"/api/quests/my-quests/{questId}/start";
-            DreamClass.Network.ApiRequest request = new DreamClass.Network.ApiRequest(endpoint, "POST");
+            ApiRequest request = new ApiRequest(endpoint, "POST");
 
-            DreamClass.Network.ApiResponse response = null;
-            yield return apiClient.StartCoroutine(apiClient.SendRequest(request, r =>
+            // Enqueue request
+            QuestAPIQueue.Instance.EnqueueRequest(requestId, request, (response) =>
             {
-                response = r;
-            }));
-
-            if (response != null && response.IsSuccess && !string.IsNullOrEmpty(response.Text))
-            {
-                try
+                if (response != null && response.IsSuccess && !string.IsNullOrEmpty(response.Text))
                 {
-                    StartQuestResponse startResponse = JsonUtility.FromJson<StartQuestResponse>(response.Text);
-                    if (startResponse.data != null)
+                    try
                     {
-                        questDataCache[questId] = startResponse.data;
-                        Debug.Log($"[QuestManager] Quest {questId} started on server");
+                        StartQuestResponse startResponse = JsonUtility.FromJson<StartQuestResponse>(response.Text);
+                        if (startResponse.data != null)
+                        {
+                            questDataCache[questId] = startResponse.data;
+                            Debug.Log($"[QuestManager] Quest {questId} started on server");
+                        }
+                    }
+                    catch (System.Exception e)
+                    {
+                        Debug.LogError($"[QuestManager] Failed to parse start quest response: {e.Message}");
                     }
                 }
-                catch (System.Exception e)
+                else
                 {
-                    Debug.LogError($"[QuestManager] Failed to parse start quest response: {e.Message}");
+                    Debug.LogError($"[QuestManager] Failed to start quest on server: {response?.Error}");
                 }
-            }
-            else
-            {
-                Debug.LogError($"[QuestManager] Failed to start quest on server: {response?.Error}");
-            }
+            });
         }
 
         public void CompleteQuest(string questId, System.Action<bool, QuestDataJson> onComplete = null)
@@ -346,7 +339,41 @@ namespace DreamClass.QuestSystem
 
             if (useServerAPI && LoginMgrNS.LoginManager.Instance != null && LoginMgrNS.LoginManager.Instance.IsLoggedIn())
             {
-                StartCoroutine(CompleteQuestOnServer(questId, onComplete));
+                string requestId = $"CompleteQuest_{questId}";
+                string endpoint = $"/api/quests/{questId}/complete";
+                DreamClass.Network.ApiRequest request = new DreamClass.Network.ApiRequest(endpoint, "POST");
+
+                QuestAPIQueue.Instance.EnqueueRequest(requestId, request, (response) =>
+                {
+                    if (response != null && response.IsSuccess && !string.IsNullOrEmpty(response.Text))
+                    {
+                        try
+                        {
+                            CompleteQuestResponse completeResponse = JsonUtility.FromJson<CompleteQuestResponse>(response.Text);
+                            if (completeResponse.data != null && completeResponse.data.quest != null)
+                            {
+                                questDataCache[questId] = completeResponse.data.quest;
+                                Debug.Log($"[QuestManager] Quest {questId} completed! Reward: {completeResponse.data.reward.gold} gold");
+                                onComplete?.Invoke(true, completeResponse.data.quest);
+                            }
+                            else
+                            {
+                                Debug.LogError("[QuestManager] Invalid response data for complete quest.");
+                                onComplete?.Invoke(false, null);
+                            }
+                        }
+                        catch (System.Exception e)
+                        {
+                            Debug.LogError($"[QuestManager] Failed to parse complete quest response: {e.Message}");
+                            onComplete?.Invoke(false, null);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError($"[QuestManager] Failed to complete quest: {response?.Error}");
+                        onComplete?.Invoke(false, null);
+                    }
+                });
             }
             else
             {
@@ -357,61 +384,10 @@ namespace DreamClass.QuestSystem
             Debug.Log($"[QuestManager] Quest '{questId}' marked as complete.");
         }
 
-        private System.Collections.IEnumerator CompleteQuestOnServer(string questId, System.Action<bool, QuestDataJson> onComplete)
+        // DEPRECATED: Use QuestAPIQueue instead
+        private System.Collections.IEnumerator CompleteQuestOnServer_OLD(string questId, System.Action<bool, QuestDataJson> onComplete)
         {
-            DreamClass.Network.ApiClient apiClient = FindFirstObjectByType<DreamClass.Network.ApiClient>();
-            if (apiClient == null)
-            {
-                Debug.LogError("[QuestManager] ApiClient not found.");
-                onComplete?.Invoke(false, null);
-                yield break;
-            }
-
-            string endpoint = $"/api/quests/{questId}/complete";
-            Debug.Log($"[QuestManager] CompleteQuestOnServer Request:{endpoint}\n");
-
-            DreamClass.Network.ApiRequest request = new DreamClass.Network.ApiRequest(endpoint, "POST");
-
-            DreamClass.Network.ApiResponse response = null;
-            yield return apiClient.StartCoroutine(apiClient.SendRequest(request, r =>
-            {
-                response = r;
-            }));
-
-            if (response != null && response.IsSuccess && !string.IsNullOrEmpty(response.Text))
-            {
-                try
-                {
-                    CompleteQuestResponse completeResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<CompleteQuestResponse>(response.Text);
-                    if (completeResponse.data != null && completeResponse.data.quest != null)
-                    {
-                        //  Update cache with server data
-                        questDataCache[questId] = completeResponse.data.quest;
-
-                        //  Return updated quest data
-                        onComplete?.Invoke(true, new QuestDataJson
-                        {
-                            rewardGold = completeResponse.data.reward.gold,
-                            completedAt = completeResponse.data.quest.completedAt
-                        });
-                    }
-                    else
-                    {
-                        Debug.LogError("[QuestManager] Invalid response data for complete quest.");
-                        onComplete?.Invoke(false, null);
-                    }
-                }
-                catch (System.Exception e)
-                {
-                    Debug.LogError($"[QuestManager] Failed to parse complete quest response: {e.Message}");
-                    onComplete?.Invoke(false, null);
-                }
-            }
-            else
-            {
-                Debug.LogError($"[QuestManager] Failed to complete quest: {response?.Error}");
-                onComplete?.Invoke(false, null);
-            }
+            yield break;
         }
 
 
@@ -423,102 +399,45 @@ namespace DreamClass.QuestSystem
                 return;
             }
 
-            StartCoroutine(UpdateStepCoroutine(questId, stepId, onComplete));
+            string requestId = $"UpdateStep_{questId}_{stepId}";
+            string endpoint = $"/api/quests/{questId}/steps/{stepId}";
+            string body = JsonUtility.ToJson(new StepUpdateRequest { isComplete = true });
+            ApiRequest request = new ApiRequest(endpoint, "PUT", body);
+
+            QuestAPIQueue.Instance.EnqueueRequest(requestId, request, (response) =>
+            {
+                if (response != null && response.IsSuccess && !string.IsNullOrEmpty(response.Text))
+                {
+                    try
+                    {
+                        StepUpdateResponse stepResponse = JsonUtility.FromJson<StepUpdateResponse>(response.Text);
+                        if (stepResponse.data != null)
+                        {
+                            questDataCache[questId] = stepResponse.data;
+                            Debug.Log($"[QuestManager] Step {stepId} updated successfully");
+                            onComplete?.Invoke(stepResponse.data);
+                        }
+                    }
+                    catch (System.Exception e)
+                    {
+                        Debug.LogError($"[QuestManager] Failed to parse step update response: {e.Message}");
+                    }
+                }
+                else
+                {
+                    Debug.LogError($"[QuestManager] Failed to update step: {response?.Error}");
+                }
+            });
         }
 
         private System.Collections.IEnumerator UpdateStepCoroutine(string questId, string stepId, System.Action<QuestDataJson> onComplete)
         {
-            DreamClass.Network.ApiClient apiClient = FindFirstObjectByType<DreamClass.Network.ApiClient>();
-            if (apiClient == null)
-            {
-                Debug.LogError("[QuestManager] ApiClient not found.");
-                yield break;
-            }
-
-            string endpoint = $"/api/quests/{questId}/steps/{stepId}";
-            string body = JsonUtility.ToJson(new StepUpdateRequest { isComplete = true });
-
-            DreamClass.Network.ApiRequest request = new DreamClass.Network.ApiRequest(endpoint, "PUT", body);
-
-            DreamClass.Network.ApiResponse response = null;
-            yield return apiClient.StartCoroutine(apiClient.SendRequest(request, r =>
-            {
-                response = r;
-            }));
-
-            if (response != null && response.IsSuccess && !string.IsNullOrEmpty(response.Text))
-            {
-                try
-                {
-                    StepUpdateResponse stepResponse = JsonUtility.FromJson<StepUpdateResponse>(response.Text);
-                    if (stepResponse.data != null)
-                    {
-                        questDataCache[questId] = stepResponse.data;
-                        Debug.Log($"[QuestManager] Step {stepId} updated successfully");
-                        onComplete?.Invoke(stepResponse.data);
-                    }
-                }
-                catch (System.Exception e)
-                {
-                    Debug.LogError($"[QuestManager] Failed to parse step update response: {e.Message}");
-                }
-            }
-            else
-            {
-                Debug.LogError($"[QuestManager] Failed to update step: {response?.Error}");
-            }
-        }
-
+            // DEPRECATED: Use QuestAPIQueue instead
+            yield break;
+        }        // DEPRECATED: Use QuestAPIQueue instead
         private System.Collections.IEnumerator CompleteQuestOnServer(string questId, System.Action<bool> onComplete)
         {
-            DreamClass.Network.ApiClient apiClient = FindFirstObjectByType<DreamClass.Network.ApiClient>();
-            if (apiClient == null)
-            {
-                Debug.LogError("[QuestManager] ApiClient not found.");
-                onComplete?.Invoke(false);
-                yield break;
-            }
-
-            string endpoint = $"/api/quests/{questId}/complete";
-
-            Debug.Log($"[QuestManager] CompleteQuestOnServer Request:{endpoint}\n");
-
-            DreamClass.Network.ApiRequest request = new DreamClass.Network.ApiRequest(endpoint, "POST");
-
-            DreamClass.Network.ApiResponse response = null;
-            yield return apiClient.StartCoroutine(apiClient.SendRequest(request, r =>
-            {
-                response = r;
-            }));
-
-            if (response != null && response.IsSuccess && !string.IsNullOrEmpty(response.Text))
-            {
-                try
-                {
-                    CompleteQuestResponse completeResponse = JsonUtility.FromJson<CompleteQuestResponse>(response.Text);
-                    if (completeResponse.data != null && completeResponse.data.quest != null)
-                    {
-                        questDataCache[questId] = completeResponse.data.quest;
-                        Debug.Log($"[QuestManager] Quest {questId} completed! Reward: {completeResponse.data.reward.gold} gold");
-                        onComplete?.Invoke(true);
-                    }
-                    else
-                    {
-                        Debug.LogError("[QuestManager] Invalid response data for complete quest.");
-                        onComplete?.Invoke(false);
-                    }
-                }
-                catch (System.Exception e)
-                {
-                    Debug.LogError($"[QuestManager] Failed to parse complete quest response: {e.Message}");
-                    onComplete?.Invoke(false);
-                }
-            }
-            else
-            {
-                Debug.LogError($"[QuestManager] Failed to complete quest: {response?.Error}");
-                onComplete?.Invoke(false);
-            }
+            yield break;
         }
 
         #region === ABANDON & RESTART ===
@@ -533,44 +452,32 @@ namespace DreamClass.QuestSystem
             }
 
             SetQuestState(questId, QuestState.NOT_START);
-            StartCoroutine(AbandonQuestOnServer(questId, onComplete));
+            AbandonQuestOnServer(questId, onComplete);
         }
 
-        private System.Collections.IEnumerator AbandonQuestOnServer(string questId, System.Action<bool> onComplete)
+        public void AbandonQuestOnServer(string questId, System.Action<bool> onComplete)
         {
-            DreamClass.Network.ApiClient apiClient = FindFirstObjectByType<DreamClass.Network.ApiClient>();
-            if (apiClient == null)
-            {
-                Debug.LogError("[QuestManager] ApiClient not found.");
-                onComplete?.Invoke(false);
-                yield break;
-            }
-
+            string requestId = $"AbandonQuest_{questId}";
             string playerId = LoginMgrNS.LoginManager.Instance.GetPlayerId();
             string endpoint = "/api/quests/admin/reset";
             string body = JsonUtility.ToJson(new AbandonQuestRequest { playerId = playerId, questId = questId });
+            
+            ApiRequest request = new ApiRequest(endpoint, "POST", body);
 
-            DreamClass.Network.ApiRequest request = new DreamClass.Network.ApiRequest(endpoint, "POST", body);
-
-            DreamClass.Network.ApiResponse response = null;
-            yield return apiClient.StartCoroutine(apiClient.SendRequest(request, r =>
+            QuestAPIQueue.Instance.EnqueueRequest(requestId, request, (response) =>
             {
-                response = r;
-            }));
-
-            if (response != null && response.IsSuccess)
-            {
-                Debug.Log($"[QuestManager] Quest {questId} abandoned successfully");
-                onComplete?.Invoke(true);
-            }
-            else
-            {
-                Debug.LogError($"[QuestManager] Failed to abandon quest: {response?.Error}");
-                onComplete?.Invoke(false);
-            }
-        }
-
-        public void RestartQuestStep(string questId, string stepId, System.Action<bool> onComplete = null)
+                if (response != null && response.IsSuccess)
+                {
+                    Debug.Log($"[QuestManager] Quest {questId} abandoned successfully");
+                    onComplete?.Invoke(true);
+                }
+                else
+                {
+                    Debug.LogError($"[QuestManager] Failed to abandon quest: {response?.Error}");
+                    onComplete?.Invoke(false);
+                }
+            });
+        }        public void RestartQuestStep(string questId, string stepId, System.Action<bool> onComplete = null)
         {
             if (!useServerAPI || LoginMgrNS.LoginManager.Instance == null || !LoginMgrNS.LoginManager.Instance.IsLoggedIn())
             {
@@ -579,58 +486,44 @@ namespace DreamClass.QuestSystem
                 return;
             }
 
-            StartCoroutine(RestartQuestStepOnServer(questId, stepId, onComplete));
-        }
-
-        private System.Collections.IEnumerator RestartQuestStepOnServer(string questId, string stepId, System.Action<bool> onComplete)
-        {
-            DreamClass.Network.ApiClient apiClient = FindFirstObjectByType<DreamClass.Network.ApiClient>();
-            if (apiClient == null)
-            {
-                Debug.LogError("[QuestManager] ApiClient not found.");
-                onComplete?.Invoke(false);
-                yield break;
-            }
-
+            string requestId = $"RestartStep_{questId}_{stepId}";
             string endpoint = $"/api/quests/{questId}/steps/{stepId}";
             string body = JsonUtility.ToJson(new StepUpdateRequest { isComplete = false });
+            
+            ApiRequest request = new ApiRequest(endpoint, "PUT", body);
 
-            //Debug.Log($"[QuestManager] RestartQuestStepOnServer Request:{endpoint}\nBody: {body}");
-
-            DreamClass.Network.ApiRequest request = new DreamClass.Network.ApiRequest(endpoint, "PUT", body);
-
-            //Debug.Log($"[QuestManager] RestartQuestStepOnServer Request:{request.endpoint}\nBody: {request.body}");
-
-            DreamClass.Network.ApiResponse response = null;
-            yield return apiClient.StartCoroutine(apiClient.SendRequest(request, r =>
+            QuestAPIQueue.Instance.EnqueueRequest(requestId, request, (response) =>
             {
-                response = r;
-                // Debug.Log($"[QuestManager] RestartQuestStepOnServer Response: Success={response.IsSuccess}, Body={response.Text}, Error={response.Error}");
-            }));
-
-            if (response != null && response.IsSuccess && !string.IsNullOrEmpty(response.Text))
-            {
-                try
+                if (response != null && response.IsSuccess && !string.IsNullOrEmpty(response.Text))
                 {
-                    StepUpdateResponse stepResponse = JsonUtility.FromJson<StepUpdateResponse>(response.Text);
-                    if (stepResponse.data != null)
+                    try
                     {
-                        questDataCache[questId] = stepResponse.data;
-                        Debug.Log($"[QuestManager] Step {stepId} restarted successfully");
-                        onComplete?.Invoke(true);
+                        StepUpdateResponse stepResponse = JsonUtility.FromJson<StepUpdateResponse>(response.Text);
+                        if (stepResponse.data != null)
+                        {
+                            questDataCache[questId] = stepResponse.data;
+                            Debug.Log($"[QuestManager] Step {stepId} restarted successfully");
+                            onComplete?.Invoke(true);
+                        }
+                    }
+                    catch (System.Exception e)
+                    {
+                        Debug.LogError($"[QuestManager] Failed to parse restart step response: {e.Message}");
+                        onComplete?.Invoke(false);
                     }
                 }
-                catch (System.Exception e)
+                else
                 {
-                    Debug.LogError($"[QuestManager] Failed to parse restart step response: {e.Message}");
+                    Debug.LogError($"[QuestManager] Failed to restart step: {response?.Error}");
                     onComplete?.Invoke(false);
                 }
-            }
-            else
-            {
-                Debug.LogError($"[QuestManager] Failed to restart step: {response?.Error}");
-                onComplete?.Invoke(false);
-            }
+            });
+        }
+
+        // DEPRECATED: Use QuestAPIQueue instead
+        private System.Collections.IEnumerator RestartQuestStepOnServer_OLD(string questId, string stepId, System.Action<bool> onComplete)
+        {
+            yield break;
         }
 
         #endregion

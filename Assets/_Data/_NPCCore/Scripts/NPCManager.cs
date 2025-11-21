@@ -8,11 +8,19 @@ namespace DreamClass.NPCCore {
         public AnimationManager AnimationManager;
         public ICharacterVoiceline CharacterVoiceline;
 
+        public GameObject UICanvas;
+
         private float rotationSpeed = 5f; // Speed for smooth rotation
 
         protected override void LoadComponents() {
             base.LoadComponents();
             this.LoadModel();
+            this.LoadUICanvas();
+        }
+
+        protected void LoadUICanvas() {
+            if (UICanvas != null) return;
+            UICanvas = transform.Find("UICanvas")?.gameObject;
         }
 
         protected void LoadModel() {
@@ -63,5 +71,11 @@ namespace DreamClass.NPCCore {
             if(Model == null) return;
             Model.localRotation = rotation;
         }
+
+        public virtual void SetUICanvasActive(bool isActive) {
+            if (UICanvas == null) return;
+            UICanvas.SetActive(isActive);
+        }
     }
 }
+

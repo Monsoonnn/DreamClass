@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94f914d3e89014143a9b5f95599ba0e5, type: 3}
   m_Name: Config
   m_EditorClassIdentifier: 
-  hostURL: http://localhost:3000
+  hostURL: https://vr-be.onrender.com

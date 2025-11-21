@@ -693,18 +693,18 @@ namespace DreamClass.QuestSystem
             EditorGUILayout.LabelField("🌐 Server API", EditorStyles.boldLabel);
 
             // Check login status
-            bool isLoggedIn = LoginMgrNS.LoginManager.Instance != null && LoginMgrNS.LoginManager.Instance.IsLoggedIn();
-            
+            var loginMgr = GetLoginManager();
+            bool isLoggedIn = loginMgr != null && loginMgr.IsLoggedIn();
             if (!isLoggedIn)
             {
                 EditorGUILayout.HelpBox("⚠️ You must login first to fetch quests from server.", MessageType.Warning);
                 EditorGUILayout.Space(5);
-                
                 if (GUILayout.Button("🔐 Quick Login", GUILayout.Height(40)))
                 {
-                    if (LoginMgrNS.LoginManager.Instance != null)
+                    loginMgr = GetLoginManager();
+                    if (loginMgr != null)
                     {
-                        LoginMgrNS.LoginManager.Instance.QuickLogin();
+                        loginMgr.QuickLogin();
                         EditorUtility.DisplayDialog("Login", "Login request sent. Please wait a moment for session to establish.", "OK");
                     }
                     else
@@ -712,7 +712,6 @@ namespace DreamClass.QuestSystem
                         EditorUtility.DisplayDialog("Error", "LoginManager not found in scene.", "OK");
                     }
                 }
-                
                 EditorGUILayout.Space(10);
                 EditorGUILayout.LabelField("Or switch to Local JSON mode:", EditorStyles.miniLabel);
                 return;
@@ -1101,6 +1100,14 @@ namespace DreamClass.QuestSystem
             };
         }
 
+        private static LoginMgrNS.LoginManager cachedLoginMgr;
+
+        private LoginMgrNS.LoginManager GetLoginManager()
+        {
+            if (cachedLoginMgr == null)
+                cachedLoginMgr = Object.FindAnyObjectByType<LoginMgrNS.LoginManager>();
+            return cachedLoginMgr;
+        }
         #endregion
     }
 }

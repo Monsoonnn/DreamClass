@@ -386,7 +386,7 @@ MonoBehaviour:
   - {fileID: 7592573359012366324}
   - {fileID: 5633267306301651723}
   - {fileID: 351234193267246481}
-  State: 2
+  State: 1
   currentStepIndex: 0
   experimentID: NHIET_DUNG_NUOC
   experimentController: {fileID: 0}

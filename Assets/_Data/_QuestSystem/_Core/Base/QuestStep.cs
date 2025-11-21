@@ -35,6 +35,12 @@ namespace DreamClass.QuestSystem
             IsComplete = true;
             Debug.Log($"[QuestStep] Completed step: {StepId}");
             
+            // Show UICanvas when animation/step completes
+            if (questCtrl != null)
+            {
+                questCtrl.ShowNPCUICanvas();
+            }
+            
             // Check if this step should skip server update
             bool shouldUpdateServer = !HasSkipServerUpdateFlag();
             

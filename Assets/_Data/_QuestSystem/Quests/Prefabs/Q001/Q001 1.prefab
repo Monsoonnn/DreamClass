@@ -1699,9 +1699,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 217886790358985496}
-        m_TargetAssemblyTypeName: DreamClass.QuestSystem.Q001.S001, Assembly-CSharp
-        m_MethodName: StartStep
+      - m_Target: {fileID: 581625922381216332}
+        m_TargetAssemblyTypeName: DreamClass.QuestSystem.Q001Ctrl, Assembly-CSharp
+        m_MethodName: StartQuest
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

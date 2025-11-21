@@ -116,6 +116,13 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.netpyoung.webp": {
+      "version": "https://github.com/netpyoung/unity.webp.git?path=unity_project/Assets/unity.webp#0.3.21",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "6f2d5d05a39e008dfe624fcbc5d4cc13bd081bea"
+    },
     "com.srcnalt.openai-unity": {
       "version": "https://github.com/srcnalt/OpenAI-Unity.git",
       "depth": 0,

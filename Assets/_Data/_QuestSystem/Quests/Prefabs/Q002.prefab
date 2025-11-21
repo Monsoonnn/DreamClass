@@ -264,9 +264,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 391177635902012022}
-        m_TargetAssemblyTypeName: DreamClass.QuestSystem.Q001.S001, Assembly-CSharp
-        m_MethodName: StartStep
+      - m_Target: {fileID: 1391789915808182964}
+        m_TargetAssemblyTypeName: DreamClass.QuestSystem.QuestType1, Assembly-CSharp
+        m_MethodName: StartQuest
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -337,6 +337,7 @@ MonoBehaviour:
   steps:
   - {fileID: 391177635902012022}
   State: 1
+  currentStepIndex: 0
   holdUI: {fileID: 0}
   npcCtrl: {fileID: 0}
 --- !u!1 &2802593344148134519

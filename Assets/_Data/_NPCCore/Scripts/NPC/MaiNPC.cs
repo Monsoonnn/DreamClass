@@ -1,18 +1,14 @@
 
 using Characters.Mai;
-using NPCCore.Animation;
-using NPCCore.Voiceline;
-using UnityEngine;
+using DreamClass.NPCCore;
 
 namespace DreamClass.NPCCore
 {
-    public class MaiNPC : NPCManager { 
-        public MaiVocalAnimatorCtrl characterVoiceline;
-
-        protected override void LoadComponents() {
-            base.LoadComponents();
-            CharacterVoiceline = characterVoiceline; 
-        }
-
+    /// <summary>
+    /// Mai NPC - kế thừa từ generic NPCManager với MaiVocalAnimatorCtrl
+    /// </summary>
+    public class MaiNPC : NPCManagerGeneric<MaiVocalAnimatorCtrl>
+    {
+        // Có thể thêm logic đặc biệt cho Mai tại đây nếu cần
     }
 }

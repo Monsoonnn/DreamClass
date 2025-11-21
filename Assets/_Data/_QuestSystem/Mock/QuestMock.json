@@ -19,7 +19,7 @@
             ],
             "isActive": false,
             "isDailyQuest": true,
-            "dailyQuestType": "AUTO_ASSIGN"
+            "dailyQuestType": "NPC_INTERACTION"
         },
         {
             "questId": "Q002",
@@ -90,7 +90,7 @@
             "questId": "Q102",
             "name": "Thực hành: Nội năng của khí",
             "description": "Quan sát sự thay đổi nội năng khi nén khí trong xilanh.",
-            "rewardGold": 85,
+            "rewardGold": 80,
             "state": "NOT_START",
             "steps": [
                 {
@@ -109,7 +109,7 @@
                     "isComplete": false
                 }
             ],
-            "isActive": false,
+            "isActive": true,
             "isDailyQuest": true,
             "dailyQuestType": "AUTO_ASSIGN"
         }

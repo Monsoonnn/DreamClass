@@ -258,7 +258,7 @@ namespace DreamClass.LoginManager {
         public bool IsRemembered() => rememberMe;
         public string GetPlayerId() => playerId;
         public bool IsLoggedIn() {
-            Debug.Log("Login Cookie: " + sessionCookie);
+            //Debug.Log("Login Cookie: " + sessionCookie);
             return !string.IsNullOrEmpty(apiClient.DefaultCookie);
         }
 

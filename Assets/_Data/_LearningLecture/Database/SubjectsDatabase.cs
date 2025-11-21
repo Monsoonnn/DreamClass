@@ -71,6 +71,12 @@ namespace DreamClass.Subjects
 
             Debug.Log($"Loaded Subject '{newSubject.name}' with {newSubject.lectures.Count} lectures.");
         }
+        [ProButton]
+        public void LogJson()
+        {
+            string json = JsonUtility.ToJson(this, true); // true = pretty print
+            Debug.Log(json);
+        }
     }
 
     [System.Serializable]

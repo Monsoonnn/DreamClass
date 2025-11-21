@@ -1,15 +1,12 @@
 using Characters.Dung;
-using DreamClass.NPCCore;
-using UnityEngine;
 
-namespace Dreamclass.NPCCore
+namespace DreamClass.NPCCore
 {
-    public class DungNPC : NPCManager
+    /// <summary>
+    /// Dung NPC - kế thừa từ generic NPCManager với DungVocalAnimatorCtrl
+    /// </summary>
+    public class DungNPC : NPCManagerGeneric<DungVocalAnimatorCtrl>
     {
-       public DungVocalAnimatorCtrl characterVoiceline;
-        protected override void LoadComponents() {
-            base.LoadComponents();
-            CharacterVoiceline = characterVoiceline;
-        }
+        // Có thể thêm logic đặc biệt cho Dung tại đây nếu cần
     }
 }
