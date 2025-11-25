@@ -30,8 +30,19 @@ public abstract class GameController : NewMonobehavior {
 
     private Coroutine progressCoroutine;
 
+    protected override void Start()
+    {
+        base.Start();
+        
+        if (guideStepManager == null)
+        {
+            guideStepManager = GuideStepManager.Instance;
+        }
+    }
+
     public void OnActiveGame() {
         guideStepManager.SetCurrentGuide(this.GetExperimentName());
+
         guideStepManager.gameController = this;
     }
 

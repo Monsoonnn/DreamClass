@@ -273,7 +273,7 @@ namespace DreamClass.QuestSystem
 
             if (questData != null)
             {
-                rewardGold = questData.rewardGold;
+                rewardGold = questData.gold;
                 if (!string.IsNullOrEmpty(questData.completedAt))
                 {
                     if (DateTime.TryParse(questData.completedAt, out DateTime parsedDate))

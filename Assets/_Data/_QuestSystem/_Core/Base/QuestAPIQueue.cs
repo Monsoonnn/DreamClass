@@ -38,9 +38,29 @@ namespace DreamClass.QuestSystem
 
         /// <summary>
         /// Thêm request vào queue
+        /// Không enqueue nếu requestId đã tồn tại trong queue
         /// </summary>
         public void EnqueueRequest(string requestId, ApiRequest request, Action<ApiResponse> callback, float timeout = 10f)
         {
+            // Kiểm tra xem requestId đã tồn tại trong queue chưa
+            foreach (var queuedRequest in requestQueue)
+            {
+                if (queuedRequest.requestId == requestId)
+                {
+                    if (logRequests)
+                        Debug.LogWarning($"[QuestAPIQueue] Request with ID '{requestId}' already exists in queue. Ignoring duplicate.");
+                    return;
+                }
+            }
+
+            // Kiểm tra xem requestId có match với current request không
+            if (currentRequest != null && currentRequest.requestId == requestId)
+            {
+                if (logRequests)
+                    Debug.LogWarning($"[QuestAPIQueue] Request with ID '{requestId}' is currently being processed. Ignoring duplicate.");
+                return;
+            }
+
             var queued = new QueuedRequest
             {
                 requestId = requestId,
@@ -84,18 +104,23 @@ namespace DreamClass.QuestSystem
                     continue;
                 }
 
+                if (logRequests)
+                    Debug.Log($"[QuestAPIQueue] Sending request: {currentRequest.requestId} to {currentRequest.request.Endpoint}");
+
                 // Gửi request
                 ApiResponse response = null;
                 yield return apiClient.StartCoroutine(apiClient.SendRequest(currentRequest.request, r =>
                 {
                     response = r;
+                    if (logRequests)
+                        Debug.Log($"[QuestAPIQueue] Request response received: {currentRequest.requestId}. Status: {response?.StatusCode}");
                 }));
 
                 // Invoke callback
                 currentRequest.callback?.Invoke(response);
 
-                if (logRequests)
-                    Debug.Log($"[QuestAPIQueue] Request completed: {currentRequest.requestId}. Success: {response?.IsSuccess}");
+                //if (logRequests)
+                //    Debug.Log($"[QuestAPIQueue] Request completed: {currentRequest.requestId}. Success: {response?.IsSuccess}");
 
                 // Delay một chút giữa các request để tránh quá tải server
                 yield return new WaitForSeconds(0.1f);

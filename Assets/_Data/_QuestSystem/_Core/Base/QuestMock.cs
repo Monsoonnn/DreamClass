@@ -146,7 +146,7 @@ namespace DreamClass.QuestSystem
         public string questId;
         public string name;
         public string description;
-        public int rewardGold;
+        public int gold;
         
         public string completedAt;
 

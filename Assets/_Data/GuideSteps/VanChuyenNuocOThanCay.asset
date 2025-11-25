@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54dacc7dd22bf5d4d83427a6f6d47ff3, type: 3}
+  m_Name: VanChuyenNuocOThanCay
+  m_EditorClassIdentifier: 
+  guideID: VanChuyenNuocOThanCay
+  steps:
+  - stepID: DoNuoc
+    title: "\u0110\u1ED5 n\u01B0\u1EDBc v\xE0o b\xECnh n\xF3n"
+    description: "H\xE3y l\u1EA5y b\xECnh n\u01B0\u1EDBc v\u1EDBi 3 lo\u1EA1i m\xE0u
+      \u0111\u1EC3 \u0111\u1ED5 v\xE0o c\xE1c b\xECnh n\xF3n"
+    highlightTarget: {fileID: 0}
+    previousStepID: 
+    isCompleted: 0
+  - stepID: DatBongHoa
+    title: "\u0110\u1EB7t b\xF4ng hoa l\xEAn b\xECnh n\xF3n"
+    description: "H\xE3y nh\u1EB7t 3 b\xF4ng hoa v\xE0 \u0111\u1EB7t l\xEAn b\xECnh
+      n\xF3n "
+    highlightTarget: {fileID: 0}
+    previousStepID: DoNuoc
+    isCompleted: 0
+  - stepID: QuanSat
+    title: "Quan s\xE1t hi\u1EC7n t\u01B0\u1EE3ng"
+    description: "Quan s\xE1t s\u1EF1 bi\u1EBFn \u0111\u1ED5i m\xE0u s\u1EAFc c\u1EE7a
+      b\xF4ng hoa m\xE0u tr\u1EAFng"
+    highlightTarget: {fileID: 0}
+    previousStepID: DatBongHoa
+    isCompleted: 0

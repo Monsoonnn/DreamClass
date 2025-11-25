@@ -11,6 +11,8 @@ namespace DreamClass.Network {
         public void SetBaseUrl( string url ) => baseUrl = url;
         public void SetCookie( string cookie ) => defaultCookie = cookie;
 
+        public void ClearCookie() => defaultCookie = null;
+
         public IEnumerator SendRequest( ApiRequest request, System.Action<ApiResponse> callback ) {
             string url = $"{baseUrl}{request.Endpoint}";
             UnityWebRequest webRequest = new UnityWebRequest(url, request.Method);

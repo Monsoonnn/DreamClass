@@ -111,6 +111,23 @@ public class ForceHand : NewMonobehavior {
         }
     }
 
+    [ProButton]
+    public void DetachItem() {
+        LoadHandInteractor();
+        LoadControllerInteractor();
+
+        if (IsHandTrackingActive() && handInteractor != null) {
+            handInteractor.ForceRelease();
+            Debug.Log("[ForceHand] Detached HandGrabInteractor");
+        } else if (IsControllerActive() && controllerInteractor != null) {
+            controllerInteractor.ForceRelease();
+            Debug.Log("[ForceHand] Detached GrabInteractor");
+        } else {
+            Debug.LogWarning("[ForceHand] No active interactor to detach!");
+        }
+    }
+
+
     private bool IsHandTrackingActive() {
         return handInteractor != null && handInteractor.gameObject.activeInHierarchy;
     }

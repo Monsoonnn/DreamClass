@@ -353,8 +353,11 @@ namespace DreamClass.QuestSystem
                             if (completeResponse.data != null && completeResponse.data.quest != null)
                             {
                                 questDataCache[questId] = completeResponse.data.quest;
-                                Debug.Log($"[QuestManager] Quest {questId} completed! Reward: {completeResponse.data.reward.gold} gold");
-                                onComplete?.Invoke(true, completeResponse.data.quest);
+
+                                QuestDataJson rewardQuestData = completeResponse.data.quest;
+                                rewardQuestData.gold = completeResponse.data.reward.gold;
+                               // Debug.Log($"[QuestManager] Quest {questId} completed! Reward: {completeResponse.data.reward.gold} gold");
+                                onComplete?.Invoke(true, rewardQuestData);
                             }
                             else
                             {

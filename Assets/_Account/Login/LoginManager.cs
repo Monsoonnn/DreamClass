@@ -5,6 +5,7 @@ using System.Text;
 using System;
 using com.cyborgAssets.inspectorButtonPro;
 using System.Security.Cryptography;
+using UnityEngine.UI;
 
 namespace DreamClass.LoginManager {
     public class LoginManager : SingletonCtrl<LoginManager> {
@@ -19,6 +20,9 @@ namespace DreamClass.LoginManager {
         [SerializeField] private bool rememberMe = false;
         [SerializeField] private string savedUsername = "";
         [SerializeField] private string savedPassword = "";
+
+        [Header("Login Retry")]
+        private bool isRetryingLogin = false;
 
         private Action<bool, string> _onLoginResult;
         private Action<bool, string> _onLogoutResult;
@@ -37,15 +41,12 @@ namespace DreamClass.LoginManager {
         protected override void Start()
         {
             base.Start();
-            // Auto-login if credentials were saved
-            if (rememberMe && !string.IsNullOrEmpty(savedUsername) && !string.IsNullOrEmpty(savedPassword))
-            {
-                Debug.Log("[LoginManager] Auto-logging in with saved credentials...");
-                Login(savedUsername, savedPassword, remember: true);
-            }
+
         }
 
         public void Login( string email, string password, Action<bool, string> onResult = null, bool remember = false ) {
+            // Reset retry flag when starting new login attempt
+            isRetryingLogin = false;
             StartCoroutine(DelayedLogin(email, password, onResult, remember));
         }
 
@@ -78,12 +79,36 @@ namespace DreamClass.LoginManager {
         private void OnLoginResponse( ApiResponse res ) {
             if (res.IsSuccess) {
                 Debug.Log("Login success!");   
+                Debug.Log("Response: " + res.SetCookie);
+                
+                // Try to get cookie from response
                 if (!string.IsNullOrEmpty(res.SetCookie)) {
                     sessionCookie = ParseCookie(res.SetCookie);
-
-                    Debug.Log("Login Cookie: " + sessionCookie);
-
+                    Debug.Log("Login Cookie from response: " + sessionCookie);
                     apiClient.SetCookie(sessionCookie);
+                }
+                else
+                {
+                                
+                    Logout();
+                    // Nếu không có cookie và chưa retry, thử logout rồi login lại với saved credentials
+                    if (!isRetryingLogin && !string.IsNullOrEmpty(savedUsername) && !string.IsNullOrEmpty(savedPassword))
+                    {
+                        Debug.Log("[LoginManager] No cookie received, trying logout and retry with saved credentials");
+                        isRetryingLogin = true;
+                        
+                        // Logout trước, sau đó login lại
+                        StartCoroutine(LogoutAndRetryLogin());
+                        return; // Exit early, don't continue with success flow
+                    }
+                    else
+                    {
+                        // Đã retry hoặc không có saved credentials, báo fail
+                        Debug.LogError("[LoginManager] Login failed - no cookie and retry unsuccessful");
+                        isRetryingLogin = false;
+                        _onLoginResult?.Invoke(false, "Login failed: No session cookie received");
+                        return;
+                    }
                 }
 
                 // Parse playerId from response
@@ -101,17 +126,57 @@ namespace DreamClass.LoginManager {
                     Debug.LogWarning($"[LoginManager] Failed to parse playerId from response: {e.Message}");
                 }
 
-                // Initialize quests after successful login
-                var questManager = DreamClass.QuestSystem.QuestManager.Instance;
-                if (questManager != null)
-                {
-                    questManager.InitializeQuests();
-                }
+                // Initialize quests after successful login - delay to ensure cookie is set
+                StartCoroutine(InitializeQuestsAfterLogin());
 
                 _onLoginResult?.Invoke(true, res.Text);
             } else {
                 Debug.LogError($"Login failed: {res.StatusCode}");
                 _onLoginResult?.Invoke(false, res.Text);
+            }
+        }
+
+        private IEnumerator LogoutAndRetryLogin()
+        {
+            Debug.Log("[LoginManager] Logging out before retry...");
+            // Wait a moment
+            yield return new WaitForSeconds(0.5f);
+            
+            // Retry login with saved credentials
+            Debug.Log($"[LoginManager] Retrying login with saved credentials: {savedUsername}");
+            
+            string json = JsonUtility.ToJson(new LoginRequest(savedUsername, savedPassword));
+            ApiRequest req = new ApiRequest("/api/auth/login", "POST", json);
+            
+            StartCoroutine(apiClient.SendRequest(req, OnLoginResponse));
+        }
+
+        private IEnumerator InitializeQuestsAfterLogin()
+        {
+            // Wait multiple frames to ensure cookie is fully set
+            int retries = 0;
+            int maxRetries = 5;
+            
+            while (retries < maxRetries && string.IsNullOrEmpty(apiClient.DefaultCookie))
+            {
+                yield return new WaitForSeconds(0.2f);
+                retries++;
+                Debug.Log($"[LoginManager] Waiting for cookie... attempt {retries}/{maxRetries}");
+            }
+
+            var questManager = DreamClass.QuestSystem.QuestManager.Instance;
+            if (questManager != null)
+            {
+                // Double-check that we're logged in before initializing
+                if (IsLoggedIn())
+                {
+                    questManager.InitializeQuests();
+                    Debug.Log("[LoginManager] Quests initialized after login");
+                }
+                else
+                {
+                    Debug.LogWarning("[LoginManager] Failed to initialize quests - not logged in after waiting");
+                }
             }
         }
 
@@ -129,6 +194,7 @@ namespace DreamClass.LoginManager {
         }
 
         private void OnLogoutResponse( ApiResponse res ) {
+            apiClient.ClearCookie();
             if (res.IsSuccess) {
                 _onLogoutResult?.Invoke(true, res.Text);
                 Debug.Log("Logout successful!");
@@ -149,21 +215,21 @@ namespace DreamClass.LoginManager {
 
         private void SaveLogin( string username, string password ) {
             savedUsername = username;
-            savedPassword = Encrypt(password);
+            savedPassword = password; // Lưu plain text
 
             PlayerPrefs.SetInt(KEY_REMEMBER, 1);
             PlayerPrefs.SetString(KEY_USER, savedUsername);
             PlayerPrefs.SetString(KEY_PASS, savedPassword);
             PlayerPrefs.Save();
 
-            Debug.Log("[LoginManager] Credentials saved securely.");
+            Debug.Log("[LoginManager] Credentials saved.");
         }
 
         private (string username, string password) LoadSavedLogin() {
             if (PlayerPrefs.GetInt(KEY_REMEMBER, 0) == 1) {
                 rememberMe = true;
                 savedUsername = PlayerPrefs.GetString(KEY_USER, "");
-                savedPassword = Decrypt(PlayerPrefs.GetString(KEY_PASS, ""));
+                savedPassword = PlayerPrefs.GetString(KEY_PASS, ""); // Load plain text
                 Debug.Log("[LoginManager] Loaded saved credentials.");
                 return (savedUsername, savedPassword);
             } else {
@@ -179,48 +245,6 @@ namespace DreamClass.LoginManager {
             PlayerPrefs.DeleteKey(KEY_PASS);
             PlayerPrefs.Save();
             Debug.Log("[LoginManager] Cleared saved credentials.");
-        }
-
-        // ============================================================
-        // Simple AES Encryption
-        // ============================================================
-
-        private string Encrypt( string plainText ) {
-            if (string.IsNullOrEmpty(plainText)) return "";
-
-            byte[] key = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(SECRET));
-            byte[] iv = new byte[16];
-            Array.Copy(key, iv, 16);
-
-            using (Aes aes = Aes.Create()) {
-                aes.Key = key;
-                aes.IV = iv;
-
-                using (ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV)) {
-                    byte[] bytes = Encoding.UTF8.GetBytes(plainText);
-                    byte[] encrypted = encryptor.TransformFinalBlock(bytes, 0, bytes.Length);
-                    return Convert.ToBase64String(encrypted);
-                }
-            }
-        }
-
-        private string Decrypt( string cipherText ) {
-            if (string.IsNullOrEmpty(cipherText)) return "";
-
-            byte[] key = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(SECRET));
-            byte[] iv = new byte[16];
-            Array.Copy(key, iv, 16);
-
-            using (Aes aes = Aes.Create()) {
-                aes.Key = key;
-                aes.IV = iv;
-
-                using (ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV)) {
-                    byte[] bytes = Convert.FromBase64String(cipherText);
-                    byte[] decrypted = decryptor.TransformFinalBlock(bytes, 0, bytes.Length);
-                    return Encoding.UTF8.GetString(decrypted);
-                }
-            }
         }
 
         // ============================================================
@@ -255,6 +279,7 @@ namespace DreamClass.LoginManager {
         // Public getters
         public string GetSavedUsername() => savedUsername;
         public string GetSavedPassword() => savedPassword;
+        public string GetDecryptedPassword() => savedPassword; // Plain text, không cần decrypt
         public bool IsRemembered() => rememberMe;
         public string GetPlayerId() => playerId;
         public bool IsLoggedIn() {
