@@ -128,7 +128,10 @@ public class PouringCup : MonoBehaviour
             GameObject streamObj = new GameObject("PourStream");
             streamObj.transform.SetParent(transform);
             pourStream = streamObj.AddComponent<LineRenderer>();
-            pourStream.material = new Material(Shader.Find("Sprites/Default"));
+            // Use Standard shader (3D) instead of Sprites/Default (2D)
+            pourStream.material = liquidColor;
+            pourStream.material.SetFloat("_Metallic", 0f);
+            pourStream.material.SetFloat("_Glossiness", 0.5f);
             pourStream.startWidth = streamWidth;
             pourStream.endWidth = streamWidth * 0.5f;
             pourStream.positionCount = 15;
@@ -136,6 +139,9 @@ public class PouringCup : MonoBehaviour
             pourStream.endColor = new Color(streamColor.r, streamColor.g, streamColor.b, 0.3f);
             pourStream.useWorldSpace = true;
             pourStream.enabled = false;
+            // Ensure proper depth handling
+            pourStream.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            pourStream.receiveShadows = false;
         }
         
         // Setup rigidbody

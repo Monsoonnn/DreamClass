@@ -1,4 +1,5 @@
-﻿using DreamClass.QuestSystem.Systems.Quest;
+﻿using AudioManager;
+using DreamClass.QuestSystem.Systems.Quest;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -185,12 +186,11 @@ namespace DreamClass.QuestSystem
                 if (isSuccess && questData != null)
                 {
                     Debug.Log($"[QuestCtrl] QuestData: {JsonUtility.ToJson(questData)}");
-                    await SyncQuestToServer();
-                    await OnBeforeReward();
+                    //await SyncQuestToServer();
+                    //await OnBeforeReward();
+                    await ShowNotification(questData);
                     await GiveReward();
                     await OnAfterReward();
-                    await ShowNotification(questData);
-
 
                     this.gameObject.SetActive(false);
                     Destroy(this.gameObject, 2f);
@@ -293,6 +293,7 @@ namespace DreamClass.QuestSystem
 
             // Hiển thị UI với dữ liệu từ API
             QuestUIComplete.Instance.UpdateUI(QuestName, completedTime, rewardGold.ToString(), "1");
+            SFXManager.Instance.PlaySFXByID("SFX001");
 
             await Task.Delay(500);
         }
