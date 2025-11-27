@@ -11,6 +11,9 @@ namespace DreamClass.NPCCore
         [Header("Quest Groups")]
         public List<QuestSpawnGroup> questGroups = new List<QuestSpawnGroup>();
 
+        // HashSet để lưu questId đã spawn
+        private HashSet<string> spawnedQuestIds = new HashSet<string>();
+
         protected override void Start()
         {
             base.Start();
@@ -69,6 +72,13 @@ namespace DreamClass.NPCCore
 
         private void SpawnQuestObject(Transform parent, string questId)
         {
+            // Nếu đã spawn questId này rồi thì bỏ qua
+            if (spawnedQuestIds.Contains(questId))
+            {
+                Debug.LogWarning($"[{name}] Quest '{questId}' already spawned.");
+                return;
+            }
+
             QuestCtrl prefab = QuestManager.Instance.QuestDatabase.GetQuestPrefabById(questId);
             if (prefab == null)
             {
@@ -84,6 +94,9 @@ namespace DreamClass.NPCCore
             {
                 s001.npcCtrl = GetComponent<NPCManager>();
             }
+
+            // Đánh dấu đã spawn questId này
+            spawnedQuestIds.Add(questId);
 
             Debug.Log($"[{name}] Spawned quest '{quest.QuestName}' ({questId})");
         }

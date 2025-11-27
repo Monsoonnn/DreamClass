@@ -8,10 +8,13 @@ using System.Collections;
 using DreamClass.QuestSystem;
 using playerCtrl;
 using Unity.VisualScripting;
+// Thêm using nếu cần thiết
+
 
 /// <summary>
 /// Controls the logic flow of guide steps across multiple guides.
 /// Quản lý Quest hiện tại và xử lý restart/abandon
+/// Hỗ trợ ExamMode để tích hợp với bài kiểm tra
 /// </summary>
 public class GuideStepManager : SingletonCtrl<GuideStepManager>
 {
@@ -38,6 +41,10 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager>
     public string currentStepID;
     public string currentStatus;
 
+    // ==================== EXAM MODE (Tách sang ExamStepTracker) ====================
+    [Header("Exam Step Tracker")]
+    public ExamStepTracker examTracker;
+
     // Internal runtime data
     private GuideData currentGuideAsset;
     private GuideData currentGuideRuntime;
@@ -52,6 +59,39 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager>
     public event Action<string> OnStepActivated;
     public event Action<string> OnGuideStarted;
     public event Action<string> OnGuideFinished;
+
+
+    // ==================== EXAM MODE METHODS (Chuyển sang ExamStepTracker) ====================
+    // GuideStepManager chỉ gọi sang tracker
+    public void EnableExamMode()
+    {
+        if (examTracker != null)
+        {
+            examTracker.EnableExamMode();
+            if (titleText != null) titleText.text = "";
+            if (descriptionText != null) descriptionText.text = "";
+        }
+    }
+    public void DisableExamMode()
+    {
+        examTracker?.DisableExamMode();
+    }
+    public void RecordExamError(string stepId, string errorReason = "")
+    {
+        examTracker?.RecordExamError(stepId, errorReason);
+    }
+    public float GetStepCompletionTime(string stepId)
+    {
+        return examTracker != null ? examTracker.GetStepCompletionTime(stepId) : 0f;
+    }
+    public ExamStepSummary GetExamSummary()
+    {
+        return examTracker != null ? examTracker.GetExamSummary(currentGuideRuntime?.steps) : null;
+    }
+    public void ResetExamTracking()
+    {
+        examTracker?.ResetExamTracking();
+    }
 
     // ===== QUEST MANAGEMENT =====
 
@@ -266,6 +306,12 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager>
         currentGuideAsset = found;
         currentGuideID = guideID;
 
+        // Reset tất cả steps về trạng thái chưa hoàn thành khi bắt đầu guide mới
+        foreach (var step in currentGuideRuntime.steps)
+        {
+            step.isCompleted = false;
+        }
+
         Debug.Log($"[GuideStepManager] Switched to guide: {guideID}");
         OnGuideStarted?.Invoke(guideID);
 
@@ -291,6 +337,14 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager>
         if (rollbackIndex != -1 && rollbackIndex < index)
         {
             Debug.LogWarning($"[GuideStepManager] Cannot activate step {index}, previous step {rollbackIndex} not completed! Rolling back...");
+            // === EXAM MODE: Ghi nhận rollback như một lỗi ===
+            if (examTracker != null && examTracker.IsExamMode && currentStepIndex >= 0)
+            {
+                string fromStepId = currentGuideRuntime.steps[index].stepID;
+                string toStepId = currentGuideRuntime.steps[rollbackIndex].stepID;
+                examTracker.OnRollback(fromStepId);
+                examTracker.RecordExamError(fromStepId, $"Rollback to {toStepId} - wrong order");
+            }
             ActivateStep(rollbackIndex);
             return;
         }
@@ -301,14 +355,23 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager>
         currentStepID = step.stepID;
         step.isCompleted = false;
 
-        if (titleText != null) titleText.text = step.title;
-        if (descriptionText != null) descriptionText.text = step.description;
+        // === EXAM MODE: Không update UI, chỉ ghi nhận thời gian ===
+        if (examTracker != null && examTracker.IsExamMode)
+        {
+            examTracker.OnStepStarted(step.stepID, Time.time);
+        }
+        else
+        {
+            // Chế độ bình thường: Update UI
+            if (titleText != null) titleText.text = step.title;
+            if (descriptionText != null) descriptionText.text = step.description;
+        }
 
         if (step.highlightTarget != null)
             Debug.Log($"Highlighting target: {step.highlightTarget.name}");
 
         currentStatus = $"{currentGuideID} / Step {index + 1}: {step.stepID}";
-        Debug.Log($"[GuideStepManager] Activated step: {step.stepID}");
+        Debug.Log($"[GuideStepManager] Activated step: {step.stepID}" + ((examTracker != null && examTracker.IsExamMode) ? " [EXAM MODE]" : ""));
 
         OnStepActivated?.Invoke(step.stepID);
     }
@@ -344,11 +407,24 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager>
         if (currentStep.stepID != stepID)
         {
             Debug.LogWarning($"[GuideStepManager] Tried to complete '{stepID}', but current step is '{currentStep.stepID}'!");
+            
+            // === EXAM MODE: Ghi nhận lỗi complete sai step ===
+            if (examTracker != null && examTracker.IsExamMode)
+            {
+                examTracker.RecordExamError(stepID, $"Attempted to complete wrong step (current: {currentStep.stepID})");
+            }
             return;
         }
 
         currentStep.isCompleted = true;
-        Debug.Log($"[GuideStepManager] Step completed: {currentStep.stepID}");
+        
+        // === EXAM MODE: Ghi nhận thời gian hoàn thành ===
+        if (examTracker != null && examTracker.IsExamMode)
+        {
+            examTracker.OnStepCompleted(stepID, Time.time);
+        }
+        
+        Debug.Log($"[GuideStepManager] Step completed: {currentStep.stepID}" + ((examTracker != null && examTracker.IsExamMode) ? " [EXAM MODE]" : ""));
 
         OnStepCompleted?.Invoke(stepID);
 
@@ -404,12 +480,16 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager>
 
     private void FinishGuide()
     {
-        if (titleText != null)
-            titleText.text = "Hãy về phía quyển sách để xem kết quả nhé!";
-        if (descriptionText != null)
-            descriptionText.text = "Các bước chuẩn bị đã hoàn thành, bạn hãy di về phía quyển sách để xem kết quả được hiển thị.";
+        // === EXAM MODE: Không hiển thị text, chỉ log ===
+        if (examTracker == null || !examTracker.IsExamMode)
+        {
+            if (titleText != null)
+                titleText.text = "Hãy về phía quyển sách để xem kết quả nhé!";
+            if (descriptionText != null)
+                descriptionText.text = "Các bước chuẩn bị đã hoàn thành, bạn hãy di về phía quyển sách để xem kết quả được hiển thị.";
+        }
 
-        Debug.Log("[GuideStepManager] All steps completed! Experiment started.");
+        Debug.Log("[GuideStepManager] All steps completed! Experiment started." + ((examTracker != null && examTracker.IsExamMode) ? " [EXAM MODE]" : ""));
 
         OnGuideFinished?.Invoke(currentGuideID);
     }
