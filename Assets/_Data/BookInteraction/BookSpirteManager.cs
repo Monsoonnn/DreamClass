@@ -1,12 +1,34 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 public class BookSpriteManager : MonoBehaviour
 {
     [Header("Sprite Settings")]
     public Sprite background;
-    public Sprite[] bookPages;
+    [SerializeField] private Sprite[] _bookPages;
+
+    /// <summary>
+    /// Event khi bookPages thay đổi
+    /// </summary>
+    public event Action<Sprite[]> OnBookPagesChanged;
+
+    /// <summary>
+    /// Get/Set book pages - auto update sprites khi set
+    /// </summary>
+    public Sprite[] bookPages
+    {
+        get => _bookPages;
+        set
+        {
+            _bookPages = value;
+            currentPage = 2; // Reset về trang đầu
+            UpdateSprites();
+            OnBookPagesChanged?.Invoke(_bookPages);
+            Debug.Log($"[BookSpriteManager] Book pages updated: {_bookPages?.Length ?? 0} pages");
+        }
+    }
 
     [Header("UI References")]
     public Image ClippingPlane;

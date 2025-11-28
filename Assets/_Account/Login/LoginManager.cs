@@ -6,6 +6,7 @@ using System;
 using com.cyborgAssets.inspectorButtonPro;
 using System.Security.Cryptography;
 using UnityEngine.UI;
+using DreamClass.Subjects;
 
 namespace DreamClass.LoginManager {
     public class LoginManager : SingletonCtrl<LoginManager> {
@@ -164,19 +165,27 @@ namespace DreamClass.LoginManager {
                 Debug.Log($"[LoginManager] Waiting for cookie... attempt {retries}/{maxRetries}");
             }
 
+            // Double-check that we're logged in before initializing
+            if (!IsLoggedIn())
+            {
+                Debug.LogWarning("[LoginManager] Failed to initialize - not logged in after waiting");
+                yield break;
+            }
+
+            // Initialize QuestManager
             var questManager = DreamClass.QuestSystem.QuestManager.Instance;
             if (questManager != null)
             {
-                // Double-check that we're logged in before initializing
-                if (IsLoggedIn())
-                {
-                    questManager.InitializeQuests();
-                    Debug.Log("[LoginManager] Quests initialized after login");
-                }
-                else
-                {
-                    Debug.LogWarning("[LoginManager] Failed to initialize quests - not logged in after waiting");
-                }
+                questManager.InitializeQuests();
+                Debug.Log("[LoginManager] Quests initialized after login");
+            }
+
+            // Initialize PDFSubjectService
+            var pdfSubjectService = FindFirstObjectByType<PDFSubjectService>();
+            if (pdfSubjectService != null)
+            {
+                pdfSubjectService.InitializeAfterLogin();
+                Debug.Log("[LoginManager] PDFSubjectService initialized after login");
             }
         }
 

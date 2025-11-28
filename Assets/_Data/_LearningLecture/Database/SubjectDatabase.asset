@@ -16,7 +16,7 @@ MonoBehaviour:
   filePath: 
   subjects:
   - name: VatLy
-    description: "V\u1EADt L\xFD"
+    description: "V\u1EADt L\xFD - 11"
     lectures:
     - chapter: 1
       groupName: "Dao \u0111\u1ED9ng"
@@ -126,3 +126,134 @@ MonoBehaviour:
       lectureName: "B\xE0i 26: Th\u1EF1c h\xE0nh: \u0110o su\u1EA5t \u0111i\u1EC7n
         \u0111\u1ED9ng"
       page: 111
+    path: pdf-pages/SGK VL 11 KNTT (1)
+    title: 
+    grade: 
+    category: 
+    pages: 0
+    pdfUrl: 
+    imageUrls: []
+    localImagePaths: []
+    isCached: 0
+  - name: HoaHoc
+    description: "H\xF3a h\u1ECDc - 11"
+    lectures:
+    - chapter: 1
+      groupName: "C\xC2N B\u1EB0NG HO\xC1 H\u1ECCC"
+      lectureName: "B\xE0i 1: Kh\xE1i ni\u1EC7m v\u1EC1 c\xE2n b\u1EB1ng ho\xE1 h\u1ECDc"
+      page: 6
+    - chapter: 1
+      groupName: "C\xC2N B\u1EB0NG HO\xC1 H\u1ECCC"
+      lectureName: "B\xE0i 2: C\xE2n b\u1EB1ng trong dung d\u1ECBch n\u01B0\u1EDBc"
+      page: 16
+    - chapter: 1
+      groupName: "C\xC2N B\u1EB0NG HO\xC1 H\u1ECCC"
+      lectureName: "B\xE0i 3: \xD4n t\u1EADp ch\u01B0\u01A1ng 1"
+      page: 27
+    - chapter: 2
+      groupName: "NITROGEN \u2013 SULFUR"
+      lectureName: "B\xE0i 4: Nitrogen"
+      page: 29
+    - chapter: 2
+      groupName: "NITROGEN \u2013 SULFUR"
+      lectureName: "\"B\xE0i 5: Ammonia - Mu\u1ED1i ammonium\""
+      page: 33
+    - chapter: 2
+      groupName: "NITROGEN \u2013 SULFUR"
+      lectureName: "B\xE0i 6: M\u1ED9t s\u1ED1 h\u1EE3p ch\u1EA5t c\u1EE7a nitrogen
+        v\u1EDBi oxygen"
+      page: 38
+    - chapter: 2
+      groupName: "NITROGEN \u2013 SULFUR"
+      lectureName: "B\xE0i 7: Sulfur v\xE0 sulfur dioxide"
+      page: 42
+    - chapter: 2
+      groupName: "NITROGEN \u2013 SULFUR"
+      lectureName: "B\xE0i 8: Sulfuric acid v\xE0 mu\u1ED1i sulfate"
+      page: 48
+    - chapter: 2
+      groupName: "NITROGEN \u2013 SULFUR"
+      lectureName: "B\xE0i 9: \xD4n t\u1EADp ch\u01B0\u01A1ng 2"
+      page: 55
+    - chapter: 3
+      groupName: "\u0110\u1EA0I C\u01AF\u01A0NG V\u1EC0 HO\xC1 H\u1ECCC H\u1EEEU
+        C\u01A0"
+      lectureName: "B\xE0i 10: H\u1EE3p ch\u1EA5t h\u1EEFu c\u01A1 v\xE0 ho\xE1 h\u1ECDc
+        h\u1EEFu c\u01A1"
+      page: 57
+    - chapter: 3
+      groupName: "\u0110\u1EA0I C\u01AF\u01A0NG V\u1EC0 HO\xC1 H\u1ECCC H\u1EEEU
+        C\u01A0"
+      lectureName: "B\xE0i 11: Ph\u01B0\u01A1ng ph\xE1p t\xE1ch bi\u1EC7t v\xE0 tinh
+        ch\u1EBF h\u1EE3p ch\u1EA5t h\u1EEFu c\u01A1"
+      page: 63
+    - chapter: 3
+      groupName: "\u0110\u1EA0I C\u01AF\u01A0NG V\u1EC0 HO\xC1 H\u1ECCC H\u1EEEU
+        C\u01A0"
+      lectureName: "B\xE0i 12: C\xF4ng th\u1EE9c ph\xE2n t\u1EED h\u1EE3p ch\u1EA5t
+        h\u1EEFu c\u01A1"
+      page: 70
+    - chapter: 3
+      groupName: "\u0110\u1EA0I C\u01AF\u01A0NG V\u1EC0 HO\xC1 H\u1ECCC H\u1EEEU
+        C\u01A0"
+      lectureName: "B\xE0i 13: C\u1EA5u t\u1EA1o ho\xE1 h\u1ECDc h\u1EE3p ch\u1EA5t
+        h\u1EEFu c\u01A1"
+      page: 74
+    - chapter: 3
+      groupName: "\u0110\u1EA0I C\u01AF\u01A0NG V\u1EC0 HO\xC1 H\u1ECCC H\u1EEEU
+        C\u01A0"
+      lectureName: "B\xE0i 14: \xD4n t\u1EADp ch\u01B0\u01A1ng 3"
+      page: 80
+    - chapter: 4
+      groupName: HYDROCARBON
+      lectureName: "B\xE0i 15: Alkane"
+      page: 82
+    - chapter: 4
+      groupName: HYDROCARBON
+      lectureName: "B\xE0i 16: Hydrocarbon kh\xF4ng no"
+      page: 92
+    - chapter: 4
+      groupName: HYDROCARBON
+      lectureName: "B\xE0i 17: Arene (Hydrocarbon th\u01A1m)"
+      page: 102
+    - chapter: 4
+      groupName: HYDROCARBON
+      lectureName: "B\xE0i 18: \xD4n t\u1EADp ch\u01B0\u01A1ng 4"
+      page: 110
+    - chapter: 5
+      groupName: "D\u1EAAN XU\u1EA4T HALOGEN \u2013 ALCOHOL \u2013 PHENOL"
+      lectureName: "B\xE0i 19: D\u1EABn xu\u1EA5t halogen"
+      page: 112
+    - chapter: 5
+      groupName: "D\u1EAAN XU\u1EA4T HALOGEN \u2013 ALCOHOL \u2013 PHENOL"
+      lectureName: "B\xE0i 20: Alcohol"
+      page: 119
+    - chapter: 5
+      groupName: "D\u1EAAN XU\u1EA4T HALOGEN \u2013 ALCOHOL \u2013 PHENOL"
+      lectureName: "B\xE0i 21: Phenol"
+      page: 129
+    - chapter: 5
+      groupName: "D\u1EAAN XU\u1EA4T HALOGEN \u2013 ALCOHOL \u2013 PHENOL"
+      lectureName: "B\xE0i 22: \xD4n t\u1EADp ch\u01B0\u01A1ng 5"
+      page: 134
+    - chapter: 6
+      groupName: "H\u1EE2P CH\u1EA4T CARBONYL \u2013 CARBOXYLIC ACID"
+      lectureName: "B\xE0i 23: H\u1EE3p ch\u1EA5t carbonyl"
+      page: 136
+    - chapter: 6
+      groupName: "H\u1EE2P CH\u1EA4T CARBONYL \u2013 CARBOXYLIC ACID"
+      lectureName: "B\xE0i 24: Carboxylic acid"
+      page: 145
+    - chapter: 6
+      groupName: "H\u1EE2P CH\u1EA4T CARBONYL \u2013 CARBOXYLIC ACID"
+      lectureName: "B\xE0i 25: \xD4n t\u1EADp ch\u01B0\u01A1ng 6"
+      page: 153
+    path: pdf-pages/SGK HH 11 KNTT
+    title: 
+    grade: 
+    category: 
+    pages: 0
+    pdfUrl: 
+    imageUrls: []
+    localImagePaths: []
+    isCached: 0

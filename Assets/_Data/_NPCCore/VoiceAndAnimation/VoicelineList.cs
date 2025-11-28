@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 using NPCCore.Animation;
 
@@ -16,24 +17,34 @@ namespace NPCCore.Voiceline {
         public bool disableLoop = true;
         public float crossFade = 0.2f;
 
-        public async Task PlayAsync( AudioSource audioSource, AnimationManager animationManager, bool disableLoop = false ) {
+        public async Task PlayAsync(
+            AudioSource audioSource, 
+            AnimationManager animationManager, 
+            bool disableLoop = false,
+            CancellationToken cancellationToken = default 
+        ) {
+            // Kiểm tra hủy ngay từ đầu
+            if (cancellationToken.IsCancellationRequested) {
+                Debug.Log($"[Voiceline] {voiceType} cancelled before start");
+                return;
+            }
+
             if (animationManager == null) {
                 Debug.LogWarning("Missing AnimationManager in Voiceline!");
                 return;
             }
-
 
             // Pick random audio clip
             AudioClip clip = audioClips != null && audioClips.Length > 0
                 ? audioClips[Random.Range(0, audioClips.Length)]
                 : null;
 
-            // Step 1️ - Play animation (no auto return)
-            animationManager.PlayGroupByName(animationGroupName, disableLoop, clip.length);
+            // Step 1 - Play animation (no auto return)
+            animationManager.PlayGroupByName(animationGroupName, disableLoop, clip?.length ?? 0);
 
             float waitTime = 0f;
 
-            // Step 2️ - Play voice clip
+            // Step 2 - Play voice clip
             if (clip != null && audioSource != null) {
                 audioSource.clip = clip;
                 audioSource.Play();
@@ -50,12 +61,25 @@ namespace NPCCore.Voiceline {
 
             if (waitTime <= 0f) waitTime = 1f;
 
-            // Wait until voice finishes
-            await Task.Delay((int)(waitTime * 1000));
+            // Wait với cancellation token
+            try {
+                await Task.Delay((int)(waitTime * 1000), cancellationToken);
+            } catch (TaskCanceledException) {
+                Debug.Log($"[Voiceline] {voiceType} cancelled during playback");
+                
+                if (audioSource != null) {
+                    audioSource.Stop();
+                }
+                return;
+            }
 
-            audioSource.Stop(); // Clear audio source
-
-            Debug.Log($"[Voiceline] Finished {voiceType}, returned to Idle.");
+            // Kiểm tra null trước khi dừng
+            if (audioSource != null) {
+                audioSource.Stop();
+                Debug.Log($"[Voiceline] Finished {voiceType}, returned to Idle.");
+            } else {
+                Debug.LogWarning($"[Voiceline] AudioSource destroyed while playing {voiceType}");
+            }
         }
     }
 }

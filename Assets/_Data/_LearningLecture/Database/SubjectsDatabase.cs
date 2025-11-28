@@ -77,6 +77,41 @@ namespace DreamClass.Subjects
             string json = JsonUtility.ToJson(this, true); // true = pretty print
             Debug.Log(json);
         }
+
+        /// <summary>
+        /// Clear all remote data from all subjects (keep local lectures)
+        /// </summary>
+        [ProButton]
+        public void ClearAllRemoteData()
+        {
+            int clearedCount = 0;
+            foreach (var subject in subjects)
+            {
+                if (subject.isCached || !string.IsNullOrEmpty(subject.pdfUrl))
+                {
+                    subject.ClearRemoteData();
+                    clearedCount++;
+                }
+            }
+            Debug.Log($"[SubjectDatabase] Cleared remote data from {clearedCount} subjects");
+
+            #if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this);
+            #endif
+        }
+
+        /// <summary>
+        /// Clear all cache sprites from all subjects (free memory)
+        /// </summary>
+        [ProButton]
+        public void ClearAllSprites()
+        {
+            foreach (var subject in subjects)
+            {
+                subject.ClearCacheData();
+            }
+            Debug.Log($"[SubjectDatabase] Cleared sprites from all {subjects.Count} subjects");
+        }
     }
 
     [System.Serializable]
@@ -89,11 +124,134 @@ namespace DreamClass.Subjects
     }
 
     [System.Serializable]
-    public class SubjectInfo  // Đổi tên Subject -> SubjectInfo
+    public class SubjectInfo  
     {
         public string name;
         public string description;
         public List<CSVLectureInfo> lectures = new List<CSVLectureInfo>();
+        
+        [Header("Path for matching with API")]
+        [Tooltip("Path để match với API response, ví dụ: pdf-pages/SGK VL 11 KNTT (1)")]
+        public string path;
+
+        // Extended fields for PDF subjects from API
+        [Header("API Subject Data")]
+        public string title;
+        public string grade;
+        public string category;
+        public int pages;
+        public string pdfUrl;
+        public List<string> imageUrls;
+        public List<string> localImagePaths;
+        public bool isCached;
+
+        [Header("Loaded Sprites (Runtime)")]
+        [Tooltip("Sprites loaded from cache - used by BookSpriteManager. This is runtime data and will be cleared on game restart.")]
+        [System.NonSerialized]
+        public Sprite[] bookPages;
+
+        /// <summary>
+        /// Get display name (ưu tiên title > description > name)
+        /// </summary>
+        public string GetDisplayName()
+        {
+            if (!string.IsNullOrEmpty(title))
+                return title;
+            if (!string.IsNullOrEmpty(description))
+                return description;
+            return name;
+        }
+
+        /// <summary>
+        /// Check if this subject matches with a remote PDF by path
+        /// </summary>
+        public bool MatchesPath(string remotePath)
+        {
+            if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(remotePath))
+                return false;
+            return path.Equals(remotePath, System.StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Check if sprites are loaded
+        /// </summary>
+        public bool HasLoadedSprites()
+        {
+            return bookPages != null && bookPages.Length > 0;
+        }
+
+        /// <summary>
+        /// Update data from PDFSubjectInfo while keeping local lectures
+        /// </summary>
+        public void UpdateFromRemote(PDFSubjectInfo pdfInfo, bool cached, List<string> cachedPaths)
+        {
+            // Update API fields
+            title = pdfInfo.title;
+            grade = pdfInfo.grade;
+            category = pdfInfo.category;
+            pages = pdfInfo.pages;
+            pdfUrl = pdfInfo.pdf_url;
+            imageUrls = pdfInfo.images != null ? new List<string>(pdfInfo.images) : new List<string>();
+            
+            // Cache status
+            isCached = cached;
+            localImagePaths = cachedPaths ?? new List<string>();
+
+            // Keep existing lectures - don't overwrite!
+            // lectures remains unchanged
+        }
+
+        /// <summary>
+        /// Set loaded sprites
+        /// </summary>
+        public void SetBookPages(Sprite[] sprites)
+        {
+            bookPages = sprites;
+            Debug.Log($"[SubjectInfo] Set {sprites?.Length ?? 0} sprites for subject: {name}");
+        }
+
+        /// <summary>
+        /// Clear loaded sprites (to free memory)
+        /// </summary>
+        [ProButton]
+        public void ClearCacheData()
+        {
+            if (bookPages != null)
+            {
+                foreach (var sprite in bookPages)
+                {
+                    if (sprite != null && sprite.texture != null)
+                    {
+                        UnityEngine.Object.Destroy(sprite.texture);
+                        UnityEngine.Object.Destroy(sprite);
+                    }
+                }
+                bookPages = null;
+            }
+        }
+
+        /// <summary>
+        /// Clear all API data (keep local lectures and path)
+        /// </summary>
+        [ProButton]
+        public void ClearRemoteData()
+        {
+            // Clear sprites first
+            ClearCacheData();
+
+            // Reset API fields
+            title = string.Empty;
+            grade = string.Empty;
+            category = string.Empty;
+            pages = 0;
+            pdfUrl = string.Empty;
+            imageUrls = new List<string>();
+            localImagePaths = new List<string>();
+            isCached = false;
+
+            // Keep: name, description, lectures, path
+            Debug.Log($"[SubjectInfo] Cleared API data for: {name}");
+        }
     }
 
 }
