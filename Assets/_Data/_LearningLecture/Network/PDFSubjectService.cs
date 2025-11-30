@@ -78,17 +78,24 @@ namespace DreamClass.Subjects
         }
 
         private bool hasFetched = false;
+        private bool isPreloading = false;
+        private bool preloadComplete = false;
 
         protected override void Start()
         {
             base.Start();
             LoadCacheManifest();
 
-            // Preload cached sprites first (instant)
+            // Preload cached sprites first
             if (preloadCachedOnStart && cacheManifest != null && cacheManifest.subjects.Count > 0)
             {
                 Log($"Found {cacheManifest.subjects.Count} cached subjects, preloading sprites...");
+                isPreloading = true;
                 StartCoroutine(PreloadCachedSpritesCoroutine());
+            }
+            else
+            {
+                preloadComplete = true; // No preload needed
             }
 
             // Auto fetch from API on start (no login required)
@@ -97,6 +104,31 @@ namespace DreamClass.Subjects
                 Log("Auto-fetching subjects from API...");
                 FetchSubjects();
             }
+            else if (!autoFetchOnStart && preloadComplete)
+            {
+                // No fetch needed and preload done, mark ready
+                TryMarkAsReady();
+            }
+        }
+
+        /// <summary>
+        /// Try to mark service as ready (only if both preload and fetch are complete)
+        /// </summary>
+        private void TryMarkAsReady()
+        {
+            if (isReady) return;
+            
+            if (isPreloading && !preloadComplete)
+            {
+                Log("[TryMarkAsReady] Preload still in progress, waiting...");
+                return;
+            }
+            
+            Log("[TryMarkAsReady] All loading complete, marking as ready");
+            overallProgress = 1f;
+            OnOverallProgress?.Invoke(1f);
+            isReady = true;
+            OnReady?.Invoke();
         }
 
         /// <summary>
@@ -316,11 +348,16 @@ namespace DreamClass.Subjects
             if (totalUncached == 0)
             {
                 Log("All subjects already cached!");
-                overallProgress = 1f;
-                OnOverallProgress?.Invoke(1f);
-                isReady = true;
                 OnSubjectsLoaded?.Invoke(remoteSubjects);
-                OnReady?.Invoke();
+                
+                // Wait for preload to complete before marking ready
+                while (isPreloading && !preloadComplete)
+                {
+//                    Log("[AUTO-CACHE] Waiting for preload to complete...");
+                    yield return new WaitForSeconds(0.5f);
+                }
+                
+                TryMarkAsReady();
                 yield break;
             }
             
@@ -382,12 +419,16 @@ namespace DreamClass.Subjects
 
             Log($"[AUTO-CACHE COMPLETE] 100% - Cached {cachedNow} subjects");
             
-            // Now mark as ready
-            overallProgress = 1f;
-            OnOverallProgress?.Invoke(1f);
-            isReady = true;
             OnSubjectsLoaded?.Invoke(remoteSubjects);
-            OnReady?.Invoke();
+            
+            // Wait for preload to complete before marking ready
+            while (isPreloading && !preloadComplete)
+            {
+                Log("[AUTO-CACHE] Waiting for preload to complete...");
+                yield return new WaitForSeconds(0.5f);
+            }
+            
+            TryMarkAsReady();
         }
 
         /// <summary>
@@ -560,8 +601,9 @@ namespace DreamClass.Subjects
 
             Log($"[PRELOAD COMPLETE] Preloaded {preloadedCount} subjects from cache");
 
-            // If all subjects are preloaded and cached, mark as ready without needing login
-            if (preloadedCount > 0 && !isReady)
+            // Only mark as ready here if autoFetchOnStart is disabled
+            // If autoFetchOnStart is enabled, let FetchSubjects/AutoCacheAllSubjects set IsReady
+            if (!autoFetchOnStart && preloadedCount > 0 && !isReady)
             {
                 // Check if we have any subjects that need API fetch
                 bool allCached = true;
@@ -576,10 +618,25 @@ namespace DreamClass.Subjects
 
                 if (allCached)
                 {
-                    Log("[PRELOAD] All subjects cached, marking as ready (no login needed)");
+                    Log("[PRELOAD] All subjects cached and autoFetch disabled, marking as ready");
                     isReady = true;
                     OnReady?.Invoke();
                 }
+            }
+            else if (autoFetchOnStart)
+            {
+                Log("[PRELOAD] autoFetchOnStart enabled, waiting for fetch to complete before marking ready");
+            }
+
+            // Mark preload as complete
+            preloadComplete = true;
+            isPreloading = false;
+            Log("[PRELOAD] Preload phase finished");
+            
+            // Try to mark ready if fetch is also done
+            if (!autoFetchOnStart || hasFetched)
+            {
+                TryMarkAsReady();
             }
 
             #if UNITY_EDITOR

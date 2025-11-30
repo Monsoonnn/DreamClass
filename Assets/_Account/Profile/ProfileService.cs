@@ -126,69 +126,105 @@ namespace DreamClass.Account
         }
 
         /// <summary>
-        /// Download avatar image (supports WebP format)
+        /// Download avatar image (supports WebP, PNG, JPG formats)
         /// </summary>
         private IEnumerator DownloadAvatarCoroutine(string avatarUrl)
         {
             Log($"Downloading avatar: {avatarUrl}");
 
-            // Check if URL is WebP format
-            bool isWebP = avatarUrl.EndsWith(".webp", StringComparison.OrdinalIgnoreCase) || 
-                          avatarUrl.Contains("/upload/") || // Cloudinary URLs
-                          avatarUrl.Contains("cloudinary");
-
-            if (isWebP)
+            // First, try to download as raw bytes to detect format
+            using (UnityWebRequest request = UnityWebRequest.Get(avatarUrl))
             {
-                // Download as raw bytes and decode WebP
-                using (UnityWebRequest request = UnityWebRequest.Get(avatarUrl))
+                yield return request.SendWebRequest();
+
+                if (request.result != UnityWebRequest.Result.Success)
                 {
-                    yield return request.SendWebRequest();
+                    LogError($"Failed to download avatar: {request.error}");
+                    yield break;
+                }
 
-                    if (request.result == UnityWebRequest.Result.Success)
-                    {
-                        byte[] webpData = request.downloadHandler.data;
-                        
+                byte[] imageData = request.downloadHandler.data;
+                
+                if (imageData == null || imageData.Length < 4)
+                {
+                    LogError("Invalid avatar data received");
+                    yield break;
+                }
+
+                // Detect format by magic bytes
+                ImageFormat format = DetectImageFormat(imageData);
+                Log($"Detected avatar format: {format}");
+
+                Texture2D texture = null;
+
+                switch (format)
+                {
+                    case ImageFormat.WebP:
                         WebP.Error error;
-                        Texture2D texture = WebP.Texture2DExt.CreateTexture2DFromWebP(webpData, lMipmaps: false, lLinear: false, out error);
-
-                        if (error == WebP.Error.Success && texture != null)
-                        {
-                            userProfile.SetAvatar(texture);
-                            Log("Avatar (WebP) downloaded successfully");
-                            OnAvatarLoaded?.Invoke(userProfile.avatarSprite);
-                        }
-                        else
+                        texture = WebP.Texture2DExt.CreateTexture2DFromWebP(imageData, lMipmaps: false, lLinear: false, out error);
+                        if (error != WebP.Error.Success)
                         {
                             LogError($"Failed to decode WebP avatar: {error}");
+                            yield break;
                         }
-                    }
-                    else
-                    {
-                        LogError($"Failed to download avatar: {request.error}");
-                    }
+                        break;
+
+                    case ImageFormat.PNG:
+                    case ImageFormat.JPG:
+                        texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+                        if (!texture.LoadImage(imageData))
+                        {
+                            LogError("Failed to load PNG/JPG avatar");
+                            UnityEngine.Object.Destroy(texture);
+                            yield break;
+                        }
+                        break;
+
+                    default:
+                        // Try Unity's standard loader as fallback
+                        Log("Unknown format, trying standard loader...");
+                        texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+                        if (!texture.LoadImage(imageData))
+                        {
+                            LogError("Failed to load avatar with standard loader");
+                            UnityEngine.Object.Destroy(texture);
+                            yield break;
+                        }
+                        break;
                 }
-            }
-            else
-            {
-                // Standard image format (PNG, JPG)
-                using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(avatarUrl))
+
+                if (texture != null)
                 {
-                    yield return request.SendWebRequest();
-
-                    if (request.result == UnityWebRequest.Result.Success)
-                    {
-                        Texture2D texture = DownloadHandlerTexture.GetContent(request);
-                        userProfile.SetAvatar(texture);
-
-                        Log("Avatar downloaded successfully");
-                        OnAvatarLoaded?.Invoke(userProfile.avatarSprite);
-                    }
-                    else
-                    {
-                        LogError($"Failed to download avatar: {request.error}");
-                    }
+                    userProfile.SetAvatar(texture);
+                    Log($"Avatar ({format}) downloaded successfully");
+                    OnAvatarLoaded?.Invoke(userProfile.avatarSprite);
                 }
             }
+        }
+
+        /// <summary>
+        /// Detect image format from magic bytes
+        /// </summary>
+        private enum ImageFormat { Unknown, PNG, JPG, WebP }
+        
+        private ImageFormat DetectImageFormat(byte[] data)
+        {
+            if (data == null || data.Length < 12) return ImageFormat.Unknown;
+
+            // PNG: 89 50 4E 47 (‰PNG)
+            if (data[0] == 0x89 && data[1] == 0x50 && data[2] == 0x4E && data[3] == 0x47)
+                return ImageFormat.PNG;
+
+            // JPG/JPEG: FF D8 FF
+            if (data[0] == 0xFF && data[1] == 0xD8 && data[2] == 0xFF)
+                return ImageFormat.JPG;
+
+            // WebP: RIFF....WEBP (52 49 46 46 ... 57 45 42 50)
+            if (data[0] == 0x52 && data[1] == 0x49 && data[2] == 0x46 && data[3] == 0x46 &&
+                data.Length >= 12 && data[8] == 0x57 && data[9] == 0x45 && data[10] == 0x42 && data[11] == 0x50)
+                return ImageFormat.WebP;
+
+            return ImageFormat.Unknown;
         }
 
         /// <summary>

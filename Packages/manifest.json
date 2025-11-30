@@ -14,7 +14,7 @@
     "com.unity.nuget.newtonsoft-json": "3.2.2",
     "com.unity.probuilder": "6.0.7",
     "com.unity.remote-config": "4.2.2",
-    "com.unity.render-pipelines.universal": "17.0.4",
+    "com.unity.render-pipelines.universal": "17.2.0",
     "com.unity.services.apis": "1.1.1",
     "com.unity.services.ccd.management": "2.1.0",
     "com.unity.test-framework": "1.6.0",

@@ -112,6 +112,8 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager>
             }
         }
 
+        //currentQuest?.gameObject.SetActive(true);
+
         // Set quest mới
         currentQuest = newQuest;
 
@@ -230,7 +232,7 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager>
         // 4. Deactivate quest GameObject
         GameObject questObject = currentQuest.gameObject;
         currentQuest = null; // Clear reference trước khi deactivate
-        questObject.SetActive(false);
+        questObject.SetActive(true);
 
         Debug.Log($"[GuideStepManager] Quest abandoned and deactivated");
     }
