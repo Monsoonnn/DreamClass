@@ -10,6 +10,7 @@ namespace DreamClass.LoginManager {
         [SerializeField] private TMP_InputField _username;
         [SerializeField] private TMP_InputField _password;
         [SerializeField] protected LoginManagerUI loginManagerUI;
+        [SerializeField] private GameObject loadingObject;
         [SerializeField] protected MaiNPC maiNPC;
 
         [SerializeField] private UnityEngine.UI.Toggle rememberLoginToggle;
@@ -24,6 +25,7 @@ namespace DreamClass.LoginManager {
             {
                 LoadSavedCredentialsToFields();
             }
+            loadingObject.gameObject.SetActive(false); 
         }
 
         /// <summary>
@@ -33,6 +35,7 @@ namespace DreamClass.LoginManager {
         {
             string savedUsername = LoginManager.Instance.GetSavedUsername();
             string savedPassword = LoginManager.Instance.GetDecryptedPassword();
+
 
             // Only load if both username and password are valid
             if (!string.IsNullOrEmpty(savedUsername) && !string.IsNullOrEmpty(savedPassword))
@@ -69,7 +72,7 @@ namespace DreamClass.LoginManager {
 
             // Set flag
             isLoggingIn = true;
-
+            loadingObject.gameObject.SetActive(true); 
             // Pass remember state từ toggle
             bool remember = rememberLoginToggle != null && rememberLoginToggle.isOn;
             LoginManager.Instance.Login(_username.text, _password.text, OnLoginResult, remember: remember);
@@ -78,7 +81,7 @@ namespace DreamClass.LoginManager {
         private void OnLoginResult( bool success, string response ) {
             // Reset flag
             isLoggingIn = false;
-
+            loadingObject.gameObject.SetActive(false); 
             if (success) {
                 failCount = 0;
 

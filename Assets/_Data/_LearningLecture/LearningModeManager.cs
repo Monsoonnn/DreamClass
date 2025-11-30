@@ -8,13 +8,12 @@ using DreamClass.Subjects;
 using System.Collections;
 using DreamClass.LearningLecture;
 using DreamClass.Network;
-using LoginMgrNS = DreamClass.LoginManager;
 
 namespace DreamClass.Lecture
 {
     /// <summary>
     /// UI Manager - CHỈ quản lý data và swap UI panels
-    /// Waits for LoginManager before fetching remote subjects
+    /// PDFSubjectService auto-fetches on game start
     /// </summary>
     public class LearningModeManager : NewMonobehavior
     {
@@ -52,11 +51,12 @@ namespace DreamClass.Lecture
         public ApiClient apiClient;
 
         [Header("WebP Loader")]
-        [Tooltip("Optional - for loading WebP from URLs directly")]
+        [Tooltip("Optional - for loading WebP from URLs directly (legacy)")]
         public WebPBookLoader webPBookLoader;
 
-        [Header("Auto Fetch Settings")]
-        [SerializeField] private bool autoFetchOnLogin = true;
+        [Header("Book Page Loader")]
+        [Tooltip("Recommended - for loading sprites from cache")]
+        public BookPageLoader bookPageLoader;
 
 
         protected override void LoadComponents()
@@ -65,6 +65,7 @@ namespace DreamClass.Lecture
             this.LoadApiClient();
             this.LoadPDFSubjectService();
             this.LoadWebPBookLoader();
+            this.LoadBookPageLoader();
             this.LoadLectureSpawner();
         }
 
@@ -87,12 +88,24 @@ namespace DreamClass.Lecture
             }
         }
 
+        private void LoadBookPageLoader()
+        {
+            if(bookPageLoader != null) return;
+            if(bookCtrl != null && bookCtrl.bookObject != null)
+            {
+                bookPageLoader = bookCtrl.bookObject.GetComponentInChildren<BookPageLoader>();
+            }
+            if(bookPageLoader == null)
+            {
+                bookPageLoader = GameObject.FindAnyObjectByType<BookPageLoader>();
+            }
+        }
+
         private void LoadPDFSubjectService()
         {
             if(pdfSubjectService != null) return;
-            pdfSubjectService = GetComponentInChildren<PDFSubjectService>();
-            if(pdfSubjectService == null)
-                pdfSubjectService = GameObject.FindAnyObjectByType<PDFSubjectService>();
+            // Use Singleton instance
+            pdfSubjectService = PDFSubjectService.Instance;
         }
 
         private void LoadLectureSpawner()
@@ -115,14 +128,8 @@ namespace DreamClass.Lecture
             // Subscribe to PDFSubjectService.OnReady
             PDFSubjectService.OnReady += OnPDFSubjectsReady;
 
-            // Check if already logged in and subjects not fetched yet
-            if (autoFetchOnLogin && IsLoggedIn() && !PDFSubjectService.IsReady)
-            {
-                Debug.Log("[LearningModeManager] Already logged in, initializing PDF subjects...");
-                pdfSubjectService?.InitializeAfterLogin();
-            }
-            // If subjects already ready
-            else if (PDFSubjectService.IsReady)
+            // Check if PDFSubjectService is already ready
+            if (PDFSubjectService.IsReady)
             {
                 OnPDFSubjectsReady();
             }
@@ -137,12 +144,6 @@ namespace DreamClass.Lecture
         {
             Debug.Log("[LearningModeManager] PDF Subjects ready!");
             // Optionally refresh UI or notify spawners
-        }
-
-        private bool IsLoggedIn()
-        {
-            return LoginMgrNS.LoginManager.Instance != null && 
-                   LoginMgrNS.LoginManager.Instance.IsLoggedIn();
         }
 
         public void SetCurrentSubject(int index)
@@ -176,9 +177,37 @@ namespace DreamClass.Lecture
         /// <summary>
         /// Load sprites từ SubjectInfo.bookPages lên BookSpriteManager
         /// CHỈ load từ cache - không load từ URL
+        /// Ưu tiên sử dụng BookPageLoader, fallback về direct load
         /// </summary>
         private void LoadSpritesToBookManager(SubjectInfo subject)
         {
+            // Try using BookPageLoader first (preferred method)
+            if (bookPageLoader != null)
+            {
+                if (subject.HasLoadedSprites())
+                {
+                    bookPageLoader.LoadFromSubject(subject);
+                    return;
+                }
+                else if (subject.isCached)
+                {
+                    Debug.Log($"[LearningModeManager] Subject cached but sprites not loaded, loading from cache...");
+                    StartCoroutine(LoadCachedSpritesForSubject(subject));
+                    return;
+                }
+                else if (!string.IsNullOrEmpty(subject.path) && !subject.isCached)
+                {
+                    Debug.LogWarning($"[LearningModeManager] Subject NOT cached, cannot load: {subject.name}. Must download cache first.");
+                    return;
+                }
+                else
+                {
+                    Debug.Log($"[LearningModeManager] Local subject without API data: {subject.name}");
+                    return;
+                }
+            }
+
+            // Fallback: Direct load to BookSpriteManager
             if (bookCtrl == null || bookCtrl.bookObject == null)
             {
                 Debug.LogError("[LearningModeManager] BookCtrl or bookObject not assigned!");
@@ -329,9 +358,9 @@ namespace DreamClass.Lecture
 
         private IEnumerator LoadCachedSpritesForSubject(SubjectInfo subject)
         {
-            if (pdfSubjectService == null || bookCtrl == null)
+            if (pdfSubjectService == null)
             {
-                Debug.LogError("PDFSubjectService or BookCtrl not assigned!");
+                Debug.LogError("PDFSubjectService not assigned!");
                 yield break;
             }
 
@@ -353,14 +382,22 @@ namespace DreamClass.Lecture
                 // Update subject with loaded sprites
                 subject.SetBookPages(sprites);
 
-                // Update BookSpriteManager
-                var spriteManager = bookCtrl.bookObject.GetComponentInChildren<BookSpriteManager>();
-                if (spriteManager != null)
+                // Use BookPageLoader if available
+                if (bookPageLoader != null)
                 {
-                    spriteManager.bookPages = sprites;
-                    spriteManager.currentPage = 2;
-                    spriteManager.UpdateSprites();
-                    Debug.Log($"[LearningModeManager] Loaded {sprites.Length} sprites for subject: {subject.name}");
+                    bookPageLoader.LoadFromSubject(subject);
+                }
+                else if (bookCtrl != null && bookCtrl.bookObject != null)
+                {
+                    // Fallback: Update BookSpriteManager directly
+                    var spriteManager = bookCtrl.bookObject.GetComponentInChildren<BookSpriteManager>();
+                    if (spriteManager != null)
+                    {
+                        spriteManager.bookPages = sprites;
+                        spriteManager.currentPage = 2;
+                        spriteManager.UpdateSprites();
+                        Debug.Log($"[LearningModeManager] Loaded {sprites.Length} sprites for subject: {subject.name}");
+                    }
                 }
 
                 // Also update in SubjectDatabase

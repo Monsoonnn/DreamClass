@@ -1,17 +1,20 @@
 using UnityEngine;
 using DreamClass.Network;
+using DreamClass.Account;
 using System.Collections;
 using System.Text;
 using System;
 using com.cyborgAssets.inspectorButtonPro;
 using System.Security.Cryptography;
 using UnityEngine.UI;
-using DreamClass.Subjects;
 
 namespace DreamClass.LoginManager {
     public class LoginManager : SingletonCtrl<LoginManager> {
         [SerializeField] private ConfigSO _configServer;
         [SerializeField] private ApiClient apiClient;
+
+        [Header("Profile Service")]
+        [SerializeField] private ProfileService profileService;
 
         [Header("Session Info")]
         private string sessionCookie;
@@ -45,34 +48,34 @@ namespace DreamClass.LoginManager {
 
         }
 
-        public void Login( string email, string password, Action<bool, string> onResult = null, bool remember = false ) {
+        public void Login( string username, string password, Action<bool, string> onResult = null, bool remember = false ) {
             // Reset retry flag when starting new login attempt
             isRetryingLogin = false;
-            StartCoroutine(DelayedLogin(email, password, onResult, remember));
+            StartCoroutine(DelayedLogin(username, password, onResult, remember));
         }
 
         [ProButton]
         public void QuickLogin() {
             // Dùng saved credentials nếu có, ngược lại dùng default test account
-            string email = string.IsNullOrEmpty(savedUsername) ? "test@example.com" : savedUsername;
+            string username = string.IsNullOrEmpty(savedUsername) ? "test@example.com" : savedUsername;
             string password = string.IsNullOrEmpty(savedPassword) ? "password123" : savedPassword;
             
-            Debug.Log($"[LoginManager] Quick Login with: {email}");
-            Login(email, password, onResult: null, remember: false);
+            Debug.Log($"[LoginManager] Quick Login with: {username}");
+            Login(username, password, onResult: null, remember: false);
         }
 
-        private IEnumerator DelayedLogin( string email, string password, Action<bool, string> onResult, bool remember ) {
+        private IEnumerator DelayedLogin( string username, string password, Action<bool, string> onResult, bool remember ) {
             yield return null; // Wait 1 frame before sending first request
 
             _onLoginResult = onResult;
             rememberMe = remember;
 
-            string json = JsonUtility.ToJson(new LoginRequest(email, password));
+            string json = JsonUtility.ToJson(new LoginRequest(username, password));
             ApiRequest req = new ApiRequest("/api/auth/login", "POST", json);
 
             StartCoroutine(apiClient.SendRequest(req, OnLoginResponse));
 
-            if (rememberMe) SaveLogin(email, password);
+            if (rememberMe) SaveLogin(username, password);
             else ClearSavedLogin();
         }
 
@@ -180,13 +183,24 @@ namespace DreamClass.LoginManager {
                 Debug.Log("[LoginManager] Quests initialized after login");
             }
 
-            // Initialize PDFSubjectService
-            var pdfSubjectService = FindFirstObjectByType<PDFSubjectService>();
-            if (pdfSubjectService != null)
+            // Fetch user profile after login
+            if (profileService != null)
             {
-                pdfSubjectService.InitializeAfterLogin();
-                Debug.Log("[LoginManager] PDFSubjectService initialized after login");
+                profileService.FetchProfile();
+                Debug.Log("[LoginManager] Fetching user profile...");
             }
+            else
+            {
+                // Try to find ProfileService if not assigned
+                profileService = FindAnyObjectByType<ProfileService>();
+                if (profileService != null)
+                {
+                    profileService.FetchProfile();
+                    Debug.Log("[LoginManager] ProfileService found, fetching profile...");
+                }
+            }
+
+            // PDFSubjectService now auto-fetches on Start, no need to call here
         }
 
 
@@ -204,6 +218,13 @@ namespace DreamClass.LoginManager {
 
         private void OnLogoutResponse( ApiResponse res ) {
             apiClient.ClearCookie();
+            
+            // Clear user profile on logout
+            if (profileService != null)
+            {
+                profileService.ClearProfile();
+            }
+
             if (res.IsSuccess) {
                 _onLogoutResult?.Invoke(true, res.Text);
                 Debug.Log("Logout successful!");
@@ -260,10 +281,10 @@ namespace DreamClass.LoginManager {
 
         [System.Serializable]
         private struct LoginRequest {
-            public string email;
+            public string username;
             public string password;
-            public LoginRequest( string email, string password ) {
-                this.email = email;
+            public LoginRequest( string username, string password ) {
+                this.username = username;
                 this.password = password;
             }
         }

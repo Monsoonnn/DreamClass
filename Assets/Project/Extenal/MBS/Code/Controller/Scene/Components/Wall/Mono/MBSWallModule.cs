@@ -351,6 +351,7 @@ namespace MBS.Controller.Scene.Mono
 
         public void RemoveConnection( MBSWallModule mbsWallModule )
         {
+            if( mbsWallModule == null || mbsWallModule == this ) return;
             frontConnections.Remove( mbsWallModule );
             rearConnections.Remove( mbsWallModule );
         }

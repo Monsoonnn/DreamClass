@@ -6,17 +6,16 @@ using System.Collections.Generic;
 using System.IO;
 using com.cyborgAssets.inspectorButtonPro;
 using DreamClass.Network;
-using LoginMgrNS = DreamClass.LoginManager;
 
 namespace DreamClass.Subjects
 {
     /// <summary>
-    /// Service để fetch PDF subjects từ API và quản lý cache
-    /// Requires login before fetching - waits for LoginManager
+    /// Singleton Service để fetch PDF subjects từ API và quản lý cache
+    /// Auto-initializes on game start (before first scene load)
     /// </summary>
-    public class PDFSubjectService : NewMonobehavior
+    public class PDFSubjectService : SingletonCtrl<PDFSubjectService>
     {
-        // Static event for when subjects are ready (similar to QuestManager.OnReady)
+        // Static event for when subjects are ready
         public static event Action OnReady;
         private static bool isReady = false;
         public static bool IsReady => isReady;
@@ -34,8 +33,12 @@ namespace DreamClass.Subjects
         [SerializeField] private string manifestFileName = "cache_manifest.json";
         [Tooltip("Automatically start caching subjects after fetch")]
         [SerializeField] private bool autoCacheAfterFetch = true;
-        [Tooltip("Preload cached sprites on Start (before login)")]
+        [Tooltip("Preload cached sprites on Start")]
         [SerializeField] private bool preloadCachedOnStart = true;
+        [Tooltip("Cache as PNG instead of WebP for faster loading (3-5x faster load, ~30-50% larger file size)")]
+        [SerializeField] private bool cacheAsPNG = true;
+        [Tooltip("Auto fetch from API on Start")]
+        [SerializeField] private bool autoFetchOnStart = true;
 
         [Header("Debug")]
         [SerializeField] private bool enableDebugLog = true;
@@ -45,6 +48,13 @@ namespace DreamClass.Subjects
         public event Action<RemoteSubjectInfo, float> OnSubjectCacheProgress;
         public event Action<RemoteSubjectInfo> OnSubjectCacheComplete;
         public event Action<string> OnError;
+        
+        /// <summary>
+        /// Overall loading progress (0-1) for all subjects
+        /// </summary>
+        public static event Action<float> OnOverallProgress;
+        private static float overallProgress = 0f;
+        public static float OverallProgress => overallProgress;
 
         // Cache data
         private SubjectCacheManifest cacheManifest;
@@ -67,10 +77,6 @@ namespace DreamClass.Subjects
             apiClient = GameObject.FindAnyObjectByType<ApiClient>();
         }
 
-
-
-        [Header("Auto Fetch Settings")]
-        [SerializeField] private bool autoFetchOnLogin = true;
         private bool hasFetched = false;
 
         protected override void Start()
@@ -78,25 +84,25 @@ namespace DreamClass.Subjects
             base.Start();
             LoadCacheManifest();
 
-            // Preload cached sprites BEFORE login (no API needed)
+            // Preload cached sprites first (instant)
             if (preloadCachedOnStart && cacheManifest != null && cacheManifest.subjects.Count > 0)
             {
                 Log($"Found {cacheManifest.subjects.Count} cached subjects, preloading sprites...");
                 StartCoroutine(PreloadCachedSpritesCoroutine());
             }
 
-            // Check if already logged in
-            if (autoFetchOnLogin && IsLoggedIn())
+            // Auto fetch from API on start (no login required)
+            if (autoFetchOnStart && !hasFetched)
             {
-                Log("Already logged in, fetching subjects...");
+                Log("Auto-fetching subjects from API...");
                 FetchSubjects();
             }
         }
 
         /// <summary>
-        /// Called by LoginManager or LearningModeManager after successful login
+        /// Manual initialize if autoFetchOnStart is disabled
         /// </summary>
-        public void InitializeAfterLogin()
+        public void Initialize()
         {
             if (hasFetched)
             {
@@ -104,27 +110,15 @@ namespace DreamClass.Subjects
                 return;
             }
 
-            if (!IsLoggedIn())
-            {
-                LogError("Cannot initialize - not logged in!");
-                return;
-            }
-
-            Log("Initializing after login...");
+            Log("Initializing PDFSubjectService...");
             FetchSubjects();
-        }
-
-        private bool IsLoggedIn()
-        {
-            return LoginMgrNS.LoginManager.Instance != null && 
-                   LoginMgrNS.LoginManager.Instance.IsLoggedIn();
         }
 
         #region API Fetch
 
         /// <summary>
         /// Fetch danh sách PDF subjects từ API
-        /// Requires user to be logged in
+        /// No login required - public API endpoint
         /// </summary>
         [ProButton]
         public void FetchSubjects()
@@ -133,14 +127,6 @@ namespace DreamClass.Subjects
             {
                 LogError("ApiClient not assigned!");
                 OnError?.Invoke("ApiClient not assigned!");
-                return;
-            }
-
-            // Check login status
-            if (!IsLoggedIn())
-            {
-                LogError("Cannot fetch subjects - user not logged in!");
-                OnError?.Invoke("User not logged in");
                 return;
             }
 
@@ -330,11 +316,17 @@ namespace DreamClass.Subjects
             if (totalUncached == 0)
             {
                 Log("All subjects already cached!");
+                overallProgress = 1f;
+                OnOverallProgress?.Invoke(1f);
                 isReady = true;
                 OnSubjectsLoaded?.Invoke(remoteSubjects);
                 OnReady?.Invoke();
                 yield break;
             }
+            
+            // Reset progress
+            overallProgress = 0f;
+            OnOverallProgress?.Invoke(0f);
 
             Log($"Found {totalUncached} uncached subjects, starting download...");
 
@@ -378,7 +370,9 @@ namespace DreamClass.Subjects
                     }
 
                     cachedNow++;
-                    int completedPercent = totalUncached > 0 ? (cachedNow * 100 / totalUncached) : 0;
+                    overallProgress = totalUncached > 0 ? (float)cachedNow / totalUncached : 1f;
+                    OnOverallProgress?.Invoke(overallProgress);
+                    int completedPercent = (int)(overallProgress * 100);
                     Log($"[AUTO-CACHE] Overall progress: {completedPercent}% ({cachedNow}/{totalUncached} subjects)");
 
                     // Small delay between subjects
@@ -389,6 +383,8 @@ namespace DreamClass.Subjects
             Log($"[AUTO-CACHE COMPLETE] 100% - Cached {cachedNow} subjects");
             
             // Now mark as ready
+            overallProgress = 1f;
+            OnOverallProgress?.Invoke(1f);
             isReady = true;
             OnSubjectsLoaded?.Invoke(remoteSubjects);
             OnReady?.Invoke();
@@ -514,14 +510,31 @@ namespace DreamClass.Subjects
                 {
                     string path = cachedData.cachedImagePaths[i];
 
-                    yield return StartCoroutine(LoadWebPFromFileCoroutine(path, i, (sprite, index) =>
+                    // Detect format by extension and use appropriate loader
+                    bool isPNG = path.EndsWith(".png", StringComparison.OrdinalIgnoreCase);
+                    
+                    if (isPNG)
                     {
-                        if (sprite != null && index < sprites.Length)
+                        yield return StartCoroutine(LoadPNGFromFileCoroutine(path, i, (sprite, index) =>
                         {
-                            sprites[index] = sprite;
-                            loadedCount++;
-                        }
-                    }));
+                            if (sprite != null && index < sprites.Length)
+                            {
+                                sprites[index] = sprite;
+                                loadedCount++;
+                            }
+                        }));
+                    }
+                    else
+                    {
+                        yield return StartCoroutine(LoadWebPFromFileCoroutine(path, i, (sprite, index) =>
+                        {
+                            if (sprite != null && index < sprites.Length)
+                            {
+                                sprites[index] = sprite;
+                                loadedCount++;
+                            }
+                        }));
+                    }
 
                     // Log progress every 10%
                     int percent = (i + 1) * 100 / cachedData.cachedImagePaths.Count;
@@ -770,7 +783,8 @@ namespace DreamClass.Subjects
             for (int i = 0; i < subject.imageUrls.Count; i++)
             {
                 string url = subject.imageUrls[i];
-                string fileName = $"page_{i:D4}.webp";
+                string fileExt = cacheAsPNG ? "png" : "webp";
+                string fileName = $"page_{i:D4}.{fileExt}";
                 string localPath = Path.Combine(subjectCachePath, fileName);
 
                 // Skip if already exists
@@ -793,8 +807,8 @@ namespace DreamClass.Subjects
                     continue;
                 }
 
-                // Download
-                yield return StartCoroutine(DownloadImageCoroutine(url, localPath, (success) =>
+                // Download and convert
+                yield return StartCoroutine(DownloadAndCacheImageCoroutine(url, localPath, cacheAsPNG, (success) =>
                 {
                     if (success)
                     {
@@ -891,7 +905,10 @@ namespace DreamClass.Subjects
             }
         }
 
-        private IEnumerator DownloadImageCoroutine(string url, string localPath, Action<bool> callback)
+        /// <summary>
+        /// Download WebP from URL and save to cache (as PNG or WebP based on settings)
+        /// </summary>
+        private IEnumerator DownloadAndCacheImageCoroutine(string url, string localPath, bool convertToPNG, Action<bool> callback)
         {
             using (UnityWebRequest request = UnityWebRequest.Get(url))
             {
@@ -901,8 +918,54 @@ namespace DreamClass.Subjects
                 {
                     try
                     {
-                        File.WriteAllBytes(localPath, request.downloadHandler.data);
-                        callback?.Invoke(true);
+                        byte[] webpData = request.downloadHandler.data;
+
+                        if (convertToPNG)
+                        {
+                            // Decode WebP → Texture2D → Encode PNG → Save
+                            // Note: CreateTexture2DFromWebP with lMipmaps=false, lLinear=false
+                            // We need to make texture readable for EncodeToPNG
+                            WebP.Error error;
+                            Texture2D texture = WebP.Texture2DExt.CreateTexture2DFromWebP(webpData, lMipmaps: false, lLinear: false, out error);
+
+                            if (error == WebP.Error.Success && texture != null)
+                            {
+                                // Create a readable copy of the texture for encoding
+                                RenderTexture rt = RenderTexture.GetTemporary(texture.width, texture.height, 0, RenderTextureFormat.ARGB32);
+                                Graphics.Blit(texture, rt);
+                                
+                                RenderTexture previous = RenderTexture.active;
+                                RenderTexture.active = rt;
+                                
+                                Texture2D readableTexture = new Texture2D(texture.width, texture.height, TextureFormat.RGBA32, false);
+                                readableTexture.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
+                                readableTexture.Apply();
+                                
+                                RenderTexture.active = previous;
+                                RenderTexture.ReleaseTemporary(rt);
+                                
+                                // Encode to PNG and save
+                                byte[] pngData = readableTexture.EncodeToPNG();
+                                File.WriteAllBytes(localPath, pngData);
+                                
+                                // Cleanup textures
+                                UnityEngine.Object.Destroy(texture);
+                                UnityEngine.Object.Destroy(readableTexture);
+                                
+                                callback?.Invoke(true);
+                            }
+                            else
+                            {
+                                LogError($"Failed to decode WebP for PNG conversion: {error}");
+                                callback?.Invoke(false);
+                            }
+                        }
+                        else
+                        {
+                            // Save WebP directly
+                            File.WriteAllBytes(localPath, webpData);
+                            callback?.Invoke(true);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -946,19 +1009,69 @@ namespace DreamClass.Subjects
                     continue;
                 }
 
-                yield return StartCoroutine(LoadWebPFromFileCoroutine(path, i, (sprite, index) =>
+                // Detect format by extension and use appropriate loader
+                bool isPNG = path.EndsWith(".png", StringComparison.OrdinalIgnoreCase);
+                
+                if (isPNG)
                 {
-                    if (sprite != null && index < sprites.Length)
+                    yield return StartCoroutine(LoadPNGFromFileCoroutine(path, i, (sprite, index) =>
                     {
-                        sprites[index] = sprite;
-                    }
-                }));
+                        if (sprite != null && index < sprites.Length)
+                        {
+                            sprites[index] = sprite;
+                        }
+                    }));
+                }
+                else
+                {
+                    yield return StartCoroutine(LoadWebPFromFileCoroutine(path, i, (sprite, index) =>
+                    {
+                        if (sprite != null && index < sprites.Length)
+                        {
+                            sprites[index] = sprite;
+                        }
+                    }));
+                }
             }
 
             Log($"Loaded {sprites.Length} sprites from cache for {subject.name}");
             callback?.Invoke(sprites);
         }
 
+        /// <summary>
+        /// Load PNG from file - FAST (native Unity, no decode needed)
+        /// </summary>
+        private IEnumerator LoadPNGFromFileCoroutine(string path, int index, Action<Sprite, int> callback)
+        {
+            byte[] pngData = File.ReadAllBytes(path);
+
+            // Texture2D.LoadImage is much faster than WebP decode!
+            Texture2D texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            
+            if (texture.LoadImage(pngData))
+            {
+                Sprite sprite = Sprite.Create(
+                    texture,
+                    new Rect(0, 0, texture.width, texture.height),
+                    new Vector2(0.5f, 0.5f),
+                    100f
+                );
+                sprite.name = $"CachedPage_{index}";
+                callback?.Invoke(sprite, index);
+            }
+            else
+            {
+                LogError($"Failed to load PNG from cache: {path}");
+                UnityEngine.Object.Destroy(texture);
+                callback?.Invoke(null, index);
+            }
+
+            yield return null;
+        }
+
+        /// <summary>
+        /// Load WebP from file - SLOW (requires WebP decode)
+        /// </summary>
         private IEnumerator LoadWebPFromFileCoroutine(string path, int index, Action<Sprite, int> callback)
         {
             byte[] webpData = File.ReadAllBytes(path);
@@ -1009,6 +1122,11 @@ namespace DreamClass.Subjects
                 {
                     subject.isCached = false;
                     subject.localImagePaths.Clear();
+                }
+
+                if(subjectDatabase != null)
+                {
+                    subjectDatabase.ClearAllRemoteData();
                 }
 
                 EnsureCacheDirectoryExists();
