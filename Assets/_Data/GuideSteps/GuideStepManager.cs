@@ -21,6 +21,10 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager>
     [Header("UI")]
     public TextMeshProUGUI titleText;
     public TextMeshProUGUI descriptionText;
+    
+    [Header("Summary UI")]
+    [Tooltip("UI hiển thị tóm tắt hướng dẫn")]
+    public TextMeshProUGUI summaryText;
 
     [SerializeField] List<GameController> gameControllerList = new List<GameController>();
     public List<GameController> GameControllerList => gameControllerList;
@@ -227,7 +231,7 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager>
 
         // 3. Reset guide
         RestartGuide();
-        RestartTitle(0f);
+        ResetGuideUI();
 
         // 4. Deactivate quest GameObject
         GameObject questObject = currentQuest.gameObject;
@@ -313,6 +317,9 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager>
         {
             step.isCompleted = false;
         }
+
+        // Hiển thị summary khi guide được active
+        ShowGuideSummary();
 
         Debug.Log($"[GuideStepManager] Switched to guide: {guideID}");
         OnGuideStarted?.Invoke(guideID);
@@ -563,6 +570,65 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager>
         if (coroutine != null)
         {
             StopCoroutine(coroutine);
+        }
+    }
+
+    /// <summary>
+    /// Hiển thị summary của guide hiện tại
+    /// Alignment = Left khi có guide active
+    /// </summary>
+    private void ShowGuideSummary()
+    {
+        if (currentGuideRuntime == null) return;
+
+        // Set alignment to Left khi có guide active
+        if (titleText != null)
+        {
+            titleText.alignment = TextAlignmentOptions.Left;
+        }
+        if (descriptionText != null)
+        {
+            descriptionText.alignment = TextAlignmentOptions.Left;
+        }
+        
+        // Hiển thị summary vào summaryText nếu có
+        if (summaryText != null)
+        {
+            summaryText.gameObject.SetActive(true);
+            summaryText.alignment = TextAlignmentOptions.Left;
+            
+            if (!string.IsNullOrEmpty(currentGuideRuntime.summary))
+            {
+                summaryText.text = currentGuideRuntime.summary;
+            }
+            else
+            {
+                summaryText.text = "";
+            }
+        }
+    }
+
+    /// <summary>
+    /// Reset UI về trạng thái không có guide
+    /// Alignment = Center, text = "Chưa có hướng dẫn nào"
+    /// </summary>
+    [ProButton]
+    public void ResetGuideUI()
+    {
+        if (titleText != null)
+        {
+            titleText.text = "";
+            titleText.alignment = TextAlignmentOptions.Center;
+        }
+        if (descriptionText != null)
+        {
+            descriptionText.text = "Chưa có hướng dẫn nào";
+            descriptionText.alignment = TextAlignmentOptions.Center;
+        }
+        if (summaryText != null)
+        {
+            summaryText.text = "";
+            summaryText.gameObject.SetActive(false);
         }
     }
 }

@@ -28,6 +28,10 @@ namespace DreamClass.LoginManager {
         [Header("Login Retry")]
         private bool isRetryingLogin = false;
 
+        // Events
+        public static event Action OnLoginSuccess;
+        public static event Action OnLogoutSuccess;
+
         private Action<bool, string> _onLoginResult;
         private Action<bool, string> _onLogoutResult;
 
@@ -83,35 +87,68 @@ namespace DreamClass.LoginManager {
         private void OnLoginResponse( ApiResponse res ) {
             if (res.IsSuccess) {
                 Debug.Log("Login success!");   
-                Debug.Log("Response: " + res.SetCookie);
                 
-                // Try to get cookie from response
-                if (!string.IsNullOrEmpty(res.SetCookie)) {
-                    sessionCookie = ParseCookie(res.SetCookie);
-                    Debug.Log("Login Cookie from response: " + sessionCookie);
-                    apiClient.SetCookie(sessionCookie);
-                }
-                else
+                // Handle authentication based on ApiClient's type
+                if (apiClient.CurrentAuthType == DreamClass.Network.AuthType.Cookie)
                 {
-                                
-                    Logout();
-                    // Nếu không có cookie và chưa retry, thử logout rồi login lại với saved credentials
-                    if (!isRetryingLogin && !string.IsNullOrEmpty(savedUsername) && !string.IsNullOrEmpty(savedPassword))
-                    {
-                        Debug.Log("[LoginManager] No cookie received, trying logout and retry with saved credentials");
-                        isRetryingLogin = true;
-                        
-                        // Logout trước, sau đó login lại
-                        StartCoroutine(LogoutAndRetryLogin());
-                        return; // Exit early, don't continue with success flow
+                    Debug.Log("Response: " + res.SetCookie);
+                    
+                    // Try to get cookie from response
+                    if (!string.IsNullOrEmpty(res.SetCookie)) {
+                        sessionCookie = ParseCookie(res.SetCookie);
+                        Debug.Log("Login Cookie from response: " + sessionCookie);
+                        apiClient.SetCookie(sessionCookie);
                     }
                     else
                     {
-                        // Đã retry hoặc không có saved credentials, báo fail
-                        Debug.LogError("[LoginManager] Login failed - no cookie and retry unsuccessful");
-                        isRetryingLogin = false;
-                        _onLoginResult?.Invoke(false, "Login failed: No session cookie received");
-                        return;
+                        Logout();
+                        // Nếu không có cookie và chưa retry, thử logout rồi login lại với saved credentials
+                        if (!isRetryingLogin && !string.IsNullOrEmpty(savedUsername) && !string.IsNullOrEmpty(savedPassword))
+                        {
+                            Debug.Log("[LoginManager] No cookie received, trying logout and retry with saved credentials");
+                            isRetryingLogin = true;
+                            
+                            // Logout trước, sau đó login lại
+                            StartCoroutine(LogoutAndRetryLogin());
+                            return; // Exit early, don't continue with success flow
+                        }
+                        else
+                        {
+                            // Đã retry hoặc không có saved credentials, báo fail
+                            Debug.LogError("[LoginManager] Login failed - no cookie and retry unsuccessful");
+                            isRetryingLogin = false;
+                            _onLoginResult?.Invoke(false, "Login failed: No session cookie received");
+                            return;
+                        }
+                    }
+                }
+                else if (apiClient.CurrentAuthType == DreamClass.Network.AuthType.JWT)
+                {
+                    // Parse JWT token from response body
+                    try
+                    {
+                        LoginResponse loginResponse = JsonUtility.FromJson<LoginResponse>(res.Text);
+                        if (loginResponse != null && loginResponse.data != null)
+                        {
+                            // Check if response has token field
+                            string token = loginResponse.token ?? loginResponse.accessToken;
+                            
+                            if (!string.IsNullOrEmpty(token))
+                            {
+                                apiClient.SetJwtToken(token);
+                                Debug.Log("[LoginManager] JWT token set");
+                            }
+                            else
+                            {
+                                Debug.LogError("[LoginManager] No JWT token in response");
+                                _onLoginResult?.Invoke(false, "Login failed: No JWT token received");
+                                return;
+                            }
+                        }
+                    }
+                    catch (System.Exception e)
+                    {
+                        Debug.LogWarning($"[LoginManager] Failed to parse JWT token: {e.Message}");
                     }
                 }
 
@@ -130,14 +167,43 @@ namespace DreamClass.LoginManager {
                     Debug.LogWarning($"[LoginManager] Failed to parse playerId from response: {e.Message}");
                 }
 
-                // Initialize quests after successful login - delay to ensure cookie is set
+                // Initialize quests after successful login - delay to ensure auth is set
                 StartCoroutine(InitializeQuestsAfterLogin());
+
+                // Trigger login success event
+                OnLoginSuccess?.Invoke();
 
                 _onLoginResult?.Invoke(true, res.Text);
             } else {
                 Debug.LogError($"Login failed: {res.StatusCode}");
-                _onLoginResult?.Invoke(false, res.Text);
+                
+                // Parse error message from server
+                string errorMessage = "Login failed";
+                try
+                {
+                    var errorResponse = JsonUtility.FromJson<ErrorResponse>(res.Text);
+                    if (errorResponse != null)
+                    {
+                        errorMessage = !string.IsNullOrEmpty(errorResponse.error) 
+                            ? errorResponse.error 
+                            : errorResponse.message;
+                    }
+                }
+                catch
+                {
+                    errorMessage = res.Text;
+                }
+                
+                Debug.LogError($"[LoginManager] Error details: {errorMessage}");
+                _onLoginResult?.Invoke(false, errorMessage);
             }
+        }
+
+        [System.Serializable]
+        private class ErrorResponse
+        {
+            public string message;
+            public string error;
         }
 
         private IEnumerator LogoutAndRetryLogin()
@@ -217,7 +283,15 @@ namespace DreamClass.LoginManager {
         }
 
         private void OnLogoutResponse( ApiResponse res ) {
-            apiClient.ClearCookie();
+            // Clear authentication based on type
+            if (apiClient.CurrentAuthType == DreamClass.Network.AuthType.Cookie)
+            {
+                apiClient.ClearCookie();
+            }
+            else if (apiClient.CurrentAuthType == DreamClass.Network.AuthType.JWT)
+            {
+                apiClient.ClearJwtToken();
+            }
             
             // Clear user profile on logout
             if (profileService != null)
@@ -226,6 +300,9 @@ namespace DreamClass.LoginManager {
             }
 
             if (res.IsSuccess) {
+                // Trigger logout success event
+                OnLogoutSuccess?.Invoke();
+
                 _onLogoutResult?.Invoke(true, res.Text);
                 Debug.Log("Logout successful!");
             } else {
@@ -294,6 +371,10 @@ namespace DreamClass.LoginManager {
         {
             public string message;
             public LoginData data;
+            
+            // JWT fields (optional)
+            public string token;
+            public string accessToken;
 
             [System.Serializable]
             public class LoginData
@@ -312,9 +393,10 @@ namespace DreamClass.LoginManager {
         public string GetDecryptedPassword() => savedPassword; // Plain text, không cần decrypt
         public bool IsRemembered() => rememberMe;
         public string GetPlayerId() => playerId;
+        
         public bool IsLoggedIn() {
-            //Debug.Log("Login Cookie: " + sessionCookie);
-            return !string.IsNullOrEmpty(apiClient.DefaultCookie);
+            // Check authentication based on ApiClient's auth type
+            return apiClient != null && apiClient.IsAuthenticated();
         }
 
         private void OnApplicationQuit()

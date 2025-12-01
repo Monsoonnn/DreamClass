@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54dacc7dd22bf5d4d83427a6f6d47ff3, type: 3}
+  m_Name: NoiNangCuaKhi
+  m_EditorClassIdentifier: 
+  guideID: NoiNang
+  steps:
+  - stepID: TURNON_NHIETKE
+    title: "B\u1EADt thi\u1EBFt b\u1ECB \u0111o nhi\u1EC7t \u0111\u1ED9"
+    description: "\u0110\u1EC3 b\u1EAFt \u0111\u1EA7u th\xED nghi\u1EC7m h\xE3y b\u1EADt
+      thi\u1EBFt b\u1ECB do nhi\u1EC7t d\u1ED9 b\xEAn c\u1EA1nh xi lanh "
+    highlightTarget: {fileID: 0}
+    previousStepID: 
+    isCompleted: 0
+  - stepID: RELEASE_XILANH
+    title: "Chuy\u1EC3n p\xEDt t\xF4ng xi lanh v\u1EC1 ph\xEDa tr\xEAn xilanh"
+    description: "H\xE3y nh\u1EA3 p\xEDt t\xF4ng c\u1EE7a xi lanh v\u1EC1 ph\xEDa
+      tr\xEAn"
+    highlightTarget: {fileID: 0}
+    previousStepID: TURNON_NHIETKE
+    isCompleted: 0
+  - stepID: TEMP_BEFORE
+    title: "Ghi l\u1EA1i gi\xE1 tr\u1ECB nhi\u1EC7t \u0111\u1ED9"
+    description: "H\xE3y di v\u1EC1 ph\xEDa quy\u1EC3n s\xE1ch v\xE0 ghi l\u1EA1i
+      gi\xE1 tr\u1ECB nhi\u1EC7t \u0111\u1ED9 tr\u01B0\u1EDBc khi n\xE9n"
+    highlightTarget: {fileID: 0}
+    previousStepID: RELEASE_XILANH
+    isCompleted: 0
+  - stepID: PUSH_XILANH
+    title: "\u1EA4n p\xEDt t\xF4ng xu\u1ED1ng d\u01B0\u1EDBi"
+    description: "H\xE3y nh\u1EA5n p\xEDt t\xF4ng c\u1EE7a xi lanh xu\u1ED1ng d\u01B0\u1EDBi
+      \u0111\u1EC3 n\xE9n kh\xED"
+    highlightTarget: {fileID: 0}
+    previousStepID: TEMP_BEFORE
+    isCompleted: 0
+  - stepID: TEMP_AFTER
+    title: "Ghi l\u1EA1i gi\xE1 tr\u1ECB nhi\u1EC7t \u0111\u1ED9"
+    description: "Sau khi n\xE9n kh\xED, h\xE3y ghi l\u1EA1i gi\xE1 tr\u1ECB nhi\u1EC7t
+      \u0111\u1ED9 \u0111\u01B0\u1EE3c thay \u0111\u1ED5i"
+    highlightTarget: {fileID: 0}
+    previousStepID: PUSH_XILANH
+    isCompleted: 0
+  summary: "T\xEAn th\xED nghi\u1EC7m Th\xED nghi\u1EC7m Bi\u1EBFn thi\xEAn N\u1ED9i
+    n\u0103ng c\u1EE7a Kh\xED (Qu\xE1 tr\xECnh n\xE9n kh\xED)\n\nM\xF4 t\u1EA3 Quy
+    tr\xECnh th\u1EF1c hi\u1EC7n th\xED nghi\u1EC7m ch\u1EE9ng minh s\u1EF1 thay
+    \u0111\u1ED5i n\u1ED9i n\u0103ng c\u1EE7a kh\xED th\xF4ng qua th\u1EF1c hi\u1EC7n
+    c\xF4ng. Khi n\xE9n kh\xED trong xi lanh, c\xF4ng c\u01A1 h\u1ECDc chuy\u1EC3n
+    h\xF3a th\xE0nh n\u1ED9i n\u0103ng l\xE0m nhi\u1EC7t \u0111\u1ED9 c\u1EE7a kh\xED
+    t\u0103ng l\xEAn.\n\nB\u01B0\u1EDBc 1: B\u1EADt thi\u1EBFt b\u1ECB \u0111o nhi\u1EC7t
+    \u0111\u1ED9: T\u01B0\u01A1ng t\xE1c v\u1EDBi thi\u1EBFt b\u1ECB \u0111o nhi\u1EC7t
+    \u0111\u1ED9 \u0111\u1EB7t b\xEAn c\u1EA1nh xi lanh \u0111\u1EC3 b\u1EADt ngu\u1ED3n,
+    chu\u1EA9n b\u1ECB cho vi\u1EC7c gi\xE1m s\xE1t nhi\u1EC7t \u0111\u1ED9 kh\xED.\n\nB\u01B0\u1EDBc
+    2: K\xE9o p\xEDt-t\xF4ng l\xEAn cao: Th\u1EF1c hi\u1EC7n thao t\xE1c \u0111\u01B0a
+    p\xEDt-t\xF4ng v\u1EC1 ph\xEDa tr\xEAn c\xF9ng c\u1EE7a xi lanh \u0111\u1EC3
+    \u0111\u1EA3m b\u1EA3o th\u1EC3 t\xEDch bu\u1ED3ng kh\xED \u1EDF m\u1EE9c l\u1EDBn
+    nh\u1EA5t.\n\nB\u01B0\u1EDBc 3: Ghi nhi\u1EC7t \u0111\u1ED9 ban \u0111\u1EA7u:
+    Di chuy\u1EC3n \u0111\u1EBFn v\u1ECB tr\xED quy\u1EC3n s\xE1ch v\xE0 ghi l\u1EA1i
+    gi\xE1 tr\u1ECB nhi\u1EC7t \u0111\u1ED9 hi\u1EC7n t\u1EA1i c\u1EE7a kh\xED tr\u01B0\u1EDBc
+    khi th\u1EF1c hi\u1EC7n n\xE9n.\n\nB\u01B0\u1EDBc 4: N\xE9n kh\xED: D\xF9ng l\u1EF1c
+    \u1EA5n m\u1EA1nh p\xEDt-t\xF4ng c\u1EE7a xi lanh xu\u1ED1ng d\u01B0\u1EDBi \u0111\u1EC3
+    th\u1EF1c hi\u1EC7n c\xF4ng n\xE9n kh\u1ED1i kh\xED b\xEAn trong.\n\nB\u01B0\u1EDBc
+    5: Ghi nhi\u1EC7t \u0111\u1ED9 sau khi n\xE9n: Quan s\xE1t v\xE0 ghi l\u1EA1i
+    gi\xE1 tr\u1ECB nhi\u1EC7t \u0111\u1ED9 m\u1EDBi hi\u1EC3n th\u1ECB ngay sau
+    khi qu\xE1 tr\xECnh n\xE9n kh\xED k\u1EBFt th\xFAc \u0111\u1EC3 so s\xE1nh s\u1EF1
+    thay \u0111\u1ED5i."

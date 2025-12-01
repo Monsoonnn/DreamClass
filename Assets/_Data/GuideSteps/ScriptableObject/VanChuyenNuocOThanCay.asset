@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54dacc7dd22bf5d4d83427a6f6d47ff3, type: 3}
+  m_Name: VanChuyenNuocOThanCay
+  m_EditorClassIdentifier: 
+  guideID: VanChuyenNuocOThanCay
+  steps:
+  - stepID: DoNuoc
+    title: "\u0110\u1ED5 n\u01B0\u1EDBc v\xE0o b\xECnh n\xF3n"
+    description: "H\xE3y l\u1EA5y b\xECnh n\u01B0\u1EDBc v\u1EDBi 3 lo\u1EA1i m\xE0u
+      \u0111\u1EC3 \u0111\u1ED5 v\xE0o c\xE1c b\xECnh n\xF3n"
+    highlightTarget: {fileID: 0}
+    previousStepID: 
+    isCompleted: 0
+  - stepID: DatBongHoa
+    title: "\u0110\u1EB7t b\xF4ng hoa l\xEAn b\xECnh n\xF3n"
+    description: "H\xE3y nh\u1EB7t 3 b\xF4ng hoa v\xE0 \u0111\u1EB7t l\xEAn b\xECnh
+      n\xF3n "
+    highlightTarget: {fileID: 0}
+    previousStepID: DoNuoc
+    isCompleted: 0
+  - stepID: QuanSat
+    title: "Quan s\xE1t hi\u1EC7n t\u01B0\u1EE3ng"
+    description: "Quan s\xE1t s\u1EF1 bi\u1EBFn \u0111\u1ED5i m\xE0u s\u1EAFc c\u1EE7a
+      b\xF4ng hoa m\xE0u tr\u1EAFng"
+    highlightTarget: {fileID: 0}
+    previousStepID: DatBongHoa
+    isCompleted: 0
+  summary: "T\xEAn th\xED nghi\u1EC7m Th\xED nghi\u1EC7m V\u1EADn chuy\u1EC3n n\u01B0\u1EDBc
+    \u1EDF Th\xE2n c\xE2y (Ch\u1EE9ng minh s\u1EF1 d\u1EABn truy\u1EC1n c\u1EE7a
+    M\u1EA1ch g\u1ED7)\n\nM\xF4 t\u1EA3 Quy tr\xECnh th\u1EF1c hi\u1EC7n th\xED nghi\u1EC7m
+    nh\u1EB1m ch\u1EE9ng minh v\xE0 quan s\xE1t tr\u1EF1c quan qu\xE1 tr\xECnh v\u1EADn
+    chuy\u1EC3n n\u01B0\u1EDBc v\xE0 ch\u1EA5t kho\xE1ng t\u1EEB r\u1EC5 (ho\u1EB7c
+    g\u1ED1c) l\xEAn c\xE1c b\u1ED9 ph\u1EADn ph\xEDa tr\xEAn c\u1EE7a c\xE2y th\xF4ng
+    qua m\u1EA1ch g\u1ED7, s\u1EED d\u1EE5ng hi\u1EC7n t\u01B0\u1EE3ng mao d\u1EABn
+    v\xE0 tho\xE1t h\u01A1i n\u01B0\u1EDBc.\n\nB\u01B0\u1EDBc 1: Chu\u1EA9n b\u1ECB
+    dung d\u1ECBch m\xE0u: Th\u1EF1c hi\u1EC7n thao t\xE1c l\u1EA5y 3 b\xECnh n\u01B0\u1EDBc
+    ch\u1EE9a ph\u1EA9m m\xE0u kh\xE1c nhau (v\xED d\u1EE5: \u0111\u1ECF, xanh, v\xE0ng)
+    v\xE0 \u0111\u1ED5 l\u1EA7n l\u01B0\u1EE3t v\xE0o 3 chi\u1EBFc b\xECnh n\xF3n
+    (Erlenmeyer flask) r\u1ED7ng \u0111\u1EC3 t\u1EA1o m\xF4i tr\u01B0\u1EDDng dung
+    d\u1ECBch.\n\nB\u01B0\u1EDBc 2: C\u1EAFm hoa v\xE0o b\xECnh: Nh\u1EB7t 3 b\xF4ng
+    hoa m\xE0u tr\u1EAFng (\u0111\u1EC3 d\u1EC5 hi\u1EC3n th\u1ECB m\xE0u) v\xE0
+    c\u1EAFm ph\u1EA7n th\xE2n c\u1EE7a ch\xFAng ng\u1EADp v\xE0o trong c\xE1c b\xECnh
+    n\xF3n ch\u1EE9a n\u01B0\u1EDBc m\xE0u v\u1EEBa chu\u1EA9n b\u1ECB. B\u01B0\u1EDBc
+    3: Quan s\xE1t hi\u1EC7n t\u01B0\u1EE3ng: Ch\u1EDD \u0111\u1EE3i v\xE0 quan s\xE1t
+    s\u1EF1 bi\u1EBFn \u0111\u1ED5i m\xE0u s\u1EAFc tr\xEAn c\xE1nh hoa. N\u01B0\u1EDBc
+    m\xE0u s\u1EBD \u0111\u01B0\u1EE3c v\u1EADn chuy\u1EC3n qua c\xE1c m\u1EA1ch
+    d\u1EABn trong th\xE2n c\xE2y l\xEAn c\xE1nh hoa, khi\u1EBFn hoa tr\u1EAFng chuy\u1EC3n
+    d\u1EA7n sang m\xE0u c\u1EE7a dung d\u1ECBch t\u01B0\u01A1ng \u1EE9ng."

@@ -1,3 +1,5 @@
+using Characters.Dung;
+using DreamClass.NPCCore;
 using DreamClass.QuestSystem;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -12,6 +14,10 @@ namespace DreamClass.QuestSystem
         [Header("Guide Integration")]
         [SerializeField] private string guideID;
         [SerializeField] private bool autoLoadGuide = true;
+
+        [Header("NPC Voice on Start")]
+        [Tooltip("Tự động play Lab_Guide của DungNPC khi quest bắt đầu")]
+        [SerializeField] private bool playDungLabGuide = true;
 
         protected override void LoadComponents()
         {
@@ -59,8 +65,39 @@ namespace DreamClass.QuestSystem
             //     //Debug.Log($"[QuestType2] Setup experiment: {experimentID}");
             // }
 
+            // Play NPC voice on start (DungNPC - Lab_Guide)
+            if (playDungLabGuide)
+            {
+                _ = PlayDungLabGuideAsync();
+            }
+
             base.StartQuest();
             
+        }
+
+        /// <summary>
+        /// Play Lab_Guide voice của DungNPC khi quest bắt đầu
+        /// Tự động tìm DungNPC trong scene
+        /// </summary>
+        private async Task PlayDungLabGuideAsync()
+        {
+            // Tìm DungNPC trong scene
+            DungNPC dungNPC = FindFirstObjectByType<DungNPC>();
+            
+            if (dungNPC == null)
+            {
+                Debug.LogWarning("[QuestType2] DungNPC not found in scene!");
+                return;
+            }
+
+            if (dungNPC.characterVoiceline == null)
+            {
+                Debug.LogWarning("[QuestType2] DungNPC.characterVoiceline is null!");
+                return;
+            }
+
+            Debug.Log("[QuestType2] Playing DungNPC Lab_Guide voice");
+            await dungNPC.characterVoiceline.PlayAnimation(DungVoiceType.Lab_Guide);
         }
 
         /// <summary>

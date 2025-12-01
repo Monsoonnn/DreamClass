@@ -30,6 +30,6 @@ MonoBehaviour:
       transitionTime: 0.1
   - groupName: DungNoiChuyen
     layerAnimations:
-    - animationName: Talking
+    - animationName: NoiChuyen
       layer: 0
       transitionTime: 0.1

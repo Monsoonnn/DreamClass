@@ -8,4 +8,9 @@ public class GuideData : ScriptableObject {
 
     [Header("All Steps in Sequence")]
     public List<StepData> steps = new List<StepData>();
+
+    [Header("Summary")]
+
+    [TextArea(2, 5)] public string summary;
+
 }
