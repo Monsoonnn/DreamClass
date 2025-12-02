@@ -8,16 +8,12 @@ namespace DreamClass.Network
     public class ApiClientEditor : Editor
     {
         private SerializedProperty baseUrlProp;
-        private SerializedProperty authTypeProp;
-        private SerializedProperty defaultCookieProp;
-        private SerializedProperty jwtTokenProp;
+        private SerializedProperty authDataProp;
 
         private void OnEnable()
         {
             baseUrlProp = serializedObject.FindProperty("baseUrl");
-            authTypeProp = serializedObject.FindProperty("authType");
-            defaultCookieProp = serializedObject.FindProperty("defaultCookie");
-            jwtTokenProp = serializedObject.FindProperty("jwtToken");
+            authDataProp = serializedObject.FindProperty("authData");
         }
 
         public override void OnInspectorGUI()
@@ -36,91 +32,95 @@ namespace DreamClass.Network
             EditorGUILayout.PropertyField(baseUrlProp, new GUIContent("Base URL"));
             EditorGUILayout.Space();
 
-            // Authentication Type
+            // Authentication Data
             EditorGUILayout.LabelField("Authentication", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(authTypeProp, new GUIContent("Auth Type"));
+            EditorGUILayout.PropertyField(authDataProp, new GUIContent("Auth Data"));
 
-            AuthType currentAuthType = (AuthType)authTypeProp.enumValueIndex;
-
-            EditorGUILayout.Space();
-
-            // Show fields based on auth type
-            switch (currentAuthType)
+            if (authDataProp.objectReferenceValue == null)
             {
-                case AuthType.Cookie:
-                    EditorGUILayout.HelpBox("Using Cookie-based authentication", MessageType.Info);
-                    EditorGUILayout.PropertyField(defaultCookieProp, new GUIContent("Cookie"));
-                    
-                    // Runtime info
-                    if (Application.isPlaying)
-                    {
-                        EditorGUILayout.Space();
-                        EditorGUILayout.LabelField("Runtime Status", EditorStyles.boldLabel);
-                        
-                        bool isAuth = apiClient.IsAuthenticated();
-                        EditorGUILayout.LabelField("Authenticated:", isAuth ? "✓ Yes" : "✗ No");
-                        
-                        if (!string.IsNullOrEmpty(apiClient.DefaultCookie))
-                        {
-                            EditorGUILayout.LabelField("Cookie Value:", apiClient.DefaultCookie);
-                        }
-                    }
-                    break;
-
-                case AuthType.JWT:
-                    EditorGUILayout.HelpBox("Using JWT (JSON Web Token) authentication", MessageType.Info);
-                    EditorGUILayout.PropertyField(jwtTokenProp, new GUIContent("JWT Token"));
-                    
-                    // Runtime info
-                    if (Application.isPlaying)
-                    {
-                        EditorGUILayout.Space();
-                        EditorGUILayout.LabelField("Runtime Status", EditorStyles.boldLabel);
-                        
-                        bool isAuth = apiClient.IsAuthenticated();
-                        EditorGUILayout.LabelField("Authenticated:", isAuth ? "✓ Yes" : "✗ No");
-                        
-                        if (!string.IsNullOrEmpty(apiClient.JwtToken))
-                        {
-                            // Show truncated token for security
-                            string tokenPreview = apiClient.JwtToken.Length > 20 
-                                ? apiClient.JwtToken.Substring(0, 20) + "..." 
-                                : apiClient.JwtToken;
-                            EditorGUILayout.LabelField("Token Preview:", tokenPreview);
-                        }
-                    }
-                    break;
+                EditorGUILayout.HelpBox("⚠️ AuthData ScriptableObject is not assigned! Create one via: Assets > Create > DreamClass > Auth Data", MessageType.Warning);
             }
 
-            // Runtime buttons
-            if (Application.isPlaying)
+            AuthData authData = authDataProp.objectReferenceValue as AuthData;
+            if (authData != null)
             {
                 EditorGUILayout.Space();
-                EditorGUILayout.LabelField("Runtime Actions", EditorStyles.boldLabel);
-                
-                EditorGUILayout.BeginHorizontal();
-                
-                if (GUILayout.Button("Clear Auth"))
-                {
-                    apiClient.ClearAuth();
-                    Debug.Log("[ApiClient] All authentication cleared");
-                }
-                
-                if (currentAuthType == AuthType.Cookie && GUILayout.Button("Clear Cookie"))
-                {
-                    apiClient.ClearCookie();
-                }
-                
-                if (currentAuthType == AuthType.JWT && GUILayout.Button("Clear JWT"))
-                {
-                    apiClient.ClearJwtToken();
-                }
-                
-                EditorGUILayout.EndHorizontal();
-            }
+                EditorGUILayout.LabelField($"Auth Type: {authData.AuthType}", EditorStyles.miniLabel);
 
-            serializedObject.ApplyModifiedProperties();
+                // Show current auth status
+                switch (authData.AuthType)
+                {
+                    case AuthType.Cookie:
+                        EditorGUILayout.HelpBox("Using Cookie-based authentication", MessageType.Info);
+
+                        if (Application.isPlaying)
+                        {
+                            EditorGUILayout.Space();
+                            EditorGUILayout.LabelField("Runtime Status", EditorStyles.boldLabel);
+
+                            bool isAuth = authData.IsAuthenticated();
+                            EditorGUILayout.LabelField("Authenticated:", isAuth ? "✓ Yes" : "✗ No");
+
+                            if (!string.IsNullOrEmpty(authData.Cookie))
+                            {
+                                EditorGUILayout.LabelField("Cookie Value:", authData.Cookie);
+                            }
+                        }
+                        break;
+
+                    case AuthType.JWT:
+                        EditorGUILayout.HelpBox("Using JWT (JSON Web Token) authentication", MessageType.Info);
+
+                        if (Application.isPlaying)
+                        {
+                            EditorGUILayout.Space();
+                            EditorGUILayout.LabelField("Runtime Status", EditorStyles.boldLabel);
+
+                            bool isAuth = authData.IsAuthenticated();
+                            EditorGUILayout.LabelField("Authenticated:", isAuth ? "✓ Yes" : "✗ No");
+
+                            if (!string.IsNullOrEmpty(authData.JwtToken))
+                            {
+                                // Show truncated token for security
+                                string tokenPreview = authData.JwtToken.Length > 20
+                                    ? authData.JwtToken.Substring(0, 20) + "..."
+                                    : authData.JwtToken;
+                                EditorGUILayout.LabelField("Token Preview:", tokenPreview);
+                            }
+                        }
+                        break;
+                }
+
+                // Runtime buttons
+                if (Application.isPlaying && authData != null)
+                {
+                    EditorGUILayout.Space();
+                    EditorGUILayout.LabelField("Runtime Actions", EditorStyles.boldLabel);
+
+                    EditorGUILayout.BeginHorizontal();
+
+                    if (GUILayout.Button("Clear Auth"))
+                    {
+                        apiClient.ClearAuth();
+                        Debug.Log("[ApiClient] All authentication cleared from ScriptableObject");
+                    }
+
+                    if (authData.AuthType == AuthType.Cookie && GUILayout.Button("Clear Cookie"))
+                    {
+                        apiClient.ClearCookie();
+                    }
+
+                    if (authData.AuthType == AuthType.JWT && GUILayout.Button("Clear JWT"))
+                    {
+                        apiClient.ClearJwtToken();
+                    }
+
+                    EditorGUILayout.EndHorizontal();
+                }
+
+                serializedObject.ApplyModifiedProperties();
+            }
         }
     }
-}
 #endif
+}

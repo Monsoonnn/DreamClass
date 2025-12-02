@@ -283,15 +283,16 @@ namespace DreamClass.LoginManager {
         }
 
         private void OnLogoutResponse( ApiResponse res ) {
-            // Clear authentication based on type
-            if (apiClient.CurrentAuthType == DreamClass.Network.AuthType.Cookie)
+            // Get auth value from ScriptableObject before clearing
+            string authValue = "";
+            if (apiClient.AuthDataAsset != null)
             {
-                apiClient.ClearCookie();
+                authValue = apiClient.AuthDataAsset.GetAuthValue();
+                Debug.Log($"[LoginManager] Logout with auth type: {apiClient.CurrentAuthType}, value: {authValue}");
             }
-            else if (apiClient.CurrentAuthType == DreamClass.Network.AuthType.JWT)
-            {
-                apiClient.ClearJwtToken();
-            }
+            
+            // Clear authentication (will clear data in ScriptableObject)
+            apiClient.ClearAuth();
             
             // Clear user profile on logout
             if (profileService != null)

@@ -60,6 +60,26 @@ namespace DreamClass.Ranking
         {
             // Subscribe to login event
             LoginManager.LoginManager.OnLoginSuccess += OnLoginSuccess;
+            
+            // Check if already logged in (khi manager spawn sau khi login)
+            if (autoFetchOnLogin)
+            {
+                var loginManager = LoginManager.LoginManager.Instance;
+                if (loginManager != null && loginManager.IsLoggedIn())
+                {
+                    Log("Already logged in, fetching ranking...");
+                    
+                    if (fetchBothTypes)
+                    {
+                        FetchClassRanking(targetClassName);
+                        FetchGradeRanking(targetGrade);
+                    }
+                    else
+                    {
+                        FetchClassRanking(targetClassName);
+                    }
+                }
+            }
         }
 
         private void OnDestroy()

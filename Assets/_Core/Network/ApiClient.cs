@@ -13,56 +13,65 @@ namespace DreamClass.Network {
         [Header("Server Configuration")]
         [SerializeField] private string baseUrl;
         
-        [Header("Authentication")]
-        [SerializeField] private AuthType authType = AuthType.Cookie;
-        [SerializeField] private string defaultCookie;
-        [SerializeField] private string jwtToken;
+        [Header("Authentication Data")]
+        [SerializeField] private AuthData authData;
         
-        public AuthType CurrentAuthType => authType;
-        public string DefaultCookie => defaultCookie;
-        public string JwtToken => jwtToken;
+        public AuthType CurrentAuthType => authData != null ? authData.AuthType : AuthType.Cookie;
+        public string DefaultCookie => authData != null ? authData.Cookie : "";
+        public string JwtToken => authData != null ? authData.JwtToken : "";
+        public AuthData AuthDataAsset => authData;
         
         public void SetBaseUrl( string url ) => baseUrl = url;
         
         // Cookie methods
         public void SetCookie( string cookie ) {
-            defaultCookie = cookie;
-            if (authType == AuthType.Cookie) {
+            if (authData == null) {
+                Debug.LogError("[ApiClient] AuthData is not assigned!");
+                return;
+            }
+            authData.Cookie = cookie;
+            if (authData.AuthType == AuthType.Cookie) {
                 Debug.Log($"[ApiClient] Cookie set: {cookie}");
             }
         }
         
         public void ClearCookie() {
-            defaultCookie = null;
-            Debug.Log("[ApiClient] Cookie cleared");
+            if (authData != null) {
+                authData.Cookie = "";
+                Debug.Log("[ApiClient] Cookie cleared");
+            }
         }
         
         // JWT methods
         public void SetJwtToken( string token ) {
-            jwtToken = token;
-            if (authType == AuthType.JWT) {
+            if (authData == null) {
+                Debug.LogError("[ApiClient] AuthData is not assigned!");
+                return;
+            }
+            authData.JwtToken = token;
+            if (authData.AuthType == AuthType.JWT) {
                 Debug.Log($"[ApiClient] JWT token set");
             }
         }
         
         public void ClearJwtToken() {
-            jwtToken = null;
-            Debug.Log("[ApiClient] JWT token cleared");
+            if (authData != null) {
+                authData.JwtToken = "";
+                Debug.Log("[ApiClient] JWT token cleared");
+            }
         }
         
         // Clear all auth
         public void ClearAuth() {
-            ClearCookie();
-            ClearJwtToken();
+            if (authData != null) {
+                authData.ClearAuth();
+                Debug.Log("[ApiClient] Auth cleared");
+            }
         }
         
         // Check if authenticated
         public bool IsAuthenticated() {
-            return authType switch {
-                AuthType.Cookie => !string.IsNullOrEmpty(defaultCookie),
-                AuthType.JWT => !string.IsNullOrEmpty(jwtToken),
-                _ => false
-            };
+            return authData != null && authData.IsAuthenticated();
         }
 
         public IEnumerator SendRequest( ApiRequest request, System.Action<ApiResponse> callback ) {
@@ -82,20 +91,22 @@ namespace DreamClass.Network {
             webRequest.SetRequestHeader("Accept", "application/json");
 
             // Set authentication based on type
-            switch (authType) {
-                case AuthType.Cookie:
-                    if (!string.IsNullOrEmpty(defaultCookie)) {
-                        webRequest.SetRequestHeader("Cookie", defaultCookie);
-                        Debug.Log($"[ApiClient] Header - Cookie: {defaultCookie}");
-                    }
-                    break;
-                    
-                case AuthType.JWT:
-                    if (!string.IsNullOrEmpty(jwtToken)) {
-                        webRequest.SetRequestHeader("Authorization", $"Bearer {jwtToken}");
-                        Debug.Log($"[ApiClient] Header - Authorization: Bearer {jwtToken.Substring(0, System.Math.Min(20, jwtToken.Length))}...");
-                    }
-                    break;
+            if (authData != null) {
+                switch (authData.AuthType) {
+                    case AuthType.Cookie:
+                        if (!string.IsNullOrEmpty(authData.Cookie)) {
+                            webRequest.SetRequestHeader("Cookie", authData.Cookie);
+                            Debug.Log($"[ApiClient] Header - Cookie: {authData.Cookie}");
+                        }
+                        break;
+                        
+                    case AuthType.JWT:
+                        if (!string.IsNullOrEmpty(authData.JwtToken)) {
+                            webRequest.SetRequestHeader("Authorization", $"Bearer {authData.JwtToken}");
+                            Debug.Log($"[ApiClient] Header - Authorization: Bearer {authData.JwtToken.Substring(0, System.Math.Min(20, authData.JwtToken.Length))}...");
+                        }
+                        break;
+                }
             }
 
             // Custom headers (if any)
