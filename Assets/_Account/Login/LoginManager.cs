@@ -44,6 +44,31 @@ namespace DreamClass.LoginManager {
             base.Awake();
             apiClient.SetBaseUrl(_configServer.hostURL);
             LoadSavedLogin();
+            
+            // Check auth expiration khi game chạy
+            CheckAuthExpiration();
+        }
+        
+        /// <summary>
+        /// Kiểm tra auth có hết hạn không, nếu hết thì clear
+        /// </summary>
+        private void CheckAuthExpiration() {
+            if (apiClient == null || apiClient.AuthDataAsset == null) return;
+            
+            if (apiClient.IsAuthExpired()) {
+                Debug.Log("[LoginManager] Auth expired, clearing saved auth...");
+                apiClient.ClearAuth();
+                
+                // Nếu có saved credentials, có thể tự động login lại
+                if (rememberMe && !string.IsNullOrEmpty(savedUsername) && !string.IsNullOrEmpty(savedPassword)) {
+                    Debug.Log("[LoginManager] Has saved credentials, can auto-login when needed");
+                }
+            } else {
+                var remaining = apiClient.GetTimeUntilExpiration();
+                if (remaining < System.TimeSpan.MaxValue) {
+                    Debug.Log($"[LoginManager] Auth valid, expires in: {remaining.Days}d {remaining.Hours}h {remaining.Minutes}m");
+                }
+            }
         }
 
         protected override void Start()
@@ -96,8 +121,15 @@ namespace DreamClass.LoginManager {
                     // Try to get cookie from response
                     if (!string.IsNullOrEmpty(res.SetCookie)) {
                         sessionCookie = ParseCookie(res.SetCookie);
+                        string expiration = ParseCookieExpiration(res.SetCookie);
                         Debug.Log("Login Cookie from response: " + sessionCookie);
-                        apiClient.SetCookie(sessionCookie);
+                        
+                        if (!string.IsNullOrEmpty(expiration)) {
+                            Debug.Log("Cookie expiration: " + expiration);
+                            apiClient.SetCookieWithExpiration(sessionCookie, expiration);
+                        } else {
+                            apiClient.SetCookie(sessionCookie);
+                        }
                     }
                     else
                     {
@@ -315,6 +347,43 @@ namespace DreamClass.LoginManager {
         private string ParseCookie( string setCookie ) {
             int semi = setCookie.IndexOf(';');
             return semi > 0 ? setCookie.Substring(0, semi) : setCookie;
+        }
+        
+        /// <summary>
+        /// Parse expiration time từ Set-Cookie header
+        /// Format: session=abc; Path=/; Expires=Wed, 09 Jun 2024 10:18:14 GMT; HttpOnly
+        /// Hoặc: session=abc; Path=/; Max-Age=86400; HttpOnly
+        /// </summary>
+        private string ParseCookieExpiration(string setCookie) {
+            if (string.IsNullOrEmpty(setCookie)) return null;
+            
+            // Try parse "Expires=" first
+            string expiresKey = "Expires=";
+            int expiresIndex = setCookie.IndexOf(expiresKey, StringComparison.OrdinalIgnoreCase);
+            if (expiresIndex >= 0) {
+                int start = expiresIndex + expiresKey.Length;
+                int end = setCookie.IndexOf(';', start);
+                if (end < 0) end = setCookie.Length;
+                return setCookie.Substring(start, end - start).Trim();
+            }
+            
+            // Try parse "Max-Age=" (seconds from now)
+            string maxAgeKey = "Max-Age=";
+            int maxAgeIndex = setCookie.IndexOf(maxAgeKey, StringComparison.OrdinalIgnoreCase);
+            if (maxAgeIndex >= 0) {
+                int start = maxAgeIndex + maxAgeKey.Length;
+                int end = setCookie.IndexOf(';', start);
+                if (end < 0) end = setCookie.Length;
+                string maxAgeStr = setCookie.Substring(start, end - start).Trim();
+                
+                if (int.TryParse(maxAgeStr, out int maxAgeSeconds)) {
+                    // Convert Max-Age to DateTime
+                    DateTime expTime = DateTime.UtcNow.AddSeconds(maxAgeSeconds);
+                    return expTime.ToString("o"); // ISO 8601
+                }
+            }
+            
+            return null;
         }
 
         // ============================================================

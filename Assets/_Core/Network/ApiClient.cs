@@ -35,6 +35,38 @@ namespace DreamClass.Network {
             }
         }
         
+        /// <summary>
+        /// Set cookie với expiration time
+        /// </summary>
+        public void SetCookieWithExpiration(string cookie, string expirationTime) {
+            if (authData == null) {
+                Debug.LogError("[ApiClient] AuthData is not assigned!");
+                return;
+            }
+            authData.Cookie = cookie;
+            if (!string.IsNullOrEmpty(expirationTime)) {
+                authData.SetExpirationTimeFromString(expirationTime);
+            }
+            if (authData.AuthType == AuthType.Cookie) {
+                Debug.Log($"[ApiClient] Cookie set with expiration: {expirationTime}");
+            }
+        }
+        
+        /// <summary>
+        /// Set cookie với expiration time (DateTime)
+        /// </summary>
+        public void SetCookieWithExpiration(string cookie, System.DateTime expirationTime) {
+            if (authData == null) {
+                Debug.LogError("[ApiClient] AuthData is not assigned!");
+                return;
+            }
+            authData.Cookie = cookie;
+            authData.SetExpirationTime(expirationTime);
+            if (authData.AuthType == AuthType.Cookie) {
+                Debug.Log($"[ApiClient] Cookie set with expiration: {expirationTime}");
+            }
+        }
+        
         public void ClearCookie() {
             if (authData != null) {
                 authData.Cookie = "";
@@ -52,6 +84,37 @@ namespace DreamClass.Network {
             if (authData.AuthType == AuthType.JWT) {
                 Debug.Log($"[ApiClient] JWT token set");
             }
+        }
+        
+        /// <summary>
+        /// Set JWT token với expiration time
+        /// </summary>
+        public void SetJwtTokenWithExpiration(string token, string expirationTime) {
+            if (authData == null) {
+                Debug.LogError("[ApiClient] AuthData is not assigned!");
+                return;
+            }
+            authData.JwtToken = token;
+            if (!string.IsNullOrEmpty(expirationTime)) {
+                authData.SetExpirationTimeFromString(expirationTime);
+            }
+            if (authData.AuthType == AuthType.JWT) {
+                Debug.Log($"[ApiClient] JWT token set with expiration");
+            }
+        }
+        
+        /// <summary>
+        /// Kiểm tra auth đã hết hạn chưa
+        /// </summary>
+        public bool IsAuthExpired() {
+            return authData != null && authData.IsExpired();
+        }
+        
+        /// <summary>
+        /// Lấy thời gian còn lại trước khi hết hạn
+        /// </summary>
+        public System.TimeSpan GetTimeUntilExpiration() {
+            return authData != null ? authData.GetTimeUntilExpiration() : System.TimeSpan.MaxValue;
         }
         
         public void ClearJwtToken() {

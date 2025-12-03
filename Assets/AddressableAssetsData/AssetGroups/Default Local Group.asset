@@ -25,6 +25,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2c606e9b343e1a743afbb35f81e4f276
+    m_Address: Assets/_Data/Scenes/TestingRoom.unity
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8a0ff0fb3e6693b479d8c60039e2a901
     m_Address: Assets/_Data/Scenes/AchivementRoom.unity
     m_ReadOnly: 0

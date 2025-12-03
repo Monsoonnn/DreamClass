@@ -10,6 +10,7 @@ namespace Characters.TeacherKien
         welcome,
         fail,
         guide,
+        rankingGuide,
     }
     public class TeacherKienInteraction : VoicelineManager<ThayKienVoiceType> {
 

@@ -22,6 +22,7 @@ namespace EasyUI.PickerWheelUI {
       [Header ("Sounds :")]
       [SerializeField] private AudioSource audioSource ;
       [SerializeField] private AudioClip tickAudioClip ;
+      [SerializeField] private AudioClip successAudioClip ;
       [SerializeField] [Range (0f, 1f)] private float volume = .5f ;
       [SerializeField] [Range (-3f, 3f)] private float pitch = 1f ;
 
@@ -185,6 +186,12 @@ namespace EasyUI.PickerWheelUI {
             })
             .OnComplete (() => {
                _isSpinning = false ;
+               
+               // Play success sound
+               if (successAudioClip != null) {
+                  audioSource.PlayOneShot (successAudioClip, volume) ;
+               }
+               
                if (onSpinEndEvent != null)
                   onSpinEndEvent.Invoke (piece) ;
 

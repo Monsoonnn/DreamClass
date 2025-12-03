@@ -36,10 +36,14 @@ namespace DreamClass.SpinWheel
         [Header("Loading Progress (Inspector Only)")]
         [SerializeField] [Range(0f, 1f)] private float loadingProgress = 0f;
         [SerializeField] private string loadingStatus = "Idle";
+        
+        [Header("Loading State")]
+        [SerializeField] private bool isLoadingComplete = false;
 
         // Events
         public event Action<List<SpinWheelData>> OnWheelsLoaded;
         public event Action<string> OnError;
+        public event Action OnLoadingComplete; // Event khi loading hoàn tất 100%
 
         private ApiClient apiClient;
         private List<SpinWheelData> currentWheels = new List<SpinWheelData>();
@@ -48,6 +52,11 @@ namespace DreamClass.SpinWheel
         
         // Image cache: URL -> Sprite
         private Dictionary<string, Sprite> imageCache = new Dictionary<string, Sprite>();
+        
+        /// <summary>
+        /// Kiểm tra loading đã hoàn tất chưa
+        /// </summary>
+        public bool IsLoadingComplete => isLoadingComplete;
 
         private void Awake()
         {
@@ -107,6 +116,8 @@ namespace DreamClass.SpinWheel
                 return;
             }
 
+            // Reset loading state khi bắt đầu fetch mới
+            isLoadingComplete = false;
             StartCoroutine(FetchSpinWheelsCoroutine());
         }
 
@@ -380,24 +391,27 @@ namespace DreamClass.SpinWheel
                 bool isFirstTab = (i == 0);
                 toggle.onValueChanged.AddListener((isOn) => 
                 {
-                    window.SetActive(isOn);
-                    if (isOn)
+                    // Chỉ cho phép active window khi loading đã hoàn tất
+                    if (isLoadingComplete)
                     {
-                        Log($"Switched to wheel: {wheel.name}");
+                        window.SetActive(isOn);
+                        if (isOn)
+                        {
+                            Log($"Switched to wheel: {wheel.name}");
+                        }
+                    }
+                    else
+                    {
+                        // Nếu chưa loading xong, không cho active
+                        window.SetActive(false);
+                        Log($"Cannot switch to wheel: {wheel.name} - Loading not complete");
                     }
                 });
 
-                // Set first toggle as selected, window của nó sẽ visible
-                if (isFirstTab)
-                {
-                    toggle.isOn = true;
-                    // Window already active from spawn, visibility controlled by toggle
-                }
-                else
-                {
-                    toggle.isOn = false;
-                    // Listener will set window inactive
-                }
+                // Toggle và window đều disable cho đến khi loading hoàn tất
+                toggle.interactable = false;
+                toggle.isOn = isFirstTab; // Set toggle state nhưng không active window
+                window.SetActive(false); // Tất cả window đều inactive ban đầu
 
                 spawnedToggles.Add(toggle);
                 spawnedWindows.Add(window);
@@ -409,6 +423,44 @@ namespace DreamClass.SpinWheel
             
             // Hoàn tất loading
             UpdateLoadingProgress(1f, "Complete!");
+            
+            // Đánh dấu loading hoàn tất và enable tất cả UI
+            isLoadingComplete = true;
+            EnableAllSpawnedUI();
+            
+            // Fire event loading complete
+            OnLoadingComplete?.Invoke();
+        }
+        
+        /// <summary>
+        /// Enable tất cả UI sau khi loading hoàn tất
+        /// </summary>
+        private void EnableAllSpawnedUI()
+        {
+            Log("Loading complete - Enabling all spawned UI...");
+            
+            // Enable tất cả toggles
+            foreach (var toggle in spawnedToggles)
+            {
+                if (toggle != null)
+                {
+                    toggle.interactable = true;
+                }
+            }
+            
+            // Active window của toggle đang được chọn (toggle đầu tiên)
+            for (int i = 0; i < spawnedToggles.Count; i++)
+            {
+                if (spawnedToggles[i] != null && spawnedToggles[i].isOn)
+                {
+                    if (i < spawnedWindows.Count && spawnedWindows[i] != null)
+                    {
+                        spawnedWindows[i].SetActive(true);
+                        Log($"Activated first window: {spawnedWindows[i].name}");
+                    }
+                    break;
+                }
+            }
         }
 
         /// <summary>
@@ -416,6 +468,9 @@ namespace DreamClass.SpinWheel
         /// </summary>
         public void ClearSpawnedUI()
         {
+            // Reset loading state khi clear UI
+            isLoadingComplete = false;
+            
             foreach (var toggle in spawnedToggles)
             {
                 if (toggle != null)

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DreamClass.Network;
 using DreamClass.LoginManager;
+using DreamClass.Account;
 
 namespace DreamClass.Ranking
 {
@@ -14,11 +15,15 @@ namespace DreamClass.Ranking
     /// </summary>
     public class RankingManager : MonoBehaviour
     {
+        [Header("Profile Reference")]
+        [SerializeField] private UserProfileSO userProfile;
+        [SerializeField] private bool useProfileData = true; // Sử dụng data từ profile thay vì manual input
+
         [Header("Auto Fetch Settings")]
         [SerializeField] private bool autoFetchOnLogin = true;
         [SerializeField] private bool fetchBothTypes = true; // Fetch cả class và grade
-        [SerializeField] private string targetClassName = "10A";
-        [SerializeField] private string targetGrade = "10";
+        [SerializeField] private string targetClassName = "10A"; // Fallback nếu không có profile
+        [SerializeField] private string targetGrade = "10"; // Fallback nếu không có profile
 
         [Header("API Configuration")]
         [SerializeField] private string classRankingEndpoint = "/api/ranking/class/";
@@ -61,6 +66,12 @@ namespace DreamClass.Ranking
             // Subscribe to login event
             LoginManager.LoginManager.OnLoginSuccess += OnLoginSuccess;
             
+            // Subscribe to profile update (nếu profile load sau)
+            if (userProfile != null)
+            {
+                userProfile.OnProfileUpdated += OnProfileUpdated;
+            }
+            
             // Check if already logged in (khi manager spawn sau khi login)
             if (autoFetchOnLogin)
             {
@@ -71,12 +82,12 @@ namespace DreamClass.Ranking
                     
                     if (fetchBothTypes)
                     {
-                        FetchClassRanking(targetClassName);
-                        FetchGradeRanking(targetGrade);
+                        FetchClassRanking(GetTargetClassName());
+                        FetchGradeRanking(GetTargetGrade());
                     }
                     else
                     {
-                        FetchClassRanking(targetClassName);
+                        FetchClassRanking(GetTargetClassName());
                     }
                 }
             }
@@ -86,6 +97,12 @@ namespace DreamClass.Ranking
         {
             // Unsubscribe from login event
             LoginManager.LoginManager.OnLoginSuccess -= OnLoginSuccess;
+            
+            // Unsubscribe from profile update
+            if (userProfile != null)
+            {
+                userProfile.OnProfileUpdated -= OnProfileUpdated;
+            }
         }
 
         /// <summary>
@@ -104,14 +121,63 @@ namespace DreamClass.Ranking
             if (fetchBothTypes)
             {
                 // Fetch cả 2 loại ranking
-                FetchClassRanking(targetClassName);
-                FetchGradeRanking(targetGrade);
+                FetchClassRanking(GetTargetClassName());
+                FetchGradeRanking(GetTargetGrade());
             }
             else
             {
                 // Chỉ fetch 1 loại (backward compatibility)
-                FetchClassRanking(targetClassName);
+                FetchClassRanking(GetTargetClassName());
             }
+        }
+
+        /// <summary>
+        /// Called when profile is updated (có thể load sau login)
+        /// </summary>
+        private void OnProfileUpdated()
+        {
+            // Re-fetch ranking nếu chưa có data và đang dùng profile data
+            if (autoFetchOnLogin && useProfileData && currentClassRankingData.Count == 0)
+            {
+                Log("Profile updated, re-fetching ranking with profile data...");
+                if (fetchBothTypes)
+                {
+                    FetchClassRanking(GetTargetClassName());
+                    FetchGradeRanking(GetTargetGrade());
+                }
+                else
+                {
+                    FetchClassRanking(GetTargetClassName());
+                }
+            }
+        }
+
+        /// <summary>
+        /// Lấy class name từ profile hoặc fallback
+        /// </summary>
+        private string GetTargetClassName()
+        {
+            if (useProfileData && userProfile != null && !string.IsNullOrEmpty(userProfile.className))
+            {
+                Log($"Using className from profile: {userProfile.className}");
+                return userProfile.className;
+            }
+            Log($"Using fallback className: {targetClassName}");
+            return targetClassName;
+        }
+
+        /// <summary>
+        /// Lấy grade từ profile hoặc fallback
+        /// </summary>
+        private string GetTargetGrade()
+        {
+            if (useProfileData && userProfile != null && !string.IsNullOrEmpty(userProfile.grade))
+            {
+                Log($"Using grade from profile: {userProfile.grade}");
+                return userProfile.grade;
+            }
+            Log($"Using fallback grade: {targetGrade}");
+            return targetGrade;
         }
 
         /// <summary>

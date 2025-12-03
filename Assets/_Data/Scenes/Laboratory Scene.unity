@@ -24915,7 +24915,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 720240745}
-  groupName: LobbyClass
+  groupName: Kiemtra
   sceneLoader: {fileID: 0}
 --- !u!114 &720240743
 MonoBehaviour:
