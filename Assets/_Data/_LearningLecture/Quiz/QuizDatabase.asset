@@ -12,14 +12,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 081b1a7ad8e21eb4abd07c473d991035, type: 3}
   m_Name: QuizDatabase
   m_EditorClassIdentifier: 
-  subjects:
-  - Name: "V\u1EADt l\xFD"
+  dataMode: 1
+  excelSubjects:
+  - Name: 
+    Chapters: []
+  apiBaseURL: https://vr-be.onrender.com
+  apiEndpoint: /api/quizzes
+  apiSubjects:
+  - Id: 6932f90b5e0a536ae7c05834
+    Name: "H\xF3a"
+    Grade: 9
     Chapters:
-    - Name: "Ch\u01B0\u01A1ng 1"
-      ExcelPath: Assets/_Data/_LearningLecture/QuizDataBase/Chapter1.xlsx
-    - Name: "Ch\u01B0\u01A1ng 2"
-      ExcelPath: Assets/_Data/_LearningLecture/QuizDataBase/Chapter2.xlsx
-    - Name: "Ch\u01B0\u01A1ng 3"
-      ExcelPath: Assets/_Data/_LearningLecture/QuizDataBase/Chapter3.xlsx
-    - Name: "Ch\u01B0\u01A1ng 4"
-      ExcelPath: Assets/_Data/_LearningLecture/QuizDataBase/Chapter4.xlsx
+    - Id: 6932f90b5e0a536ae7c05835
+      Name: "\u0110\u1EA1i s\u1ED1"
+      QuestionCount: 5
+  - Id: 6931b907b8d568d186a969fa
+    Name: "V\u1EADt L\xFD"
+    Grade: 9
+    Chapters:
+    - Id: 6931b907b8d568d186a969fb
+      Name: "\u0110\u1EA1i s\u1ED1"
+      QuestionCount: 1
+  - Id: 6931b6ddb8d568d186a96988
+    Name: "To\xE1n"
+    Grade: 9
+    Chapters:
+    - Id: 6931b6ddb8d568d186a96989
+      Name: "\u0110\u1EA1i s\u1ED1"
+      QuestionCount: 1

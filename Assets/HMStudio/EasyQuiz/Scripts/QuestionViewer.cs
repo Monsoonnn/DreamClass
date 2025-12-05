@@ -39,25 +39,127 @@ namespace HMStudio.EasyQuiz
         [Tooltip("Subject Index (0-based)")] public int subjectID = 0;
         [Tooltip("Chapter Index (0-based)")] public int chapterID = 0;
 
+        // Cached API data for current chapter
+        private List<APIQuestion> cachedAPIQuestions;
+
+        // Current API Question ID (for submit)
+        private string currentAPIQuestionId;
+        
+        /// <summary>
+        /// Lấy API Question ID hiện tại (MongoDB _id)
+        /// </summary>
+        public string CurrentAPIQuestionId => currentAPIQuestionId;
+
         private void OnValidate()
         {
-            if (quizDatabase != null)
+            if (quizDatabase != null && quizDatabase.DataMode == QuizDataMode.Excel)
             {
                 excelFilePath = quizDatabase.GetExcelPath(subjectID, chapterID);
             }
         }
+
         public void UpdateExcelPath()
         {
             if (quizDatabase != null)
             {
-                excelFilePath = quizDatabase.GetExcelPath(subjectID, chapterID);
-                Debug.Log("Updated path from QuizDatabase: " + excelFilePath);
+                if (quizDatabase.DataMode == QuizDataMode.Excel)
+                {
+                    excelFilePath = quizDatabase.GetExcelPath(subjectID, chapterID);
+                    Debug.Log("Updated path from QuizDatabase (Excel mode): " + excelFilePath);
+                }
+                else
+                {
+                    // API mode - cache questions từ chapter hiện tại
+                    CacheAPIQuestions();
+                    Debug.Log($"Updated from QuizDatabase (API mode): Subject={subjectID}, Chapter={chapterID}");
+                }
             }
             else
             {
                 excelFilePath = PlayerPrefs.GetString("SelectedExcelPath", "");
                 Debug.Log("Fallback to PlayerPrefs path: " + excelFilePath);
             }
+        }
+
+        /// <summary>
+        /// Cache câu hỏi từ API cho chapter hiện tại
+        /// </summary>
+        private void CacheAPIQuestions()
+        {
+            cachedAPIQuestions = null;
+            var chapter = QuizAPIService.Instance.GetChapter(subjectID, chapterID);
+            if (chapter != null)
+            {
+                cachedAPIQuestions = chapter.Questions;
+                Debug.Log($"[QuestionViewer] Cached {cachedAPIQuestions.Count} questions from API");
+            }
+        }
+
+        /// <summary>
+        /// Load câu hỏi - tự động chọn Excel hoặc API dựa trên mode
+        /// </summary>
+        public void LoadQuestion()
+        {
+            if (quizDatabase != null && quizDatabase.DataMode == QuizDataMode.API)
+            {
+                LoadQuestionFromAPI();
+            }
+            else
+            {
+                LoadQuestionFromExcel();
+            }
+        }
+
+        /// <summary>
+        /// Load câu hỏi từ API cache
+        /// </summary>
+        public void LoadQuestionFromAPI()
+        {
+            if (cachedAPIQuestions == null)
+            {
+                CacheAPIQuestions();
+            }
+
+            if (cachedAPIQuestions == null || cachedAPIQuestions.Count == 0)
+            {
+                Debug.LogError("[QuestionViewer] No API questions cached!");
+                questionText = "";
+                options.Clear();
+                correctAnswer = "";
+                return;
+            }
+
+            // Tìm câu hỏi theo LocalId
+            var question = cachedAPIQuestions.Find(q => q.LocalId == questionID);
+            if (question == null)
+            {
+                Debug.LogError($"[QuestionViewer] Question with LocalId={questionID} not found!");
+                questionText = "";
+                options.Clear();
+                correctAnswer = "";
+                return;
+            }
+
+            // Load dữ liệu
+            questionText = question.QuestionText;
+            options = new List<string>(question.Options);
+            correctAnswer = question.CorrectAnswer;
+            currentAPIQuestionId = question.Id; // Lưu API ID để submit
+
+            // Nếu correctAnswer là key (A, B, C, D), convert sang text
+            if (correctAnswer.Length == 1 && options.Count > 0)
+            {
+                int answerIndex = correctAnswer[0] - 'A';
+                if (answerIndex >= 0 && answerIndex < options.Count)
+                {
+                    correctAnswer = options[answerIndex];
+                }
+            }
+
+            // ShuffleOptions(); // Bỏ shuffle để giữ thứ tự câu trả lời
+            UpdateTextFields();
+
+            Debug.Log($"[QuestionViewer] Loaded from API: Q{questionID} - {questionText.Substring(0, Math.Min(50, questionText.Length))}...");
         }
 
 
@@ -141,7 +243,7 @@ namespace HMStudio.EasyQuiz
                     correctAnswer = "";
                 }
             }
-            ShuffleOptions();
+            // ShuffleOptions(); // Bỏ shuffle để giữ thứ tự câu trả lời
 
             // Update content to UI Text.
             UpdateTextFields();
@@ -326,6 +428,17 @@ namespace HMStudio.EasyQuiz
         /// </summary>
         public int GetTotalQuestions()
         {
+            // API mode - lấy từ cache
+            if (quizDatabase != null && quizDatabase.DataMode == QuizDataMode.API)
+            {
+                if (cachedAPIQuestions == null)
+                {
+                    CacheAPIQuestions();
+                }
+                return cachedAPIQuestions?.Count ?? 0;
+            }
+
+            // Excel mode
             string path = excelFilePath;
             if (string.IsNullOrEmpty(path) || !File.Exists(path))
                 return 0;

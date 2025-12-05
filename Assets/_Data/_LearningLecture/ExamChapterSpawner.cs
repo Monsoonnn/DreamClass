@@ -9,6 +9,7 @@ namespace DreamClass.LearningLecture
 {
     /// <summary>
     /// Spawner for Exam Chapters from selected subject
+    /// Supports both Excel and API modes
     /// </summary>
     public class ExamChapterSpawner : MonoBehaviour
     {
@@ -33,14 +34,32 @@ namespace DreamClass.LearningLecture
         [ProButton]
         public void SpawnChapters()
         {
-            if (manager == null || manager.currentSubject == null)
+            if (manager == null)
             {
-                Debug.LogError("Manager or current subject is NULL!");
+                Debug.LogError("Manager is NULL!");
                 return;
             }
 
-            var chapters = manager.currentSubject.Chapters;
-            if (chapters == null || chapters.Count == 0)
+            // Check based on mode
+            if (manager.IsAPIMode)
+            {
+                if (manager.currentAPISubject == null)
+                {
+                    Debug.LogError("Current API subject is NULL!");
+                    return;
+                }
+            }
+            else
+            {
+                if (manager.currentSubject == null)
+                {
+                    Debug.LogError("Current Excel subject is NULL!");
+                    return;
+                }
+            }
+
+            int chapterCount = manager.GetChapterCount();
+            if (chapterCount == 0)
             {
                 Debug.LogWarning("No chapters in selected subject!");
                 return;
@@ -48,22 +67,23 @@ namespace DreamClass.LearningLecture
 
             ClearSpawnedChapters();
 
-            for (int i = 0; i < chapters.Count; i++)
+            for (int i = 0; i < chapterCount; i++)
             {
-                SpawnSingleChapter(chapters[i], i);
+                SpawnSingleChapter(i);
             }
 
-            Debug.Log($"Spawned {spawnedChapters.Count} chapters for subject {manager.currentSubject.Name}");
+            string subjectName = manager.IsAPIMode ? manager.currentAPISubject.Name : manager.currentSubject.Name;
+            Debug.Log($"Spawned {spawnedChapters.Count} chapters for subject {subjectName} (Mode: {manager.quizDatabase.DataMode})");
         }
 
-        private void SpawnSingleChapter(Chapter chapter, int index)
+        private void SpawnSingleChapter(int index)
         {
             GameObject chapterObj = Instantiate(chapterPrefab, spawnParent);
 
             var tmp = chapterObj.GetComponentInChildren<TextMeshProUGUI>();
             if (tmp != null)
             {
-                tmp.text = chapter.Name;
+                tmp.text = manager.GetChapterName(index);
             }
             chapterObj.SetActive(true);
             Button button = chapterObj.GetComponent<Button>();

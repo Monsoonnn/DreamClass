@@ -32,6 +32,7 @@ namespace DreamClass.LearningLecture
             if (questionManager != null)
             {
                 questionManager.OnQuizComplete += ReceiveQuizResult;
+                questionManager.OnAPIQuizSubmitted += ReceiveAPIQuizResult;
             }
         }
 
@@ -106,25 +107,59 @@ namespace DreamClass.LearningLecture
             startAnimation.time = 0;
             startAnimation.Evaluate();
         }
-        // Xử lý result từ quiz
+        // Xử lý result từ quiz (Excel mode - dùng local score)
         private void ReceiveQuizResult(float score)
         {
             Debug.Log($"Quiz Completed! Score: {score:P2}");  
 
             npcManager.LookAtPlayer();
 
-            if (score <= 0.7f)
+            if (score < 0.7f)
             {
                 npcManager.CharacterVoiceline.PlayAnimation(TeacherQuang.Fail.ToString(), true);
             }
-            else if (score > 0.7f && score <= 1f)
+            else if (score < 1f)
             {
                 npcManager.CharacterVoiceline.PlayAnimation(TeacherQuang._70Pass.ToString(), true);
             }
             else
             {
                 npcManager.CharacterVoiceline.PlayAnimation(TeacherQuang._100Pass.ToString(), true);
-                
+            }
+
+            EndExam();  // Tự động end exam sau khi có result
+        }
+
+        // Xử lý result từ API (API mode - dùng server response)
+        private void ReceiveAPIQuizResult(bool success, QuizSubmitResult result)
+        {
+            if (!success || result == null)
+            {
+                Debug.LogWarning("[ExamModeManager] API submit failed, using local result");
+                return; // OnQuizComplete sẽ được gọi với local score
+            }
+
+            Debug.Log($"[ExamModeManager] API Quiz Result: {result.correctCount}/{result.totalQuestions} (Score: {result.score})");
+
+            npcManager.LookAtPlayer();
+
+            // Tính tỉ lệ đúng từ API response
+            float percentage = result.GetPercentage();
+
+            if (percentage < 0.7f)
+            {
+                npcManager.CharacterVoiceline.PlayAnimation(TeacherQuang.Fail.ToString(), true);
+                Debug.Log($"[ExamModeManager] Result: FAIL ({result.correctCount}/{result.totalQuestions} = {percentage:P0})");
+            }
+            else if (percentage < 1f)
+            {
+                npcManager.CharacterVoiceline.PlayAnimation(TeacherQuang._70Pass.ToString(), true);
+                Debug.Log($"[ExamModeManager] Result: 70% PASS ({result.correctCount}/{result.totalQuestions} = {percentage:P0})");
+            }
+            else
+            {
+                npcManager.CharacterVoiceline.PlayAnimation(TeacherQuang._100Pass.ToString(), true);
+                Debug.Log($"[ExamModeManager] Result: 100% PASS ({result.correctCount}/{result.totalQuestions} = {percentage:P0})");
             }
 
             EndExam();  // Tự động end exam sau khi có result
@@ -135,6 +170,7 @@ namespace DreamClass.LearningLecture
             if (questionManager != null)
             {
                 questionManager.OnQuizComplete -= ReceiveQuizResult;
+                questionManager.OnAPIQuizSubmitted -= ReceiveAPIQuizResult;
             }
         }
     }

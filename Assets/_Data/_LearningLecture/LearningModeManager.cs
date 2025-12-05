@@ -324,27 +324,11 @@ namespace DreamClass.Lecture
 
         private IEnumerator CacheAndLoadCoroutine(RemoteSubjectInfo remoteSubject)
         {
-            // Cache nếu chưa cached
-            if (!remoteSubject.isCached)
-            {
-                bool cacheComplete = false;
-                pdfSubjectService.OnSubjectCacheComplete += (s) => 
-                {
-                    if (s.name == remoteSubject.name)
-                        cacheComplete = true;
-                };
+            // Load sprites on demand (PDFSubjectService sẽ tự cache nếu cần)
+            Sprite[] sprites = null;
+            yield return pdfSubjectService.LoadSubjectSpritesOnDemand(remoteSubject.path, (result) => sprites = result);
 
-                pdfSubjectService.CacheSubject(remoteSubject);
-
-                // Wait for cache complete
-                while (!cacheComplete)
-                {
-                    yield return null;
-                }
-            }
-
-            // After cache complete, sprites should be loaded in SubjectDatabase
-            // Update currentSubject with latest data
+            // After load complete, update currentSubject with latest data
             if (currentSubject != null && currentSubject.MatchesPath(remoteSubject.path))
             {
                 // Find updated subject from database
@@ -375,7 +359,7 @@ namespace DreamClass.Lecture
             }
 
             Sprite[] sprites = null;
-            yield return pdfSubjectService.LoadCachedSpritesCoroutine(remoteSubject, (result) => sprites = result);
+            yield return pdfSubjectService.LoadSubjectSpritesOnDemand(remoteSubject.path, (result) => sprites = result);
 
             if (sprites != null && sprites.Length > 0)
             {

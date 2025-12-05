@@ -9,6 +9,7 @@ namespace DreamClass.LearningLecture
 {
     /// <summary>
     /// Spawner for Exam Subjects from QuizDatabase
+    /// Supports both Excel and API modes
     /// </summary>
     public class SubjectExamSpawner : MonoBehaviour
     {
@@ -51,31 +52,31 @@ namespace DreamClass.LearningLecture
                 return;
             }
 
-            var subjects = manager.quizDatabase.Subjects;
-            if (subjects == null || subjects.Count == 0)
+            int subjectCount = manager.GetSubjectCount();
+            if (subjectCount == 0)
             {
-                Debug.LogWarning("No subjects in QuizDatabase!");
+                Debug.LogWarning($"No subjects in QuizDatabase! Mode: {manager.quizDatabase.DataMode}");
                 return;
             }
 
             ClearSpawnedSubjects();
 
-            for (int i = 0; i < subjects.Count; i++)
+            for (int i = 0; i < subjectCount; i++)
             {
-                SpawnSingleSubject(subjects[i], i);
+                SpawnSingleSubject(i);
             }
 
-            Debug.Log($"Spawned {spawnedSubjects.Count} exam subjects");
+            Debug.Log($"Spawned {spawnedSubjects.Count} exam subjects (Mode: {manager.quizDatabase.DataMode})");
         }
 
-        private void SpawnSingleSubject(Subject subject, int index)
+        private void SpawnSingleSubject(int index)
         {
             GameObject subjectObj = Instantiate(subjectPrefab, spawnParent);
 
             var tmp = subjectObj.GetComponentInChildren<TextMeshProUGUI>();
             if (tmp != null)
             {
-                tmp.text = subject.Name;
+                tmp.text = manager.GetSubjectName(index);
             }
             subjectObj.SetActive(true);
             Button button = subjectObj.GetComponent<Button>();
