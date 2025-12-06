@@ -15,7 +15,7 @@ MonoBehaviour:
   examId: TEST001
   examName: "B\xE0i ki\u1EC3m tra s\u1ED1 1"
   description: "L\xE0m htuwr"
-  examDurationMinutes: 30
+  examDurationMinutes: 8
   allowGoBack: 1
   maxScore: 10
   passScore: 5

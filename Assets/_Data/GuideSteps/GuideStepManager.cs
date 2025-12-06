@@ -581,15 +581,15 @@ public class GuideStepManager : SingletonCtrl<GuideStepManager>
     {
         if (currentGuideRuntime == null) return;
 
-        // Set alignment to Left khi có guide active
-        if (titleText != null)
-        {
-            titleText.alignment = TextAlignmentOptions.Left;
-        }
-        if (descriptionText != null)
-        {
-            descriptionText.alignment = TextAlignmentOptions.Left;
-        }
+        // // Set alignment to Left khi có guide active
+        // if (titleText != null)
+        // {
+        //     titleText.alignment = TextAlignmentOptions.Left;
+        // }
+        // if (descriptionText != null)
+        // {
+        //     descriptionText.alignment = TextAlignmentOptions.Left;
+        // }
         
         // Hiển thị summary vào summaryText nếu có
         if (summaryText != null)

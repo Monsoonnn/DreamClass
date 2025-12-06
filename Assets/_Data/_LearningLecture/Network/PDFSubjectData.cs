@@ -22,14 +22,14 @@ namespace DreamClass.Subjects
     public class PDFSubjectInfo
     {
         public string name;
-        public string path;
+        public string cloudinaryFolder;
         public string grade;
         public string title;
         public string description;
         public string note;
         public string category;
         public int pages;
-        public List<string> images;
+        public List<string> pageImages;
         public string pdf_url;
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace DreamClass.Subjects
         /// </summary>
         public string GetVersionHash()
         {
-            return $"{name}_{pages}_{(images != null ? images.Count : 0)}";
+            return $"{name}_{pages}_{(pageImages != null ? pageImages.Count : 0)}";
         }
     }
 
@@ -48,6 +48,7 @@ namespace DreamClass.Subjects
     public class LocalSubjectCacheData
     {
         public string subjectName;
+        public string cloudinaryFolder;  // Added for matching
         public string versionHash;
         public long lastUpdated;
         public List<string> cachedImagePaths;
@@ -58,9 +59,10 @@ namespace DreamClass.Subjects
             cachedImagePaths = new List<string>();
         }
 
-        public LocalSubjectCacheData(string name, string hash)
+        public LocalSubjectCacheData(string name, string folder, string hash)
         {
             subjectName = name;
+            cloudinaryFolder = folder;
             versionHash = hash;
             lastUpdated = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             cachedImagePaths = new List<string>();
@@ -88,6 +90,12 @@ namespace DreamClass.Subjects
             return subjects.Find(s => s.subjectName == subjectName);
         }
 
+        public LocalSubjectCacheData GetSubjectCacheByFolder(string cloudinaryFolder)
+        {
+            return subjects.Find(s => !string.IsNullOrEmpty(s.cloudinaryFolder) && 
+                s.cloudinaryFolder.Equals(cloudinaryFolder, StringComparison.OrdinalIgnoreCase));
+        }
+
         public void AddOrUpdateSubject(LocalSubjectCacheData cacheData)
         {
             var existing = GetSubjectCache(cacheData.subjectName);
@@ -106,9 +114,10 @@ namespace DreamClass.Subjects
     public class RemoteSubjectInfo
     {
         public string name;
-        public string path;  // Path for matching with local SubjectDatabase
+        public string cloudinaryFolder;  // CloudinaryFolder for matching with local SubjectDatabase
         public string title;
         public string description;
+        public string note;
         public string grade;
         public string category;
         public int pages;
@@ -131,14 +140,15 @@ namespace DreamClass.Subjects
         public RemoteSubjectInfo(PDFSubjectInfo pdfInfo)
         {
             name = pdfInfo.name;
-            path = pdfInfo.path;  // Store path for matching
+            cloudinaryFolder = pdfInfo.cloudinaryFolder;  // Store cloudinaryFolder for matching
             title = pdfInfo.title;
             description = pdfInfo.description;
+            note = pdfInfo.note;
             grade = pdfInfo.grade;
             category = pdfInfo.category;
             pages = pdfInfo.pages;
             pdfUrl = pdfInfo.pdf_url;
-            imageUrls = pdfInfo.images ?? new List<string>();
+            imageUrls = pdfInfo.pageImages ?? new List<string>();
             localImagePaths = new List<string>();
             lectures = new List<CSVLectureInfo>();
             isCached = false;
@@ -153,13 +163,24 @@ namespace DreamClass.Subjects
         }
 
         /// <summary>
-        /// Check if this subject matches with a path
+        /// Lấy identifier cho logging (cloudinaryFolder > title > name)
         /// </summary>
-        public bool MatchesPath(string remotePath)
+        public string GetIdentifier()
         {
-            if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(remotePath))
+            if (!string.IsNullOrEmpty(cloudinaryFolder)) return cloudinaryFolder;
+            if (!string.IsNullOrEmpty(title)) return title;
+            if (!string.IsNullOrEmpty(name)) return name;
+            return "[unknown]";
+        }
+
+        /// <summary>
+        /// Check if this subject matches with a cloudinaryFolder
+        /// </summary>
+        public bool MatchesCloudinaryFolder(string remoteFolder)
+        {
+            if (string.IsNullOrEmpty(cloudinaryFolder) || string.IsNullOrEmpty(remoteFolder))
                 return false;
-            return path.Equals(remotePath, StringComparison.OrdinalIgnoreCase);
+            return cloudinaryFolder.Equals(remoteFolder, StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -170,9 +191,10 @@ namespace DreamClass.Subjects
             return new SubjectInfo
             {
                 name = this.name,
-                path = this.path,
+                cloudinaryFolder = this.cloudinaryFolder,
                 description = this.description,
                 title = this.title,
+                note = this.note,
                 grade = this.grade,
                 category = this.category,
                 pages = this.pages,

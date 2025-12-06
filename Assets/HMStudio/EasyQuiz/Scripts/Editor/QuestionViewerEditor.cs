@@ -5,7 +5,7 @@ using UnityEditor;
 namespace HMStudio.EasyQuiz
 {
     [CustomEditor(typeof(QuestionViewer))]
-    public class QuestionViewerEditor : Editor
+    public class QuestionViewerEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {

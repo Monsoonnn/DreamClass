@@ -31,6 +31,12 @@ namespace Systems.SceneManagement
 
         float targetProgress;
         bool isLoading;
+        
+        // Track if PDF service has been checked (only check once)
+        private bool hasPDFServiceBeenChecked = false;
+        
+        // Lock to prevent double loading
+        private bool isLoadingScene = false;
 
         public readonly SceneGroupManager manager = new SceneGroupManager();
 
@@ -63,8 +69,12 @@ namespace Systems.SceneManagement
 
         public async Task LoadSceneGroup(int index)
         {
-            loadingBar.fillAmount = 0f;
-            targetProgress = 0f;
+            // Prevent double loading
+            if (isLoadingScene)
+            {
+                Debug.LogWarning("[SceneLoader] Already loading a scene, ignoring request");
+                return;
+            }
 
             if (index < 0 || index >= sceneGroups.Length)
             {
@@ -72,12 +82,17 @@ namespace Systems.SceneManagement
                 return;
             }
 
+            isLoadingScene = true;
+            loadingBar.fillAmount = 0f;
+            targetProgress = 0f;
+
             EnableLoadingCanvas();
 
-            // Step 1: Wait for PDFSubjectService to be ready (0% - 50%)
-            if (waitForPDFService)
+            // Step 1: Wait for PDFSubjectService to be ready (0% - 50%) - ONLY FIRST TIME
+            if (waitForPDFService && !hasPDFServiceBeenChecked)
             {
                 await WaitForServicesReady();
+                hasPDFServiceBeenChecked = true;
             }
             else
             {
@@ -103,14 +118,19 @@ namespace Systems.SceneManagement
                 Debug.LogWarning("[SceneLoader] No RespawnPoint found in loaded scenes!");
             }
 
-
-
             EnableLoadingCanvas(false);
-
+            isLoadingScene = false;
         }
 
         public async Task LoadSceneGroup(string groupName)
         {
+            // Prevent double loading
+            if (isLoadingScene)
+            {
+                Debug.LogWarning("[SceneLoader] Already loading a scene, ignoring request");
+                return;
+            }
+
             int index = Array.FindIndex(sceneGroups, g => g.GroupName == groupName);
 
             if (index < 0)
@@ -151,22 +171,17 @@ namespace Systems.SceneManagement
                 }
             }
 
-
+            isLoadingScene = true;
             loadingBar.fillAmount = 0f;
             targetProgress = 0f;
 
-            if (index < 0 || index >= sceneGroups.Length)
-            {
-                Debug.LogError("Invalid scene group index: " + index);
-                return;
-            }
-
             EnableLoadingCanvas();
 
-            // Step 1: Wait for PDFSubjectService to be ready (0% - 50%)
-            if (waitForPDFService)
+            // Step 1: Wait for PDFSubjectService to be ready (0% - 50%) - ONLY FIRST TIME
+            if (waitForPDFService && !hasPDFServiceBeenChecked)
             {
                 await WaitForServicesReady();
+                hasPDFServiceBeenChecked = true;
             }
             else
             {
@@ -181,8 +196,6 @@ namespace Systems.SceneManagement
 
             targetProgress = 1f;
 
-
-
             RespawnPoint respawn = GameObject.FindAnyObjectByType<RespawnPoint>();
             if (respawn != null)
             {
@@ -195,7 +208,7 @@ namespace Systems.SceneManagement
             }
 
             EnableLoadingCanvas(false);
-
+            isLoadingScene = false;
         }
 
 

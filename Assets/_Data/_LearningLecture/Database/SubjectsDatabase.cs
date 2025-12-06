@@ -130,13 +130,14 @@ namespace DreamClass.Subjects
         public string description;
         public List<CSVLectureInfo> lectures = new List<CSVLectureInfo>();
         
-        [Header("Path for matching with API")]
-        [Tooltip("Path để match với API response, ví dụ: pdf-pages/SGK VL 11 KNTT (1)")]
-        public string path;
+        [Header("CloudinaryFolder for matching with API")]
+        [Tooltip("CloudinaryFolder để match với API response, ví dụ: pdf-pages/SGK VL 11 KNTT (1)")]
+        public string cloudinaryFolder;
 
         // Extended fields for PDF subjects from API
         [Header("API Subject Data")]
         public string title;
+        public string note;
         public string grade;
         public string category;
         public int pages;
@@ -163,13 +164,13 @@ namespace DreamClass.Subjects
         }
 
         /// <summary>
-        /// Check if this subject matches with a remote PDF by path
+        /// Check if this subject matches with a remote PDF by cloudinaryFolder
         /// </summary>
-        public bool MatchesPath(string remotePath)
+        public bool MatchesCloudinaryFolder(string remoteFolder)
         {
-            if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(remotePath))
+            if (string.IsNullOrEmpty(cloudinaryFolder) || string.IsNullOrEmpty(remoteFolder))
                 return false;
-            return path.Equals(remotePath, System.StringComparison.OrdinalIgnoreCase);
+            return cloudinaryFolder.Equals(remoteFolder, System.StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -187,11 +188,12 @@ namespace DreamClass.Subjects
         {
             // Update API fields
             title = pdfInfo.title;
+            note = pdfInfo.note;
             grade = pdfInfo.grade;
             category = pdfInfo.category;
             pages = pdfInfo.pages;
             pdfUrl = pdfInfo.pdf_url;
-            imageUrls = pdfInfo.images != null ? new List<string>(pdfInfo.images) : new List<string>();
+            imageUrls = pdfInfo.pageImages != null ? new List<string>(pdfInfo.pageImages) : new List<string>();
             
             // Cache status
             isCached = cached;

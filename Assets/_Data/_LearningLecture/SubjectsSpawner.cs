@@ -143,7 +143,7 @@ namespace DreamClass.Lecture
                 var subject = subjects[i];
                 
                 // Skip subjects with path that are NOT cached
-                if (!string.IsNullOrEmpty(subject.path) && !subject.isCached)
+                if (!string.IsNullOrEmpty(subject.cloudinaryFolder) && !subject.isCached)
                 {
                     Debug.Log($"[SubjectsSpawner] Skipping uncached subject: {subject.name}");
                     skippedCount++;
@@ -221,7 +221,7 @@ namespace DreamClass.Lecture
             var selectedSubject = subjects[index];
 
             // Subjects with path MUST be cached to be clickable
-            if (!string.IsNullOrEmpty(selectedSubject.path) && !selectedSubject.isCached)
+            if (!string.IsNullOrEmpty(selectedSubject.cloudinaryFolder) && !selectedSubject.isCached)
             {
                 Debug.LogWarning($"[SubjectsSpawner] Cannot select uncached subject: {selectedSubject.name}");
                 return; // Do nothing - this shouldn't happen as uncached subjects aren't spawned
@@ -280,7 +280,7 @@ namespace DreamClass.Lecture
                 Debug.Log($"Total subjects in manager: {subjects.Count}");
                 foreach (var subject in subjects)
                 {
-                    string hasPath = !string.IsNullOrEmpty(subject.path) ? "[API]" : "[LOCAL]";
+                    string hasPath = !string.IsNullOrEmpty(subject.cloudinaryFolder) ? "[API]" : "[LOCAL]";
                     string cached = subject.isCached ? "[CACHED]" : "";
                     Debug.Log($"- {hasPath}{cached} {subject.name}: {subject.GetDisplayName()}");
                 }

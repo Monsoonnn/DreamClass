@@ -44,7 +44,7 @@ namespace Characters.TeacherKien {
 
             npcManager.AnimationManager.PlayStartGroup();
             npcManager.interaction.CancelAudio();
-            npcManager.changeClass.SetActive(false);
+            if( npcManager.changeClass != null ) npcManager.changeClass.SetActive(false);
         }
     }
 }

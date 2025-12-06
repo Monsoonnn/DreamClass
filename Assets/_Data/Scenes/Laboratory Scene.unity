@@ -8928,7 +8928,7 @@ GameObject:
   - component: {fileID: 232822883}
   - component: {fileID: 232822885}
   - component: {fileID: 232822884}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23768,8 +23768,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: f75f545f0608f274bab98fa4ef4526be, type: 2}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.5568628, g: 0.6039216, b: 0.8117647, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -28213,7 +28213,7 @@ GameObject:
   - component: {fileID: 825809174}
   - component: {fileID: 825809173}
   - component: {fileID: 825809172}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28240,7 +28240,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 2222
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
@@ -41616,7 +41616,7 @@ GameObject:
   - component: {fileID: 1134664976}
   - component: {fileID: 1134664978}
   - component: {fileID: 1134664977}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text (TMP) (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41662,7 +41662,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 2222
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
@@ -51457,7 +51457,7 @@ GameObject:
   - component: {fileID: 1424472843}
   - component: {fileID: 1424472842}
   - component: {fileID: 1424472841}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79825,7 +79825,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7553056171809267176}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.471}
+  m_LocalPosition: {x: 0, y: 0, z: 0.79}
   m_LocalScale: {x: 0.018, y: 0.018, z: 0.018}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -79837,7 +79837,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.043, y: 1.021}
+  m_AnchoredPosition: {x: -0.669, y: 1.161}
   m_SizeDelta: {x: 84.8647, y: 58.8637}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &447391414651856791
@@ -100557,7 +100557,7 @@ MonoBehaviour:
   power: 0
   initialWaterAmount: 0
   initialTemperature: 25
-  totalSimulationTime: 120
+  totalSimulationTime: 20
 --- !u!114 &7677852201031755733
 MonoBehaviour:
   m_ObjectHideFlags: 0

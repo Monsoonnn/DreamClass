@@ -18,6 +18,19 @@ MonoBehaviour:
     - animationName: talking
       layer: 1
       transitionTime: 0
+    - animationName: stand-to-sit
+      layer: 0
+      transitionTime: 0
+  - groupName: Idle
+    layerAnimations:
     - animationName: idle
       layer: 0
+      transitionTime: 0
+  - groupName: StandTalk
+    layerAnimations:
+    - animationName: idle
+      layer: 0
+      transitionTime: 0
+    - animationName: talking
+      layer: 1
       transitionTime: 0

@@ -195,7 +195,7 @@ namespace DreamClass.Lecture
                     StartCoroutine(LoadCachedSpritesForSubject(subject));
                     return;
                 }
-                else if (!string.IsNullOrEmpty(subject.path) && !subject.isCached)
+                else if (!string.IsNullOrEmpty(subject.cloudinaryFolder) && !subject.isCached)
                 {
                     Debug.LogWarning($"[LearningModeManager] Subject NOT cached, cannot load: {subject.name}. Must download cache first.");
                     return;
@@ -236,7 +236,7 @@ namespace DreamClass.Lecture
                 StartCoroutine(LoadCachedSpritesForSubject(subject));
             }
             // Has path but NOT cached - cannot load (must download cache first)
-            else if (!string.IsNullOrEmpty(subject.path) && !subject.isCached)
+            else if (!string.IsNullOrEmpty(subject.cloudinaryFolder) && !subject.isCached)
             {
                 Debug.LogWarning($"[LearningModeManager] Subject NOT cached, cannot load: {subject.name}. Must download cache first.");
                 // Do nothing - subject should not be selectable if not cached
@@ -303,7 +303,7 @@ namespace DreamClass.Lecture
         /// </summary>
         public void CacheAndLoadSubject(SubjectInfo subject)
         {
-            if (pdfSubjectService == null || string.IsNullOrEmpty(subject.path))
+            if (pdfSubjectService == null || string.IsNullOrEmpty(subject.cloudinaryFolder))
             {
                 Debug.LogWarning("Cannot cache subject without path or service not available");
                 return;
@@ -311,11 +311,11 @@ namespace DreamClass.Lecture
 
             // Find by path first, then by name
             var remoteSubject = pdfSubjectService.RemoteSubjects.Find(s => 
-                (!string.IsNullOrEmpty(subject.path) && s.path == subject.path) || s.name == subject.name);
+                (!string.IsNullOrEmpty(subject.cloudinaryFolder) && s.cloudinaryFolder == subject.cloudinaryFolder) || s.name == subject.name);
             
             if (remoteSubject == null)
             {
-                Debug.LogError($"Remote subject not found: {subject.name} (path: {subject.path})");
+                Debug.LogError($"Remote subject not found: {subject.name} (path: {subject.cloudinaryFolder})");
                 return;
             }
 
@@ -326,13 +326,13 @@ namespace DreamClass.Lecture
         {
             // Load sprites on demand (PDFSubjectService sẽ tự cache nếu cần)
             Sprite[] sprites = null;
-            yield return pdfSubjectService.LoadSubjectSpritesOnDemand(remoteSubject.path, (result) => sprites = result);
+            yield return pdfSubjectService.LoadSubjectSpritesOnDemand(remoteSubject.cloudinaryFolder, (result) => sprites = result);
 
             // After load complete, update currentSubject with latest data
-            if (currentSubject != null && currentSubject.MatchesPath(remoteSubject.path))
+            if (currentSubject != null && currentSubject.MatchesCloudinaryFolder(remoteSubject.cloudinaryFolder))
             {
                 // Find updated subject from database
-                var updatedSubject = subjectDatabase.subjects.Find(s => s.MatchesPath(remoteSubject.path));
+                var updatedSubject = subjectDatabase.subjects.Find(s => s.MatchesCloudinaryFolder(remoteSubject.cloudinaryFolder));
                 if (updatedSubject != null && updatedSubject.HasLoadedSprites())
                 {
                     LoadSpritesToBookManager(updatedSubject);
@@ -348,18 +348,18 @@ namespace DreamClass.Lecture
                 yield break;
             }
 
-            // Find by path first, then by name
+            // Find by cloudinaryFolder first, then by name
             var remoteSubject = pdfSubjectService.RemoteSubjects.Find(s => 
-                (!string.IsNullOrEmpty(subject.path) && s.path == subject.path) || s.name == subject.name);
+                (!string.IsNullOrEmpty(subject.cloudinaryFolder) && s.cloudinaryFolder == subject.cloudinaryFolder) || s.name == subject.name);
             
             if (remoteSubject == null)
             {
-                Debug.LogError($"Remote subject not found: {subject.name} (path: {subject.path})");
+                Debug.LogError($"Remote subject not found: {subject.name} (cloudinaryFolder: {subject.cloudinaryFolder})");
                 yield break;
             }
 
             Sprite[] sprites = null;
-            yield return pdfSubjectService.LoadSubjectSpritesOnDemand(remoteSubject.path, (result) => sprites = result);
+            yield return pdfSubjectService.LoadSubjectSpritesOnDemand(remoteSubject.cloudinaryFolder, (result) => sprites = result);
 
             if (sprites != null && sprites.Length > 0)
             {
@@ -385,7 +385,7 @@ namespace DreamClass.Lecture
                 }
 
                 // Also update in SubjectDatabase
-                var dbSubject = subjectDatabase.subjects.Find(s => s.MatchesPath(subject.path));
+                var dbSubject = subjectDatabase.subjects.Find(s => s.MatchesCloudinaryFolder(subject.cloudinaryFolder));
                 if (dbSubject != null)
                 {
                     dbSubject.SetBookPages(sprites);

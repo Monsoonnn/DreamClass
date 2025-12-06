@@ -386,12 +386,14 @@ MonoBehaviour:
   - {fileID: 7592573359012366324}
   - {fileID: 5633267306301651723}
   - {fileID: 351234193267246481}
+  - {fileID: 7897002689968126447}
   State: 1
   currentStepIndex: 0
   experimentID: NHIET_DUNG_NUOC
   experimentController: {fileID: 0}
   guideID: NHIET_DUNG_NUOC
   autoLoadGuide: 1
+  playDungLabGuide: 1
 --- !u!1 &2459783181907237323
 GameObject:
   m_ObjectHideFlags: 0
@@ -446,6 +448,61 @@ MonoBehaviour:
   skipServerUpdate: 0
   minCompletedCount: 1
   actionType: 2
+  requireExperimentRunning: 0
+--- !u!1 &3040444519402457893
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7300079841777547189}
+  - component: {fileID: 7897002689968126447}
+  m_Layer: 5
+  m_Name: Stop
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7300079841777547189
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3040444519402457893}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.00019598007, y: 0.00002861023, z: -0.000076293945}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 348120751064174984}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7897002689968126447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3040444519402457893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a88b1188b7b0ce479eec36e3f14ed45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StepId: Stop
+  IsComplete: 0
+  questCtrl: {fileID: 8555122655022811561}
+  trackingMode: 0
+  targetGuideStepID: 
+  targetGuideStepIDs: []
+  completionRequirement: 0
+  skipServerUpdate: 1
+  minCompletedCount: 1
+  actionType: 4
   requireExperimentRunning: 0
 --- !u!1 &3262859355756145554
 GameObject:
@@ -591,6 +648,7 @@ Transform:
   - {fileID: 8588294502977569601}
   - {fileID: 7359142349525790382}
   - {fileID: 6231236310417331087}
+  - {fileID: 7300079841777547189}
   m_Father: {fileID: 1100458787585686373}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3880327387075002612
