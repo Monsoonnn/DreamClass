@@ -25,5 +25,9 @@ namespace Characters.TeacherQuang {
         Part_3,             // "3 phần"
         Part_4,             // "4 phần"
         Part_5,             // "5 phần"
+
+        // New announcement voicelines
+        SectionCompleted,       // "Chúc mừng bạn đã hoàn thành phần thi"
+        SubmissionInstructions, // "Để nộp bài, vui lòng bấm nút hoàn thành"
     }
 }

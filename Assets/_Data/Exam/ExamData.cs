@@ -70,6 +70,12 @@ namespace Gameplay.Exam
         [Tooltip("Phần trăm trừ khi sai (0-1)")]
         [Range(0f, 1f)] public float penaltyPercent = 0.25f;
 
+        [Header("Cấu hình phần thưởng API")]
+        [Tooltip("Tỷ lệ chuyển đổi điểm thành gold (1 exam score = X gold)")]
+        public float goldScaleRatio = 10f;
+        [Tooltip("Tỷ lệ chuyển đổi điểm thành points (1 exam score = X points)")]
+        public float pointsScaleRatio = 5f;
+
         [Header("Các phần thi")]
         public List<ExamSection> sections = new List<ExamSection>();
 

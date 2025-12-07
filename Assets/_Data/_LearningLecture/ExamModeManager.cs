@@ -4,6 +4,7 @@ using com.cyborgAssets.inspectorButtonPro;
 using HMStudio.EasyQuiz;  // Import namespace quiz
 using Characters.TeacherQuang;
 using DreamClass.NPCCore;
+using Gameplay.Exam;
 
 namespace DreamClass.LearningLecture
 {
@@ -18,6 +19,10 @@ namespace DreamClass.LearningLecture
         
         [SerializeField] private NPCManager npcManager;
 
+        [Header("ExamController Check")]
+        [Tooltip("ExamController để check xem có đang trong Test mode không")]
+        [SerializeField] private ExamController examController;
+
         private bool isExamActive = false;
 
         private Quaternion rotaionAnimtion;
@@ -25,6 +30,7 @@ namespace DreamClass.LearningLecture
         protected override void Start()
         {
             base.Start();
+            LoadExamController();
             EndExam();
             RestartAnimation(); 
 
@@ -33,6 +39,16 @@ namespace DreamClass.LearningLecture
             {
                 questionManager.OnQuizComplete += ReceiveQuizResult;
                 questionManager.OnAPIQuizSubmitted += ReceiveAPIQuizResult;
+            }
+        }
+
+        protected virtual void LoadExamController()
+        {
+            if (examController != null) return;
+            examController = FindFirstObjectByType<ExamController>();
+            if (examController != null)
+            {
+                Debug.Log("[ExamModeManager] ExamController found and linked");
             }
         }
 
@@ -110,6 +126,20 @@ namespace DreamClass.LearningLecture
         // Xử lý result từ quiz (Excel mode - dùng local score)
         private void ReceiveQuizResult(float score)
         {
+            // Nếu ExamController đang chạy (Test mode), không xử lý ở đây
+            if (examController != null && examController.IsExamRunning)
+            {
+                Debug.Log($"[ExamModeManager] ExamController is running - skipping quiz result processing");
+                return;
+            }
+
+            // ExamMode không xử lý quiz result ở đây
+            if (isExamActive)
+            {
+                Debug.Log($"[ExamModeManager] ExamMode active - skipping local quiz result processing");
+                return;
+            }
+
             Debug.Log($"Quiz Completed! Score: {score:P2}");  
 
             npcManager.LookAtPlayer();

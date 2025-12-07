@@ -21,6 +21,8 @@ MonoBehaviour:
   passScore: 5
   penaltyForWrong: 0
   penaltyPercent: 0
+  goldScaleRatio: 10
+  pointsScaleRatio: 10
   sections:
   - sectionId: TPart001
     sectionName: "L\xFD thuy\u1EBFt"

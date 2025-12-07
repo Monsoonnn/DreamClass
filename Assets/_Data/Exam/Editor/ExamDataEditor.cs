@@ -189,6 +189,13 @@ namespace Gameplay.Exam.Editor
 
             EditorGUILayout.Space(10);
 
+            // === Reward Config ===
+            EditorGUILayout.LabelField("Cấu hình phần thưởng API", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("goldScaleRatio"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("pointsScaleRatio"));
+
+            EditorGUILayout.Space(10);
+
             // === Sections (ReorderableList) ===
             sectionsList.DoLayoutList();
 

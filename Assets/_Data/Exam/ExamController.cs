@@ -3,8 +3,12 @@ using UnityEngine.Events;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using com.cyborgAssets.inspectorButtonPro;
 using HMStudio.EasyQuiz;
+using DreamClass.Network;
+using DreamClass.Account;
+using DreamClass.LoginManager;
 
 namespace Gameplay.Exam
 {
@@ -24,8 +28,29 @@ namespace Gameplay.Exam
         [Tooltip("GameObject chứa UI Quiz, sẽ tắt khi hoàn thành phần Quiz")]
         [SerializeField] private GameObject quizUIContainer;
 
+        [Header("Finish Button")]
+        [Tooltip("GameObject chứa button Hoàn thành bài thi")]
+        [SerializeField] private GameObject finishButtonGameObject;
+
+        [Header("Result Notification")]
+        [Tooltip("Canvas hiển thị kết quả thi - sẽ active và tìm TMP để hiển thị")]
+        [SerializeField] private Canvas resultCanvas;
+        [SerializeField] private float resultDisplayDuration = 25f;
+
         [Header("Experiment References")]
         [SerializeField] private List<GameController> experimentControllers = new List<GameController>();
+
+        [Header("Score Scaling & API")]
+        [Tooltip("Tỷ lệ chuyển đổi điểm thành gold (1 exam score = X gold)")]
+        [SerializeField] private float goldScaleRatio = 10f;
+        [Tooltip("Tỷ lệ chuyển đổi điểm thành points (1 exam score = X points)")]
+        [SerializeField] private float pointsScaleRatio = 5f;
+        [Tooltip("API key để gửi request")]
+        [SerializeField] private string apiKey = "quanganhancut";
+        [Tooltip("ApiClient reference")]
+        [SerializeField] private ApiClient apiClient;
+        [Tooltip("UserProfile reference")]
+        [SerializeField] private UserProfileSO userProfile;
 
         [Header("Trạng thái hiện tại")]
         [SerializeField] private bool isExamRunning = false;
@@ -38,6 +63,7 @@ namespace Gameplay.Exam
         // ==================== EVENTS ====================
         public event Action OnExamStarted;
         public event Action OnExamFinished;
+        public event Action OnFinishExamButtonPressed; // Thông báo khi nhấn button Finish
         public event Action<int, int> OnSectionChanged; // (currentIndex, totalCount)
         public event Action<float> OnTimeUpdated;
         public event Action<ExamResult> OnExamResultReady;
@@ -61,6 +87,8 @@ namespace Gameplay.Exam
         private ExamResult currentResult;
         private SectionResult currentSectionResult;
         private Coroutine timerCoroutine;
+        private bool isFinishingExam = false; // Chặn multiple FinishExam() calls
+        private bool isSubmittingExam = false; // Track submission status
 
         // Quiz state
         private Dictionary<int, QuestionResult> answeredQuestions = new Dictionary<int, QuestionResult>();
@@ -73,6 +101,7 @@ namespace Gameplay.Exam
         #region Properties
 
         public bool IsExamRunning => isExamRunning;
+        public bool IsSubmittingExam => isSubmittingExam;
         public int CurrentSectionIndex => currentSectionIndex;
         public int TotalSections => examData?.sections?.Count ?? 0;
         public float RemainingTime => remainingTimeSeconds;
@@ -82,6 +111,25 @@ namespace Gameplay.Exam
         #endregion
 
         #region Lifecycle
+
+        private void Start()
+        {
+            // Kiểm tra login trước khi khởi tạo exam
+            if (!IsUserLoggedIn())
+            {
+                Debug.LogWarning("[ExamController] User not logged in - Exam will not be available");
+                
+                // Ẩn exam UI elements nếu chưa login
+                if (finishButtonGameObject != null)
+                    finishButtonGameObject.SetActive(false);
+                if (quizUIContainer != null)
+                    quizUIContainer.SetActive(false);
+                
+                return;
+            }
+
+            LoadApiComponents();
+        }
 
         private void OnDestroy()
         {
@@ -124,6 +172,10 @@ namespace Gameplay.Exam
                 return;
             }
 
+            // Reset finish flag
+            isFinishingExam = false;
+            isSubmittingExam = false;
+
             // Initialize
             currentResult = new ExamResult
             {
@@ -136,6 +188,14 @@ namespace Gameplay.Exam
             currentSectionIndex = 0;
             remainingTimeSeconds = examData.examDurationMinutes * 60f;
             isExamRunning = true;
+
+            // Active finish button khi bắt đầu bài thi
+            if (finishButtonGameObject != null)
+            {
+                finishButtonGameObject.SetActive(true);
+                if (debugMode)
+                    Debug.Log("[ExamController] Finish button activated");
+            }
 
             // Hiện UI Container khi start
             if (quizUIContainer != null)
@@ -160,9 +220,41 @@ namespace Gameplay.Exam
         [ProButton]
         public void FinishExam()
         {
+            // Kiểm tra login trước khi nộp bài
+            if (!IsUserLoggedIn())
+            {
+                Debug.LogWarning("[ExamController] User must be logged in to finish exam!");
+                ShowLoginRequiredMessage();
+                return;
+            }
+
+            // Chặn multiple calls
+            if (isFinishingExam) {
+                if (debugMode)
+                    Debug.LogWarning("[ExamController] FinishExam() already in progress - ignoring duplicate call");
+                return;
+            }
+
             if (!isExamRunning) return;
 
+            // Log "Đang nộp"
+            if (debugMode)
+                Debug.Log("[ExamController] Đang nộp...");
+
+            isFinishingExam = true;
+            isSubmittingExam = true;
             isExamRunning = false;
+
+            // Inactive finish button ngay lập tức
+            if (finishButtonGameObject != null)
+            {
+                finishButtonGameObject.SetActive(false);
+                if (debugMode)
+                    Debug.Log("[ExamController] Finish button deactivated");
+            }
+
+            // Phát event để Announcer/UI xử lý
+            OnFinishExamButtonPressed?.Invoke();
 
             // Stop timer
             if (timerCoroutine != null)
@@ -177,8 +269,18 @@ namespace Gameplay.Exam
             // Calculate final result
             currentResult.Calculate(examData);
 
+            // Log "Nộp thành công"
+            if (debugMode)
+                Debug.Log("[ExamController] Nộp thành công!");
+
             OnExamFinished?.Invoke();
             OnExamResultReady?.Invoke(currentResult);
+
+            // Gửi điểm lên API
+            StartCoroutine(SendScoreToAPI(currentResult));
+
+            // Reset submission flag
+            isSubmittingExam = false;
 
             if (debugMode)
                 Debug.Log($"[ExamController] Exam finished!\n{currentResult.GetSummary()}");
@@ -656,7 +758,8 @@ namespace Gameplay.Exam
                 }
             }
 
-            if (remainingTimeSeconds <= 0 && isExamRunning)
+            // Chỉ tự động finish nếu chưa có finish call nào
+            if (remainingTimeSeconds <= 0 && isExamRunning && !isFinishingExam)
             {
                 if (debugMode)
                     Debug.Log("[ExamController] Time's up!");
@@ -703,6 +806,349 @@ namespace Gameplay.Exam
                     return $"Hoàn thành: {completed}/{currentSectionResult.stepResults.Count}";
                 }
                 return "";
+            }
+        }
+
+        #endregion
+
+        #region API Score Submission
+
+        /// <summary>
+        /// Data structure để gửi điểm lên API
+        /// </summary>
+        [System.Serializable]
+        public class ScoreSubmissionData
+        {
+            public string key;
+            public int gold;
+            public int points;
+        }
+
+        /// <summary>
+        /// Gửi điểm lên API sau khi hoàn thành bài thi với thông báo hoàn thành
+        /// Similar to Quest system's ShowNotification pattern
+        /// </summary>
+        private IEnumerator SendScoreToAPI(ExamResult examResult)
+        {
+            // Kiểm tra dependencies
+            if (apiClient == null)
+            {
+                Debug.LogWarning("[ExamController] ApiClient not assigned - Score submission skipped");
+                ShowExamCompletionNotification(examResult, false);
+                yield break;
+            }
+
+            if (userProfile == null || !userProfile.HasProfile)
+            {
+                Debug.LogWarning("[ExamController] UserProfile not available - Score submission skipped");
+                ShowExamCompletionNotification(examResult, false);
+                yield break;
+            }
+
+            string playerId = userProfile.playerId;
+            if (string.IsNullOrEmpty(playerId))
+            {
+                Debug.LogWarning("[ExamController] Player ID is empty - Score submission skipped");
+                ShowExamCompletionNotification(examResult, false);
+                yield break;
+            }
+
+            // Tính toán điểm scaled (ưu tiên từ examData, fallback về settings)
+            float goldRatio = examData?.goldScaleRatio ?? goldScaleRatio;
+            float pointsRatio = examData?.pointsScaleRatio ?? pointsScaleRatio;
+            
+            int scaledGold = Mathf.RoundToInt(examResult.totalScore * goldRatio);
+            int scaledPoints = Mathf.RoundToInt(examResult.totalScore * pointsRatio);
+
+            // Tạo data để gửi
+            ScoreSubmissionData scoreData = new ScoreSubmissionData
+            {
+                key = apiKey,
+                gold = scaledGold,
+                points = scaledPoints
+            };
+
+            string jsonData = JsonUtility.ToJson(scoreData);
+            string endpoint = $"/api/players/test/currency/{playerId}";
+
+            if (debugMode)
+                Debug.Log($"[ExamController] Sending score to API: {endpoint}\n" +
+                         $"Player ID: {playerId}\n" +
+                         $"Exam Score: {examResult.totalScore:F1}\n" +
+                         $"Gold: {scaledGold}, Points: {scaledPoints}\n" +
+                         $"Data: {jsonData}");
+
+            // Gửi request qua ApiClient
+            var request = new ApiRequest(
+                endpoint,
+                "PUT",
+                jsonData,
+                new Dictionary<string, string> { { "Content-Type", "application/json" } }
+            );
+
+            bool requestCompleted = false;
+            string responseText = "";
+            bool requestSuccess = false;
+
+            yield return StartCoroutine(apiClient.SendRequest(request, (response) =>
+            {
+                requestCompleted = true;
+                responseText = response.Text;
+                requestSuccess = response.IsSuccess;
+                
+                if (response.IsSuccess)
+                {
+                    if (debugMode)
+                        Debug.Log($"[ExamController] Score submitted successfully! Response: {response.Text}");
+                }
+                else
+                {
+                    Debug.LogError($"[ExamController] Failed to submit score. Status: {response.StatusCode}, Error: {response.Error}");
+                }
+            }));
+
+            // Wait for request completion
+            while (!requestCompleted)
+            {
+                yield return null;
+            }
+
+            // Show completion notification similar to Quest system
+            StartCoroutine(ShowExamCompletionNotificationCoroutine(examResult, requestSuccess, scaledGold, scaledPoints));
+        }
+
+        /// <summary>
+        /// Show exam completion notification using Canvas and TMP
+        /// Active canvas, find TMP in children, display results for 25s, then deactivate
+        /// </summary>
+        private IEnumerator ShowExamCompletionNotificationCoroutine(ExamResult examResult, bool apiSuccess, int goldEarned, int pointsEarned)
+        {
+            // Wait a short delay for smooth transition
+            yield return new WaitForSeconds(0.5f);
+
+            try
+            {
+                string examName = examData?.examName ?? "Bài thi";
+                string completionTime = System.DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+                string scoreText = examResult.totalScore.ToString("F1");
+
+                // Log exam completion details
+                Debug.Log($"[ExamController] Showing completion notification: Exam={examName}, Score={scoreText}, Gold={goldEarned}, Points={pointsEarned}, API Success={apiSuccess}");
+
+                // Active the result canvas
+                if (resultCanvas != null)
+                {
+                    resultCanvas.gameObject.SetActive(true);
+
+                    // Find TextMeshPro in children
+                    TMPro.TextMeshProUGUI resultText = resultCanvas.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+                    
+                    if (resultText != null)
+                    {
+                        // Create simplified result text
+                        string detailedResult = $"=== KẾT QUẢ BÀI THI ===\n\n" +
+                                              $"Tên bài thi: {examName}\n" +
+                                              $"Thời gian hoàn thành: {completionTime}\n";
+
+                        // Calculate score based on examData maxScore
+                        float actualMaxScore = examData?.maxScore ?? 10f;
+                        float actualScore = examResult.totalScore;
+                        detailedResult += $"Điểm tổng: {actualScore:F1}/{actualMaxScore:F1}\n\n";
+
+                        // // Add section breakdown if available
+                        // if (examResult.sectionResults != null && examResult.sectionResults.Count > 0)
+                        // {
+                        //     detailedResult += "=== CHI TIẾT THEO PHẦN ===\n";
+                        //     for (int i = 0; i < examResult.sectionResults.Count; i++)
+                        //     {
+                        //         var section = examResult.sectionResults[i];
+                        //         string sectionName = examData?.sections?[i]?.sectionName ?? $"Phần {i + 1}";
+                        //         float sectionAccuracy = section.totalQuestions > 0 ? (float)section.correctCount / section.totalQuestions * 100f : 0f;
+                                
+                        //         detailedResult += $"{sectionName}:\n" +
+                        //                         $"   Đúng: {section.correctCount}/{section.totalQuestions} ({sectionAccuracy:F1}%)\n" +
+                        //                         $"   Sai: {section.wrongCount} | Bỏ qua: {section.skippedCount}\n" +
+                        //                         $"   Điểm: {section.score:F1}/{section.maxScore:F1}\n";
+                        //     }
+                        //     detailedResult += "\n";
+                        // }
+
+                        // Add rewards section only if API is successful
+                        if (apiSuccess)
+                        {
+                            detailedResult += "=== PHẦN THƯỞNG ===\n";
+                            detailedResult += $"Vàng nhận được: +{goldEarned} Gold\n" +
+                                            $"Điểm kinh nghiệm: +{pointsEarned} Points\n";
+                        }
+
+                        // Add performance evaluation based on examData maxScore
+                        float accuracy = actualMaxScore > 0 ? (actualScore / actualMaxScore) * 100f : 0f;
+                        string performance = "";
+                        if (accuracy >= 90) performance = "XUẤT SẮC";
+                        else if (accuracy >= 80) performance = "TỐT";
+                        else if (accuracy >= 70) performance = "KHÁ";
+                        else if (accuracy >= 60) performance = "CẦN CỐ GẮNG";
+                        else performance = "CẦN ÔN TẬP THÊM";
+                        
+                        detailedResult += $"=== ĐÁNH GIÁ ===\n" +
+                                        $"{performance}\n" +
+                                        $"Độ chính xác: {accuracy:F1}% ({actualScore:F1}/{actualMaxScore:F1})\n\n";
+                        
+                        resultText.text = detailedResult;
+                        
+                        Debug.Log($"[ExamController] Detailed result displayed on canvas for {resultDisplayDuration} seconds");
+                    }
+                    else
+                    {
+                        Debug.LogWarning("[ExamController] No TextMeshProUGUI found in result canvas children");
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning("[ExamController] Result canvas not assigned - notification skipped");
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"[ExamController] Error showing completion notification: {ex.Message}");
+            }
+
+            // Wait for display duration outside try-catch, then deactivate
+            yield return new WaitForSeconds(resultDisplayDuration);
+            
+            if (resultCanvas != null)
+            {
+                resultCanvas.gameObject.SetActive(false);
+                Debug.Log("[ExamController] Result canvas deactivated");
+            }
+        }
+
+        /// <summary>
+        /// Show exam completion notification without API call (fallback method)
+        /// </summary>
+        private void ShowExamCompletionNotification(ExamResult examResult, bool success)
+        {
+            StartCoroutine(ShowExamCompletionNotificationCoroutine(examResult, success, 0, 0));
+        }
+
+        /// <summary>
+        /// Test method để gửi điểm (dùng trong Editor)
+        /// </summary>
+        [ProButton]
+        public void TestSendScore()
+        {
+            if (currentResult == null)
+            {
+                Debug.LogWarning("[ExamController] No exam result available for testing");
+                return;
+            }
+            
+            StartCoroutine(SendScoreToAPI(currentResult));
+        }
+
+        /// <summary>
+        /// Kích hoạt exam sau khi user đã login
+        /// Có thể được gọi từ LoginManager sau khi login thành công
+        /// </summary>
+        public void ActivateExamAfterLogin()
+        {
+            if (!IsUserLoggedIn())
+            {
+                Debug.LogWarning("[ExamController] Cannot activate exam - user not logged in");
+                return;
+            }
+
+            Debug.Log("[ExamController] Activating exam after successful login");
+            
+            // Hiển thị lại UI elements
+            if (finishButtonGameObject != null)
+                finishButtonGameObject.SetActive(true);
+            if (quizUIContainer != null)
+                quizUIContainer.SetActive(true);
+            
+            // Load components if not already loaded
+            LoadApiComponents();
+        }
+
+        /// <summary>
+        /// Kiểm tra xem user đã login chưa
+        /// </summary>
+        private bool IsUserLoggedIn()
+        {
+            if (LoginManager.Instance == null)
+            {
+                Debug.LogError("[ExamController] LoginManager.Instance is null!");
+                return false;
+            }
+
+            return LoginManager.Instance.IsLoggedIn();
+        }
+
+        /// <summary>
+        /// Hiển thị thông báo yêu cầu login
+        /// </summary>
+        private void ShowLoginRequiredMessage()
+        {
+            // Hiển thị thông báo yêu cầu login trên resultCanvas
+            if (resultCanvas != null)
+            {
+                resultCanvas.gameObject.SetActive(true);
+                TMPro.TextMeshProUGUI resultText = resultCanvas.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+                
+                if (resultText != null)
+                {
+                    string loginMessage = "=== YÊU CẦU ĐĂNG NHẬP ===\n\n" +
+                                         "Bạn cần đăng nhập để tham gia bài kiểm tra\n\n" +
+                                         "Vui lòng đăng nhập và thử lại";
+                    
+                    resultText.text = loginMessage;
+                    
+                    // Tự động ẩn sau 5 giây
+                    StartCoroutine(HideLoginMessageAfterDelay(5f));
+                }
+            }
+            else
+            {
+                // Fallback: Log warning nếu không có resultCanvas
+                Debug.LogWarning("[ExamController] Login required! Please log in first.");
+            }
+        }
+
+        /// <summary>
+        /// Ẩn thông báo login sau delay
+        /// </summary>
+        private IEnumerator HideLoginMessageAfterDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            if (resultCanvas != null)
+            {
+                resultCanvas.gameObject.SetActive(false);
+            }
+        }
+
+        /// <summary>
+        /// Load components automatically
+        /// </summary>
+        private void LoadApiComponents()
+        {
+            if (apiClient == null)
+            {
+                apiClient = FindFirstObjectByType<ApiClient>();
+                if (debugMode && apiClient != null)
+                    Debug.Log("[ExamController] ApiClient auto-loaded");
+            }
+
+            if (userProfile == null)
+            {
+                // Tìm ProfileService và lấy userProfile từ đó
+                var profileService = FindFirstObjectByType<ProfileService>();
+                if (profileService != null)
+                {
+                    // Sử dụng reflection để lấy userProfile field (nếu cần)
+                    // Hoặc tạo public property trong ProfileService
+                    if (debugMode)
+                        Debug.Log("[ExamController] Found ProfileService - UserProfile should be assigned manually");
+                }
             }
         }
 
