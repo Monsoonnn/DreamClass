@@ -71,7 +71,7 @@ namespace DreamClass.Subjects
         public event Action<RemoteSubjectInfo> OnSubjectCacheComplete;
         public event Action<string> OnError;
         public static event Action<float> OnOverallProgress;
-        
+
         private static float overallProgress = 0f;
         public static float OverallProgress => overallProgress;
 
@@ -96,9 +96,20 @@ namespace DreamClass.Subjects
 
         // OPTIMIZATION: Track loading state per subject
         private Dictionary<string, bool> subjectLoadingState = new Dictionary<string, bool>();
-        
+
         // BUNDLE: Quản lý bundle đã load (tránh load lại)
         private Dictionary<string, AssetBundle> loadedBundles = new Dictionary<string, AssetBundle>();
+
+        // Bundle loading statistics for editor tools
+        private Dictionary<string, int> bundleLoadStats = new Dictionary<string, int>();
+        private int totalBundleLoads = 0;
+        private int totalCacheLoads = 0;
+        private int totalApiLoads = 0;
+
+        public int TotalBundleLoads => totalBundleLoads;
+        public int TotalCacheLoads => totalCacheLoads;
+        public int TotalApiLoads => totalApiLoads;
+        public Dictionary<string, int> BundleLoadStats => bundleLoadStats;
 
         protected override void LoadComponents()
         {
@@ -108,7 +119,7 @@ namespace DreamClass.Subjects
 
         private void LoadApiClient()
         {
-            if(apiClient != null) return;
+            if (apiClient != null) return;
             apiClient = GameObject.FindAnyObjectByType<ApiClient>();
         }
 
@@ -119,14 +130,60 @@ namespace DreamClass.Subjects
         protected override void Start()
         {
             base.Start();
-            
+
             // Reset state mỗi lần scene load
             isReady = false;
             overallProgress = 0f;
             hasFetched = false;
             remoteSubjects.Clear();
-            
+
+            // Reset statistics mỗi lần scene load
+            totalBundleLoads = 0;
+            totalCacheLoads = 0;
+            totalApiLoads = 0;
+            bundleLoadStats.Clear();
+            Log("[STARTUP] Statistics reset");
+
             LoadCacheManifest();
+
+            // PRIORITY 1: CHECK BUNDLE FIRST at startup + PRELOAD BUNDLE SPRITES
+            if (checkLocalBundleFirst)
+            {
+                string bundleStoreFull = Path.Combine(Application.streamingAssetsPath, bundleStorePath);
+                if (Directory.Exists(bundleStoreFull))
+                {
+                    string[] bundleFiles = Directory.GetFiles(bundleStoreFull);
+
+                    // Filter actual bundle files (exclude .manifest and .meta)
+                    List<string> actualBundles = new List<string>();
+                    foreach (var file in bundleFiles)
+                    {
+                        string fileName = Path.GetFileName(file);
+                        if (!fileName.EndsWith(".manifest", System.StringComparison.OrdinalIgnoreCase) &&
+                            !fileName.EndsWith(".meta", System.StringComparison.OrdinalIgnoreCase))
+                        {
+                            actualBundles.Add(file);
+                        }
+                    }
+
+                    if (actualBundles.Count > 0)
+                    {
+                        Log($"[STARTUP] Found {actualBundles.Count} bundle files in {bundleStorePath}");
+                        for (int i = 0; i < actualBundles.Count; i++)
+                        {
+                            string bundlePath = actualBundles[i];
+                            string bundleName = Path.GetFileName(bundlePath);
+                            Log($"[STARTUP BUNDLE] Bundle {i + 1}: {bundleName}");
+                        }
+
+                        // Start preloading bundles in background
+                        hasFetched = true;
+                        isPreloading = true;
+                        StartCoroutine(PreloadAllBundlesCoroutine());
+                        return;
+                    }
+                }
+            }
 
             // OPTIMIZATION: Chỉ preload metadata, không load sprites nếu useLazyLoading = true
             if (preloadCachedOnStart && cacheManifest != null && cacheManifest.subjects.Count > 0)
@@ -137,7 +194,7 @@ namespace DreamClass.Subjects
                     // Load metadata + sprites from cache immediately (synchronously)
                     PreloadFromCache();
                     preloadComplete = true;
-                    
+
                     // NO background preload - causes race condition
                 }
                 else
@@ -152,11 +209,11 @@ namespace DreamClass.Subjects
                 preloadComplete = true;
             }
 
-            // CHECK CACHE MANIFEST FIRST before attempting API fetch
+            // PRIORITY 2: CHECK CACHE MANIFEST before attempting API fetch
             if (cacheManifest != null && cacheManifest.subjects.Count > 0)
             {
                 Log($"[STARTUP] Cache manifest found with {cacheManifest.subjects.Count} subjects - loading from cache");
-                
+
                 // Load subjects from cache manifest (no API needed)
                 LoadSubjectsFromCacheManifest();
                 hasFetched = true;  // Mark as fetched (from cache)
@@ -182,15 +239,15 @@ namespace DreamClass.Subjects
 
             int metadataCount = 0;
             int newSubjectsCount = 0;
-            
+
             foreach (var cachedData in cacheManifest.subjects)
             {
                 if (!cachedData.isFullyCached || cachedData.cachedImagePaths.Count == 0)
                     continue;
 
                 // Match by cloudinaryFolder first, then by name
-                var localSubject = subjectDatabase.subjects.Find(s => 
-                    (!string.IsNullOrEmpty(s.cloudinaryFolder) && !string.IsNullOrEmpty(cachedData.cloudinaryFolder) && 
+                var localSubject = subjectDatabase.subjects.Find(s =>
+                    (!string.IsNullOrEmpty(s.cloudinaryFolder) && !string.IsNullOrEmpty(cachedData.cloudinaryFolder) &&
                      s.cloudinaryFolder.Equals(cachedData.cloudinaryFolder, System.StringComparison.OrdinalIgnoreCase)) ||
                     s.name == cachedData.subjectName);
 
@@ -218,10 +275,10 @@ namespace DreamClass.Subjects
 
             if (newSubjectsCount > 0)
             {
-                #if UNITY_EDITOR
+#if UNITY_EDITOR
                 UnityEditor.EditorUtility.SetDirty(subjectDatabase);
                 UnityEditor.AssetDatabase.SaveAssets();
-                #endif
+#endif
             }
 
             Log($"[LAZY LOAD] Loaded metadata for {metadataCount} subjects ({newSubjectsCount} new from cache)");
@@ -244,8 +301,8 @@ namespace DreamClass.Subjects
                     continue;
 
                 // Match by cloudinaryFolder first, then by name
-                var localSubject = subjectDatabase.subjects.Find(s => 
-                    (!string.IsNullOrEmpty(s.cloudinaryFolder) && !string.IsNullOrEmpty(cachedData.cloudinaryFolder) && 
+                var localSubject = subjectDatabase.subjects.Find(s =>
+                    (!string.IsNullOrEmpty(s.cloudinaryFolder) && !string.IsNullOrEmpty(cachedData.cloudinaryFolder) &&
                      s.cloudinaryFolder.Equals(cachedData.cloudinaryFolder, System.StringComparison.OrdinalIgnoreCase)) ||
                     s.name == cachedData.subjectName);
 
@@ -266,7 +323,7 @@ namespace DreamClass.Subjects
                     // Set metadata
                     localSubject.isCached = true;
                     localSubject.localImagePaths = new List<string>(cachedData.cachedImagePaths);
-                    
+
                     // Load sprites synchronously from cache files
                     List<Sprite> loadedSprites = new List<Sprite>();
                     foreach (var imagePath in cachedData.cachedImagePaths)
@@ -283,8 +340,8 @@ namespace DreamClass.Subjects
                             Texture2D texture = new Texture2D(2, 2);
                             if (texture.LoadImage(imageData))
                             {
-                                Sprite sprite = Sprite.Create(texture, 
-                                    new Rect(0, 0, texture.width, texture.height), 
+                                Sprite sprite = Sprite.Create(texture,
+                                    new Rect(0, 0, texture.width, texture.height),
                                     Vector2.one * 0.5f);
                                 loadedSprites.Add(sprite);
                                 spritesLoaded++;
@@ -321,7 +378,7 @@ namespace DreamClass.Subjects
         {
             // Đợi một khoảng thời gian trước khi bắt đầu preload
             yield return new WaitForSeconds(backgroundPreloadDelay);
-            
+
             Log($"[BACKGROUND PRELOAD] Starting background preload of all cached sprites...");
 
             if (subjectDatabase == null) yield break;
@@ -351,14 +408,15 @@ namespace DreamClass.Subjects
                     if (!subject.HasLoadedSprites())
                     {
                         Log($"[BACKGROUND PRELOAD] Loading {subject.name} ({loadedSubjects + 1}/{totalSubjects})");
-                        
+
                         // Load sprites cho subject này
-                        yield return StartCoroutine(LoadSubjectSpritesOnDemand(subject.cloudinaryFolder, (sprites) => {
+                        yield return StartCoroutine(LoadSubjectSpritesOnDemand(subject.cloudinaryFolder, (sprites) =>
+                        {
                             // Sprites loaded
                         }));
 
                         loadedSubjects++;
-                        
+
                         // Delay giữa các subjects để không lag
                         yield return new WaitForSeconds(0.1f);
                     }
@@ -369,11 +427,120 @@ namespace DreamClass.Subjects
         }
 
         /// <summary>
+        /// Preload tất cả bundle sprites lúc startup (giống như cache preload)
+        /// Để sprites sẵn sàng khi user click vào sách
+        /// </summary>
+        private IEnumerator PreloadAllBundlesCoroutine()
+        {
+            Log("[BUNDLE PRELOAD] Starting preload of all bundle sprites...");
+
+            string bundleStoreFull = Path.Combine(Application.streamingAssetsPath, bundleStorePath);
+            string[] bundleFiles = Directory.GetFiles(bundleStoreFull);
+
+            // Filter only bundle files (exclude .manifest and .meta files)
+            List<string> actualBundles = new List<string>();
+            foreach (var file in bundleFiles)
+            {
+                string fileName = Path.GetFileName(file);
+                if (!fileName.EndsWith(".manifest", System.StringComparison.OrdinalIgnoreCase) &&
+                    !fileName.EndsWith(".meta", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    actualBundles.Add(file);
+                }
+            }
+
+            Log($"[BUNDLE PRELOAD] Found {actualBundles.Count} bundles to preload");
+
+            int preloadedCount = 0;
+            foreach (var bundlePath in actualBundles)
+            {
+                string bundleFileName = Path.GetFileName(bundlePath);
+                string bundleName = bundleFileName.ToLower();
+
+                // Load bundle and cache sprites
+                yield return StartCoroutine(LoadFromLocalBundle(bundlePath, bundleName, (sprites) =>
+                {
+                    if (sprites != null && sprites.Length > 0)
+                    {
+                        preloadedCount++;
+                        Log($"[BUNDLE PRELOAD] Preloaded {bundleFileName}: {sprites.Length} sprites");
+
+                        // ============================================================
+                        // DEBUG: Match bundle with SubjectDatabase
+                        // ============================================================
+                        if (subjectDatabase != null)
+                        {
+                            //Log($"[BUNDLE DEBUG] === Bundle: {bundleName} ===");
+                            //Log($"[BUNDLE DEBUG] Total subjects in database: {subjectDatabase.subjects.Count}");
+                            
+                            bool foundMatch = false;
+                            foreach (var subject in subjectDatabase.subjects)
+                            {
+                                // Normalize CloudinaryFolder: replace / with _, lowercase
+                                string cloudinaryNormalized = subject.cloudinaryFolder;
+                                if (!string.IsNullOrEmpty(cloudinaryNormalized))
+                                {
+                                    cloudinaryNormalized = cloudinaryNormalized.Replace("/", "_").ToLower();
+                                }
+                                
+                                // Compare without sanitization
+                                bool nameMatch = subject.name.Equals(bundleName, StringComparison.OrdinalIgnoreCase);
+                                bool folderMatch = !string.IsNullOrEmpty(cloudinaryNormalized) && 
+                                    cloudinaryNormalized.Equals(bundleName, StringComparison.OrdinalIgnoreCase);
+                                
+                                //Log($"[BUNDLE DEBUG] Subject: {subject.name}");
+                                //Log($"[BUNDLE DEBUG]   - Name: {subject.name} | Match: {nameMatch}");
+                                //Log($"[BUNDLE DEBUG]   - CloudinaryFolder: {subject.cloudinaryFolder}");
+                                //Log($"[BUNDLE DEBUG]   - CloudinaryFolder Normalized: {cloudinaryNormalized}");
+                                //Log($"[BUNDLE DEBUG]   - CloudinaryFolder Match: {folderMatch}");
+                                //Log($"[BUNDLE DEBUG]   - Bundle name to match: {bundleName}");
+                                //Log($"[BUNDLE DEBUG]   - Title: {subject.title}");
+                                //Log($"[BUNDLE DEBUG]   - Pages: {subject.pages}");
+                                
+                                if (nameMatch || folderMatch)
+                                {
+                                    foundMatch = true;
+                                    subject.SetBookPages(sprites);
+                                    subject.isCached = true;
+                                    Log($"[BUNDLE PRELOAD] MATCHED! Assigned {sprites.Length} sprites to {subject.name}");
+                                }
+                            }
+                            
+                            if (!foundMatch)
+                            {
+                                Log($"[BUNDLE PRELOAD] WARNING: No match found for bundle {bundleName}");
+                            }
+                        }
+                    }
+                }));
+
+                // Small delay between bundles
+                yield return new WaitForSeconds(0.1f);
+            }
+
+            Log($"[BUNDLE PRELOAD] Complete! Preloaded {preloadedCount}/{actualBundles.Count} bundles");
+
+            preloadComplete = true;
+            TryMarkAsReady();
+        }
+
+        /// <summary>
         /// OPTIMIZATION: Load sprites on-demand for a specific subject
         /// Gọi method này khi user chọn subject để học
         /// </summary>
         public IEnumerator LoadSubjectSpritesOnDemand(string subjectPath, Action<Sprite[]> callback)
         {
+            // ============================================================
+            // 0. CHECK IF ALREADY LOADED (from bundle or cache preload)
+            // ============================================================
+            var localSubject = subjectDatabase?.subjects.Find(s => s.MatchesCloudinaryFolder(subjectPath));
+            if (localSubject != null && localSubject.HasLoadedSprites())
+            {
+                Log($"[LAZY LOAD] Sprites already loaded for {localSubject.name} - returning cached");
+                callback?.Invoke(localSubject.bookPages);
+                yield break;
+            }
+
             // ============================================================
             // 1. CHECK BUNDLE TRƯỚC (Logic mới)
             // ============================================================
@@ -386,6 +553,15 @@ namespace DreamClass.Subjects
                 if (File.Exists(pathToCheck))
                 {
                     Log($"[BUNDLE] Found bundle for {subjectPath}, loading from bundle...");
+
+                    // Clear old sprites trước khi load mới
+                    var targetSubject = subjectDatabase?.subjects.Find(s => s.MatchesCloudinaryFolder(subjectPath));
+                    if (targetSubject != null && targetSubject.HasLoadedSprites())
+                    {
+                        Log($"[BUNDLE] Clearing old sprites for {targetSubject.name}...");
+                        ClearSubjectSprites(targetSubject);
+                    }
+
                     yield return StartCoroutine(LoadFromLocalBundle(pathToCheck, bundleName, callback));
                     yield break; // Kết thúc luôn, không chạy logic cũ
                 }
@@ -402,7 +578,6 @@ namespace DreamClass.Subjects
                 yield return new WaitUntil(() => !subjectLoadingState[subjectPath]);
             }
 
-            var localSubject = subjectDatabase?.subjects.Find(s => s.MatchesCloudinaryFolder(subjectPath));
             if (localSubject == null)
             {
                 LogError($"[LAZY LOAD] Subject not found: {subjectPath}");
@@ -412,7 +587,7 @@ namespace DreamClass.Subjects
 
             Log($"[LAZY LOAD] Found subject: {localSubject.name}, localImagePaths count: {localSubject.localImagePaths?.Count ?? 0}");
 
-            // Check if already loaded
+            // Check if already loaded (second check after potential bundle load)
             if (localSubject.HasLoadedSprites())
             {
                 Log($"[LAZY LOAD] Sprites already loaded for {localSubject.name}");
@@ -442,6 +617,7 @@ namespace DreamClass.Subjects
                         {
                             sprites[index] = sprite;
                             loadedCount++;
+                            totalCacheLoads++;
                         }
                     }));
                 }
@@ -453,6 +629,7 @@ namespace DreamClass.Subjects
                         {
                             sprites[index] = sprite;
                             loadedCount++;
+                            totalCacheLoads++;
                         }
                     }));
                 }
@@ -479,14 +656,26 @@ namespace DreamClass.Subjects
         /// <summary>
         /// Load sprites từ local AssetBundle (rất nhanh)
         /// </summary>
+        // Cache sprites từ bundle để reuse (tránh deserialize lại)
+        private Dictionary<string, Sprite[]> bundleSpriteCache = new Dictionary<string, Sprite[]>();
+
         private IEnumerator LoadFromLocalBundle(string filePath, string bundleName, Action<Sprite[]> callback)
         {
+            // Check cache sprite trước - nếu đã load lần này thì dùng ngay
+            if (bundleSpriteCache.ContainsKey(bundleName))
+            {
+                Log($"[BUNDLE] Using cached sprites for {bundleName} ({bundleSpriteCache[bundleName].Length} sprites)");
+                callback?.Invoke(bundleSpriteCache[bundleName]);
+                yield break;
+            };
+
             AssetBundle bundle = null;
 
             // Check xem đã load vào RAM chưa
             if (loadedBundles.ContainsKey(bundleName))
             {
                 bundle = loadedBundles[bundleName];
+                Log($"[BUNDLE] Using cached bundle in memory: {bundleName}");
             }
             else
             {
@@ -509,17 +698,76 @@ namespace DreamClass.Subjects
                 yield break;
             }
 
-            // Load tất cả Sprite trong bundle (Async để không lag game)
-            var assetRequest = bundle.LoadAllAssetsAsync<Sprite>();
-            yield return assetRequest;
+            // Track bundle load statistics
+            if (!bundleLoadStats.ContainsKey(bundleName))
+            {
+                bundleLoadStats[bundleName] = 0;
+            }
+            bundleLoadStats[bundleName]++;
+            totalBundleLoads++;
+            Log($"[BUNDLE STAT] Total bundle loads = {totalBundleLoads}, {bundleName} loaded {bundleLoadStats[bundleName]} times");
 
-            Sprite[] sprites = assetRequest.allAssets.Cast<Sprite>().ToArray();
+            // Try loading Sprites first
+            var spriteRequest = bundle.LoadAllAssetsAsync<Sprite>();
+            yield return spriteRequest;
 
-            // Sắp xếp lại theo tên (page_001, page_002...) vì Bundle trả về thứ tự ngẫu nhiên
+            Sprite[] sprites = spriteRequest.allAssets.Cast<Sprite>().ToArray();
+
+            // If no Sprites found, try loading Texture2D and convert to Sprite
+            if (sprites.Length == 0)
+            {
+                Log($"[BUNDLE] No Sprites found, attempting to load Texture2D and convert...");
+                
+                var textureRequest = bundle.LoadAllAssetsAsync<Texture2D>();
+                yield return textureRequest;
+
+                Texture2D[] textures = textureRequest.allAssets.Cast<Texture2D>().ToArray();
+                Log($"[BUNDLE DEBUG] Found {textures.Length} Texture2D assets in bundle");
+
+                if (textures.Length > 0)
+                {
+                    // Convert Texture2D to Sprite
+                    List<Sprite> convertedSprites = new List<Sprite>();
+                    foreach (var texture in textures)
+                    {
+                        try
+                        {
+                            Sprite sprite = Sprite.Create(
+                                texture,
+                                new Rect(0, 0, texture.width, texture.height),
+                                Vector2.one * 0.5f,
+                                100f
+                            );
+                            sprite.name = texture.name;
+                            convertedSprites.Add(sprite);
+                            //Log($"[BUNDLE] Converted Texture2D to Sprite: {texture.name}");
+                        }
+                        catch (System.Exception ex)
+                        {
+                            //LogError($"[BUNDLE] Failed to convert Texture2D {texture.name}: {ex.Message}");
+                        }
+                    }
+                    sprites = convertedSprites.ToArray();
+                }
+                else
+                {
+                    // No Sprite or Texture2D found - likely a manifest bundle, skip silently
+                    Log($"[BUNDLE] No Sprite or Texture2D assets found in bundle {bundleName} - skipping (likely manifest bundle)");
+                    
+                    Log($"[BUNDLE] Falling back to cache/API loading...");
+                    callback?.Invoke(null);
+                    yield break;
+                }
+            }
+
+            // Sort by name (page_001, page_002...) since Bundle returns random order
             System.Array.Sort(sprites, (a, b) => string.Compare(a.name, b.name));
 
-            Log($"[BUNDLE] Loaded {sprites.Length} sprites from bundle {bundleName}");
+            // Cache sprite để reuse lần sau (không cần deserialize lại)
+            bundleSpriteCache[bundleName] = sprites;
+            Log($"[BUNDLE] Loaded {sprites.Length} sprites from bundle {bundleName} and cached for reuse");
             callback?.Invoke(sprites);
+
         }
 
         /// <summary>
@@ -554,11 +802,15 @@ namespace DreamClass.Subjects
                 // Fallback: Async file read
                 byte[] pngData = null;
                 bool fileReadComplete = false;
-                
-                Task.Run(() => {
-                    try {
+
+                Task.Run(() =>
+                {
+                    try
+                    {
                         pngData = File.ReadAllBytes(path);
-                    } catch (Exception ex) {
+                    }
+                    catch (Exception ex)
+                    {
                         Debug.LogError($"[PDFSubjectService] Failed to read file: {ex.Message}");
                     }
                     fileReadComplete = true;
@@ -585,7 +837,7 @@ namespace DreamClass.Subjects
             // Optional: Resize if needed (skip if smaller and skipResizeIfSmaller is true)
             bool needsResize = texture.width > maxTextureSize || texture.height > maxTextureSize;
             bool needsCompressionResize = useTextureCompression && (texture.width % 4 != 0 || texture.height % 4 != 0);
-            
+
             if (needsResize || (needsCompressionResize && !skipResizeIfSmaller))
             {
                 yield return null; // Spread across frame
@@ -617,11 +869,15 @@ namespace DreamClass.Subjects
             // Async file read
             byte[] webpData = null;
             bool fileReadComplete = false;
-            
-            Task.Run(() => {
-                try {
+
+            Task.Run(() =>
+            {
+                try
+                {
                     webpData = File.ReadAllBytes(path);
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     Debug.LogError($"[PDFSubjectService] Failed to read WebP file: {ex.Message}");
                 }
                 fileReadComplete = true;
@@ -650,7 +906,7 @@ namespace DreamClass.Subjects
             // Optional: Resize if needed
             bool needsResize = texture.width > maxTextureSize || texture.height > maxTextureSize;
             bool needsCompressionResize = useTextureCompression && (texture.width % 4 != 0 || texture.height % 4 != 0);
-            
+
             if (needsResize || (needsCompressionResize && !skipResizeIfSmaller))
             {
                 yield return null; // Spread across frame
@@ -752,6 +1008,39 @@ namespace DreamClass.Subjects
         */
 
         /// <summary>
+        /// Clear sprites từ subject (unload textures và destroy sprites)
+        /// Dùng khi load subject mới để tránh memory leak
+        /// </summary>
+        private void ClearSubjectSprites(SubjectInfo subject)
+        {
+            if (subject == null) return;
+
+            var sprites = subject.bookPages;
+            if (sprites != null && sprites.Length > 0)
+            {
+                int count = 0;
+                foreach (var sprite in sprites)
+                {
+                    if (sprite != null)
+                    {
+                        // Destroy texture
+                        if (sprite.texture != null)
+                        {
+                            UnityEngine.Object.Destroy(sprite.texture);
+                        }
+                        // Destroy sprite
+                        UnityEngine.Object.Destroy(sprite);
+                        count++;
+                    }
+                }
+                Log($"[MEMORY] Cleared {count} old sprites for {subject.name}");
+            }
+
+            // Clear cached references
+            subject.ClearCacheData();
+        }
+
+        /// <summary>
         /// OPTIMIZATION: Unload sprites khi không dùng để giải phóng memory
         /// Gọi khi user thoát khỏi subject
         /// </summary>
@@ -788,10 +1077,10 @@ namespace DreamClass.Subjects
                 Log("[CACHE] Cache manifest is empty - cannot load subjects");
                 return;
             }
-            
+
             remoteSubjects.Clear();
             int loadedCount = 0;
-            
+
             foreach (var cachedSubject in cacheManifest.subjects)
             {
                 try
@@ -805,10 +1094,10 @@ namespace DreamClass.Subjects
                         localImagePaths = new List<string>(cachedSubject.cachedImagePaths ?? new List<string>()),
                         imageUrls = new List<string>(cachedSubject.cachedImagePaths ?? new List<string>())  // Use cached paths as imageUrls
                     };
-                    
+
                     remoteSubjects.Add(remoteSubject);
                     loadedCount++;
-                    
+
                     Log($"[CACHE] Loaded from manifest: {cachedSubject.subjectName} ({cachedSubject.cachedImagePaths?.Count ?? 0} images)");
                 }
                 catch (System.Exception e)
@@ -816,7 +1105,7 @@ namespace DreamClass.Subjects
                     Log($"[ERROR] Failed to load cached subject {cachedSubject.subjectName}: {e.Message}");
                 }
             }
-            
+
             Log($"[CACHE] Successfully loaded {loadedCount} subjects from cache manifest");
             OnSubjectsLoaded?.Invoke(remoteSubjects);
             preloadComplete = true;
@@ -825,13 +1114,13 @@ namespace DreamClass.Subjects
         private void TryMarkAsReady()
         {
             if (isReady) return;
-            
+
             if (isPreloading && !preloadComplete)
             {
                 Log("[TryMarkAsReady] Preload still in progress, waiting...");
                 return;
             }
-            
+
             Log("[TryMarkAsReady] All loading complete, marking as ready");
             overallProgress = 1f;
             OnOverallProgress?.Invoke(1f);
@@ -918,94 +1207,102 @@ namespace DreamClass.Subjects
                         }
 
                         RemoteSubjectInfo remoteSubject = new RemoteSubjectInfo(pdfInfo);
-                        
-                        // PRIORITY 1: Check for AssetBundle first
+                        string currentHash = pdfInfo.GetVersionHash();
+
+                        // ============================================================
+                        // STEP 1: BUNDLE CHECK
+                        // ============================================================
                         if (checkLocalBundleFirst)
                         {
                             string bundleName = SanitizeFolderName(pdfInfo.cloudinaryFolder).ToLower();
                             string bundlePath = Path.Combine(Application.streamingAssetsPath, bundleStorePath, bundleName);
-                            
+
                             if (File.Exists(bundlePath))
                             {
-                                remoteSubject.isCached = true;  // Mark as ready (Bundle is loaded on-demand)
-                                Log($"[BUNDLE CHECK] '{pdfInfo.name}': Bundle found at {bundleName} - Will use BUNDLE");
+                                remoteSubject.isCached = true;
+                                Log($"[BUNDLE CHECK] '{pdfInfo.name}': FOUND - Will use BUNDLE");
+                                remoteSubjects.Add(remoteSubject);
+                                continue; // Skip to next subject, use bundle
                             }
                             else
                             {
-                                Log($"[BUNDLE CHECK] '{pdfInfo.name}': Bundle not found at {bundleName}");
-                                
-                                // PRIORITY 2: Fallback to check cache
-                                var cachedData = cacheManifest.GetSubjectCacheByFolder(pdfInfo.cloudinaryFolder) 
-                                                 ?? cacheManifest.GetSubjectCache(pdfInfo.name);
-                                if (cachedData != null)
+                                Log($"[BUNDLE CHECK] '{pdfInfo.name}': NOT FOUND");
+                            }
+                        }
+
+                        // ============================================================
+                        // STEP 2: CACHE CHECK (with version validation)
+                        // ============================================================
+                        var cachedData = cacheManifest.GetSubjectCacheByFolder(pdfInfo.cloudinaryFolder)
+                                         ?? cacheManifest.GetSubjectCache(pdfInfo.name);
+
+                        if (cachedData != null)
+                        {
+                            bool hashMatch = cachedData.versionHash == currentHash;
+                            bool filesExist = VerifyCachedFilesExist(cachedData.cachedImagePaths);
+
+                            // Cache is VALID only if: fully cached + hash match + files exist
+                            if (cachedData.isFullyCached && hashMatch && filesExist)
+                            {
+                                remoteSubject.isCached = true;
+                                remoteSubject.localImagePaths = new List<string>(cachedData.cachedImagePaths);
+                                Log($"[CACHE CHECK] '{pdfInfo.name}': VALID - Using cached version (hash={currentHash})");
+                                remoteSubjects.Add(remoteSubject);
+                                continue; // Cache is good, skip download
+                            }
+                            else
+                            {
+                                // Cache exists but is OUTDATED or FILES MISSING or PARTIAL
+                                if (!hashMatch)
                                 {
-                                    string currentHash = pdfInfo.GetVersionHash();
-                                    bool hashMatch = cachedData.versionHash == currentHash;
-                                    bool filesExist = VerifyCachedFilesExist(cachedData.cachedImagePaths);
-                                    
-                                    remoteSubject.isCached = cachedData.isFullyCached && hashMatch && filesExist;
-                                    
-                                    Log($"[CACHE CHECK] '{pdfInfo.name}': fullyCached={cachedData.isFullyCached}, hashMatch={hashMatch}, filesExist={filesExist}, isCached={remoteSubject.isCached}");
-                                    
-                                    if (remoteSubject.isCached)
-                                    {
-                                        remoteSubject.localImagePaths = new List<string>(cachedData.cachedImagePaths);
-                                        Log($"[CACHE CHECK] '{pdfInfo.name}': Cache found - Assigned {remoteSubject.localImagePaths.Count} cached image paths");
-                                    }
-                                    else if (!filesExist && cachedData.isFullyCached)
-                                    {
-                                        // Files were deleted, need to re-cache
-                                        Log($"[CACHE CHECK] '{pdfInfo.name}':  Cache files missing, will re-download");
-                                        cachedData.isFullyCached = false;
-                                        cachedData.cachedImagePaths.Clear();
-                                    }
+                                    Log($"[CACHE CHECK] '{pdfInfo.name}': OUTDATED - Old hash: {cachedData.versionHash}, New hash: {currentHash}");
                                 }
-                                else
+                                else if (!filesExist)
                                 {
-                                    Log($"[CACHE CHECK] '{pdfInfo.name}':  No cache data found - Will download from API");
+                                    Log($"[CACHE CHECK] '{pdfInfo.name}': FILES MISSING");
                                 }
+                                else if (!cachedData.isFullyCached)
+                                {
+                                    Log($"[CACHE CHECK] '{pdfInfo.name}': PARTIAL CACHE");
+                                }
+
+                                // Prepare cache data for re-download
+                                cachedData.cachedImagePaths.Clear();
+                                cachedData.isFullyCached = false;
+                                cachedData.versionHash = currentHash; // Update hash BEFORE download
+                                Log($"[DOWNLOAD] '{pdfInfo.name}': Marked for download (new hash={currentHash})");
                             }
                         }
                         else
                         {
-                            // Bundle check disabled, go straight to cache
-                            var cachedData = cacheManifest.GetSubjectCacheByFolder(pdfInfo.cloudinaryFolder) 
-                                             ?? cacheManifest.GetSubjectCache(pdfInfo.name);
-                            if (cachedData != null)
-                            {
-                                string currentHash = pdfInfo.GetVersionHash();
-                                bool hashMatch = cachedData.versionHash == currentHash;
-                                bool filesExist = VerifyCachedFilesExist(cachedData.cachedImagePaths);
-                                
-                                remoteSubject.isCached = cachedData.isFullyCached && hashMatch && filesExist;
-                                
-                                Log($"[CACHE CHECK] '{pdfInfo.name}': fullyCached={cachedData.isFullyCached}, hashMatch={hashMatch}, filesExist={filesExist}, isCached={remoteSubject.isCached}");
-                                
-                                if (remoteSubject.isCached)
-                                {
-                                    remoteSubject.localImagePaths = new List<string>(cachedData.cachedImagePaths);
-                                    Log($"[CACHE CHECK] '{pdfInfo.name}':  Cache found - Assigned {remoteSubject.localImagePaths.Count} cached image paths");
-                                }
-                                else if (!filesExist && cachedData.isFullyCached)
-                                {
-                                    // Files were deleted, need to re-cache
-                                    Log($"[CACHE CHECK] '{pdfInfo.name}':  Cache files missing, will re-download");
-                                    cachedData.isFullyCached = false;
-                                    cachedData.cachedImagePaths.Clear();
-                                }
-                            }
-                            else
-                            {
-                                Log($"[CACHE CHECK] '{pdfInfo.name}':  No cache data found - Will download from API");
-                            }
+                            // No cache entry exists - create new one
+                            Log($"[CACHE CHECK] '{pdfInfo.name}': NO CACHE DATA");
+
+                            string subjectName = string.IsNullOrEmpty(pdfInfo.cloudinaryFolder) ?
+                                pdfInfo.name :
+                                Path.GetFileName(pdfInfo.cloudinaryFolder);
+                            if (string.IsNullOrEmpty(subjectName))
+                                subjectName = pdfInfo.title ?? pdfInfo.name ?? "Unknown";
+
+                            cachedData = new LocalSubjectCacheData(subjectName, pdfInfo.cloudinaryFolder, currentHash);
+                            cacheManifest.AddOrUpdateSubject(cachedData);
+                            Log($"[DOWNLOAD] '{pdfInfo.name}': Created new cache entry - Marked for download (hash={currentHash})");
                         }
 
+                        // ============================================================
+                        // STEP 3: MARK FOR DOWNLOAD FROM API
+                        // ============================================================
+                        remoteSubject.isCached = false;
                         remoteSubjects.Add(remoteSubject);
                     }
 
                     Log($"Loaded {remoteSubjects.Count} subjects from API (skipped {skippedCount})");
                     hasFetched = true;
-                    
+
+                    // Track API loads
+                    totalApiLoads += remoteSubjects.Count;
+                    Log($"[API STAT] Total API loads = {totalApiLoads}");
+
                     UpdateSubjectDatabaseWithRemoteData();
                     ValidateAllCacheStatus();
                 }
@@ -1090,7 +1387,7 @@ namespace DreamClass.Subjects
             foreach (var remote in remoteSubjects)
             {
                 var localSubject = subjectDatabase.subjects.Find(s => s.MatchesCloudinaryFolder(remote.cloudinaryFolder));
-                
+
                 if (localSubject != null)
                 {
                     localSubject.title = remote.title;
@@ -1101,17 +1398,17 @@ namespace DreamClass.Subjects
                 }
             }
 
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             UnityEditor.EditorUtility.SetDirty(subjectDatabase);
             UnityEditor.AssetDatabase.SaveAssets();
-            #endif
+#endif
         }
 
         // Các methods còn lại giữ nguyên...
         private IEnumerator AutoCacheAllSubjects()
         {
             Log("Starting auto-cache for all subjects...");
-            
+
             int totalSubjects = remoteSubjects.Count;
             int cachedCount = 0;
             int skippedCount = 0;
@@ -1119,7 +1416,7 @@ namespace DreamClass.Subjects
             for (int i = 0; i < remoteSubjects.Count; i++)
             {
                 var remote = remoteSubjects[i];
-                
+
                 // Skip if already cached
                 if (remote.isCached)
                 {
@@ -1141,7 +1438,7 @@ namespace DreamClass.Subjects
 
                 // Cache this subject
                 yield return StartCoroutine(CacheSubjectCoroutine(remote));
-                
+
                 cachedCount++;
 
                 // Update overall progress
@@ -1150,10 +1447,12 @@ namespace DreamClass.Subjects
             }
 
             Log($"Auto-cache complete: {cachedCount} cached, {skippedCount} skipped");
-            
-            // Save manifest after caching all
+
+            // Manifest is already saved in CacheSubjectCoroutine after each subject
+            // Just ensure final save
             SaveCacheManifest();
-            
+            Log("[CACHE MANIFEST] Final save completed");
+
             TryMarkAsReady();
             OnSubjectsLoaded?.Invoke(remoteSubjects);
         }
@@ -1178,28 +1477,30 @@ namespace DreamClass.Subjects
 
             Log($"[CACHE] Subject folder: {subjectFolder}, sanitized name: {SanitizeFolderName(subject.cloudinaryFolder ?? subject.name)}");
 
-            // Create or get cache data
-            var cacheData = cacheManifest.GetSubjectCacheByFolder(subject.cloudinaryFolder) 
+            // Get cache data (should exist from FetchSubjectsCoroutine)
+            var cacheData = cacheManifest.GetSubjectCacheByFolder(subject.cloudinaryFolder)
                             ?? cacheManifest.GetSubjectCache(subject.name);
-            
+
             if (cacheData == null)
             {
-                // Extract subject name from cloudinaryFolder (e.g., "pdf-pages/SGK TOAN11 - TAP 2 KNTT" → "SGK TOAN11 - TAP 2 KNTT")
-                string subjectName = string.IsNullOrEmpty(subject.cloudinaryFolder) ? 
-                    subject.name : 
+                // Fallback: Create new cache entry if missing (shouldn't happen)
+                string subjectName = string.IsNullOrEmpty(subject.cloudinaryFolder) ?
+                    subject.name :
                     Path.GetFileName(subject.cloudinaryFolder);
-                
+
                 if (string.IsNullOrEmpty(subjectName))
                     subjectName = subject.title ?? subject.name ?? "Unknown";
-                
+
                 string versionHash = $"{subjectName}_{subject.pages}_{subject.imageUrls.Count}";
                 cacheData = new LocalSubjectCacheData(subjectName, subject.cloudinaryFolder, versionHash);
-                Log($"[CACHE] Created new cache entry: name='{subjectName}', folder='{subject.cloudinaryFolder}'");
+                cacheManifest.AddOrUpdateSubject(cacheData);
+                Log($"[CACHE] Created fallback cache entry: name='{subjectName}', hash='{versionHash}'");
             }
             else
             {
-                // Clear existing cached paths if re-caching
+                // Clear existing paths for re-download
                 cacheData.cachedImagePaths.Clear();
+                Log($"[CACHE] Cleared old paths for '{subject.GetIdentifier()}', hash={cacheData.versionHash}");
             }
 
             int downloadedCount = 0;
@@ -1216,7 +1517,8 @@ namespace DreamClass.Subjects
 
                 // Download and save image
                 bool success = false;
-                yield return StartCoroutine(DownloadAndSaveImageCoroutine(imageUrl, localPath, cacheAsPNG, (result) => {
+                yield return StartCoroutine(DownloadAndSaveImageCoroutine(imageUrl, localPath, cacheAsPNG, (result) =>
+                {
                     success = result;
                     Log($"[CACHE] Download result for image {i + 1}: {(result ? "SUCCESS" : "FAILED")} -> {localPath}");
                 }));
@@ -1225,7 +1527,7 @@ namespace DreamClass.Subjects
                 {
                     cacheData.cachedImagePaths.Add(localPath);
                     downloadedCount++;
-                    
+
                     // Report progress
                     float progress = (float)downloadedCount / totalImages;
                     OnSubjectCacheProgress?.Invoke(subject, progress);
@@ -1242,10 +1544,16 @@ namespace DreamClass.Subjects
                 }
             }
 
-            // Update cache data
+            // ============================================================
+            // STEP 4: SAVE CACHE (update manifest)
+            // ============================================================
             cacheData.isFullyCached = downloadedCount == totalImages;
             cacheData.lastUpdated = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             cacheManifest.AddOrUpdateSubject(cacheData);
+
+            // Save manifest immediately after updating
+            SaveCacheManifest();
+            Log($"[CACHE SAVED] '{subject.GetIdentifier()}': hash={cacheData.versionHash}, images={downloadedCount}/{totalImages}");
 
             // Update subject status
             subject.isCached = cacheData.isFullyCached;
@@ -1306,25 +1614,25 @@ namespace DreamClass.Subjects
                                 // Create a readable copy of the texture for encoding
                                 RenderTexture rt = RenderTexture.GetTemporary(texture.width, texture.height, 0, RenderTextureFormat.ARGB32);
                                 Graphics.Blit(texture, rt);
-                                
+
                                 RenderTexture previous = RenderTexture.active;
                                 RenderTexture.active = rt;
-                                
+
                                 Texture2D readableTexture = new Texture2D(texture.width, texture.height, TextureFormat.RGBA32, false);
                                 readableTexture.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
                                 readableTexture.Apply();
-                                
+
                                 RenderTexture.active = previous;
                                 RenderTexture.ReleaseTemporary(rt);
-                                
+
                                 // Encode to PNG and save
                                 byte[] pngData = readableTexture.EncodeToPNG();
                                 File.WriteAllBytes(localPath, pngData);
-                                
+
                                 // Cleanup textures
                                 UnityEngine.Object.Destroy(texture);
                                 UnityEngine.Object.Destroy(readableTexture);
-                                
+
                                 callback?.Invoke(true);
                             }
                             else
@@ -1355,17 +1663,31 @@ namespace DreamClass.Subjects
         }
 
         /// <summary>
-        /// Sanitize folder name to remove invalid characters
+        /// Sanitize folder name to remove invalid characters and normalize
         /// </summary>
         private string SanitizeFolderName(string name)
         {
             if (string.IsNullOrEmpty(name)) return "unknown";
-            
+
+            // Remove invalid file name characters
             char[] invalidChars = Path.GetInvalidFileNameChars();
             foreach (char c in invalidChars)
             {
                 name = name.Replace(c, '_');
             }
+
+            // Replace spaces with underscores
+            name = name.Replace(" ", "_");
+
+            // Remove multiple underscores
+            while (name.Contains("__"))
+            {
+                name = name.Replace("__", "_");
+            }
+
+            // Convert to lowercase for consistent matching
+            name = name.ToLower();
+
             return name;
         }
 
@@ -1375,12 +1697,12 @@ namespace DreamClass.Subjects
         private string GetExtensionFromUrl(string url)
         {
             if (string.IsNullOrEmpty(url)) return ".png";
-            
+
             if (url.Contains(".webp", StringComparison.OrdinalIgnoreCase)) return ".webp";
             if (url.Contains(".jpg", StringComparison.OrdinalIgnoreCase)) return ".jpg";
             if (url.Contains(".jpeg", StringComparison.OrdinalIgnoreCase)) return ".jpeg";
             if (url.Contains(".png", StringComparison.OrdinalIgnoreCase)) return ".png";
-            
+
             return ".png"; // Default
         }
 
@@ -1416,13 +1738,13 @@ namespace DreamClass.Subjects
         {
             EnsureCacheDirectoryExists();
             string path = CachePath.Replace("/", "\\");
-            
-            #if UNITY_EDITOR
+
+#if UNITY_EDITOR
             UnityEditor.EditorUtility.RevealInFinder(path);
-            #else
+#else
             System.Diagnostics.Process.Start("explorer.exe", path);
-            #endif
-            
+#endif
+
             Log($"Opening cache folder: {path}");
         }
 
@@ -1457,9 +1779,9 @@ namespace DreamClass.Subjects
                     subject.ClearCacheData();
                 }
 
-                #if UNITY_EDITOR
+#if UNITY_EDITOR
                 UnityEditor.EditorUtility.SetDirty(subjectDatabase);
-                #endif
+#endif
             }
 
             // Clear remote subjects cache status
@@ -1479,7 +1801,7 @@ namespace DreamClass.Subjects
             Log($"Cache Path: {CachePath}");
             Log($"Manifest Path: {ManifestPath}");
             Log($"Cache Exists: {Directory.Exists(CachePath)}");
-            
+
             if (cacheManifest != null)
             {
                 Log($"Cached Subjects: {cacheManifest.subjects.Count}");
@@ -1510,7 +1832,7 @@ namespace DreamClass.Subjects
         public void ForceRedownloadAll()
         {
             Log("[FORCE REDOWNLOAD] Clearing cache and re-downloading all subjects...");
-            
+
             // Clear cache status but keep manifest
             foreach (var remote in remoteSubjects)
             {
@@ -1547,7 +1869,7 @@ namespace DreamClass.Subjects
         {
             Log($"=== Remote Subjects Info ===");
             Log($"Total remote subjects: {remoteSubjects.Count}");
-            
+
             foreach (var remote in remoteSubjects)
             {
                 int imageCount = remote.imageUrls?.Count ?? 0;

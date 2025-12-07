@@ -19,11 +19,6 @@ namespace DreamClass.Tools.Editor
         private GUIStyle successStyle;
         private GUIStyle errorStyle;
 
-        private float bundleLoadTime = 0f;
-        private float cacheLoadTime = 0f;
-        private int bundleLoadCount = 0;
-        private int cacheLoadCount = 0;
-
         [MenuItem("Window/DreamClass/Asset Source Viewer")]
         public static void ShowWindow()
         {
@@ -59,6 +54,9 @@ namespace DreamClass.Tools.Editor
             GUILayout.Space(10);
 
             DrawAssetPriority();
+            GUILayout.Space(10);
+
+            DrawBundleLoadingStats();
             GUILayout.Space(10);
 
             DrawRemoteSubjects();
@@ -220,6 +218,47 @@ namespace DreamClass.Tools.Editor
             EditorGUILayout.LabelField("[3] API Fetch (if Cache empty)", successStyle);
             EditorGUILayout.LabelField("   Slowest (~5-10+ sec)", logStyle);
             EditorGUILayout.LabelField("   Depends on network", logStyle);
+
+            EditorGUILayout.EndVertical();
+        }
+
+        private void DrawBundleLoadingStats()
+        {
+            EditorGUILayout.LabelField("BUNDLE LOADING STATISTICS", headerStyle);
+            EditorGUILayout.BeginVertical("box");
+
+            if (pdfService == null)
+            {
+                EditorGUILayout.LabelField("PDFSubjectService not available", errorStyle);
+                EditorGUILayout.EndVertical();
+                return;
+            }
+
+            EditorGUILayout.LabelField($"Total Bundle Loads: {pdfService.TotalBundleLoads}", logStyle);
+            EditorGUILayout.LabelField($"Total Cache Loads: {pdfService.TotalCacheLoads}", logStyle);
+            EditorGUILayout.LabelField($"Total API Loads: {pdfService.TotalApiLoads}", logStyle);
+
+            var stats = pdfService.BundleLoadStats;
+            if (stats != null && stats.Count > 0)
+            {
+                EditorGUILayout.LabelField("Bundles Loaded:", logStyle);
+                foreach (var kvp in stats)
+                {
+                    string statText = $"  {kvp.Key}: {kvp.Value} times";
+                    EditorGUILayout.LabelField(statText, logStyle);
+                }
+            }
+            else
+            {
+                EditorGUILayout.LabelField("No bundle loads recorded yet", logStyle);
+            }
+
+            GUILayout.Space(5);
+
+            if (GUILayout.Button("Refresh Statistics", GUILayout.Height(25)))
+            {
+                // Statistics auto-update from PDFSubjectService
+            }
 
             EditorGUILayout.EndVertical();
         }

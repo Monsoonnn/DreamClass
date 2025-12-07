@@ -151,6 +151,21 @@ public class BookPageLoader : MonoBehaviour
     }
 
     /// <summary>
+    /// Clear loaded sprites without resetting page state
+    /// Used before lazy loading new subject
+    /// </summary>
+    internal void ClearSpritesOnly()
+    {
+        if (spriteManager != null)
+        {
+            // Only clear sprites, don't change currentPage or call UpdateSprites
+            spriteManager.bookPages = new Sprite[0];
+        }
+        loadedPageCount = 0;
+        Debug.Log("[BookPageLoader] Cleared sprites only (kept page state)");
+    }
+
+    /// <summary>
     /// Clear loaded sprites and reset state
     /// </summary>
     [ProButton]
@@ -197,6 +212,24 @@ public class BookPageLoader : MonoBehaviour
             return;
         }
 
+        if (spriteManager == null)
+        {
+            Debug.LogError("[BookPageLoader] BookSpriteManager not assigned!");
+            callback?.Invoke(false);
+            return;
+        }
+
+        // PRIORITY 1: Check if sprites already loaded (from PRELOAD bundle or cache)
+        if (subject.HasLoadedSprites())
+        {
+            Debug.Log($"[BookPageLoader] ✓ Sprites already loaded for {subject.name} - loading directly (NO LAZY LOAD)");
+            Debug.Log($"[BookPageLoader] Sprite count: {subject.bookPages?.Length ?? 0}");
+            bool success = LoadFromSubject(subject, resetToFirstPage);
+            callback?.Invoke(success);
+            return;  // RETURN EARLY - don't start lazy loading!
+        }
+
+        // PRIORITY 2: Check if PDFSubjectService exists
         if (PDFSubjectService.Instance == null)
         {
             Debug.LogError("[BookPageLoader] PDFSubjectService not found!");
@@ -204,24 +237,19 @@ public class BookPageLoader : MonoBehaviour
             return;
         }
 
-        // Nếu sprites đã load, sử dụng ngay
-        if (subject.HasLoadedSprites())
-        {
-            Debug.Log($"[BookPageLoader] Sprites already loaded for {subject.name}, using directly");
-            bool success = LoadFromSubject(subject, resetToFirstPage);
-            callback?.Invoke(success);
-            return;
-        }
-
-        // Lazy load sprites từ PDFSubjectService
-        Debug.Log($"[BookPageLoader] Starting lazy load for {subject.name}...");
+        // PRIORITY 3: Start lazy loading (sprites not loaded yet)
+        Debug.Log($"[BookPageLoader] Sprites NOT loaded for {subject.name} - starting LAZY LOAD...");
+        Debug.Log($"[BookPageLoader] DEBUG: localImagePaths={subject.localImagePaths?.Count ?? 0}, isCached={subject.isCached}");
+        Debug.Log($"[BookPageLoader] DEBUG: bookPages={subject.bookPages?.Length ?? 0}");
         
         // Ensure SpriteManager is active before coroutine
-        if (spriteManager != null && !spriteManager.gameObject.activeSelf)
+        if (!spriteManager.gameObject.activeSelf)
         {
             spriteManager.gameObject.SetActive(true);
             Debug.Log($"[BookPageLoader] Activated SpriteManager for {subject.name}");
         }
+
+        ClearSpritesOnly();
         
         // Delegate to LearningBookCtrl (which is always active to hold coroutine)
         var bookCtrl = GetComponentInParent<LearningBookCtrl>();
