@@ -132,129 +132,248 @@ MonoBehaviour:
     grade: 11
     category: "K\u1EBFt n\u1ED1i tri th\u1EE9c"
     pages: 119
-    pdfUrl: https://res.cloudinary.com/dogfzmnrt/image/upload/v1764342310/pdf-pages/SGK%20VL%2011%20KNTT%20%281%29/SGK%20VL%2011%20KNTT%20%281%29.pdf
-    imageUrls:
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_1/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_2/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_3/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_4/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_5/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_6/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_7/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_8/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_9/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_10/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_11/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_12/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_13/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_14/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_15/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_16/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_17/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_18/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_19/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_20/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_21/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_22/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_23/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_24/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_25/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_26/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_27/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_28/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_29/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_30/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_31/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_32/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_33/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_34/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_35/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_36/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_37/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_38/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_39/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_40/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_41/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_42/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_43/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_44/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_45/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_46/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_47/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_48/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_49/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_50/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_51/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_52/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_53/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_54/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_55/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_56/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_57/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_58/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_59/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_60/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_61/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_62/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_63/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_64/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_65/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_66/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_67/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_68/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_69/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_70/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_71/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_72/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_73/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_74/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_75/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_76/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_77/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_78/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_79/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_80/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_81/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_82/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_83/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_84/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_85/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_86/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_87/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_88/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_89/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_90/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_91/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_92/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_93/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_94/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_95/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_96/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_97/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_98/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_99/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_100/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_101/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_102/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_103/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_104/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_105/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_106/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_107/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_108/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_109/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_110/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_111/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_112/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_113/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_114/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_115/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_116/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_117/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_118/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_119/v1/pdf-pages/SGK%20VL%2011%20KNTT%20(1)/SGK%20VL%2011%20KNTT%20(1).webp?_a=BAMAMiZW0
-    localImagePaths: []
-    isCached: 0
+    pdfUrl: 
+    imageUrls: []
+    localImagePaths:
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_000.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_001.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_002.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_003.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_004.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_005.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_006.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_007.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_008.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_009.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_010.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_011.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_012.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_013.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_014.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_015.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_016.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_017.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_018.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_019.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_020.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_021.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_022.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_023.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_024.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_025.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_026.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_027.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_028.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_029.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_030.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_031.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_032.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_033.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_034.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_035.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_036.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_037.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_038.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_039.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_040.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_041.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_042.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_043.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_044.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_045.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_046.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_047.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_048.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_049.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_050.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_051.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_052.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_053.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_054.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_055.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_056.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_057.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_058.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_059.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_060.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_061.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_062.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_063.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_064.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_065.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_066.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_067.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_068.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_069.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_070.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_071.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_072.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_073.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_074.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_075.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_076.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_077.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_078.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_079.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_080.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_081.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_082.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_083.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_084.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_085.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_086.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_087.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_088.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_089.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_090.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_091.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_092.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_093.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_094.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_095.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_096.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_097.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_098.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_099.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_100.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_101.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_102.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_103.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_104.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_105.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_106.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_107.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_108.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_109.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_110.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_111.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_112.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_113.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_114.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_115.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_116.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_117.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      VL 11 KNTT\page_118.png
+    isCached: 1
   - name: HoaHoc
     description: "H\xF3a h\u1ECDc - 11"
     lectures:
@@ -374,168 +493,326 @@ MonoBehaviour:
     grade: 11
     category: "K\u1EBFt n\u1ED1i tri th\u1EE9c"
     pages: 158
-    pdfUrl: https://res.cloudinary.com/dogfzmnrt/image/upload/v1764354380/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.pdf
-    imageUrls:
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_1/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_2/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_3/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_4/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_5/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_6/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_7/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_8/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_9/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_10/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_11/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_12/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_13/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_14/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_15/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_16/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_17/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_18/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_19/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_20/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_21/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_22/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_23/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_24/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_25/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_26/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_27/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_28/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_29/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_30/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_31/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_32/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_33/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_34/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_35/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_36/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_37/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_38/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_39/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_40/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_41/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_42/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_43/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_44/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_45/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_46/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_47/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_48/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_49/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_50/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_51/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_52/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_53/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_54/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_55/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_56/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_57/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_58/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_59/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_60/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_61/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_62/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_63/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_64/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_65/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_66/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_67/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_68/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_69/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_70/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_71/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_72/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_73/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_74/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_75/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_76/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_77/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_78/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_79/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_80/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_81/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_82/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_83/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_84/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_85/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_86/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_87/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_88/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_89/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_90/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_91/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_92/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_93/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_94/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_95/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_96/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_97/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_98/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_99/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_100/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_101/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_102/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_103/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_104/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_105/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_106/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_107/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_108/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_109/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_110/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_111/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_112/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_113/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_114/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_115/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_116/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_117/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_118/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_119/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_120/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_121/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_122/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_123/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_124/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_125/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_126/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_127/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_128/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_129/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_130/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_131/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_132/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_133/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_134/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_135/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_136/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_137/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_138/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_139/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_140/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_141/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_142/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_143/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_144/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_145/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_146/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_147/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_148/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_149/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_150/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_151/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_152/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_153/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_154/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_155/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_156/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_157/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    - https://res.cloudinary.com/dogfzmnrt/image/upload/pg_158/v1/pdf-pages/SGK%20HH%2011%20KNTT/SGK%20HH%2011%20KNTT.webp?_a=BAMAMiZW0
-    localImagePaths: []
-    isCached: 0
+    pdfUrl: 
+    imageUrls: []
+    localImagePaths:
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_000.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_001.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_002.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_003.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_004.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_005.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_006.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_007.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_008.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_009.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_010.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_011.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_012.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_013.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_014.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_015.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_016.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_017.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_018.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_019.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_020.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_021.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_022.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_023.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_024.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_025.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_026.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_027.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_028.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_029.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_030.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_031.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_032.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_033.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_034.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_035.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_036.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_037.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_038.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_039.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_040.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_041.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_042.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_043.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_044.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_045.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_046.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_047.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_048.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_049.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_050.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_051.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_052.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_053.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_054.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_055.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_056.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_057.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_058.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_059.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_060.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_061.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_062.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_063.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_064.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_065.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_066.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_067.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_068.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_069.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_070.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_071.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_072.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_073.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_074.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_075.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_076.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_077.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_078.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_079.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_080.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_081.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_082.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_083.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_084.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_085.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_086.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_087.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_088.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_089.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_090.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_091.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_092.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_093.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_094.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_095.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_096.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_097.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_098.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_099.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_100.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_101.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_102.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_103.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_104.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_105.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_106.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_107.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_108.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_109.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_110.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_111.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_112.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_113.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_114.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_115.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_116.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_117.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_118.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_119.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_120.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_121.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_122.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_123.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_124.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_125.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_126.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_127.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_128.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_129.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_130.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_131.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_132.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_133.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_134.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_135.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_136.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_137.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_138.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_139.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_140.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_141.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_142.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_143.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_144.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_145.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_146.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_147.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_148.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_149.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_150.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_151.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_152.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_153.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_154.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_155.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_156.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      HH 11 KNTT\page_157.png
+    isCached: 1
   - name: Toan11-Tap1
     description: "To\xE1n 11 - T\u1EADp 1"
     lectures:
@@ -659,8 +936,737 @@ MonoBehaviour:
     note: 
     grade: 11
     category: "K\u1EBFt n\u1ED1i tri th\u1EE9c"
-    pages: 0
+    pages: 134
     pdfUrl: 
     imageUrls: []
-    localImagePaths: []
-    isCached: 0
+    localImagePaths:
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_000.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_001.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_002.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_003.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_004.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_005.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_006.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_007.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_008.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_009.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_010.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_011.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_012.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_013.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_014.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_015.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_016.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_017.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_018.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_019.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_020.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_021.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_022.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_023.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_024.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_025.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_026.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_027.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_028.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_029.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_030.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_031.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_032.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_033.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_034.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_035.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_036.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_037.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_038.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_039.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_040.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_041.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_042.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_043.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_044.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_045.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_046.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_047.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_048.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_049.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_050.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_051.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_052.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_053.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_054.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_055.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_056.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_057.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_058.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_059.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_060.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_061.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_062.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_063.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_064.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_065.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_066.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_067.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_068.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_069.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_070.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_071.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_072.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_073.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_074.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_075.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_076.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_077.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_078.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_079.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_080.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_081.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_082.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_083.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_084.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_085.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_086.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_087.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_088.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_089.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_090.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_091.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_092.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_093.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_094.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_095.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_096.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_097.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_098.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_099.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_100.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_101.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_102.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_103.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_104.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_105.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_106.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_107.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_108.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_109.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_110.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_111.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_112.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_113.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_114.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_115.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_116.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_117.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_118.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_119.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_120.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_121.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_122.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_123.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_124.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_125.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_126.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_127.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_128.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_129.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_130.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_131.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_132.png"
+    - "C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\\PDFSubjectsCache\\pdf-pages_5.
+      To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt n\xE1\xBB\x91i tri th\xE1\xBB\xA9c
+      (1)\\page_133.png"
+    isCached: 1
+  - name: Toan11-Tap2
+    description: "To\xE1n 11 - T\u1EADp 2"
+    lectures:
+    - chapter: 6
+      groupName: "H\xC0M S\u1ED0 M\u0168 V\xC0 H\xC0M S\u1ED0 L\xD4GARIT"
+      lectureName: "B\xE0i 18. Lu\u1EF9 th\u1EEBa v\u1EDBi s\u1ED1 m\u0169 th\u1EF1c"
+      page: 4
+    - chapter: 6
+      groupName: "H\xC0M S\u1ED0 M\u0168 V\xC0 H\xC0M S\u1ED0 L\xD4GARIT"
+      lectureName: "B\xE0i 19. L\xF4garit"
+      page: 10
+    - chapter: 6
+      groupName: "H\xC0M S\u1ED0 M\u0168 V\xC0 H\xC0M S\u1ED0 L\xD4GARIT"
+      lectureName: "B\xE0i 20. H\xE0m s\u1ED1 m\u0169 v\xE0 h\xE0m s\u1ED1 l\xF4garit"
+      page: 16
+    - chapter: 6
+      groupName: "H\xC0M S\u1ED0 M\u0168 V\xC0 H\xC0M S\u1ED0 L\xD4GARIT"
+      lectureName: "B\xE0i t\u1EADp cu\u1ED1i ch\u01B0\u01A1ng VI"
+      page: 25
+    - chapter: 7
+      groupName: "QUAN H\u1EC6 VU\xD4NG G\xD3C TRONG KH\xD4NG GIAN"
+      lectureName: "B\xE0i 22. Hai \u0111\u01B0\u1EDDng th\u1EB3ng vu\xF4ng g\xF3c"
+      page: 27
+    - chapter: 7
+      groupName: "QUAN H\u1EC6 VU\xD4NG G\xD3C TRONG KH\xD4NG GIAN"
+      lectureName: "B\xE0i 23. \u0110\u01B0\u1EDDng th\u1EB3ng vu\xF4ng g\xF3c v\u1EDBi
+        m\u1EB7t ph\u1EB3ng"
+      page: 31
+    - chapter: 7
+      groupName: "QUAN H\u1EC6 VU\xD4NG G\xD3C TRONG KH\xD4NG GIAN"
+      lectureName: "\"B\xE0i 24. Ph\xE9p chi\u1EBFu vu\xF4ng g\xF3c. G\xF3c gi\u1EEFa
+        \u0111\u01B0\u1EDDng th\u1EB3ng v\xE0 m\u1EB7t ph\u1EB3ng\""
+      page: 38
+    - chapter: 7
+      groupName: "QUAN H\u1EC6 VU\xD4NG G\xD3C TRONG KH\xD4NG GIAN"
+      lectureName: "B\xE0i 25. Hai m\u1EB7t ph\u1EB3ng vu\xF4ng g\xF3c"
+      page: 44
+    - chapter: 7
+      groupName: "QUAN H\u1EC6 VU\xD4NG G\xD3C TRONG KH\xD4NG GIAN"
+      lectureName: "B\xE0i 26. Kho\u1EA3ng c\xE1ch"
+      page: 54
+    - chapter: 7
+      groupName: "QUAN H\u1EC6 VU\xD4NG G\xD3C TRONG KH\xD4NG GIAN"
+      lectureName: "B\xE0i 27. Th\u1EC3 t\xEDch"
+      page: 61
+    - chapter: 7
+      groupName: "QUAN H\u1EC6 VU\xD4NG G\xD3C TRONG KH\xD4NG GIAN"
+      lectureName: "B\xE0i t\u1EADp cu\u1ED1i ch\u01B0\u01A1ng VII"
+      page: 64
+    - chapter: 8
+      groupName: "C\xC1C QUY T\u1EAEC T\xCDNH X\xC1C SU\u1EA4T"
+      lectureName: "B\xE0i 29. C\xF4ng th\u1EE9c c\u1ED9ng x\xE1c su\u1EA5t"
+      page: 72
+    - chapter: 8
+      groupName: "C\xC1C QUY T\u1EAEC T\xCDNH X\xC1C SU\u1EA4T"
+      lectureName: "B\xE0i 30. C\xF4ng th\u1EE9c nh\xE2n x\xE1c su\u1EA5t cho hai
+        bi\u1EBFn c\u1ED1 \u0111\u1ED9c l\u1EADp"
+      page: 76
+    - chapter: 8
+      groupName: "C\xC1C QUY T\u1EAEC T\xCDNH X\xC1C SU\u1EA4T"
+      lectureName: "B\xE0i t\u1EADp cu\u1ED1i ch\u01B0\u01A1ng VIII"
+      page: 79
+    - chapter: 9
+      groupName: "\u0110\u1EA0O H\xC0M"
+      lectureName: "B\xE0i 31. \u0110\u1ECBnh ngh\u0129a v\xE0 \xFD ngh\u0129a c\u1EE7a
+        \u0111\u1EA1o h\xE0m"
+      page: 81
+    - chapter: 9
+      groupName: "\u0110\u1EA0O H\xC0M"
+      lectureName: "B\xE0i 32. C\xE1c quy t\u1EAFc t\xEDnh \u0111\u1EA1o h\xE0m"
+      page: 88
+    - chapter: 9
+      groupName: "\u0110\u1EA0O H\xC0M"
+      lectureName: "B\xE0i 33. \u0110\u1EA1o h\xE0m c\u1EA5p hai"
+      page: 95
+    - chapter: 9
+      groupName: "\u0110\u1EA0O H\xC0M"
+      lectureName: "B\xE0i t\u1EADp cu\u1ED1i ch\u01B0\u01A1ng IX"
+      page: 97
+    - chapter: 10
+      groupName: "HO\u1EA0T \u0110\u1ED8NG TH\u1EF0C H\xC0NH TR\u1EA2I NGHI\u1EC6M"
+      lectureName: "M\u1ED9t v\xE0i m\xF4 h\xECnh to\xE1n h\u1ECDc s\u1EED d\u1EE5ng
+        h\xE0m s\u1ED1 m\u0169 v\xE0 h\xE0m s\u1ED1 l\xF4garit"
+      page: 99
+    - chapter: 10
+      groupName: "HO\u1EA0T \u0110\u1ED8NG TH\u1EF0C H\xC0NH TR\u1EA2I NGHI\u1EC6M"
+      lectureName: "Ho\u1EA1t \u0111\u1ED9ng th\u1EF1c h\xE0nh tr\u1EA3i nghi\u1EC7m
+        H\xECnh h\u1ECDc"
+      page: 102
+    cloudinaryFolder: pdf-pages/SGK TOAN11 - TAP 2 KNTT
+    title: "To\xE1n 11 - T\u1EADp 2"
+    note: 
+    grade: 11
+    category: "K\u1EBFt n\u1ED1i tri th\u1EE9c"
+    pages: 114
+    pdfUrl: 
+    imageUrls: []
+    localImagePaths:
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_000.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_001.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_002.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_003.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_004.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_005.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_006.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_007.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_008.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_009.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_010.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_011.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_012.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_013.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_014.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_015.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_016.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_017.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_018.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_019.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_020.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_021.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_022.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_023.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_024.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_025.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_026.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_027.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_028.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_029.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_030.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_031.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_032.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_033.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_034.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_035.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_036.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_037.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_038.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_039.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_040.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_041.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_042.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_043.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_044.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_045.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_046.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_047.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_048.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_049.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_050.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_051.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_052.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_053.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_054.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_055.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_056.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_057.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_058.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_059.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_060.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_061.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_062.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_063.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_064.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_065.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_066.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_067.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_068.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_069.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_070.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_071.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_072.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_073.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_074.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_075.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_076.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_077.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_078.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_079.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_080.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_081.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_082.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_083.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_084.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_085.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_086.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_087.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_088.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_089.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_090.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_091.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_092.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_093.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_094.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_095.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_096.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_097.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_098.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_099.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_100.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_101.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_102.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_103.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_104.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_105.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_106.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_107.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_108.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_109.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_110.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_111.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_112.png
+    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_SGK
+      TOAN11 - TAP 2 KNTT\page_113.png
+    isCached: 1

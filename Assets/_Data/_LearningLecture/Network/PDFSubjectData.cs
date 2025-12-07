@@ -22,6 +22,7 @@ namespace DreamClass.Subjects
     public class PDFSubjectInfo
     {
         public string name;
+        public string fileName;  // Display name từ API (e.g., "SGK TOAN11 - TAP 2 KNTT")
         public string cloudinaryFolder;
         public string grade;
         public string title;
@@ -98,12 +99,27 @@ namespace DreamClass.Subjects
 
         public void AddOrUpdateSubject(LocalSubjectCacheData cacheData)
         {
-            var existing = GetSubjectCache(cacheData.subjectName);
+            // Match by folder first (more reliable), then by name
+            var existing = !string.IsNullOrEmpty(cacheData.cloudinaryFolder) ?
+                GetSubjectCacheByFolder(cacheData.cloudinaryFolder) :
+                GetSubjectCache(cacheData.subjectName);
+            
             if (existing != null)
             {
                 subjects.Remove(existing);
+                Log($"[CACHE MANIFEST] Updated existing subject: {cacheData.cloudinaryFolder ?? cacheData.subjectName}");
             }
+            else
+            {
+                Log($"[CACHE MANIFEST] Added new subject: {cacheData.cloudinaryFolder ?? cacheData.subjectName}");
+            }
+            
             subjects.Add(cacheData);
+        }
+
+        private void Log(string msg)
+        {
+            Debug.Log($"[SubjectCacheManifest] {msg}");
         }
     }
 
@@ -114,6 +130,7 @@ namespace DreamClass.Subjects
     public class RemoteSubjectInfo
     {
         public string name;
+        public string fileName;  // Display name from API
         public string cloudinaryFolder;  // CloudinaryFolder for matching with local SubjectDatabase
         public string title;
         public string description;
@@ -140,6 +157,7 @@ namespace DreamClass.Subjects
         public RemoteSubjectInfo(PDFSubjectInfo pdfInfo)
         {
             name = pdfInfo.name;
+            fileName = pdfInfo.fileName;  // Store fileName for cache manifest
             cloudinaryFolder = pdfInfo.cloudinaryFolder;  // Store cloudinaryFolder for matching
             title = pdfInfo.title;
             description = pdfInfo.description;
@@ -148,7 +166,7 @@ namespace DreamClass.Subjects
             category = pdfInfo.category;
             pages = pdfInfo.pages;
             pdfUrl = pdfInfo.pdf_url;
-            imageUrls = pdfInfo.pageImages ?? new List<string>();
+            imageUrls = pdfInfo.pageImages != null ? new List<string>(pdfInfo.pageImages) : new List<string>();  // Deep copy!
             localImagePaths = new List<string>();
             lectures = new List<CSVLectureInfo>();
             isCached = false;

@@ -10,6 +10,7 @@ using playerCtrl;
 using System.Collections.Generic;
 using DreamClass.Locomotion;
 using DreamClass.Subjects;
+using DreamClass.ResourceGame;
 
 namespace Systems.SceneManagement
 {
@@ -24,16 +25,14 @@ namespace Systems.SceneManagement
         [Header("Services to wait for")]
         [Tooltip("Wait for PDFSubjectService to be ready before hiding loading screen")]
         [SerializeField] private bool waitForPDFService = true;
-        [SerializeField] private float serviceTimeout = 30f; // Max wait time in seconds
+        [Tooltip("Wait for ResourceManager to confirm all resources are ready")]
+        [SerializeField] private bool waitForResourceManager = true;
 
         public SceneGroup[] GetSceneGroups() => sceneGroups;
 
 
         float targetProgress;
         bool isLoading;
-        
-        // Track if PDF service has been checked (only check once)
-        private bool hasPDFServiceBeenChecked = false;
         
         // Lock to prevent double loading
         private bool isLoadingScene = false;
@@ -46,13 +45,61 @@ namespace Systems.SceneManagement
             /*manager.OnSceneLoaded += sceneName => Debug.Log("Loaded: " + sceneName);
             manager.OnSceneUnloaded += sceneName => Debug.Log("Unloaded: " + sceneName);
             manager.OnSceneGroupLoaded += () => Debug.Log("Scene group loaded");*/
+            
+            // Pre-subscribe để tránh race condition khi ResourceManager invoke event
+            Debug.Log("[SceneLoader] Awake: pre-subscribing to ResourceManager.OnResourcesReady");
+            ResourceManager.OnResourcesReady += OnResourceManagerReady;
         }
 
         async void Start()
         {
-            // Wait 1 frame to ensure all other Start() methods have run (including PDFSubjectService)
+            // Wait 1 frame to ensure all other Start() methods have run
             await Task.Yield();
+            
+            Debug.Log("[SceneLoader] Starting... waiting for ResourceManager");
+            
+            // LUÔN chờ ResourceManager xong trước khi vào game
+            await WaitForResourceManagerReady();
+            
+            Debug.Log("[SceneLoader] ResourceManager done, starting scene load");
+            
+            // Sau khi ResourceManager xong, SceneLoader mới bắt đầu load scene
             await LoadSceneGroup(0);
+        }
+
+        /// <summary>
+        /// Đợi ResourceManager kiểm tra và tải tài nguyên xong
+        /// </summary>
+        private bool resourcesReady = false;
+        private TaskCompletionSource<bool> resourceReadyTcs = null;
+
+        private void OnResourceManagerReady()
+        {
+            Debug.Log("[SceneLoader] OnResourceManagerReady callback triggered");
+            resourcesReady = true;
+            resourceReadyTcs?.TrySetResult(true);
+        }
+
+        private async Task WaitForResourceManagerReady()
+        {
+            Debug.Log("[SceneLoader] WaitForResourceManagerReady: checking if already ready...");
+            
+            // Nếu đã ready thì bỏ qua
+            if (resourcesReady || ResourceManager.IsResourcesReady)
+            {
+                Debug.Log("[SceneLoader] ResourceManager already ready");
+                return;
+            }
+
+            Debug.Log("[SceneLoader] ResourceManager not ready, waiting...");
+            
+            // Tạo TaskCompletionSource để wait
+            resourceReadyTcs = new TaskCompletionSource<bool>();
+            
+            // Đợi event
+            await resourceReadyTcs.Task;
+            
+            Debug.Log("[SceneLoader] *** Exiting WaitForResourceManagerReady - ResourceManager ready ***");
         }
 
         void Update()
@@ -60,11 +107,14 @@ namespace Systems.SceneManagement
             if (!isLoading) return;
 
             float currentFillAmount = loadingBar.fillAmount;
-            float progressDifference = Mathf.Abs(currentFillAmount - targetProgress);
+            // IMPORTANT: Progress bar chỉ được tăng, KHÔNG bao giờ giảm
+            float targetValue = Mathf.Max(currentFillAmount, targetProgress);
+            
+            float progressDifference = Mathf.Abs(currentFillAmount - targetValue);
 
             float dynamicFillSpeed = progressDifference * fillSpeed;
 
-            loadingBar.fillAmount = Mathf.Lerp(currentFillAmount, targetProgress, Time.deltaTime * dynamicFillSpeed);
+            loadingBar.fillAmount = Mathf.Lerp(currentFillAmount, targetValue, Time.deltaTime * dynamicFillSpeed);
         }
 
         public async Task LoadSceneGroup(int index)
@@ -86,22 +136,16 @@ namespace Systems.SceneManagement
             loadingBar.fillAmount = 0f;
             targetProgress = 0f;
 
+            // Hiện canvas của SceneLoader (sau khi ResourceManager đã ẩn)
             EnableLoadingCanvas();
 
-            // Step 1: Wait for PDFSubjectService to be ready (0% - 50%) - ONLY FIRST TIME
-            if (waitForPDFService && !hasPDFServiceBeenChecked)
-            {
-                await WaitForServicesReady();
-                hasPDFServiceBeenChecked = true;
-            }
-            else
-            {
-                targetProgress = 0.5f;
-            }
+            // Không cần đợi PDFService nữa vì ResourceManager đã lo
+            // Bắt đầu load scene từ 0%
+            targetProgress = 0f;
 
-            // Step 2: Load scenes (50% - 100%)
+            // Load scenes (0% - 100%)
             LoadingProgress progress = new LoadingProgress();
-            progress.Progressed += target => targetProgress = Mathf.Max(0.5f + (target * 0.5f), targetProgress);
+            progress.Progressed += target => targetProgress = target;
 
             await manager.LoadScenes(sceneGroups[index], progress);
 
@@ -177,20 +221,12 @@ namespace Systems.SceneManagement
 
             EnableLoadingCanvas();
 
-            // Step 1: Wait for PDFSubjectService to be ready (0% - 50%) - ONLY FIRST TIME
-            if (waitForPDFService && !hasPDFServiceBeenChecked)
-            {
-                await WaitForServicesReady();
-                hasPDFServiceBeenChecked = true;
-            }
-            else
-            {
-                targetProgress = 0.5f;
-            }
+            // Không cần đợi PDFService nữa vì ResourceManager đã lo
+            targetProgress = 0f;
 
-            // Step 2: Load scenes (50% - 100%)
+            // Load scenes (0% - 100%)
             LoadingProgress progress = new LoadingProgress();
-            progress.Progressed += target => targetProgress = Mathf.Max(0.5f + (target * 0.5f), targetProgress);
+            progress.Progressed += target => targetProgress = target;
 
             await manager.LoadScenes(sceneGroups[index], progress);
 
@@ -212,84 +248,6 @@ namespace Systems.SceneManagement
         }
 
 
-
-        private async Task WaitForServicesReady()
-        {
-            Debug.Log("[SceneLoader] Waiting for PDFSubjectService...");
-            
-            float startTime = Time.time;
-            
-            // Step 1: Wait for PDFSubjectService.Instance to exist
-            while (PDFSubjectService.Instance == null)
-            {
-                if (Time.time - startTime > serviceTimeout)
-                {
-                    Debug.LogWarning($"[SceneLoader] Timeout waiting for PDFSubjectService instance after {serviceTimeout}s");
-                    targetProgress = 0.5f;
-                    return;
-                }
-                await Task.Yield();
-            }
-            
-            Debug.Log("[SceneLoader] PDFSubjectService instance found");
-
-            // Step 2: Check if already ready
-            if (PDFSubjectService.IsReady)
-            {
-                Debug.Log("[SceneLoader] PDFSubjectService already ready.");
-                targetProgress = 0.5f;
-                return;
-            }
-
-            Debug.Log("[SceneLoader] Waiting for PDFSubjectService to complete loading...");
-
-            var tcs = new TaskCompletionSource<bool>();
-
-            void OnServiceReady()
-            {
-                Debug.Log("[SceneLoader] Received OnReady event");
-                tcs.TrySetResult(true);
-            }
-
-            void OnProgress(float progress)
-            {
-                // Update loading bar with PDF progress (0% - 50%)
-                targetProgress = progress * 0.5f;
-                if ((int)(progress * 100) % 10 == 0) // Log every 10%
-                {
-                    Debug.Log($"[SceneLoader] PDF loading progress: {(int)(progress * 100)}%");
-                }
-            }
-
-            PDFSubjectService.OnReady += OnServiceReady;
-            PDFSubjectService.OnOverallProgress += OnProgress;
-
-            // Check with timeout - keep checking IsReady as backup
-            while (!tcs.Task.IsCompleted)
-            {
-                if (PDFSubjectService.IsReady)
-                {
-                    Debug.Log("[SceneLoader] PDFSubjectService.IsReady detected");
-                    tcs.TrySetResult(true);
-                    break;
-                }
-
-                if (Time.time - startTime > serviceTimeout)
-                {
-                    Debug.LogWarning($"[SceneLoader] Timeout waiting for PDFSubjectService after {serviceTimeout}s");
-                    tcs.TrySetResult(false);
-                    break;
-                }
-
-                await Task.Yield();
-            }
-
-            PDFSubjectService.OnReady -= OnServiceReady;
-            PDFSubjectService.OnOverallProgress -= OnProgress;
-            
-            targetProgress = 0.5f;
-            Debug.Log("[SceneLoader] PDFSubjectService ready, continuing to load scene...");
-        }
 
         void EnableLoadingCanvas(bool enable = true)
         {

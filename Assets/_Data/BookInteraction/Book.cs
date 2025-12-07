@@ -612,6 +612,13 @@ public class BookVR : MonoBehaviour
 
     public void UpdateBookLTRToPoint(Vector3 followLocation)
     {
+        // SAFETY: Validate input before processing
+        if (float.IsNaN(followLocation.x) || float.IsNaN(followLocation.y) || float.IsNaN(followLocation.z))
+        {
+            Debug.LogWarning($"[Book] UpdateBookLTRToPoint: Invalid followLocation with NaN: {followLocation}");
+            return;
+        }
+
         mode = FlipMode.LeftToRight;
         f = followLocation;
 
@@ -624,8 +631,24 @@ public class BookVR : MonoBehaviour
         spriteManager.LeftNext.transform.SetParent(BookPanel.transform, true);
 
         c = Calc_C_Position(followLocation);
+        
+        // Validate calculated position
+        if (float.IsNaN(c.x) || float.IsNaN(c.y) || float.IsNaN(c.z))
+        {
+            Debug.LogWarning($"[Book] UpdateBookLTRToPoint: Calc_C_Position returned NaN: {c}");
+            return;
+        }
+
         Vector3 t1;
         float clipAngle = CalcClipAngle(c, ebl, out t1);
+        
+        // Validate calculated angle
+        if (float.IsNaN(clipAngle))
+        {
+            Debug.LogWarning($"[Book] UpdateBookLTRToPoint: CalcClipAngle returned NaN");
+            return;
+        }
+
         clipAngle = (clipAngle + 180) % 180;
 
         ClippingPlane.transform.localEulerAngles = new Vector3(0, 0, clipAngle - 90);
@@ -647,6 +670,13 @@ public class BookVR : MonoBehaviour
 
     public void UpdateBookRTLToPoint(Vector3 followLocation)
     {
+        // SAFETY: Validate input before processing
+        if (float.IsNaN(followLocation.x) || float.IsNaN(followLocation.y) || float.IsNaN(followLocation.z))
+        {
+            Debug.LogWarning($"[Book] UpdateBookRTLToPoint: Invalid followLocation with NaN: {followLocation}");
+            return;
+        }
+
         mode = FlipMode.RightToLeft;
         f = followLocation;
 
@@ -659,8 +689,24 @@ public class BookVR : MonoBehaviour
         spriteManager.RightNext.transform.SetParent(BookPanel.transform, true);
 
         c = Calc_C_Position(followLocation);
+        
+        // Validate calculated position
+        if (float.IsNaN(c.x) || float.IsNaN(c.y) || float.IsNaN(c.z))
+        {
+            Debug.LogWarning($"[Book] UpdateBookRTLToPoint: Calc_C_Position returned NaN: {c}");
+            return;
+        }
+
         Vector3 t1;
         float clipAngle = CalcClipAngle(c, ebr, out t1);
+        
+        // Validate calculated angle
+        if (float.IsNaN(clipAngle))
+        {
+            Debug.LogWarning($"[Book] UpdateBookRTLToPoint: CalcClipAngle returned NaN");
+            return;
+        }
+
         if (clipAngle > -90) clipAngle += 180;
 
         ClippingPlane.rectTransform.pivot = new Vector2(1, 0.35f);

@@ -276,14 +276,42 @@ public class AutoFlipVR : MonoBehaviour
 
     IEnumerator FlipRTL(float xc, float xl, float h, float frameTime, float dx)
     {
+        // Safety check: prevent invalid calculations
+        if (Mathf.Approximately(xl, 0))
+        {
+            Debug.LogWarning("[AutoFlipVR] FlipRTL: xl is too close to 0, skipping flip");
+            yield break;
+        }
+
+        if (float.IsNaN(h) || float.IsNaN(xc) || float.IsNaN(xl))
+        {
+            Debug.LogError($"[AutoFlipVR] FlipRTL: NaN detected - xc:{xc}, xl:{xl}, h:{h}");
+            yield break;
+        }
+
         float x = xc + xl;
         float y = (-h / (xl * xl)) * (x - xc) * (x - xc);
+
+        // Validate y before using
+        if (float.IsNaN(y) || float.IsInfinity(y))
+        {
+            Debug.LogWarning($"[AutoFlipVR] FlipRTL: Invalid y value {y}, clamping");
+            y = 0;
+        }
 
         ControledBook.DragRightPageToPoint(new Vector3(x, y, 0));
 
         for (int i = 0; i < AnimationFramesCount; i++)
         {
             y = (-h / (xl * xl)) * (x - xc) * (x - xc);
+
+            // Validate y in loop
+            if (float.IsNaN(y) || float.IsInfinity(y))
+            {
+                Debug.LogWarning($"[AutoFlipVR] FlipRTL loop frame {i}: Invalid y {y}, clamping");
+                y = 0;
+            }
+
             ControledBook.UpdateBookRTLToPoint(new Vector3(x, y, 0));
             yield return new WaitForSeconds(frameTime);
             x -= dx;
@@ -295,14 +323,42 @@ public class AutoFlipVR : MonoBehaviour
 
     IEnumerator FlipLTR(float xc, float xl, float h, float frameTime, float dx)
     {
+        // Safety check: prevent invalid calculations
+        if (Mathf.Approximately(xl, 0))
+        {
+            Debug.LogWarning("[AutoFlipVR] FlipLTR: xl is too close to 0, skipping flip");
+            yield break;
+        }
+
+        if (float.IsNaN(h) || float.IsNaN(xc) || float.IsNaN(xl))
+        {
+            Debug.LogError($"[AutoFlipVR] FlipLTR: NaN detected - xc:{xc}, xl:{xl}, h:{h}");
+            yield break;
+        }
+
         float x = xc - xl;
         float y = (-h / (xl * xl)) * (x - xc) * (x - xc);
+
+        // Validate y before using
+        if (float.IsNaN(y) || float.IsInfinity(y))
+        {
+            Debug.LogWarning($"[AutoFlipVR] FlipLTR: Invalid y value {y}, clamping");
+            y = 0;
+        }
 
         ControledBook.DragLeftPageToPoint(new Vector3(x, y, 0));
 
         for (int i = 0; i < AnimationFramesCount; i++)
         {
             y = (-h / (xl * xl)) * (x - xc) * (x - xc);
+
+            // Validate y in loop
+            if (float.IsNaN(y) || float.IsInfinity(y))
+            {
+                Debug.LogWarning($"[AutoFlipVR] FlipLTR loop frame {i}: Invalid y {y}, clamping");
+                y = 0;
+            }
+
             ControledBook.UpdateBookLTRToPoint(new Vector3(x, y, 0));
             yield return new WaitForSeconds(frameTime);
             x += dx;

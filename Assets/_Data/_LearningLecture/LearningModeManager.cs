@@ -177,34 +177,25 @@ namespace DreamClass.Lecture
         /// <summary>
         /// Load sprites từ SubjectInfo.bookPages lên BookSpriteManager
         /// CHỈ load từ cache - không load từ URL
-        /// Ưu tiên sử dụng BookPageLoader, fallback về direct load
+        /// Ưu tiên lazy loading - load sprites async khi click vào sách
         /// </summary>
         private void LoadSpritesToBookManager(SubjectInfo subject)
         {
-            // Try using BookPageLoader first (preferred method)
+            // Use lazy loading via BookPageLoader (load sprites async when clicked)
             if (bookPageLoader != null)
             {
-                if (subject.HasLoadedSprites())
+                bookPageLoader.LoadSubjectWithLazyLoading(subject, (success) =>
                 {
-                    bookPageLoader.LoadFromSubject(subject);
-                    return;
-                }
-                else if (subject.isCached)
-                {
-                    Debug.Log($"[LearningModeManager] Subject cached but sprites not loaded, loading from cache...");
-                    StartCoroutine(LoadCachedSpritesForSubject(subject));
-                    return;
-                }
-                else if (!string.IsNullOrEmpty(subject.cloudinaryFolder) && !subject.isCached)
-                {
-                    Debug.LogWarning($"[LearningModeManager] Subject NOT cached, cannot load: {subject.name}. Must download cache first.");
-                    return;
-                }
-                else
-                {
-                    Debug.Log($"[LearningModeManager] Local subject without API data: {subject.name}");
-                    return;
-                }
+                    if (success)
+                    {
+                        Debug.Log($"[LearningModeManager] Lazy loaded sprites for: {subject.name}");
+                    }
+                    else
+                    {
+                        Debug.LogError($"[LearningModeManager] Failed to lazy load subject: {subject.name}");
+                    }
+                });
+                return;
             }
 
             // Fallback: Direct load to BookSpriteManager
@@ -435,18 +426,40 @@ namespace DreamClass.Lecture
 
         private IEnumerator DelayedJump(int page)
         {
-            // Wait for 0.5 seconds
-            yield return new WaitForSeconds(1.5f);
-
-            // Jump to page after delay
+            // Poll để chờ sprites ready thay vì delay cố định
+            // (lazy loading có thể mất 15-20s, không thể delay 20s)
             var autoFlip = bookCtrl.bookObject.GetComponentInChildren<AutoFlipVR>();
-            if (autoFlip != null)
+            if (autoFlip == null)
             {
-                autoFlip.JumpToPage(page);
+                Debug.LogError("[LearningModeManager] AutoFlipVR not found!");
+                yield break;
             }
 
-            Debug.Log($"LearningModeManager: Jumped to page: {page}");
+            var bookSpriteManager = bookCtrl.bookObject.GetComponentInChildren<BookSpriteManager>();
+            if (bookSpriteManager == null)
+            {
+                Debug.LogError("[LearningModeManager] BookSpriteManager not found!");
+                yield break;
+            }
 
+            // Chờ cho tới khi book có sprites (TotalPageCount > 0)
+            float maxWaitTime = 60f; // Max 60s chờ
+            float waitedTime = 0f;
+            
+            while (bookSpriteManager.TotalPageCount == 0 && waitedTime < maxWaitTime)
+            {
+                yield return new WaitForSeconds(0.5f);
+                waitedTime += 0.5f;
+            }
+
+            if (bookSpriteManager.TotalPageCount == 0)
+            {
+                Debug.LogError($"[LearningModeManager] Timeout waiting for sprites (waited {waitedTime}s)");
+                yield break;
+            }
+
+            Debug.Log($"[LearningModeManager] Sprites ready after {waitedTime}s, jumping to page {page}");
+            autoFlip.JumpToPage(page);
         }
 
 

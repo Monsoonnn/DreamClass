@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using TMPro;
+#if UNITY_EDITOR
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+#endif
 
 namespace HMStudio.EasyQuiz
 {
@@ -168,6 +170,9 @@ namespace HMStudio.EasyQuiz
         /// Reads question data from the Excel file based on questionID.
         /// Options are read from column 2 onwards, only non-empty options are read.
         /// </summary>
+        // DISABLED: Excel support requires NPOI library
+        /*
+#if UNITY_EDITOR
         public void LoadQuestionFromExcel()
         {
             UpdateExcelPath();
@@ -248,7 +253,19 @@ namespace HMStudio.EasyQuiz
             // Update content to UI Text.
             UpdateTextFields();
         }
+#else
+        public void LoadQuestionFromExcel()
+        {
+            Debug.LogWarning("[QuestionViewer] LoadQuestionFromExcel is only available in Editor mode (requires NPOI library)");
+        }
+#endif
+        */
 
+        // Stub for compatibility
+        public void LoadQuestionFromExcel()
+        {
+            Debug.LogWarning("[QuestionViewer] LoadQuestionFromExcel is disabled - Excel support requires NPOI library not available in builds");
+        }
         /// <summary>
         /// Updates the TextMeshProUGUIs with the loaded data.
         /// </summary>
@@ -268,10 +285,9 @@ namespace HMStudio.EasyQuiz
         }
 
         /// <summary>
-        /// Overwrites the current data (questionText, options, correctAnswer) to the Excel file.
-        /// After updating, sets updateStatusMessage and updateStatusSuccess to display a HelpBox on the Inspector.
-        /// When adding a new option, if the cell doesn't exist, it copies the style from the previous option (if available).
+        /// DISABLED: Excel support requires NPOI library (not available in build)
         /// </summary>
+        /*
         public void UpdateExcel()
         {
             try
@@ -395,13 +411,23 @@ namespace HMStudio.EasyQuiz
                 updateStatusSuccess = false;
             }
         }
+        */
 
+        // Stub for compatibility
+        public void UpdateExcel()
+        {
+            Debug.LogWarning("[QuestionViewer] UpdateExcel is disabled - Excel support requires NPOI library not available in builds");
+        }
+
+        // DISABLED: Excel support requires NPOI library
+        /*
         /// <summary>
         /// Checks if the cell has a green background color (RGB: 0, 255, 0).
         /// (Only applicable to .xlsx files using NPOI.XSSF)
         /// </summary>
         /// <param name="cell">The cell to check</param>
         /// <returns>True if the cell is green, false otherwise</returns>
+#if UNITY_EDITOR
         private bool IsCellGreen(ICell cell)
         {
             if (cell == null || cell.CellStyle == null)
@@ -421,7 +447,21 @@ namespace HMStudio.EasyQuiz
 
             return (rgb[0] == 0 && rgb[1] == 255 && rgb[2] == 0);
         }
+#else
+        private bool IsCellGreen(object cell)
+        {
+            return false;
+        }
+#endif
+        */
 
+        // Stub for compatibility
+        private bool IsCellGreen(object cell)
+        {
+            return false;
+        }
+        // DISABLED: Excel support requires NPOI library
+        /*
         /// <summary>
         /// Reads the Excel file to count the total number of questions.
         /// Iterates from row 1 (skipping the header in row 0) and stops if the cell in the Question ID column (column 0) is empty.
@@ -439,6 +479,7 @@ namespace HMStudio.EasyQuiz
             }
 
             // Excel mode
+#if UNITY_EDITOR
             string path = excelFilePath;
             if (string.IsNullOrEmpty(path) || !File.Exists(path))
                 return 0;
@@ -462,6 +503,27 @@ namespace HMStudio.EasyQuiz
 
                 return count;
             }
+#else
+            return 0;  // Not available in built game
+#endif
+        }
+        */
+
+        // Stub for compatibility
+        public int GetTotalQuestions()
+        {
+            // API mode only
+            if (quizDatabase != null && quizDatabase.DataMode == QuizDataMode.API)
+            {
+                if (cachedAPIQuestions == null)
+                {
+                    CacheAPIQuestions();
+                }
+                return cachedAPIQuestions?.Count ?? 0;
+            }
+
+            // Excel mode disabled in builds
+            return 0;
         }
 
 

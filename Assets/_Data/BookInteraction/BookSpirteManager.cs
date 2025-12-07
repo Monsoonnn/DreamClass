@@ -118,12 +118,28 @@ public class BookSpriteManager : MonoBehaviour
 
     public void UpdateSprites()
     {
+        // Safety check
+        if (bookPages == null || bookPages.Length == 0)
+        {
+            Debug.LogWarning("[BookSpriteManager] UpdateSprites: bookPages is null or empty!");
+            LeftNext.sprite = background;
+            RightNext.sprite = background;
+            return;
+        }
+
         LeftNext.sprite = (currentPage > 0 && currentPage <= bookPages.Length) ? bookPages[currentPage - 1] : background;
         RightNext.sprite = (currentPage >= 0 && currentPage < bookPages.Length) ? bookPages[currentPage] : background;
     }
 
     public void SetupRightPageDrag()
     {
+        // Safety check
+        if (bookPages == null || bookPages.Length == 0)
+        {
+            Debug.LogWarning("[BookSpriteManager] SetupRightPageDrag: bookPages is null or empty!");
+            return;
+        }
+
         if (currentPage >= bookPages.Length) return;
 
         //Debug.Log("SetupRightPageDrag");
@@ -149,6 +165,13 @@ public class BookSpriteManager : MonoBehaviour
 
     public void SetupLeftPageDrag()
     {
+        // Safety check
+        if (bookPages == null || bookPages.Length == 0)
+        {
+            Debug.LogWarning("[BookSpriteManager] SetupLeftPageDrag: bookPages is null or empty!");
+            return;
+        }
+
         if (currentPage <= 0) return;
 
         //Debug.Log("SetupLeftPageDrag");

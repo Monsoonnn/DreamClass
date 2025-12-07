@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using com.cyborgAssets.inspectorButtonPro;
 using DreamClass.Subjects;
+using DreamClass.LearningLecture;
 
 /// <summary>
 /// Utility để load sprites từ SubjectInfo vào BookSpriteManager
@@ -178,6 +179,90 @@ public class BookPageLoader : MonoBehaviour
         spriteManager.currentPage = Mathf.Clamp(pageIndex, 0, loadedPageCount - 1);
         spriteManager.UpdateSprites();
         Debug.Log($"[BookPageLoader] Jumped to page: {pageIndex}");
+    }
+
+    /// <summary>
+    /// Load subject with async lazy loading từ PDFSubjectService
+    /// Thích hợp khi muốn load sách ngay sau khi click
+    /// </summary>
+    /// <param name="subject">SubjectInfo với cloudinaryFolder</param>
+    /// <param name="callback">Callback khi load xong (success)</param>
+    /// <param name="resetToFirstPage">Reset về trang đầu</param>
+    public void LoadSubjectWithLazyLoading(SubjectInfo subject, Action<bool> callback = null, bool resetToFirstPage = true)
+    {
+        if (subject == null)
+        {
+            Debug.LogError("[BookPageLoader] Subject is null!");
+            callback?.Invoke(false);
+            return;
+        }
+
+        if (PDFSubjectService.Instance == null)
+        {
+            Debug.LogError("[BookPageLoader] PDFSubjectService not found!");
+            callback?.Invoke(false);
+            return;
+        }
+
+        // Nếu sprites đã load, sử dụng ngay
+        if (subject.HasLoadedSprites())
+        {
+            Debug.Log($"[BookPageLoader] Sprites already loaded for {subject.name}, using directly");
+            bool success = LoadFromSubject(subject, resetToFirstPage);
+            callback?.Invoke(success);
+            return;
+        }
+
+        // Lazy load sprites từ PDFSubjectService
+        Debug.Log($"[BookPageLoader] Starting lazy load for {subject.name}...");
+        
+        // Ensure SpriteManager is active before coroutine
+        if (spriteManager != null && !spriteManager.gameObject.activeSelf)
+        {
+            spriteManager.gameObject.SetActive(true);
+            Debug.Log($"[BookPageLoader] Activated SpriteManager for {subject.name}");
+        }
+        
+        // Delegate to LearningBookCtrl (which is always active to hold coroutine)
+        var bookCtrl = GetComponentInParent<LearningBookCtrl>();
+        if (bookCtrl != null)
+        {
+            bookCtrl.StartLazyLoadCoroutine(subject, this, callback, resetToFirstPage);
+        }
+        else
+        {
+            Debug.LogError("[BookPageLoader] LearningBookCtrl not found in parent!");
+            callback?.Invoke(false);
+        }
+    }
+
+    /// <summary>
+    /// Internal callback - called by LearningBookCtrl when lazy load completes
+    /// </summary>
+    internal bool ProcessLoadedSprites(SubjectInfo subject, Sprite[] loadedSprites, bool resetToFirstPage)
+    {
+        if (loadedSprites == null || loadedSprites.Length == 0)
+        {
+            Debug.LogError($"[BookPageLoader] No sprites loaded for {subject.name}");
+            return false;
+        }
+
+        Debug.Log($"[BookPageLoader] Received {loadedSprites.Length} sprites from LearningBookCtrl");
+        
+        // Assign sprites to subject
+        subject.SetBookPages(loadedSprites);
+        
+        // Load into BookSpriteManager
+        bool success = LoadFromSubject(subject, resetToFirstPage);
+        Debug.Log($"[BookPageLoader] Lazy load completed for {subject.name}: {(success ? "SUCCESS" : "FAILED")}");
+        
+        if (success)
+        {
+            loadedPageCount = loadedSprites.Length;
+            OnSpritesLoaded?.Invoke(loadedSprites);
+        }
+        
+        return success;
     }
 
     #endregion
