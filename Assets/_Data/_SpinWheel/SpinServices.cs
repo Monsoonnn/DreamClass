@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +5,8 @@ using UnityEngine.UI;
 using DreamClass.Network;
 using DreamClass.LoginManager;
 using EasyUI.PickerWheelUI;
+using DreamClass.Account;
+using System;
 
 namespace DreamClass.SpinWheel
 {
@@ -14,12 +15,18 @@ namespace DreamClass.SpinWheel
     /// </summary>
     public class SpinWheelManager : MonoBehaviour
     {
+        [Header("Data References")]
+        [SerializeField] private UserProfileSO userProfile; // Reference to the User Profile
+
         [Header("API Configuration")]
         [SerializeField] private string spinWheelsEndpoint = "/api/spin-wheels?activeOnly=true";
 
         [Header("UI Prefabs")]
         [SerializeField] private Toggle tabToggleButtonPrefab;
         [SerializeField] private GameObject tabWindowPrefab;
+
+        [Header("UI Components")]
+        [SerializeField] private TMPro.TextMeshProUGUI goldText;
 
         [Header("UI Containers")]
         [SerializeField] private Transform toggleContainer;
@@ -49,6 +56,7 @@ namespace DreamClass.SpinWheel
         private List<SpinWheelData> currentWheels = new List<SpinWheelData>();
         private List<Toggle> spawnedToggles = new List<Toggle>();
         private List<GameObject> spawnedWindows = new List<GameObject>();
+        private int currentGold = 0;
         
         // Image cache: URL -> Sprite
         private Dictionary<string, Sprite> imageCache = new Dictionary<string, Sprite>();
@@ -78,14 +86,19 @@ namespace DreamClass.SpinWheel
                 var loginManager = LoginManager.LoginManager.Instance;
                 if (loginManager != null && loginManager.IsLoggedIn())
                 {
-                    Log("Already logged in, fetching spin wheels...");
-                    FetchSpinWheels();
+                    OnLoginSuccess();
                 }
             }
         }
 
         private void OnLoginSuccess()
         {
+            // Set initial gold from profile
+            if (userProfile != null && userProfile.HasProfile)
+            {
+                SetGold(userProfile.gold);
+            }
+
             // Check if this object is still valid before starting coroutine
             if (this == null || !gameObject.activeInHierarchy)
             {
@@ -498,6 +511,7 @@ namespace DreamClass.SpinWheel
         private void OnWheelSpinSuccess(SpinWheelData wheel, DreamClassPickerWheel.SpinResult result)
         {
             Log($"Spin successful on '{wheel.name}': Got {result.item.name}, Remaining gold: {result.remainingGold}");
+            SetGold(result.remainingGold);
         }
         
         /// <summary>
@@ -506,6 +520,30 @@ namespace DreamClass.SpinWheel
         private void OnWheelSpinFailed(SpinWheelData wheel, string error)
         {
             LogError($"Spin failed on '{wheel.name}': {error}");
+        }
+        
+        /// <summary>
+        /// Set current gold and update display
+        /// </summary>
+        public void SetGold(int amount)
+        {
+            currentGold = amount;
+            UpdateGoldDisplay();
+        }
+
+        /// <summary>
+        /// Update gold display text
+        /// </summary>
+        private void UpdateGoldDisplay()
+        {
+            if (goldText != null)
+            {
+                goldText.text = currentGold.ToString();
+            }
+            else
+            {
+                LogError("goldText is not assigned in the inspector!");
+            }
         }
         
         /// <summary>

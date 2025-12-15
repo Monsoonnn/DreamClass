@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace DreamClass.LearingLecture
+namespace DreamClass.LearningLecture
 {
     [RequireComponent(typeof(BoxCollider))]
     public class SpotTrigger : NewMonobehavior

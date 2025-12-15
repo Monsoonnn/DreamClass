@@ -25,7 +25,6 @@ namespace DreamClass.SpinWheel
         [SerializeField] private GameObject rewardPanel;
         [SerializeField] private Text rewardFinalText;
         [SerializeField] private Image rewardFinalImage;
-        [SerializeField] private TMPro.TextMeshProUGUI goldText;
         
         [Header("Settings")]
         [SerializeField] private bool showRewardPanelOnComplete = true;
@@ -41,7 +40,6 @@ namespace DreamClass.SpinWheel
         // Runtime data
         private ApiClient apiClient;
         private SpinWheelData currentWheelData;
-        private int currentGold = 0;
         private SpinResult pendingResult; // Kết quả từ server đang chờ animation
         
         private void Awake()
@@ -198,10 +196,6 @@ namespace DreamClass.SpinWheel
                 {
                     Debug.Log($"[DreamClassPickerWheel] Spin successful! Item: {spinResult.data.item.name}");
                     
-                    // Update gold
-                    currentGold = spinResult.data.remainingGold;
-                    UpdateGoldDisplay();
-                    
                     // Store result và start animation
                     pendingResult = spinResult.data;
                     
@@ -330,25 +324,6 @@ namespace DreamClass.SpinWheel
             pendingResult = null;
         }
         
-        /// <summary>
-        /// Update gold display
-        /// </summary>
-        private void UpdateGoldDisplay()
-        {
-            if (goldText != null)
-            {
-                goldText.text = currentGold.ToString();
-            }
-        }
-        
-        /// <summary>
-        /// Set current gold amount
-        /// </summary>
-        public void SetGold(int gold)
-        {
-            currentGold = gold;
-            UpdateGoldDisplay();
-        }
         
         /// <summary>
         /// Reset wheel về trạng thái ban đầu
@@ -399,11 +374,8 @@ namespace DreamClass.SpinWheel
                 pendingResult = new SpinResult
                 {
                     item = randomItem.itemDetails,
-                    remainingGold = currentGold - 100 // Fake gold deduction
+                    remainingGold = 0 // Gold is now managed by SpinWheelManager
                 };
-                
-                currentGold = pendingResult.remainingGold;
-                UpdateGoldDisplay();
                 
                 Debug.Log($"[DreamClassPickerWheel] DEBUG: Fake result - Item: {randomItem.itemDetails?.name}, Index: {randomIndex}");
             }
@@ -432,18 +404,6 @@ namespace DreamClass.SpinWheel
             }
         }
         
-        [ContextMenu("Debug: Add Test Gold")]
-        private void DebugAddGold()
-        {
-            if (!enableDebugMode)
-            {
-                Debug.LogWarning("[DreamClassPickerWheel] Debug mode is disabled. Enable it in inspector.");
-                return;
-            }
-            
-            SetGold(currentGold + 500);
-            Debug.Log($"[DreamClassPickerWheel] DEBUG: Added 500 gold. Current: {currentGold}");
-        }
         
         /// <summary>
         /// Public method để test spin từ button trong scene

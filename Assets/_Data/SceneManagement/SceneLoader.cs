@@ -11,10 +11,11 @@ using System.Collections.Generic;
 using DreamClass.Locomotion;
 using DreamClass.Subjects;
 using DreamClass.ResourceGame;
+using DreamClass.Audio;
 
 namespace Systems.SceneManagement
 {
-    public class SceneLoader : MonoBehaviour
+    public class SceneLoader : MonoBehaviour, ISceneLoadNotifier
     {
         [SerializeField] Image loadingBar;
         [SerializeField] float fillSpeed = 0.5f;
@@ -30,6 +31,8 @@ namespace Systems.SceneManagement
 
         public SceneGroup[] GetSceneGroups() => sceneGroups;
 
+        // Event for ISceneLoadNotifier
+        public event Action OnSceneLoadComplete;
 
         float targetProgress;
         bool isLoading;
@@ -164,6 +167,9 @@ namespace Systems.SceneManagement
 
             EnableLoadingCanvas(false);
             isLoadingScene = false;
+
+            // Notify listeners that the scene is fully loaded and ready.
+            OnSceneLoadComplete?.Invoke();
         }
 
         public async Task LoadSceneGroup(string groupName)
@@ -245,6 +251,9 @@ namespace Systems.SceneManagement
 
             EnableLoadingCanvas(false);
             isLoadingScene = false;
+
+            // Notify listeners that the scene is fully loaded and ready.
+            OnSceneLoadComplete?.Invoke();
         }
 
 
