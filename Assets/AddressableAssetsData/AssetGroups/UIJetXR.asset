@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: UIJetXR
+  m_EditorClassIdentifier: 
+  m_GroupName: UIJetXR
+  m_GUID: 292a5bd8e1d599f4ca7ed882a6e94936
+  m_SerializeEntries:
+  - m_GUID: 2311e868f32126a45ba84340142a8b3c
+    m_Address: Assets/JetXR/UI Kit For Vision Pro OS/Runtime/Materials/DarkElementBackground.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2ddb47be7cf565d4889ad3eac35b4c53
+    m_Address: Assets/JetXR/UI Kit For Vision Pro OS/Runtime/Shaders/MultiplyBackground.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4463572cd1ff62a448dbc3b6d1532004
+    m_Address: Assets/JetXR/UI Kit For Vision Pro OS/Runtime/Sprites/ListElements/ListElementFirst.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 51019cccc26a2e24986cacff380cd658
+    m_Address: Assets/JetXR/UI Kit For Vision Pro OS/Runtime/Animators/ListElementController.controller
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5c41b439695aa7040a5906488ef5385d
+    m_Address: Assets/JetXR/UI Kit For Vision Pro OS/Runtime/Sprites/ListElements/ListElementMiddle.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c875378aed2ff434e86c069a23c666e3
+    m_Address: Assets/JetXR/UI Kit For Vision Pro OS/Runtime/Sprites/ListElements/ListElementHighlight.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d2e7a45f89a362240bba99fa5782f7eb
+    m_Address: Assets/JetXR/UI Kit For Vision Pro OS/Runtime/Sprites/ListElements/ListElementSingle.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: da05026bbfd18ef4384c429502a2b9dd
+    m_Address: Assets/JetXR/UI Kit For Vision Pro OS/Runtime/Sprites/ListElements/ListElementLast.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e27c42f22196de34f9746f4231cc491c
+    m_Address: Assets/JetXR/UI Kit For Vision Pro OS/Runtime/Sprites/ListElements/Arrow.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: ccf87b842d718d245b094a40e41a76ba, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 3546a1d4526c9e54cb07d8804457b4a8, type: 2}
+    - {fileID: 11400000, guid: f004be3f1cb62dc44881001d37b40f21, type: 2}
