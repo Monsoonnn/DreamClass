@@ -712,6 +712,7 @@ namespace DreamClass.Subjects
                             remoteSubject.isCached = true;
                             remoteSubject.localImagePaths = new List<string>(localSubject.localImagePaths);
                             localSubject.isCached = true;
+                            localSubject.localImagePaths = new List<string>(localSubject.localImagePaths);
 
                             // Save to ScriptableObject
 #if UNITY_EDITOR
