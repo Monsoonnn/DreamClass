@@ -1422,7 +1422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StepId: S001
-  IsComplete: 0
+  IsComplete: 1
   questCtrl: {fileID: 3138234292425081318}
   optionUI: {fileID: 1585210903246813137}
   voiceEnumSource: {fileID: 11400000, guid: 3bf8645297a7f9848ae8ddc8f4579e00, type: 2}
@@ -2079,12 +2079,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   QuestId: Q003
   QuestName: "L\xE0m quen v\u1EDBi Qu\xFD"
-  Description: "Qu\xFD l\xE0 b\u1EA1n t\u1EC9 m\u1EC9 v\xE0 th\xEDch ghi ch\xE9p.
-    H\xE3y n\xF3i chuy\u1EC7n v\u1EDBi Qu\xFD \u0111\u1EC3 h\u1ECDc c\xE1ch l\u01B0u
-    ti\u1EBFn tr\xECnh h\u1ECDc c\u1EE7a b\u1EA1n."
+  Description: "Qu\xFD l\xE0 b\u1EA1n si\xEAu \u0111\u1EB9p trai..."
   steps:
   - {fileID: 8095287073275963817}
-  State: 1
+  State: 3
   currentStepIndex: 0
   holdUI: {fileID: 0}
   npcCtrl: {fileID: 0}

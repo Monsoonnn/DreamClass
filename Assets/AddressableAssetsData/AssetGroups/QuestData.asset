@@ -15,8 +15,43 @@ MonoBehaviour:
   m_GroupName: QuestData
   m_GUID: 4fa315074038647419aaa9366327a4e8
   m_SerializeEntries:
+  - m_GUID: 2406a806f5a472e47a86a91ba702ef48
+    m_Address: Assets/_Data/_QuestSystem/Quests/Prefabs/Q004.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 62d7afb250912a445965980d83aa3738
     m_Address: Assets/_Data/_QuestSystem/ScriptableObject/QuestDatabase.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 682e47d892de3ed4eb16e9807acf24f4
+    m_Address: Assets/_Data/_QuestSystem/Quests/Prefabs/Q101.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 71b88de5934c0ae45801899fd01b55cc
+    m_Address: Assets/_Data/_QuestSystem/Quests/Prefabs/Q002.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9aeafedd03f86764badd34de62a2d4a9
+    m_Address: Assets/_Data/_QuestSystem/Quests/Prefabs/Q003.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a31384bcae8ef9f46906941f28224ec4
+    m_Address: Assets/_Data/_QuestSystem/Quests/Prefabs/Q201.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dbe4432ec5e55e14389bad77154556d8
+    m_Address: Assets/_Data/_QuestSystem/Quests/Prefabs/Q102.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e6a463ba49d787246b7395815d9c9415
+    m_Address: Assets/_Data/_QuestSystem/Quests/Prefabs/Q103.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

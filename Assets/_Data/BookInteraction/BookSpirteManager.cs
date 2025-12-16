@@ -9,6 +9,8 @@ public class BookSpriteManager : MonoBehaviour
     public Sprite background;
     [SerializeField] private Sprite[] _bookPages;
 
+    public int TotalPages => _bookPages.Length;
+
     /// <summary>
     /// Event khi bookPages thay đổi
     /// </summary>

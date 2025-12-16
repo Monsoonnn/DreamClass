@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StepId: S001
-  IsComplete: 0
+  IsComplete: 1
   questCtrl: {fileID: 581625922381216332}
   optionUI: {fileID: 5403243085002525452}
   voiceEnumSource: {fileID: 11400000, guid: 12ad12b9890e8a44f9ca90967bb9c9d8, type: 2}
@@ -1771,7 +1771,7 @@ MonoBehaviour:
     b\u1EAFt \u0111\u1EA7u tr\xF2 chuy\u1EC7n v\u1EDBi c\xF4 \u1EA5y."
   steps:
   - {fileID: 217886790358985496}
-  State: 1
+  State: 3
   currentStepIndex: 0
   holdUI: {fileID: 0}
   npcCtrl: {fileID: 0}

@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   authType: 1
   cookie: 
-  jwtToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MmQwODA3YWYwZTQ5ZWZkOGJkZDQwZiIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzY0Njk0Nzk2LCJleHAiOjE3NjQ3ODExOTZ9.2KFjiwkYPV6uwxupgWEG3TRyZmOfzajvlbW9EQyld0U
+  jwtToken: 
+  expirationTime: 
+  enableExpirationCheck: 1

@@ -95,11 +95,24 @@ namespace DreamClass.NPCCore
                 s001.npcCtrl = GetComponent<NPCManager>();
             }
 
+            if(quest is QuestType3 s003)
+            {
+                s003.StartQuest();
+            }
+
             // Đánh dấu đã spawn questId này
             spawnedQuestIds.Add(questId);
 
             Debug.Log($"[{name}] Spawned quest '{quest.QuestName}' ({questId})");
         }
+
+        [ProButton]
+        private void ClearHasSpawnedQuests()
+        {
+            spawnedQuestIds.Clear();
+        }
+
+        
     }
     [System.Serializable]
     public class QuestSpawnGroup

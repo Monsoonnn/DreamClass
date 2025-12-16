@@ -336,7 +336,7 @@ MonoBehaviour:
     h\xE0nh."
   steps:
   - {fileID: 391177635902012022}
-  State: 1
+  State: 3
   currentStepIndex: 0
   holdUI: {fileID: 0}
   npcCtrl: {fileID: 0}
@@ -2242,7 +2242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StepId: S001
-  IsComplete: 0
+  IsComplete: 1
   questCtrl: {fileID: 1391789915808182964}
   optionUI: {fileID: 4698636233241743023}
   voiceEnumSource: {fileID: 11400000, guid: b632816efcf09d7459357f81cbc2f210, type: 2}

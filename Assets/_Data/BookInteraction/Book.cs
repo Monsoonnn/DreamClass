@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.Events;
@@ -51,6 +52,10 @@ public class BookVR : MonoBehaviour
 
     [Header("Auto Flip Page")]
     public AutoFlipVR autoFlipVR;
+
+    // Observer pattern: Event for page changed
+    public event System.Action<int> OnPageChanged;
+    private int _lastPage = -1;
 
     public int CurrentPage
     {
@@ -198,6 +203,13 @@ public class BookVR : MonoBehaviour
     void Update()
     {
         if (!interactable) return;
+
+        // Observer: Notify page changed
+        if (CurrentPage != _lastPage)
+        {
+            _lastPage = CurrentPage;
+            OnPageChanged?.Invoke(CurrentPage);
+        }
 
         bookPlane.SetNormalAndPosition(BookPanel.transform.forward, BookPanel.transform.position);
         isHandTrackingActive = IsHandTrackingActive();

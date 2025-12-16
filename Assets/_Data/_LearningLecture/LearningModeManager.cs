@@ -41,6 +41,9 @@ namespace DreamClass.Lecture
         #endregion
 
         #region Data: Subject
+        // Observer pattern: Events for subject, lecture changed
+        public event Action<SubjectInfo> OnSubjectChanged;
+        public event Action<CSVLectureInfo> OnLectureChanged;
         [Header("Subject Data")]
         public SubjectDatabase subjectDatabase;
         public SubjectInfo currentSubject;
@@ -161,6 +164,9 @@ namespace DreamClass.Lecture
 
             // Load sprites to BookSpriteManager
             LoadSpritesToBookManager(currentSubject);
+
+            // Observer: Notify subject changed
+            OnSubjectChanged?.Invoke(currentSubject);
         }
 
         public void SetCurrentSubject(SubjectInfo subject)
@@ -172,6 +178,9 @@ namespace DreamClass.Lecture
 
             // Load sprites to BookSpriteManager
             LoadSpritesToBookManager(currentSubject);
+
+            // Observer: Notify subject changed
+            OnSubjectChanged?.Invoke(currentSubject);
         }
 
         /// <summary>
@@ -408,6 +417,9 @@ namespace DreamClass.Lecture
             StartCoroutine(DelayedJump(currentLecture.page));
 
             Debug.Log($"Current lecture set to: {currentLecture.lectureName} (Page: {currentLecture.page})");
+
+            // Observer: Notify lecture changed
+            OnLectureChanged?.Invoke(currentLecture);
         }
 
         public void SetCurrentLecture(CSVLectureInfo lecture)
@@ -422,6 +434,9 @@ namespace DreamClass.Lecture
             StartCoroutine(DelayedJump(lecture.page));
 
             Debug.Log($"Current lecture set to: {currentLecture.lectureName}");
+
+            // Observer: Notify lecture changed
+            OnLectureChanged?.Invoke(currentLecture);
         }
 
         private IEnumerator DelayedJump(int page)
