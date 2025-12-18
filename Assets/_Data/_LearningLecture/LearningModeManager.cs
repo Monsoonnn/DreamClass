@@ -250,11 +250,17 @@ namespace DreamClass.Lecture
         public SubjectInfo GetCurrentSubject() => currentSubject;
 
         /// <summary>
-        /// Get all subjects from SubjectDatabase
-        /// PDFSubjectService đã update remote data trực tiếp vào database rồi
+        /// Get all subjects from Runtime State
+        /// PDFSubjectService quản lý runtime data (đã clone từ Database)
         /// </summary>
         public List<SubjectInfo> GetAllSubjects()
         {
+            if (pdfSubjectService != null && pdfSubjectService.RuntimeSubjects != null && pdfSubjectService.RuntimeSubjects.Count > 0)
+            {
+                return pdfSubjectService.RuntimeSubjects;
+            }
+
+            // Fallback to database if service not ready (shouldn't happen in normal flow)
             if (subjectDatabase == null || subjectDatabase.subjects == null)
             {
                 Debug.LogWarning("[LearningModeManager] SubjectDatabase is null!");
@@ -331,11 +337,10 @@ namespace DreamClass.Lecture
             // After load complete, update currentSubject with latest data
             if (currentSubject != null && currentSubject.MatchesCloudinaryFolder(remoteSubject.cloudinaryFolder))
             {
-                // Find updated subject from database
-                var updatedSubject = subjectDatabase.subjects.Find(s => s.MatchesCloudinaryFolder(remoteSubject.cloudinaryFolder));
-                if (updatedSubject != null && updatedSubject.HasLoadedSprites())
+                // currentSubject IS the runtime instance, so just check if it has sprites
+                if (currentSubject.HasLoadedSprites())
                 {
-                    LoadSpritesToBookManager(updatedSubject);
+                    LoadSpritesToBookManager(currentSubject);
                 }
             }
         }
@@ -383,14 +388,8 @@ namespace DreamClass.Lecture
                         Debug.Log($"[LearningModeManager] Loaded {sprites.Length} sprites for subject: {subject.name}");
                     }
                 }
-
-                // Also update in SubjectDatabase
-                var dbSubject = subjectDatabase.subjects.Find(s => s.MatchesCloudinaryFolder(subject.cloudinaryFolder));
-                if (dbSubject != null)
-                {
-                    dbSubject.SetBookPages(sprites);
-                    dbSubject.isCached = true;
-                }
+                
+                // No need to update SubjectDatabase manually, as we are working with RuntimeSubjects
             }
         }
 

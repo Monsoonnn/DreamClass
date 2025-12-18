@@ -1,5 +1,8 @@
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceLocations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -61,6 +64,7 @@ namespace DreamClass.Subjects
         [Header("Bundle Settings")]
         [SerializeField] private bool checkLocalBundleFirst = true;
         [SerializeField] private string bundleStorePath = "StreamingAssets";
+        [SerializeField] private string androidAddressableLabel = "PDFAssets_Android";
 
         [Header("Debug")]
         [SerializeField] private bool enableDebugLog = true;
@@ -70,6 +74,7 @@ namespace DreamClass.Subjects
         public event Action<RemoteSubjectInfo, float> OnSubjectCacheProgress;
         public event Action<RemoteSubjectInfo> OnSubjectCacheComplete;
         public event Action<string> OnError;
+        public event Action<string> OnLocalSubjectReady;
         public static event Action<float> OnOverallProgress;
 
         private static float overallProgress = 0f;
@@ -111,6 +116,9 @@ namespace DreamClass.Subjects
         public int TotalApiLoads => totalApiLoads;
         public Dictionary<string, int> BundleLoadStats => bundleLoadStats;
 
+        // RUNTIME STATE: Separate from ScriptableObject
+        public List<SubjectInfo> RuntimeSubjects { get; private set; } = new List<SubjectInfo>();
+
         protected override void LoadComponents()
         {
             base.LoadComponents();
@@ -131,6 +139,9 @@ namespace DreamClass.Subjects
         {
             base.Start();
 
+            // Init Runtime State from Database
+            InitializeRuntimeSubjects();
+
             // Reset state mỗi lần scene load
             isReady = false;
             overallProgress = 0f;
@@ -146,43 +157,14 @@ namespace DreamClass.Subjects
 
             LoadCacheManifest();
 
-            // PRIORITY 1: CHECK BUNDLE FIRST at startup + PRELOAD BUNDLE SPRITES
+            // PRIORITY 1: CHECK BUNDLE/ADDRESSABLES FIRST
             if (checkLocalBundleFirst)
             {
-                string bundleStoreFull = Path.Combine(Application.streamingAssetsPath, bundleStorePath);
-                if (Directory.Exists(bundleStoreFull))
-                {
-                    string[] bundleFiles = Directory.GetFiles(bundleStoreFull);
-
-                    // Filter actual bundle files (exclude .manifest and .meta)
-                    List<string> actualBundles = new List<string>();
-                    foreach (var file in bundleFiles)
-                    {
-                        string fileName = Path.GetFileName(file);
-                        if (!fileName.EndsWith(".manifest", System.StringComparison.OrdinalIgnoreCase) &&
-                            !fileName.EndsWith(".meta", System.StringComparison.OrdinalIgnoreCase))
-                        {
-                            actualBundles.Add(file);
-                        }
-                    }
-
-                    if (actualBundles.Count > 0)
-                    {
-                        Log($"[STARTUP] Found {actualBundles.Count} bundle files in {bundleStorePath}");
-                        for (int i = 0; i < actualBundles.Count; i++)
-                        {
-                            string bundlePath = actualBundles[i];
-                            string bundleName = Path.GetFileName(bundlePath);
-                            Log($"[STARTUP BUNDLE] Bundle {i + 1}: {bundleName}");
-                        }
-
-                        // Start preloading bundles in background
-                        hasFetched = true;
-                        isPreloading = true;
-                        StartCoroutine(PreloadAllBundlesCoroutine());
-                        return;
-                    }
-                }
+                // Start preloading bundles/addressables in background
+                hasFetched = true;
+                isPreloading = true;
+                StartCoroutine(PreloadAllBundlesCoroutine());
+                return;
             }
 
             // PRIORITY 2: CHECK CACHE MANIFEST before attempting API fetch
@@ -206,299 +188,184 @@ namespace DreamClass.Subjects
             }
         }
 
-        /// <summary>
-        /// OPTIMIZATION: Chỉ load metadata mà không load sprites
-        /// </summary>
-        private void PreloadMetadataOnly()
+        private void InitializeRuntimeSubjects()
         {
-            if (subjectDatabase == null) return;
-
-            int metadataCount = 0;
-            int newSubjectsCount = 0;
-
-            foreach (var cachedData in cacheManifest.subjects)
+            RuntimeSubjects.Clear();
+            if (subjectDatabase != null)
             {
-                if (!cachedData.isFullyCached || cachedData.cachedImagePaths.Count == 0)
-                    continue;
-
-                // Match by cloudinaryFolder first, then by name
-                var localSubject = subjectDatabase.subjects.Find(s =>
-                    (!string.IsNullOrEmpty(s.cloudinaryFolder) && !string.IsNullOrEmpty(cachedData.cloudinaryFolder) &&
-                     s.cloudinaryFolder.Equals(cachedData.cloudinaryFolder, System.StringComparison.OrdinalIgnoreCase)) ||
-                    s.name == cachedData.subjectName);
-
-                // Nếu không tìm thấy trong database, tạo mới SubjectInfo từ cache
-                if (localSubject == null && !string.IsNullOrEmpty(cachedData.cloudinaryFolder))
+                foreach (var subject in subjectDatabase.subjects)
                 {
-                    localSubject = new SubjectInfo
-                    {
-                        name = cachedData.subjectName,
-                        cloudinaryFolder = cachedData.cloudinaryFolder
-                    };
-                    subjectDatabase.subjects.Add(localSubject);
-                    newSubjectsCount++;
-                    Log($"[LAZY LOAD] Created new SubjectInfo from cache: {cachedData.subjectName}");
+                    RuntimeSubjects.Add(subject.Clone());
                 }
-
-                if (localSubject != null)
-                {
-                    // Chỉ set metadata, không load sprites
-                    localSubject.isCached = true;
-                    localSubject.localImagePaths = new List<string>(cachedData.cachedImagePaths);
-                    metadataCount++;
-                }
+                Log($"[RUNTIME] Initialized {RuntimeSubjects.Count} runtime subjects from database.");
             }
-
-            if (newSubjectsCount > 0)
-            {
-#if UNITY_EDITOR
-                UnityEditor.EditorUtility.SetDirty(subjectDatabase);
-                UnityEditor.AssetDatabase.SaveAssets();
-#endif
-            }
-
-            Log($"[LAZY LOAD] Loaded metadata for {metadataCount} subjects ({newSubjectsCount} new from cache)");
         }
 
-        /// <summary>
-        /// Load sprites from cache immediately (synchronously at startup)
-        /// This ensures sprites are ready when user clicks on a book
-        /// </summary>
-        private void PreloadFromCache()
-        {
-            if (subjectDatabase == null || cacheManifest == null) return;
+        // ... (Skipped Metadata Preload and PreloadFromCache methods)
 
-            int spritesLoaded = 0;
-            int subjectsProcessed = 0;
-
-            foreach (var cachedData in cacheManifest.subjects)
-            {
-                if (!cachedData.isFullyCached || cachedData.cachedImagePaths.Count == 0)
-                    continue;
-
-                // Match by cloudinaryFolder first, then by name
-                var localSubject = subjectDatabase.subjects.Find(s =>
-                    (!string.IsNullOrEmpty(s.cloudinaryFolder) && !string.IsNullOrEmpty(cachedData.cloudinaryFolder) &&
-                     s.cloudinaryFolder.Equals(cachedData.cloudinaryFolder, System.StringComparison.OrdinalIgnoreCase)) ||
-                    s.name == cachedData.subjectName);
-
-                // Create if not found
-                if (localSubject == null && !string.IsNullOrEmpty(cachedData.cloudinaryFolder))
-                {
-                    localSubject = new SubjectInfo
-                    {
-                        name = cachedData.subjectName,
-                        cloudinaryFolder = cachedData.cloudinaryFolder
-                    };
-                    subjectDatabase.subjects.Add(localSubject);
-                    Log($"[PRELOAD] Created new SubjectInfo from cache: {cachedData.subjectName}");
-                }
-
-                if (localSubject != null)
-                {
-                    // Set metadata
-                    localSubject.isCached = true;
-                    localSubject.localImagePaths = new List<string>(cachedData.cachedImagePaths);
-
-                    // Load sprites synchronously from cache files
-                    List<Sprite> loadedSprites = new List<Sprite>();
-                    foreach (var imagePath in cachedData.cachedImagePaths)
-                    {
-                        if (!System.IO.File.Exists(imagePath))
-                        {
-                            LogError($"[PRELOAD] Cache file not found: {imagePath}");
-                            continue;
-                        }
-
-                        try
-                        {
-                            byte[] imageData = System.IO.File.ReadAllBytes(imagePath);
-                            Texture2D texture = new Texture2D(2, 2);
-                            if (texture.LoadImage(imageData))
-                            {
-                                Sprite sprite = Sprite.Create(texture,
-                                    new Rect(0, 0, texture.width, texture.height),
-                                    Vector2.one * 0.5f);
-                                loadedSprites.Add(sprite);
-                                spritesLoaded++;
-                            }
-                            else
-                            {
-                                LogError($"[PRELOAD] Failed to load image: {imagePath}");
-                            }
-                        }
-                        catch (System.Exception e)
-                        {
-                            LogError($"[PRELOAD] Error loading {imagePath}: {e.Message}");
-                        }
-                    }
-
-                    // Assign sprites to subject
-                    if (loadedSprites.Count > 0)
-                    {
-                        localSubject.SetBookPages(loadedSprites.ToArray());
-                        subjectsProcessed++;
-                        Log($"[PRELOAD] Loaded {loadedSprites.Count} sprites for {cachedData.subjectName}");
-                    }
-                }
-            }
-
-            Log($"[PRELOAD] Complete: {spritesLoaded} sprites loaded for {subjectsProcessed} subjects");
-        }
+        // ... (Skipped BackgroundPreloadAllSpritesCoroutine)
 
         /// <summary>
-        /// OPTIMIZATION: Preload tất cả sprites trong background sau khi game đã ready
-        /// Chạy với delay để không ảnh hưởng đến loading ban đầu
-        /// </summary>
-        private IEnumerator BackgroundPreloadAllSpritesCoroutine()
-        {
-            // Đợi một khoảng thời gian trước khi bắt đầu preload
-            yield return new WaitForSeconds(backgroundPreloadDelay);
-
-            Log($"[BACKGROUND PRELOAD] Starting background preload of all cached sprites...");
-
-            if (subjectDatabase == null) yield break;
-
-            int totalSubjects = 0;
-            int loadedSubjects = 0;
-
-            // Đếm số subjects cần load
-            foreach (var subject in subjectDatabase.subjects)
-            {
-                if (subject.isCached && subject.localImagePaths != null && subject.localImagePaths.Count > 0)
-                {
-                    if (!subject.HasLoadedSprites())
-                    {
-                        totalSubjects++;
-                    }
-                }
-            }
-
-            Log($"[BACKGROUND PRELOAD] Found {totalSubjects} subjects to preload");
-
-            // Load từng subject
-            foreach (var subject in subjectDatabase.subjects)
-            {
-                if (subject.isCached && subject.localImagePaths != null && subject.localImagePaths.Count > 0)
-                {
-                    if (!subject.HasLoadedSprites())
-                    {
-                        Log($"[BACKGROUND PRELOAD] Loading {subject.name} ({loadedSubjects + 1}/{totalSubjects})");
-
-                        // Load sprites cho subject này
-                        yield return StartCoroutine(LoadSubjectSpritesOnDemand(subject.cloudinaryFolder, (sprites) =>
-                        {
-                            // Sprites loaded
-                        }));
-
-                        loadedSubjects++;
-
-                        // Delay giữa các subjects để không lag
-                        yield return new WaitForSeconds(0.1f);
-                    }
-                }
-            }
-
-            Log($"[BACKGROUND PRELOAD] Completed! Loaded {loadedSubjects} subjects");
-        }
-
-        /// <summary>
-        /// Preload tất cả bundle sprites lúc startup (giống như cache preload)
-        /// Để sprites sẵn sàng khi user click vào sách
+        /// Preload logic depending on Platform:
+        /// - Editor: Load from Assets/PersistentData/Editor/PDFAssetBundles
+        /// - Android: Load from StreamingAssets/Android/PDFAssetBundles
         /// </summary>
         private IEnumerator PreloadAllBundlesCoroutine()
         {
-            Log("[BUNDLE PRELOAD] Starting preload of all bundle sprites...");
+            Log("[BUNDLE PRELOAD] Starting preload...");
 
-            string bundleStoreFull = Path.Combine(Application.streamingAssetsPath, bundleStorePath);
-            string[] bundleFiles = Directory.GetFiles(bundleStoreFull);
+            if (Application.isEditor)
+            {
+                yield return StartCoroutine(PreloadFromEditorBundles());
+            }
+            else if (Application.platform == RuntimePlatform.Android)
+            {
+                yield return StartCoroutine(PreloadFromAndroidBundles());
+            }
+            else
+            {
+                Log($"[BUNDLE PRELOAD] Platform {Application.platform} not supported for specific preload. Skipping.");
+            }
 
-            // Filter only bundle files (exclude .manifest and .meta files)
+            preloadComplete = true;
+            yield return StartCoroutine(CheckAndFetchMissingSubjects());
+        }
+
+        private IEnumerator PreloadFromEditorBundles()
+        {
+            // Use Application.dataPath to point to Assets/PersistentData/Editor/PDFAssetBundles
+            string editorBundlePath = Path.Combine(Application.dataPath, "PersistentData/Editor/PDFAssetBundles");
+            Log($"[BUNDLE PRELOAD] Mode: EDITOR - Path: {editorBundlePath}");
+
+            if (!Directory.Exists(editorBundlePath))
+            {
+                Log($"[BUNDLE PRELOAD] Editor bundle path not found: {editorBundlePath}");
+                yield break;
+            }
+
+            string[] bundleFiles = Directory.GetFiles(editorBundlePath);
             List<string> actualBundles = new List<string>();
             foreach (var file in bundleFiles)
             {
-                string fileName = Path.GetFileName(file);
-                if (!fileName.EndsWith(".manifest", System.StringComparison.OrdinalIgnoreCase) &&
-                    !fileName.EndsWith(".meta", System.StringComparison.OrdinalIgnoreCase))
+                if (!file.EndsWith(".manifest") && !file.EndsWith(".meta"))
                 {
                     actualBundles.Add(file);
                 }
             }
 
-            Log($"[BUNDLE PRELOAD] Found {actualBundles.Count} bundles to preload");
+            Log($"[BUNDLE PRELOAD] Found {actualBundles.Count} bundles in Editor path");
 
-            int preloadedCount = 0;
             foreach (var bundlePath in actualBundles)
             {
-                string bundleFileName = Path.GetFileName(bundlePath);
-                string bundleName = bundleFileName.ToLower();
-
-                // Load bundle and cache sprites
+                string bundleName = Path.GetFileName(bundlePath).ToLower();
                 yield return StartCoroutine(LoadFromLocalBundle(bundlePath, bundleName, (sprites) =>
                 {
                     if (sprites != null && sprites.Length > 0)
                     {
-                        preloadedCount++;
-                        Log($"[BUNDLE PRELOAD] Preloaded {bundleFileName}: {sprites.Length} sprites");
-
-                        // ============================================================
-                        // DEBUG: Match bundle with SubjectDatabase
-                        // ============================================================
-                        if (subjectDatabase != null)
-                        {
-                            //Log($"[BUNDLE DEBUG] === Bundle: {bundleName} ===");
-                            //Log($"[BUNDLE DEBUG] Total subjects in database: {subjectDatabase.subjects.Count}");
-
-                            bool foundMatch = false;
-                            foreach (var subject in subjectDatabase.subjects)
-                            {
-                                // Normalize CloudinaryFolder: replace / with _, lowercase
-                                string cloudinaryNormalized = subject.cloudinaryFolder;
-                                if (!string.IsNullOrEmpty(cloudinaryNormalized))
-                                {
-                                    cloudinaryNormalized = cloudinaryNormalized.Replace("/", "_").ToLower();
-                                }
-
-                                // Compare without sanitization
-                                bool nameMatch = subject.name.Equals(bundleName, StringComparison.OrdinalIgnoreCase);
-                                bool folderMatch = !string.IsNullOrEmpty(cloudinaryNormalized) &&
-                                    cloudinaryNormalized.Equals(bundleName, StringComparison.OrdinalIgnoreCase);
-
-                                //Log($"[BUNDLE DEBUG] Subject: {subject.name}");
-                                //Log($"[BUNDLE DEBUG]   - Name: {subject.name} | Match: {nameMatch}");
-                                //Log($"[BUNDLE DEBUG]   - CloudinaryFolder: {subject.cloudinaryFolder}");
-                                //Log($"[BUNDLE DEBUG]   - CloudinaryFolder Normalized: {cloudinaryNormalized}");
-                                //Log($"[BUNDLE DEBUG]   - CloudinaryFolder Match: {folderMatch}");
-                                //Log($"[BUNDLE DEBUG]   - Bundle name to match: {bundleName}");
-                                //Log($"[BUNDLE DEBUG]   - Title: {subject.title}");
-                                //Log($"[BUNDLE DEBUG]   - Pages: {subject.pages}");
-
-                                if (nameMatch || folderMatch)
-                                {
-                                    foundMatch = true;
-                                    subject.SetBookPages(sprites);
-                                    subject.isCached = true;
-                                    Log($"[BUNDLE PRELOAD] MATCHED! Assigned {sprites.Length} sprites to {subject.name}");
-                                }
-                            }
-
-                            if (!foundMatch)
-                            {
-                                Log($"[BUNDLE PRELOAD] WARNING: No match found for bundle {bundleName}");
-                            }
-                        }
+                        MatchSpritesToSubject(bundleName, sprites, bundlePath);
                     }
                 }));
+            }
+        }
 
-                // Small delay between bundles
-                yield return new WaitForSeconds(0.1f);
+        private IEnumerator PreloadFromAndroidBundles()
+        {
+            string androidBundlePath = Path.Combine(Application.streamingAssetsPath, "Android/PDFAssetBundles");
+            Log($"[BUNDLE PRELOAD] Mode: ANDROID - Path: {androidBundlePath}");
+
+            // On Android, StreamingAssets are inside the APK, we can't use Directory.Exists directly
+            // However, AssetBundle.LoadFromFileAsync works with the path
+            // For listing files, it's tricky. Usually we'd need a manifest or known names.
+            // But if we use AssetBundle.LoadFromFileAsync(androidBundlePath), it might work if it's a folder? No.
+            
+            // Assuming we have a manifest file to know what bundles to load, or we load "Android" manifest
+            string manifestPath = Path.Combine(androidBundlePath, "PDFAssetBundles"); // The main bundle often named after the folder
+            
+            Log($"[BUNDLE PRELOAD] Loading main manifest from: {manifestPath}");
+            
+            var manifestRequest = AssetBundle.LoadFromFileAsync(manifestPath);
+            yield return manifestRequest;
+            AssetBundle manifestBundle = manifestRequest.assetBundle;
+
+            if (manifestBundle == null)
+            {
+                LogError($"[BUNDLE PRELOAD] Failed to load main manifest bundle at {manifestPath}");
+                yield break;
             }
 
-            Log($"[BUNDLE PRELOAD] Complete! Preloaded {preloadedCount}/{actualBundles.Count} bundles");
+            AssetBundleManifest manifest = manifestBundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
+            if (manifest == null)
+            {
+                LogError("[BUNDLE PRELOAD] Failed to load AssetBundleManifest object");
+                manifestBundle.Unload(true);
+                yield break;
+            }
 
-            preloadComplete = true;
+            string[] bundleNames = manifest.GetAllAssetBundles();
+            Log($"[BUNDLE PRELOAD] Found {bundleNames.Length} bundles in Android manifest");
 
-            yield return StartCoroutine(CheckAndFetchMissingSubjects());
+            foreach (var bundleName in bundleNames)
+            {
+                string bundlePath = Path.Combine(androidBundlePath, bundleName);
+                yield return StartCoroutine(LoadFromLocalBundle(bundlePath, bundleName, (sprites) =>
+                {
+                    if (sprites != null && sprites.Length > 0)
+                    {
+                        MatchSpritesToSubject(bundleName, sprites, bundlePath);
+                    }
+                }));
+            }
+
+            manifestBundle.Unload(false);
+        }
+        [ProButton]
+        private void MatchSpritesToSubject(string identifier, Sprite[] sprites = null, string fullPath = "")
+        {
+            // Use RuntimeSubjects instead of subjectDatabase.subjects
+            if (RuntimeSubjects == null || RuntimeSubjects.Count == 0) return;
+
+            foreach (var subject in RuntimeSubjects)
+            {
+                // Normalize CloudinaryFolder
+                string cloudinaryNormalized = subject.cloudinaryFolder;
+                if (!string.IsNullOrEmpty(cloudinaryNormalized))
+                {
+                    cloudinaryNormalized = cloudinaryNormalized.Replace("/", "_").ToLower();
+                }
+
+                // Checks
+                bool nameMatch = subject.name.Equals(identifier, StringComparison.OrdinalIgnoreCase);
+                
+                // Check folder match
+                bool pathMatch = false;
+                if (!string.IsNullOrEmpty(fullPath) && !string.IsNullOrEmpty(subject.cloudinaryFolder))
+                {
+                     // Logic cũ: chỉ check EndsWith cơ bản
+                     // pathMatch = fullPath.Replace("\\", "/").ToLower().EndsWith(subject.cloudinaryFolder.ToLower());
+
+                     // Logic mới: Chuẩn hóa cả 2 về dạng phẳng (thay / và khoảng trắng bằng _) để so sánh
+                     string normFullPath = fullPath.Replace("\\", "/").Replace("/", "_").Replace(" ", "_").ToLower();
+                     string normFolder = subject.cloudinaryFolder.Replace("\\", "/").Replace("/", "_").Replace(" ", "_").ToLower();
+                     
+                     // Check xem đường dẫn file (đã chuẩn hóa) có kết thúc bằng folder (đã chuẩn hóa) không
+                     pathMatch = normFullPath.EndsWith(normFolder);
+                }
+                
+                bool cloudinaryMatch = !string.IsNullOrEmpty(cloudinaryNormalized) &&
+                                       cloudinaryNormalized.Equals(identifier, StringComparison.OrdinalIgnoreCase);
+
+                if (nameMatch || cloudinaryMatch || pathMatch)
+                {
+                    subject.SetBookPages(sprites);
+                    subject.isCached = true;
+                    Log($"[BUNDLE PRELOAD] MATCHED! Assigned {sprites.Length} sprites to {subject.name} (Runtime)");
+                    Log($"[BUNDLE PRELOAD] MATCHED! found for {identifier} (Path: {fullPath})");
+                    OnLocalSubjectReady?.Invoke(subject.name);
+                    return; // Assigned to one subject, stop (assume 1-1)
+                }
+            }
+            
+            Log($"[BUNDLE PRELOAD] WARNING: No match found for {identifier} (Path: {fullPath})");
         }
 
         /// <summary>
@@ -507,16 +374,16 @@ namespace DreamClass.Subjects
         /// </summary>
         private IEnumerator CheckAndFetchMissingSubjects()
         {
-            if (subjectDatabase == null)
+            if (RuntimeSubjects == null)
             {
-                Log("[MISSING CHECK] SubjectDatabase is null, skipping");
+                Log("[MISSING CHECK] RuntimeSubjects is null, skipping");
                 TryMarkAsReady();
                 yield break;
             }
 
             // Đếm số subject chưa cached
             int missingCount = 0;
-            foreach (var subject in subjectDatabase.subjects)
+            foreach (var subject in RuntimeSubjects)
             {
                 if (!subject.isCached)
                 {
@@ -582,7 +449,7 @@ namespace DreamClass.Subjects
             foreach (var pdfInfo in listResponse.data)
             {
                 // STEP 1: CHỈ CHECK cloudinaryFolder match
-                var localSubject = subjectDatabase.subjects.Find(s =>
+                var localSubject = RuntimeSubjects.Find(s =>
                     !string.IsNullOrEmpty(s.cloudinaryFolder) &&
                     !string.IsNullOrEmpty(pdfInfo.cloudinaryFolder) &&
                     s.cloudinaryFolder.Equals(pdfInfo.cloudinaryFolder, StringComparison.OrdinalIgnoreCase));
@@ -655,13 +522,6 @@ namespace DreamClass.Subjects
                             localSubject.isCached = true;
                             localSubject.localImagePaths = new List<string>(cachedData.cachedImagePaths);
 
-                            // Save to ScriptableObject
-#if UNITY_EDITOR
-                            UnityEditor.EditorUtility.SetDirty(subjectDatabase);
-                            UnityEditor.AssetDatabase.SaveAssets();
-                            Log($"[MISSING CHECK] Saved '{pdfInfo.name}' cache data to SubjectDatabase SO");
-#endif
-
                             // Load sprites nếu cần
                             if (!useLazyLoading)
                             {
@@ -714,13 +574,6 @@ namespace DreamClass.Subjects
                             localSubject.isCached = true;
                             localSubject.localImagePaths = new List<string>(localSubject.localImagePaths);
 
-                            // Save to ScriptableObject
-#if UNITY_EDITOR
-                            UnityEditor.EditorUtility.SetDirty(subjectDatabase);
-                            UnityEditor.AssetDatabase.SaveAssets();
-                            Log($"[CACHE CHECK] Saved '{pdfInfo.name}' local cache data to SubjectDatabase SO");
-#endif
-
                             if (!useLazyLoading)
                             {
                                 yield return StartCoroutine(
@@ -744,13 +597,6 @@ namespace DreamClass.Subjects
                             remoteSubject.localImagePaths = new List<string>(cachedData.cachedImagePaths);
                             localSubject.isCached = true;
                             localSubject.localImagePaths = new List<string>(cachedData.cachedImagePaths);
-
-                            // Save to ScriptableObject
-#if UNITY_EDITOR
-                            UnityEditor.EditorUtility.SetDirty(subjectDatabase);
-                            UnityEditor.AssetDatabase.SaveAssets();
-                            Log($"[CACHE CHECK] Saved '{pdfInfo.name}' manifest cache data to SubjectDatabase SO");
-#endif
 
                             if (!useLazyLoading)
                             {
@@ -818,6 +664,7 @@ namespace DreamClass.Subjects
                 }
 
                 Log($"[MISSING CHECK] Downloaded {cachedCount} subjects");
+                UpdateRuntimeSubjectsWithRemoteData();
                 UpdateSubjectDatabaseWithRemoteData();
             }
             else
@@ -840,7 +687,7 @@ namespace DreamClass.Subjects
             // ============================================================
             // 0. CHECK IF ALREADY LOADED (from bundle or cache preload)
             // ============================================================
-            var localSubject = subjectDatabase?.subjects.Find(s => s.MatchesCloudinaryFolder(subjectPath));
+            var localSubject = RuntimeSubjects?.Find(s => s.MatchesCloudinaryFolder(subjectPath));
             if (localSubject != null && localSubject.HasLoadedSprites())
             {
                 Log($"[LAZY LOAD] Sprites already loaded for {localSubject.name} - returning cached");
@@ -862,7 +709,7 @@ namespace DreamClass.Subjects
                     Log($"[BUNDLE] Found bundle for {subjectPath}, loading from bundle...");
 
                     // Clear old sprites trước khi load mới
-                    var targetSubject = subjectDatabase?.subjects.Find(s => s.MatchesCloudinaryFolder(subjectPath));
+                    var targetSubject = RuntimeSubjects?.Find(s => s.MatchesCloudinaryFolder(subjectPath));
                     if (targetSubject != null && targetSubject.HasLoadedSprites())
                     {
                         Log($"[BUNDLE] Clearing old sprites for {targetSubject.name}...");
@@ -959,6 +806,8 @@ namespace DreamClass.Subjects
 
             callback?.Invoke(sprites);
         }
+
+        // ... (Skipped LoadFromLocalBundle)
 
         /// <summary>
         /// Load sprites từ local AssetBundle (rất nhanh)
@@ -1354,7 +1203,7 @@ namespace DreamClass.Subjects
         /// </summary>
         public void UnloadSubjectSprites(string subjectPath)
         {
-            var localSubject = subjectDatabase?.subjects.Find(s => s.MatchesCloudinaryFolder(subjectPath));
+            var localSubject = RuntimeSubjects?.Find(s => s.MatchesCloudinaryFolder(subjectPath));
             if (localSubject == null) return;
 
             var sprites = localSubject.bookPages;
@@ -1460,6 +1309,60 @@ namespace DreamClass.Subjects
             FetchSubjects();
         }
 
+        #region Cache Utils
+
+        [ProButton]
+        public void OpenCacheFolder()
+        {
+            EnsureCacheDirectoryExists();
+            Application.OpenURL("file://" + CachePath);
+            Log($"Opened cache folder: {CachePath}");
+        }
+
+        [ProButton]
+        public void ClearCache()
+        {
+            if (Directory.Exists(CachePath))
+            {
+                try
+                {
+                    Directory.Delete(CachePath, true);
+                    Log($"Deleted cache folder: {CachePath}");
+                }
+                catch (Exception e)
+                {
+                    LogError($"Failed to delete cache folder: {e.Message}");
+                }
+            }
+
+            // Re-create directory and manifest
+            EnsureCacheDirectoryExists();
+            cacheManifest = new SubjectCacheManifest();
+            SaveCacheManifest();
+
+            // Clear local runtime cache flags
+            if (RuntimeSubjects != null)
+            {
+                foreach (var subject in RuntimeSubjects)
+                {
+                    subject.isCached = false;
+                    if (subject.localImagePaths != null)
+                        subject.localImagePaths.Clear();
+                }
+                // No need to save AssetDatabase since we are modifying RuntimeSubjects
+            }
+
+            Log("Cache cleared successfully");
+        }
+
+        [ProButton]
+        public void LogCacheFolder()
+        {
+            Log($"Cache Folder Path: {CachePath}");
+        }
+
+        #endregion
+
         #region API Fetch (giữ nguyên code cũ)
 
         [ProButton]
@@ -1503,9 +1406,9 @@ namespace DreamClass.Subjects
 
                     foreach (var pdfInfo in listResponse.data)
                     {
-                        if (onlyLoadMatchingSubjects && subjectDatabase != null)
+                        if (onlyLoadMatchingSubjects && RuntimeSubjects != null)
                         {
-                            bool hasMatch = subjectDatabase.subjects.Exists(s => s.MatchesCloudinaryFolder(pdfInfo.cloudinaryFolder));
+                            bool hasMatch = RuntimeSubjects.Exists(s => s.MatchesCloudinaryFolder(pdfInfo.cloudinaryFolder));
                             if (!hasMatch)
                             {
                                 Log($"Skipping '{pdfInfo.name}' - no matching path");
@@ -1611,6 +1514,7 @@ namespace DreamClass.Subjects
                     totalApiLoads += remoteSubjects.Count;
                     Log($"[API STAT] Total API loads = {totalApiLoads}");
 
+                    UpdateRuntimeSubjectsWithRemoteData();
                     UpdateSubjectDatabaseWithRemoteData();
 
                 }
@@ -1686,6 +1590,26 @@ namespace DreamClass.Subjects
             {
                 Directory.CreateDirectory(CachePath);
             }
+        }
+
+        private void UpdateRuntimeSubjectsWithRemoteData()
+        {
+            if (RuntimeSubjects == null) return;
+
+            foreach (var remote in remoteSubjects)
+            {
+                var localSubject = RuntimeSubjects.Find(s => s.MatchesCloudinaryFolder(remote.cloudinaryFolder));
+
+                if (localSubject != null)
+                {
+                    localSubject.title = remote.title;
+                    localSubject.grade = remote.grade;
+                    localSubject.category = remote.category;
+                    localSubject.pages = remote.pages;
+                    localSubject.note = remote.note;
+                }
+            }
+            // No Editor saving needed
         }
 
         private void UpdateSubjectDatabaseWithRemoteData()
@@ -1867,8 +1791,8 @@ namespace DreamClass.Subjects
             subject.isCached = cacheData.isFullyCached;
             subject.localImagePaths = new List<string>(cacheData.cachedImagePaths);
 
-            // Update local database
-            var localSubject = subjectDatabase?.subjects.Find(s => s.MatchesCloudinaryFolder(subject.cloudinaryFolder));
+            // Update local runtime database
+            var localSubject = RuntimeSubjects?.Find(s => s.MatchesCloudinaryFolder(subject.cloudinaryFolder));
             if (localSubject != null)
             {
                 localSubject.isCached = subject.isCached;

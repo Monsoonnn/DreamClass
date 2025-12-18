@@ -121,6 +121,11 @@ namespace DreamClass.Subjects
         public string groupName;
         public string lectureName;
         public int page;
+
+        public CSVLectureInfo Clone()
+        {
+            return (CSVLectureInfo)this.MemberwiseClone();
+        }
     }
 
     [System.Serializable]
@@ -150,6 +155,24 @@ namespace DreamClass.Subjects
         [Tooltip("Sprites loaded from cache - used by BookSpriteManager. This is runtime data and will be cleared on game restart.")]
         [System.NonSerialized]
         public Sprite[] bookPages;
+
+        public SubjectInfo Clone()
+        {
+            SubjectInfo clone = (SubjectInfo)this.MemberwiseClone();
+            clone.lectures = new List<CSVLectureInfo>();
+            if (this.lectures != null)
+            {
+                foreach (var lec in this.lectures)
+                {
+                    clone.lectures.Add(lec.Clone());
+                }
+            }
+            // Lists of strings (imageUrls, localImagePaths) need new instances too if they are modified
+            if (this.imageUrls != null) clone.imageUrls = new List<string>(this.imageUrls);
+            if (this.localImagePaths != null) clone.localImagePaths = new List<string>(this.localImagePaths);
+            
+            return clone;
+        }
 
         /// <summary>
         /// Get display name (ưu tiên title > description > name)

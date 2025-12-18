@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Data/Scenes/Bootstrapper.unity
     guid: b05b37fc66d8f124c8fdb7a9bbfac560
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Data/Scenes/Laboratory Scene.unity
     guid: cf53b7c67a3339a4bad11bdc894f9682
   - enabled: 0
@@ -26,16 +26,16 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/_Data/Scenes/Prototype-3.unity
     guid: 9cd5b065604edbd4c8f8b9f542226e5a
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Data/Scenes/Warning.unity
     guid: 2475dcf948ae4e440b6f0a14b7d52549
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Data/Scenes/AchivementRoom.unity
     guid: 8a0ff0fb3e6693b479d8c60039e2a901
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Data/Scenes/TestingRoom.unity
     guid: 2c606e9b343e1a743afbb35f81e4f276
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Data/Scenes/Classroom.unity
     guid: 0405bbcdfbc7c9e48bada242562d6483
   m_configObjects:

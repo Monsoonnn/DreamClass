@@ -35,11 +35,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fa7274b8050451d44842cb43222a4143
-    m_Address: Assets/_Data/_LearningLecture/Database/SubjectDatabase.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: ccf87b842d718d245b094a40e41a76ba, type: 2}
   m_SchemaSet:

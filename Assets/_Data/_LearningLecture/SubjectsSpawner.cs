@@ -43,8 +43,8 @@ namespace DreamClass.Lecture
         {
             if (manager != null) return;
             manager = transform.parent.parent.GetComponent<LearningModeManager>();
-            Debug.Log(manager != null 
-                ? $"LearningModeManager loaded: {manager.name}" 
+            Debug.Log(manager != null
+                ? $"LearningModeManager loaded: {manager.name}"
                 : "LearningModeManager NOT FOUND!");
         }
 
@@ -60,6 +60,7 @@ namespace DreamClass.Lecture
             {
                 manager.pdfSubjectService.OnSubjectsLoaded += OnRemoteSubjectsLoaded;
                 manager.pdfSubjectService.OnSubjectCacheComplete += OnSubjectCacheComplete;
+                manager.pdfSubjectService.OnLocalSubjectReady += OnLocalSubjectReady;
             }
 
             // If already ready, spawn immediately
@@ -83,6 +84,7 @@ namespace DreamClass.Lecture
             {
                 manager.pdfSubjectService.OnSubjectsLoaded -= OnRemoteSubjectsLoaded;
                 manager.pdfSubjectService.OnSubjectCacheComplete -= OnSubjectCacheComplete;
+                manager.pdfSubjectService.OnLocalSubjectReady -= OnLocalSubjectReady;
             }
         }
 
@@ -104,6 +106,13 @@ namespace DreamClass.Lecture
             Debug.Log($"[SubjectsSpawner] Subject cached: {subject.name}");
             // Refresh color of the subject button
             RefreshSubjectVisual(subject.name);
+        }
+
+        private void OnLocalSubjectReady(string subjectName)
+        {
+            Debug.Log($"[SubjectsSpawner] Local Subject Ready: {subjectName}");
+            // Refresh list because a previously skipped subject might now be available
+            SpawnSubjects(); 
         }
 
         [ProButton]
@@ -137,22 +146,40 @@ namespace DreamClass.Lecture
             int spawnedCount = 0;
             int skippedCount = 0;
 
-            // Spawn từng subject - CHỈ spawn nếu đã cached hoặc không có path (local only)
             for (int i = 0; i < subjects.Count; i++)
             {
                 var subject = subjects[i];
-                
-                // Skip subjects with path that are NOT cached
-                if (!string.IsNullOrEmpty(subject.cloudinaryFolder) && !subject.isCached)
+
+                bool hasRemotePath = !string.IsNullOrEmpty(subject.cloudinaryFolder);
+                bool isCached = subject.isCached;
+
+
+                if (hasRemotePath && !isCached)
                 {
-                    Debug.Log($"[SubjectsSpawner] Skipping uncached subject: {subject.name}");
+                    Debug.LogWarning(
+                        $"[SubjectsSpawner][SKIP][UNCACHED] {subject.name}"
+                    );
                     skippedCount++;
                     continue;
+                }
+               
+                if (!hasRemotePath)
+                {
+                    Debug.Log(
+                        $"[SubjectsSpawner][SPAWN][LOCAL] {subject.name}"
+                    );
+                }
+                else
+                {
+                    Debug.Log(
+                        $"[SubjectsSpawner][SPAWN][CACHED] {subject.name}"
+                    );
                 }
 
                 SpawnSingleSubject(subject, i);
                 spawnedCount++;
             }
+
 
             Debug.Log($"[SubjectsSpawner] Spawned {spawnedCount} subjects, skipped {skippedCount} uncached");
         }
@@ -229,7 +256,7 @@ namespace DreamClass.Lecture
 
             // Thông báo cho UIManager
             manager.SetCurrentSubject(index);
-            
+
             // Chuyển sang lecture selection
             manager.ShowLectureSelection();
         }
@@ -242,11 +269,11 @@ namespace DreamClass.Lecture
             {
                 if (obj != null)
                 {
-                    #if UNITY_EDITOR
+#if UNITY_EDITOR
                     DestroyImmediate(obj);
-                    #else
+#else
                     Destroy(obj);
-                    #endif
+#endif
                 }
             }
             spawnedSubjects.Clear();

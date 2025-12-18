@@ -70,39 +70,49 @@ namespace DreamClass.QuestSystem
 
         private void InitializeRandomSelection()
         {
-            if (database == null)
+            List<SubjectInfo> subjectsToUse = null;
+
+            // Try getting runtime subjects first
+            var pdfService = PDFSubjectService.Instance;
+            if (pdfService != null && pdfService.RuntimeSubjects != null && pdfService.RuntimeSubjects.Count > 0)
             {
-                Debug.LogError("[ReadingQuestStep] SubjectDatabase reference is missing! Please assign it in Inspector.");
+                subjectsToUse = pdfService.RuntimeSubjects;
+            }
+            // Fallback to database
+            else if (database != null)
+            {
+                subjectsToUse = database.subjects;
+            }
+            
+            if (subjectsToUse == null || subjectsToUse.Count == 0)
+            {
+                Debug.LogError("[ReadingQuestStep] No subjects found (checked RuntimeSubjects and Database)!");
                 return;
             }
 
             switch (randomMode)
             {
                 case RandomMode.RandomSubject:
-                    SelectRandomSubject();
+                    SelectRandomSubject(subjectsToUse);
                     break;
                 case RandomMode.RandomLecture:
-                    var subject = database.subjects.FirstOrDefault(s => s.name == subjectName);
+                    var subject = subjectsToUse.FirstOrDefault(s => s.name == subjectName);
                     if (subject != null)
                         SelectRandomLecture(subject);
                     break;
                 case RandomMode.RandomChapter:
-                    var subjectForChapter = database.subjects.FirstOrDefault(s => s.name == subjectName);
+                    var subjectForChapter = subjectsToUse.FirstOrDefault(s => s.name == subjectName);
                     if (subjectForChapter != null)
                         SelectRandomChapter(subjectForChapter);
                     break;
             }
         }
 
-        private void SelectRandomSubject()
+        private void SelectRandomSubject(List<SubjectInfo> subjects)
         {
-            if (database == null || database.subjects.Count == 0)
-            {
-                Debug.LogError("[ReadingQuestStep] No subjects in database!");
-                return;
-            }
+            if (subjects == null || subjects.Count == 0) return;
 
-            var randomSubject = database.subjects[Random.Range(0, database.subjects.Count)];
+            var randomSubject = subjects[Random.Range(0, subjects.Count)];
             subjectName = randomSubject.name;
 
             SelectRandomLecture(randomSubject);
