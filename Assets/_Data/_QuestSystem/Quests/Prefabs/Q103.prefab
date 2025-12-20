@@ -392,6 +392,7 @@ MonoBehaviour:
   experimentController: {fileID: 0}
   guideID: VanChuyenNuocOThanCay
   autoLoadGuide: 1
+  playDungLabGuide: 1
 --- !u!1 &2609637505453739318
 GameObject:
   m_ObjectHideFlags: 0

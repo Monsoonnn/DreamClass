@@ -440,6 +440,7 @@ MonoBehaviour:
   experimentController: {fileID: 0}
   guideID: NoiNang
   autoLoadGuide: 1
+  playDungLabGuide: 1
 --- !u!1 &5946313843886375562
 GameObject:
   m_ObjectHideFlags: 0

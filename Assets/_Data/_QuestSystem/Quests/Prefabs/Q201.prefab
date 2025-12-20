@@ -284,6 +284,6 @@ MonoBehaviour:
     h\xE3y \xF4n t\u1EADp m\u1ED9t ch\u01B0\u01A1ng sau \u0111\xE2y"
   steps:
   - {fileID: 2226483905666114684}
-  State: 1
+  State: 2
   currentStepIndex: 0
   book: {fileID: 0}

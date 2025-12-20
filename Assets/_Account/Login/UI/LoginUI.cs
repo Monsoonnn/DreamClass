@@ -1,4 +1,4 @@
-﻿using TMPro;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using com.cyborgAssets.inspectorButtonPro;
@@ -20,12 +20,28 @@ namespace DreamClass.LoginManager {
 
         private void OnEnable()
         {
+            // Nếu đã đăng nhập thì hiển thị trạng thái thành công luôn
+            if (LoginManager.Instance.IsLoggedIn())
+            {
+                ShowLoggedInState();
+                return;
+            }
+
             // Check toggle và load saved credentials vào textfield
             if (rememberLoginToggle != null && rememberLoginToggle.isOn)
             {
                 LoadSavedCredentialsToFields();
             }
             loadingObject.gameObject.SetActive(false); 
+        }
+
+        private void ShowLoggedInState()
+        {
+            loginManagerUI.ShowNotification("Đăng nhập thành công", this.gameObject);
+            loginManagerUI.notificationUI.logOutBtn.gameObject.SetActive(true);
+
+            if (maiNPC != null)
+                _ = maiNPC.characterVoiceline.PlayAnimation(Characters.Mai.MaiVoiceType.success);
         }
 
         /// <summary>
@@ -84,13 +100,7 @@ namespace DreamClass.LoginManager {
             loadingObject.gameObject.SetActive(false); 
             if (success) {
                 failCount = 0;
-
-                loginManagerUI.ShowNotification("Đăng nhập thành công", this.gameObject);
-                loginManagerUI.notificationUI.logOutBtn.gameObject.SetActive(true);
-
-                if (maiNPC != null)
-                    _ = maiNPC.characterVoiceline.PlayAnimation(Characters.Mai.MaiVoiceType.success);
-
+                ShowLoggedInState();
                 Debug.Log(response);
             } else {
                 failCount++;

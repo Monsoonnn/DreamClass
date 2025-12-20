@@ -10,6 +10,8 @@ namespace DreamClass.Network
     [CreateAssetMenu(fileName = "AuthData", menuName = "DreamClass/Auth Data", order = 1)]
     public class AuthData : ScriptableObject
     {
+        private const string KEY_PREFIX = "DreamClass_Auth_";
+
         [Header("Authentication Type")]
         [SerializeField] private AuthType authType = AuthType.Cookie;
         
@@ -23,22 +25,58 @@ namespace DreamClass.Network
         [SerializeField] private string expirationTime = ""; // ISO 8601 format
         [SerializeField] private bool enableExpirationCheck = true;
         
+        private void OnEnable()
+        {
+            Load();
+        }
+
+        private void Load()
+        {
+            // Load stored values if they exist
+            if (PlayerPrefs.HasKey(KEY_PREFIX + "AuthType"))
+                authType = (AuthType)PlayerPrefs.GetInt(KEY_PREFIX + "AuthType", (int)authType);
+
+            if (PlayerPrefs.HasKey(KEY_PREFIX + "Cookie"))
+                cookie = PlayerPrefs.GetString(KEY_PREFIX + "Cookie", cookie);
+
+            if (PlayerPrefs.HasKey(KEY_PREFIX + "JwtToken"))
+                jwtToken = PlayerPrefs.GetString(KEY_PREFIX + "JwtToken", jwtToken);
+
+            if (PlayerPrefs.HasKey(KEY_PREFIX + "ExpirationTime"))
+                expirationTime = PlayerPrefs.GetString(KEY_PREFIX + "ExpirationTime", expirationTime);
+        }
+
         public AuthType AuthType 
         { 
             get => authType; 
-            set => authType = value; 
+            set 
+            {
+                authType = value;
+                PlayerPrefs.SetInt(KEY_PREFIX + "AuthType", (int)value);
+                PlayerPrefs.Save();
+            }
         }
         
         public string Cookie 
         { 
             get => cookie; 
-            set => cookie = value; 
+            set 
+            {
+                cookie = value;
+                PlayerPrefs.SetString(KEY_PREFIX + "Cookie", value);
+                PlayerPrefs.Save();
+            }
         }
         
         public string JwtToken 
         { 
             get => jwtToken; 
-            set => jwtToken = value; 
+            set 
+            {
+                jwtToken = value;
+                PlayerPrefs.SetString(KEY_PREFIX + "JwtToken", value);
+                PlayerPrefs.Save();
+            }
         }
         
         /// <summary>
@@ -47,7 +85,12 @@ namespace DreamClass.Network
         public string ExpirationTime
         {
             get => expirationTime;
-            set => expirationTime = value;
+            set 
+            {
+                expirationTime = value;
+                PlayerPrefs.SetString(KEY_PREFIX + "ExpirationTime", value);
+                PlayerPrefs.Save();
+            }
         }
         
         /// <summary>
@@ -133,8 +176,8 @@ namespace DreamClass.Network
         /// </summary>
         public void SetExpirationTime(DateTime expTime)
         {
-            expirationTime = expTime.ToUniversalTime().ToString("o"); // ISO 8601
-            Debug.Log($"[AuthData] Expiration set to: {expirationTime}");
+            ExpirationTime = expTime.ToUniversalTime().ToString("o"); // ISO 8601
+            Debug.Log($"[AuthData] Expiration set to: {ExpirationTime}");
         }
         
         /// <summary>
@@ -149,7 +192,7 @@ namespace DreamClass.Network
             else
             {
                 // Lưu raw string nếu không parse được
-                expirationTime = expTimeStr;
+                ExpirationTime = expTimeStr;
                 Debug.LogWarning($"[AuthData] Stored raw expiration string: {expTimeStr}");
             }
         }
@@ -202,6 +245,15 @@ namespace DreamClass.Network
             cookie = "";
             jwtToken = "";
             expirationTime = "";
+            
+            PlayerPrefs.DeleteKey(KEY_PREFIX + "Cookie");
+            PlayerPrefs.DeleteKey(KEY_PREFIX + "JwtToken");
+            PlayerPrefs.DeleteKey(KEY_PREFIX + "ExpirationTime");
+            // Optional: Delete AuthType if we want to reset that too? 
+            // Usually AuthType is configuration, but if we save it, we might want to keep it or reset it.
+            // Based on previous code, AuthType wasn't cleared.
+            
+            PlayerPrefs.Save();
             Debug.Log("[AuthData] Auth data cleared");
         }
         
