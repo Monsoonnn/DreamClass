@@ -10,6 +10,8 @@ namespace DreamClass.Account
     [CreateAssetMenu(fileName = "UserProfile", menuName = "DreamClass/Account/User Profile")]
     public class UserProfileSO : ScriptableObject
     {
+        private const string PREFS_KEY = "DreamClass_UserProfile_Cache";
+
         [Header("Basic Info")]
         public string id;
         public string playerId;
@@ -45,6 +47,52 @@ namespace DreamClass.Account
         /// </summary>
         public event Action OnProfileUpdated;
 
+        private void OnEnable()
+        {
+            Load();
+        }
+
+        /// <summary>
+        /// Load cached profile data
+        /// </summary>
+        private void Load()
+        {
+            if (PlayerPrefs.HasKey(PREFS_KEY))
+            {
+                string json = PlayerPrefs.GetString(PREFS_KEY);
+                try 
+                {
+                    ProfileData data = JsonUtility.FromJson<ProfileData>(json);
+                    if (data != null)
+                    {
+                        ApplyData(data);
+                        Debug.Log("[UserProfileSO] Loaded cached profile");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogWarning($"[UserProfileSO] Failed to load cache: {e.Message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Save current profile data
+        /// </summary>
+        private void Save(ProfileData data)
+        {
+            try
+            {
+                string json = JsonUtility.ToJson(data);
+                PlayerPrefs.SetString(PREFS_KEY, json);
+                PlayerPrefs.Save();
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[UserProfileSO] Failed to save cache: {e.Message}");
+            }
+        }
+
         /// <summary>
         /// Update profile từ API response
         /// </summary>
@@ -52,6 +100,16 @@ namespace DreamClass.Account
         {
             if (data == null) return;
 
+            ApplyData(data);
+            Save(data); // Save to cache
+
+            OnProfileUpdated?.Invoke();
+
+            Debug.Log($"[UserProfileSO] Profile updated: {userName} ({playerId})");
+        }
+
+        private void ApplyData(ProfileData data)
+        {
             id = data._id;
             playerId = data.playerId;
             userName = data.name;
@@ -74,10 +132,6 @@ namespace DreamClass.Account
             updatedAt = data.updatedAt;
 
             avatarUrl = data.avatar;
-
-            OnProfileUpdated?.Invoke();
-
-            Debug.Log($"[UserProfileSO] Profile updated: {userName} ({playerId})");
         }
 
         /// <summary>
@@ -109,6 +163,10 @@ namespace DreamClass.Account
             avatarUrl = "";
             avatarTexture = null;
             avatarSprite = null;
+
+            // Clear cache
+            PlayerPrefs.DeleteKey(PREFS_KEY);
+            PlayerPrefs.Save();
 
             Debug.Log("[UserProfileSO] Profile cleared");
         }

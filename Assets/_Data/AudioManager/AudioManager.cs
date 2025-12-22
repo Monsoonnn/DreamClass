@@ -28,15 +28,32 @@ namespace DreamClass.Audio
 
         private void SubscribeToSceneLoader()
         {
-            MonoBehaviour[] allMonoBehaviours = FindObjectsOfType<MonoBehaviour>(true);
-            foreach (MonoBehaviour mb in allMonoBehaviours)
+            // Optimization: Find ISceneLoadNotifier specifically if possible, 
+            // or rely on a known manager instead of scanning all MonoBehaviours.
+            // For now, keeping it but using FindFirstObjectByType if available or caching.
+            // Actually, usually SceneLoader is a singleton or easy to find.
+            
+            // Try to find specific component implementing it
+            var notifier = FindAnyObjectByType<Systems.SceneManagement.SceneLoader>();
+            if (notifier != null)
             {
-                if (mb is ISceneLoadNotifier notifier)
+                sceneLoadNotifier = notifier;
+                sceneLoadNotifier.OnSceneLoadComplete += OnSceneLoadComplete;
+                Debug.Log($"[AudioManager] Subscribed to scene load notifier on {notifier.gameObject.name}");
+            }
+            else
+            {
+                 // Fallback to old scan if specific class not found
+                MonoBehaviour[] allMonoBehaviours = FindObjectsOfType<MonoBehaviour>(true);
+                foreach (MonoBehaviour mb in allMonoBehaviours)
                 {
-                    sceneLoadNotifier = notifier;
-                    sceneLoadNotifier.OnSceneLoadComplete += OnSceneLoadComplete;
-                    Debug.Log($"[AudioManager] Subscribed to scene load notifier on {mb.gameObject.name}");
-                    break;
+                    if (mb is ISceneLoadNotifier n)
+                    {
+                        sceneLoadNotifier = n;
+                        sceneLoadNotifier.OnSceneLoadComplete += OnSceneLoadComplete;
+                        Debug.Log($"[AudioManager] Subscribed to scene load notifier on {mb.gameObject.name}");
+                        break;
+                    }
                 }
             }
             
@@ -48,56 +65,55 @@ namespace DreamClass.Audio
 
         /// <summary>
         /// Called when scene loading is complete.
-        /// Discovers and plays welcome audio that hasn't been played yet.
         /// </summary>
         private void OnSceneLoadComplete()
         {
-            Debug.Log("[AudioManager] Scene load complete. Discovering welcome audio players...");
-            
-            // Discover all welcome audio players in the scene
-            DiscoverWelcomeAudioPlayers();
-            
-            // Play audio that hasn't been played yet
+            Debug.Log("[AudioManager] Scene load complete. Playing registered audio...");
             PlayNewWelcomeAudio();
         }
 
         /// <summary>
-        /// Finds all MonoBehaviours that implement IWelcomeAudioPlayer.
+        /// Registers a player to the manager. 
+        /// Should be called by IWelcomeAudioPlayer in Start/OnEnable.
         /// </summary>
-        private void DiscoverWelcomeAudioPlayers()
+        public void RegisterPlayer(IWelcomeAudioPlayer player)
         {
-            welcomeAudioPlayers.Clear();
-            
-            MonoBehaviour[] allMonoBehaviours = FindObjectsOfType<MonoBehaviour>(true);
-            foreach (MonoBehaviour mb in allMonoBehaviours)
+            if (!welcomeAudioPlayers.Contains(player))
             {
-                if (mb is IWelcomeAudioPlayer player)
-                {
-                    welcomeAudioPlayers.Add(player);
-                    Debug.Log($"[AudioManager] Discovered welcome audio player: {player.AudioId} on {mb.gameObject.name}");
-                }
+                welcomeAudioPlayers.Add(player);
+                // Try playing immediately if scene is already loaded? 
+                // Or just wait for SceneLoadComplete?
+                // Usually we wait for SceneLoadComplete. 
+                // But if this is registered LATE (after load), we might want to trigger it?
+                // For safety, let's just add it. The OnSceneLoadComplete handles the main flow.
             }
-            
-            Debug.Log($"[AudioManager] Total welcome audio players found: {welcomeAudioPlayers.Count}");
+        }
+
+        public void UnregisterPlayer(IWelcomeAudioPlayer player)
+        {
+            if (welcomeAudioPlayers.Contains(player))
+            {
+                welcomeAudioPlayers.Remove(player);
+            }
         }
 
         /// <summary>
-        /// Plays welcome audio that hasn't been played this session.
+        /// Plays welcome audio that meets criteria (PlayOnce check).
         /// </summary>
         private void PlayNewWelcomeAudio()
         {
-            if (welcomeAudioPlayers.Count == 0)
-            {
-                Debug.Log("[AudioManager] No welcome audio players found in scene.");
-                return;
-            }
+            if (welcomeAudioPlayers.Count == 0) return;
+
+            // Sort or prioritize? For now just iterate.
+            // Remove nulls just in case
+            welcomeAudioPlayers.RemoveAll(p => p == null);
 
             foreach (var player in welcomeAudioPlayers)
             {
-                // Check if this audio has already been played
-                if (playedAudioIds.Contains(player.AudioId))
+                // Check PlayOnce condition
+                if (player.PlayOnce && playedAudioIds.Contains(player.AudioId))
                 {
-                    Debug.Log($"[AudioManager] Skipping already played audio: {player.AudioId}");
+                    Debug.Log($"[AudioManager] Skipping played audio (PlayOnce): {player.AudioId}");
                     continue;
                 }
 
@@ -112,13 +128,20 @@ namespace DreamClass.Audio
                 Debug.Log($"[AudioManager] Playing welcome audio: {player.AudioId}");
                 player.Play();
                 
-                // Mark as played
-                playedAudioIds.Add(player.AudioId);
+                // Mark as played if PlayOnce is true (or always? usually track history anyway)
+                if (player.PlayOnce)
+                {
+                    playedAudioIds.Add(player.AudioId);
+                }
                 
-                // Only play the first unplayed audio
+                // Only play the first valid audio found? 
+                // Original logic had "break". 
+                // If multiple are present, usually we only want one "Welcome".
                 break;
             }
         }
+
+        // ... (rest of methods)
 
         /// <summary>
         /// Manually trigger welcome audio discovery and playback.
@@ -127,7 +150,7 @@ namespace DreamClass.Audio
         public void TriggerWelcomeAudio()
         {
             Debug.Log("[AudioManager] Manually triggering welcome audio...");
-            DiscoverWelcomeAudioPlayers();
+            //DiscoverWelcomeAudioPlayers();
             PlayNewWelcomeAudio();
         }
 

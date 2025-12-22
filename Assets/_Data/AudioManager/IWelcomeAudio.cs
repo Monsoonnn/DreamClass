@@ -23,5 +23,11 @@ namespace DreamClass.Audio
         /// Checks if this audio player is ready to play.
         /// </summary>
         bool IsReady { get; }
+
+        /// <summary>
+        /// If true, this audio plays only once per session.
+        /// If false, it plays every time the scene loads.
+        /// </summary>
+        bool PlayOnce { get; }
     }
 }

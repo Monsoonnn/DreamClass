@@ -28,6 +28,8 @@ namespace Gameplay.Exam
         [Tooltip("ExamController để start bài kiểm tra khi click")]
         public ExamController examController;
 
+        public ExamTimeAnnouncer examTimeAnnouncer;
+
         [Header("Settings")]
         public bool spawnOnStart = true;
         public bool clearBeforeSpawn = true;
@@ -140,7 +142,7 @@ namespace Gameplay.Exam
             if (button != null)
             {
                 ExamData capturedData = examData;
-                button.onClick.AddListener(() => OnExamClicked(capturedData));
+                button.onClick.AddListener(() => OnExamClicked(capturedData, examObj));
             }
 
             examObj.SetActive(true);
@@ -252,13 +254,24 @@ namespace Gameplay.Exam
             return availableExamColor;
         }
 
-        private void OnExamClicked(ExamData examData)
+        private void OnExamClicked(ExamData examData, GameObject thisClone)
         {
             Debug.Log($"[ExamSpawner] Exam clicked: {examData.examName}");
-            
+        
             // Start exam nếu có ExamController
             if (examController != null)
             {
+                if(examController.IsExamRunning)
+                {
+                    Debug.Log("[ExamSpawner] Exam is already running! Playing warning.");
+                    if (examTimeAnnouncer != null)
+                    {
+                        _ = examTimeAnnouncer.AnnounceWarningDuringTest();
+                         thisClone.gameObject.SetActive(true);
+                    }
+                    return; // Don't start new exam
+                }
+                thisClone.gameObject.SetActive(false);
                 examController.StartExam(examData);
             }
             else

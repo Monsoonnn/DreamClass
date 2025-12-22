@@ -29,5 +29,7 @@ namespace Characters.TeacherQuang {
         // New announcement voicelines
         SectionCompleted,       // "Chúc mừng bạn đã hoàn thành phần thi"
         SubmissionInstructions, // "Để nộp bài, vui lòng bấm nút hoàn thành"
+
+        WarningDuringTest // "Vui lòng hoàn thành bài thi "
     }
 }

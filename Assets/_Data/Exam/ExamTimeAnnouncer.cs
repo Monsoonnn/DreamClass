@@ -596,6 +596,26 @@ namespace Gameplay.Exam {
         }
 
         /// <summary>
+        /// Phát thông báo nhắc nhở khi đang trong bài thi
+        /// </summary>
+        public async Task AnnounceWarningDuringTest() {
+            if (npcManager == null || npcManager.characterVoiceline == null) {
+                Debug.LogWarning("[ExamTimeAnnouncer] NPCManager or VoicelineManager is null!");
+                return;
+            }
+
+            if (debugMode)
+                Debug.Log("[ExamTimeAnnouncer] Announcing: Warning during test");
+
+            try {
+                await npcManager.characterVoiceline.PlayAnimation(TeacherQuang.WarningDuringTest, true);
+            }
+            catch (System.Exception ex) {
+                Debug.LogError($"[ExamTimeAnnouncer] Error announcing warning: {ex.Message}");
+            }
+        }
+
+        /// <summary>
         /// Hiển thị submission status message
         /// </summary>
         private void ShowSubmissionStatus(string message) {

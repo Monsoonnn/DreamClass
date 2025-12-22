@@ -12,15 +12,35 @@ namespace DreamClass.Audio
         [Tooltip("Unique ID for this welcome audio. Used to track playback history.")]
         [SerializeField] private string audioId = "welcome_main";
         
+        [Tooltip("If true, plays only once per session. If false, plays every time scene loads.")]
+        [SerializeField] private bool playOnce = true;
+        
         [SerializeField] private AudioSource _audioSource;
         [SerializeField] private List<AudioClip> audioClips;
 
         public string AudioId => audioId;
+        public bool PlayOnce => playOnce;
         public bool IsReady => _audioSource != null && audioClips != null && audioClips.Count > 0;
 
         private void Awake()
         {
             LoadAudioSource();
+        }
+
+        private void Start()
+        {
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.RegisterPlayer(this);
+            }
+        }
+        
+        private void OnDestroy()
+        {
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.UnregisterPlayer(this);
+            }
         }
 
         private void LoadAudioSource()

@@ -12,21 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8c51cb74e42bc44093da2f0b2d8315a, type: 3}
   m_Name: UserProfile
   m_EditorClassIdentifier: 
-  id: 692d0807af0e49efd8bdd40f
-  playerId: P1764558855968FA0592
-  userName: "Nguy\u1EC5n Anh Quang"
-  email: an.tv@school.edu.vn
-  role: student
-  grade: 11
-  className: 11A1
-  gender: Male
-  dateOfBirth: 2003-09-12T00:00:00.000Z
-  address: "B\xE3i Ch\xE1y - H\u1EA1 Long"
+  id: 
+  playerId: 
+  userName: 
+  email: 
+  role: 
+  grade: 
+  className: 
+  gender: 
+  dateOfBirth: 
+  address: 
   notes: 
-  status: Active
-  gold: 46000
-  points: 500
-  isVerified: 1
-  createdAt: 2025-12-01T03:14:15.970Z
-  updatedAt: 2025-12-16T06:37:24.072Z
-  avatarUrl: https://res.cloudinary.com/dogfzmnrt/image/upload/v1765376704/avatar/P1764558855968FA0592/kubm49dyglebjbnr19po.png
+  status: 
+  gold: 0
+  points: 0
+  isVerified: 0
+  createdAt: 
+  updatedAt: 
+  avatarUrl: 

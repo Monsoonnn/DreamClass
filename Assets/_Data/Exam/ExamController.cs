@@ -46,7 +46,7 @@ namespace Gameplay.Exam
         [Tooltip("Tỷ lệ chuyển đổi điểm thành points (1 exam score = X points)")]
         [SerializeField] private float pointsScaleRatio = 5f;
         [Tooltip("API key để gửi request")]
-        [SerializeField] private string apiKey = "quanganhancut";
+        [SerializeField] private string apiKey = "";
         [Tooltip("ApiClient reference")]
         [SerializeField] private ApiClient apiClient;
         [Tooltip("UserProfile reference")]

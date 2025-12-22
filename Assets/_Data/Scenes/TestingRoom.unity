@@ -26052,13 +26052,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   examDatabase:
   - {fileID: 11400000, guid: 551afcfd4d889a4489673ca107eab2d1, type: 2}
+  - {fileID: 11400000, guid: 3acd103feba73934cba61fd52c12d8c9, type: 2}
   examItemPrefab: {fileID: 1928175191870030172}
   spawnGroups:
   - groupName: Tab2
     spawnParent: {fileID: 45132108}
     examIds:
     - TEST001
+    - TEST002
   examController: {fileID: 1609092772}
+  examTimeAnnouncer: {fileID: 1609092773}
   spawnOnStart: 1
   clearBeforeSpawn: 1
   availableExamColor: {r: 1, g: 1, b: 1, a: 1}
@@ -43867,6 +43870,13 @@ MonoBehaviour:
     animationGroupName: Idle
     disableLoop: 0
     crossFade: 0
+  - name: WarningDuringTest
+    voiceType: 21
+    audioClips:
+    - {fileID: 8300000, guid: bcc4f7ba05822a34f9825649d43566bb, type: 3}
+    animationGroupName: Idle
+    disableLoop: 0
+    crossFade: 0
   audioSource: {fileID: 1284509273}
   NPCManager: {fileID: 797111574}
 --- !u!82 &1284509273
@@ -43882,7 +43892,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.35
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -55420,7 +55430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf1e7dbc566cff84f8a281b0af5c9e60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  examData: {fileID: 11400000, guid: 551afcfd4d889a4489673ca107eab2d1, type: 2}
+  examData: {fileID: 0}
   quizDatabase: {fileID: 11400000, guid: 9bbdc3e118c43ea479b9d4e15f0e8824, type: 2}
   questionViewer: {fileID: 575174755}
   questionManager: {fileID: 1274897858}
@@ -62056,7 +62066,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ABC
+  m_text: "=== Y\xCAU C\u1EA6U \u0110\u0102NG NH\u1EACP ===\n\nB\u1EA1n c\u1EA7n
+    \u0111\u0103ng nh\u1EADp \u0111\u1EC3 tham gia b\xE0i ki\u1EC3m tra\n\nVui l\xF2ng
+    \u0111\u0103ng nh\u1EADp v\xE0 th\u1EED l\u1EA1i"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -73325,31 +73337,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1054349360118024271}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: DreamClass.QuestSystem.QuestType2, Assembly-CSharp
-        m_MethodName: StartQuest
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1928175191870030172}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!4 &1564860332745109872
 Transform:
   m_ObjectHideFlags: 0

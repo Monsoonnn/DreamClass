@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: ExamTesting
+  m_EditorClassIdentifier: 
+  m_GroupName: ExamTesting
+  m_GUID: 9aec7f28eb19d554caba46f3938968f6
+  m_SerializeEntries:
+  - m_GUID: 3acd103feba73934cba61fd52c12d8c9
+    m_Address: Assets/_Data/Exam/ExamData2.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 551afcfd4d889a4489673ca107eab2d1
+    m_Address: Assets/_Data/Exam/ExamData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: ccf87b842d718d245b094a40e41a76ba, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: db5203344e09d084fb5e0bc3ff812bab, type: 2}
+    - {fileID: 11400000, guid: 20d65981ff3a57c4e9a0552b04c1af0b, type: 2}
