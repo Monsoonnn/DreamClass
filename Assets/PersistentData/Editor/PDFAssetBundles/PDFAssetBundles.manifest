@@ -1,19 +1,51 @@
 ManifestFileVersion: 0
 UnityVersion: 6000.0.60f1
-CRC: 432267198
+CRC: 980143038
 HashAppended: 0
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: "pdf-pages_5. to\xE3\xA1n 11 t\xE1\xBA\xADp 1 k\xE1\xBA\xBFt n\xE1\xBB\x91i
-        tri th\xE1\xBB\xA9c (1)"
+      Name: pdf-pages_sgk_hh10_kntt
       Dependencies: {}
     Info_1:
-      Name: pdf-pages_sgk hh 11 kntt
+      Name: pdf-pages_sgk_hoahoc_12
       Dependencies: {}
     Info_2:
-      Name: pdf-pages_sgk toan11 - tap 2 kntt
+      Name: pdf-pages_sgk_sinhhoc_10_kntt
       Dependencies: {}
     Info_3:
-      Name: pdf-pages_sgk vl 11 kntt
+      Name: pdf-pages_sgk_sinh_12_-_kntt
+      Dependencies: {}
+    Info_4:
+      Name: pdf-pages_sgk_toan_10_-_tap_1_kntt
+      Dependencies: {}
+    Info_5:
+      Name: pdf-pages_sgk_toan_10_-_tap_2_kntt
+      Dependencies: {}
+    Info_6:
+      Name: pdf-pages_sgk_toan_12_tap_1
+      Dependencies: {}
+    Info_7:
+      Name: pdf-pages_sgk_toan_12_tap_2
+      Dependencies: {}
+    Info_8:
+      Name: pdf-pages_sgk_vatly_10_kntt
+      Dependencies: {}
+    Info_9:
+      Name: pdf-pages_sgk_vat_ly_12_kntt
+      Dependencies: {}
+    Info_10:
+      Name: "pdf-pages_5._to\xE3\xA1n_11_t\xE1\xBA\xADp_1_k\xE1\xBA\xBFt_n\xE1\xBB\x91i_tri_th\xE1\xBB\xA9c_(1)"
+      Dependencies: {}
+    Info_11:
+      Name: pdf-pages_sgk_hh_11_kntt
+      Dependencies: {}
+    Info_12:
+      Name: pdf-pages_sgk_sinh_11_kntt
+      Dependencies: {}
+    Info_13:
+      Name: pdf-pages_sgk_toan11_-_tap_2_kntt
+      Dependencies: {}
+    Info_14:
+      Name: pdf-pages_sgk_vl_11_kntt
       Dependencies: {}
