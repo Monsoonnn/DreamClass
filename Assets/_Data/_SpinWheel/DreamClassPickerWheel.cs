@@ -25,6 +25,8 @@ namespace DreamClass.SpinWheel
         [SerializeField] private GameObject rewardPanel;
         [SerializeField] private Text rewardFinalText;
         [SerializeField] private Image rewardFinalImage;
+        [SerializeField] private GameObject notificationPanel;
+        [SerializeField] private Text notificationText;
         
         [Header("Settings")]
         [SerializeField] private bool showRewardPanelOnComplete = true;
@@ -170,6 +172,17 @@ namespace DreamClass.SpinWheel
                 }
                 catch { }
                 
+                // Check for Insufficient Gold
+                if ((response != null && response.StatusCode == 400) || errorMessage == "Insufficient Gold")
+                {
+                    if (notificationPanel != null && notificationText != null)
+                    {
+                        notificationText.text = "Không đủ vàng để quay vật phẩm";
+                        notificationPanel.SetActive(true);
+                        StartCoroutine(HideNotificationDelayed(3f));
+                    }
+                }
+
                 Debug.LogError($"[DreamClassPickerWheel] {errorMessage}");
                 OnSpinFailed?.Invoke(errorMessage);
                 
@@ -326,12 +339,25 @@ namespace DreamClass.SpinWheel
         
         
         /// <summary>
+        /// Ẩn notification sau delay
+        /// </summary>
+        private IEnumerator HideNotificationDelayed(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            if (notificationPanel != null)
+                notificationPanel.SetActive(false);
+        }
+
+        /// <summary>
         /// Reset wheel về trạng thái ban đầu
         /// </summary>
         public void ResetWheel()
         {
             if (rewardPanel != null)
                 rewardPanel.SetActive(false);
+
+            if (notificationPanel != null)
+                notificationPanel.SetActive(false);
             
             if (spinButton != null)
                 spinButton.interactable = true;

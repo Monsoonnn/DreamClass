@@ -4,6 +4,7 @@ using UnityEditorInternal;
 using System.Collections.Generic;
 using System.Linq;
 using HMStudio.EasyQuiz;
+using Gameplay.Exam;
 
 namespace Gameplay.Exam.Editor
 {
@@ -183,7 +184,18 @@ namespace Gameplay.Exam.Editor
             // === Score Config ===
             EditorGUILayout.LabelField("Cấu hình điểm", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("maxScore"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("passScore"));
+            
+            var passScoreProp = serializedObject.FindProperty("passScore");
+            if (passScoreProp != null)
+            {
+                EditorGUILayout.PropertyField(passScoreProp);
+            }
+            else
+            {
+                EditorGUILayout.HelpBox("Property 'passScore' not found in serialized object!", MessageType.Error);
+                Debug.LogError("[ExamDataEditor] Property 'passScore' is missing!");
+            }
+
             EditorGUILayout.PropertyField(serializedObject.FindProperty("penaltyForWrong"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("penaltyPercent"));
 

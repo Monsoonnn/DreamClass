@@ -857,8 +857,21 @@ namespace Gameplay.Exam
             float goldRatio = examData?.goldScaleRatio ?? goldScaleRatio;
             float pointsRatio = examData?.pointsScaleRatio ?? pointsScaleRatio;
             
-            int scaledGold = Mathf.RoundToInt(examResult.totalScore * goldRatio);
-            int scaledPoints = Mathf.RoundToInt(examResult.totalScore * pointsRatio);
+            // Check pass score requirement
+            float passScore = examData?.passScore ?? 0f;
+            int scaledGold = 0;
+            int scaledPoints = 0;
+
+            if (examResult.totalScore >= passScore)
+            {
+                scaledGold = Mathf.RoundToInt(examResult.totalScore * goldRatio);
+                scaledPoints = Mathf.RoundToInt(examResult.totalScore * pointsRatio);
+            }
+            else
+            {
+                if (debugMode)
+                    Debug.Log($"[ExamController] Score {examResult.totalScore} < Pass Score {passScore}. No rewards awarded.");
+            }
 
             // Tạo data để gửi
             ScoreSubmissionData scoreData = new ScoreSubmissionData
@@ -976,9 +989,17 @@ namespace Gameplay.Exam
                         // Add rewards section only if API is successful
                         if (apiSuccess)
                         {
-                            detailedResult += "=== PHẦN THƯỞNG ===\n";
-                            detailedResult += $"Vàng nhận được: +{goldEarned} Gold\n" +
-                                            $"Điểm kinh nghiệm: +{pointsEarned} Points\n";
+                            if (goldEarned > 0 || pointsEarned > 0)
+                            {
+                                detailedResult += "=== PHẦN THƯỞNG ===\n";
+                                detailedResult += $"Vàng nhận được: +{goldEarned} Gold\n" +
+                                                $"Điểm kinh nghiệm: +{pointsEarned} Points\n";
+                            }
+                            else if (examResult.totalScore < (examData?.passScore ?? 0))
+                            {
+                                detailedResult += "=== KẾT QUẢ ===\n";
+                                detailedResult += $"Bạn chưa đạt điểm tối thiểu ({examData.passScore}) để nhận thưởng.\n";
+                            }
                         }
 
                         // Add performance evaluation based on examData maxScore
