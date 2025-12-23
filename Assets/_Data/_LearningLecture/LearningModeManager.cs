@@ -48,6 +48,7 @@ namespace DreamClass.Lecture
         public SubjectDatabase subjectDatabase;
         public SubjectInfo currentSubject;
         public int currentSubjectIndex = -1;
+        [SerializeField] private DreamClass.Account.UserProfileSO userProfile;
 
         [Header("Remote Subject Service")]
         public PDFSubjectService pdfSubjectService;
@@ -70,12 +71,23 @@ namespace DreamClass.Lecture
             this.LoadWebPBookLoader();
             this.LoadBookPageLoader();
             this.LoadLectureSpawner();
+            this.LoadUserProfile();
         }
 
         private void LoadApiClient()
         {
             if(apiClient != null) return;
             apiClient = GameObject.FindAnyObjectByType<ApiClient>();
+        }
+
+        private void LoadUserProfile()
+        {
+            if (userProfile != null) return;
+            var profileService = GameObject.FindAnyObjectByType<DreamClass.Account.ProfileService>();
+            if (profileService != null)
+            {
+                userProfile = profileService.GetProfile();
+            }
         }
 
         private void LoadWebPBookLoader()
@@ -252,22 +264,46 @@ namespace DreamClass.Lecture
         /// <summary>
         /// Get all subjects from Runtime State
         /// PDFSubjectService quản lý runtime data (đã clone từ Database)
+        /// Filtered by User Profile Grade
         /// </summary>
         public List<SubjectInfo> GetAllSubjects()
         {
+            List<SubjectInfo> allSubjects = null;
+
             if (pdfSubjectService != null && pdfSubjectService.RuntimeSubjects != null && pdfSubjectService.RuntimeSubjects.Count > 0)
             {
-                return pdfSubjectService.RuntimeSubjects;
+                allSubjects = pdfSubjectService.RuntimeSubjects;
             }
-
-            // Fallback to database if service not ready (shouldn't happen in normal flow)
-            if (subjectDatabase == null || subjectDatabase.subjects == null)
+            // Fallback to database if service not ready
+            else if (subjectDatabase != null && subjectDatabase.subjects != null)
+            {
+                allSubjects = subjectDatabase.subjects;
+            }
+            else
             {
                 Debug.LogWarning("[LearningModeManager] SubjectDatabase is null!");
                 return new List<SubjectInfo>();
             }
 
-            return subjectDatabase.subjects;
+            // Filter by Grade if UserProfile is available
+            if (userProfile != null && !string.IsNullOrEmpty(userProfile.grade))
+            {
+                string userGrade = userProfile.grade.Trim();
+                
+                // Return filtered list
+                return allSubjects.FindAll(s => 
+                {
+                    // If subject has no grade, decide whether to show (currently assuming YES if empty, NO if mismatched)
+                    // Or strict: Must match.
+                    // Given the request "theo grade", likely strict match for valid grades.
+                    
+                    if (string.IsNullOrEmpty(s.grade)) return true; // Show subjects with no grade (e.g. general books)
+
+                    return string.Equals(s.grade.Trim(), userGrade, StringComparison.OrdinalIgnoreCase);
+                });
+            }
+
+            return allSubjects;
         }
 
         /// <summary>

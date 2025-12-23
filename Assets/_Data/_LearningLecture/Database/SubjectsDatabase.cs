@@ -266,7 +266,7 @@ namespace DreamClass.Subjects
 
             // Reset API fields
             title = string.Empty;
-            grade = string.Empty;
+            //grade = string.Empty;
             category = string.Empty;
             pages = 0;
             pdfUrl = string.Empty;

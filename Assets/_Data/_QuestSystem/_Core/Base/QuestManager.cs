@@ -32,6 +32,7 @@ namespace DreamClass.QuestSystem
         [Header("Runtime State (Debug Only)")]
         public Dictionary<string, QuestState> questStates = new();
         public Dictionary<string, QuestDataJson> questDataCache = new();
+        public HashSet<string> DailyQuestIds = new HashSet<string>();
 
         public static event Action OnReady;
 
@@ -176,6 +177,17 @@ namespace DreamClass.QuestSystem
             // Fetch daily quests
             PlayerQuestJson dailyQuests = null;
             yield return FetchQuestArrayFromAPI(apiClient, dailyQuestEndpoint, (data) => dailyQuests = data);
+
+            // Populate DailyQuestIds
+            DailyQuestIds.Clear();
+            if (dailyQuests != null && dailyQuests.quests != null)
+            {
+                foreach (var q in dailyQuests.quests)
+                {
+                    if (!string.IsNullOrEmpty(q.questId))
+                        DailyQuestIds.Add(q.questId);
+                }
+            }
 
             // Merge quests
             if (normalQuests != null && dailyQuests != null)

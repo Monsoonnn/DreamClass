@@ -1,0 +1,126 @@
+ManifestFileVersion: 0
+UnityVersion: 6000.0.60f1
+CRC: 231861491
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 70ad810b3ebe34ed3f9b928665655de0
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 5527383dc91eba37123fc67ad6efaa19
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 18c7751c438aa69f87eb8e3405fcd554
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_090.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_057.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_065.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_041.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_049.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_048.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_079.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_020.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_103.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_019.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_051.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_063.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_074.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_021.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_081.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_083.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_080.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_077.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_078.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_064.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_054.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_022.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_023.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_100.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_027.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_104.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_045.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_031.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_093.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_003.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_097.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_073.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_037.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_085.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_091.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_002.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_038.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_014.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_088.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_016.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_046.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_075.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_026.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_009.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_007.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_062.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_096.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_060.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_101.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_018.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_034.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_033.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_053.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_024.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_028.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_010.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_040.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_070.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_032.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_069.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_066.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_005.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_036.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_089.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_039.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_056.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_082.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_094.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_084.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_105.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_035.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_058.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_071.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_044.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_061.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_087.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_052.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_095.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_047.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_006.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_098.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_013.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_029.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_015.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_050.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_059.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_017.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_102.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_042.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_099.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_055.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_068.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_000.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_004.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_076.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_067.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_086.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_072.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_001.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_092.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_025.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_011.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_012.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_008.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_030.png
+- Assets/TempBundleBuild/pdf-pages_sgk_toan_10_-_tap_1_kntt/page_043.png
+Dependencies: []

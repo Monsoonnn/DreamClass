@@ -12,21 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8c51cb74e42bc44093da2f0b2d8315a, type: 3}
   m_Name: UserProfile
   m_EditorClassIdentifier: 
-  id: 
-  playerId: 
-  userName: 
-  email: 
-  role: 
-  grade: 
-  className: 
-  gender: 
-  dateOfBirth: 
-  address: 
+  id: 69496b830550fb552cc8160e
+  playerId: P17664193317210F5A4F
+  userName: "Nguy\u1EC5n Thanh Duy\xEAn"
+  email: duyen.nt@school.edu.vn
+  role: student
+  grade: 12
+  className: 12A
+  gender: Female
+  dateOfBirth: 2010-06-25T00:00:00.000Z
+  address: "H\xE0 N\u1ED9i"
   notes: 
-  status: 
+  status: Active
   gold: 0
   points: 0
-  isVerified: 0
-  createdAt: 
-  updatedAt: 
-  avatarUrl: 
+  isVerified: 1
+  createdAt: 2025-12-22T16:02:11.722Z
+  updatedAt: 2025-12-23T07:49:50.632Z
+  avatarUrl: https://res.cloudinary.com/dogfzmnrt/image/upload/v1766471246/avatar/P17664193317210F5A4F/hu5hinq3m5e56qmyc9mi.png

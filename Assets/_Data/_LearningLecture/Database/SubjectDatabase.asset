@@ -15,7 +15,7 @@ MonoBehaviour:
   csvFile: {fileID: 4900000, guid: 8cea14a64172f6b4d8873e5bf1514587, type: 3}
   filePath: 
   subjects:
-  - name: VatLy
+  - name: VatLy-11
     description: "V\u1EADt L\xFD - 11"
     lectures:
     - chapter: 1
@@ -127,16 +127,16 @@ MonoBehaviour:
         \u0111\u1ED9ng"
       page: 111
     cloudinaryFolder: pdf-pages/SGK VL 11 KNTT
-    title: 
+    title: "V\u1EADt L\xFD 11"
     note: Nope
-    grade: 
-    category: 
-    pages: 0
+    grade: 11
+    category: "K\u1EBFt n\u1ED1i tri th\u1EE9c"
+    pages: 119
     pdfUrl: 
     imageUrls: []
     localImagePaths: []
     isCached: 1
-  - name: HoaHoc
+  - name: HoaHoc-11
     description: "H\xF3a h\u1ECDc - 11"
     lectures:
     - chapter: 1
@@ -250,11 +250,11 @@ MonoBehaviour:
       lectureName: "B\xE0i 25: \xD4n t\u1EADp ch\u01B0\u01A1ng 6"
       page: 153
     cloudinaryFolder: pdf-pages/SGK HH 11 KNTT
-    title: 
+    title: "H\xF3a h\u1ECDc 11"
     note: Nope
-    grade: 
-    category: 
-    pages: 0
+    grade: 11
+    category: "K\u1EBFt n\u1ED1i tri th\u1EE9c"
+    pages: 158
     pdfUrl: 
     imageUrls: []
     localImagePaths: []
@@ -378,11 +378,11 @@ MonoBehaviour:
       page: 128
     cloudinaryFolder: "pdf-pages/5. To\xC3\xA1n 11 t\xE1\xBA\xADp 1 K\xE1\xBA\xBFt
       n\xE1\xBB\x91i tri th\xE1\xBB\xA9c (1)"
-    title: 
+    title: "To\xE1n 11 - T\u1EADp 1"
     note: 
-    grade: 
-    category: 
-    pages: 0
+    grade: 11
+    category: "K\u1EBFt n\u1ED1i tri th\u1EE9c"
+    pages: 134
     pdfUrl: 
     imageUrls: []
     localImagePaths: []
@@ -477,16 +477,16 @@ MonoBehaviour:
         H\xECnh h\u1ECDc"
       page: 102
     cloudinaryFolder: pdf-pages/SGK TOAN11 - TAP 2 KNTT
-    title: 
+    title: "To\xE1n 11 - T\u1EADp 2"
     note: 1
-    grade: 
-    category: 
-    pages: 0
+    grade: 11
+    category: "K\u1EBFt n\u1ED1i tri th\u1EE9c"
+    pages: 114
     pdfUrl: 
     imageUrls: []
     localImagePaths: []
     isCached: 1
-  - name: "Sinh h\u1ECDc"
+  - name: SinhHoc-11
     description: "SInh h\u1ECDc 11"
     lectures:
     - chapter: 1
@@ -636,202 +636,1160 @@ MonoBehaviour:
         sinh h\u1ECDc c\u01A1 th\u1EC3"
       page: 185
     cloudinaryFolder: pdf-pages/SGK Sinh 11 KNTT
-    title: 
+    title: "Sinh h\u1ECDc 11"
     note: 
-    grade: 
-    category: 
-    pages: 0
+    grade: 11
+    category: "K\u1EBFt n\u1ED1i tri th\u1EE9c"
+    pages: 190
     pdfUrl: 
     imageUrls: []
-    localImagePaths:
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_000.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_001.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_002.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_003.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_004.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_005.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_006.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_007.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_008.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_009.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_010.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_011.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_012.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_013.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_014.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_015.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_016.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_017.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_018.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_019.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_020.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_021.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_022.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_023.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_024.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_025.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_026.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_027.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_028.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_029.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_030.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_031.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_032.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_033.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_034.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_035.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_036.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_037.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_038.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_039.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_040.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_041.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_042.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_043.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_044.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_045.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_046.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_047.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_048.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_049.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_050.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_051.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_052.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_053.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_054.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_055.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_056.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_057.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_058.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_059.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_060.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_061.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_062.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_063.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_064.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_065.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_066.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_067.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_068.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_069.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_070.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_071.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_072.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_073.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_074.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_075.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_076.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_077.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_078.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_079.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_080.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_081.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_082.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_083.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_084.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_085.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_086.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_087.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_088.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_089.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_090.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_091.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_092.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_093.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_094.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_095.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_096.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_097.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_098.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_099.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_100.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_101.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_102.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_103.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_104.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_105.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_106.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_107.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_108.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_109.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_110.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_111.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_112.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_113.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_114.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_115.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_116.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_117.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_118.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_119.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_120.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_121.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_122.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_123.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_124.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_125.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_126.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_127.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_128.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_129.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_130.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_131.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_132.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_133.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_134.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_135.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_136.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_137.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_138.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_139.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_140.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_141.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_142.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_143.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_144.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_145.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_146.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_147.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_148.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_149.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_150.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_151.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_152.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_153.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_154.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_155.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_156.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_157.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_158.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_159.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_160.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_161.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_162.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_163.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_164.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_165.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_166.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_167.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_168.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_169.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_170.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_171.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_172.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_173.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_174.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_175.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_176.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_177.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_178.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_179.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_180.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_181.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_182.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_183.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_184.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_185.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_186.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_187.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_188.png
-    - C:/Users/Nguyen Quang Anh/AppData/LocalLow/Mon/Dream Class\PDFSubjectsCache\pdf-pages_sgk_sinh_11_kntt\page_189.png
+    localImagePaths: []
     isCached: 1
+  - name: VatLy-12
+    description: 
+    lectures:
+    - chapter: 1
+      groupName: "V\u1EACT L\xCD NHI\u1EC6T"
+      lectureName: "B\xE0i 1. C\u1EA5u tr\xFAc c\u1EE7a ch\u1EA5t. S\u1EF1 chuy\u1EC3n
+        th\u1EBF"
+      page: 6
+    - chapter: 1
+      groupName: "V\u1EACT L\xCD NHI\u1EC6T"
+      lectureName: "B\xE0i 2. N\u1ED9i n\u0103ng. \u0110\u1ECBnh lu\u1EADt I c\u1EE7a
+        nhi\u1EC7t \u0111\u1ED9ng l\u1EF1c h\u1ECDc"
+      page: 10
+    - chapter: 1
+      groupName: "V\u1EACT L\xCD NHI\u1EC6T"
+      lectureName: "B\xE0i 3. Nhi\u1EC7t \u0111\u1ED9. Thang nhi\u1EC7t \u0111\u1ED9
+        - nhi\u1EC7t k\u1EBF"
+      page: 15
+    - chapter: 1
+      groupName: "V\u1EACT L\xCD NHI\u1EC6T"
+      lectureName: "B\xE0i 4. Nhi\u1EC7t dung ri\xEAng"
+      page: 20
+    - chapter: 1
+      groupName: "V\u1EACT L\xCD NHI\u1EC6T"
+      lectureName: "B\xE0i 5. Nhi\u1EC7t n\xF3ng ch\u1EA3y ri\xEAng"
+      page: 24
+    - chapter: 1
+      groupName: "V\u1EACT L\xCD NHI\u1EC6T"
+      lectureName: "B\xE0i 6. Nhi\u1EC7t ho\xE1 h\u01A1i ri\xEAng"
+      page: 27
+    - chapter: 1
+      groupName: "V\u1EACT L\xCD NHI\u1EC6T"
+      lectureName: "B\xE0i 7. B\xE0i t\u1EADp v\u1EC1 v\u1EADt l\xED nhi\u1EC7t"
+      page: 30
+    - chapter: 2
+      groupName: "KH\xCD L\xCD T\u01AF\u1EDENG"
+      lectureName: "B\xE0i 8. M\xF4 h\xECnh \u0111\u1ED9ng h\u1ECDc ph\xE2n t\u1EED
+        ch\u1EA5t kh\xED"
+      page: 34
+    - chapter: 2
+      groupName: "KH\xCD L\xCD T\u01AF\u1EDENG"
+      lectureName: "B\xE0i 9. \u0110\u1ECBnh lu\u1EADt Boyle"
+      page: 37
+    - chapter: 2
+      groupName: "KH\xCD L\xCD T\u01AF\u1EDENG"
+      lectureName: "B\xE0i 10. \u0110\u1ECBnh lu\u1EADt Charles"
+      page: 41
+    - chapter: 2
+      groupName: "KH\xCD L\xCD T\u01AF\u1EDENG"
+      lectureName: "B\xE0i 11. Ph\u01B0\u01A1ng tr\xECnh tr\u1EA1ng th\xE1i c\u1EE7a
+        kh\xED l\xED t\u01B0\u1EDFng"
+      page: 45
+    - chapter: 2
+      groupName: "KH\xCD L\xCD T\u01AF\u1EDENG"
+      lectureName: "\"B\xE0i 12. \xC1p su\u1EA5t kh\xED theo m\xF4 h\xECnh \u0111\u1ED9ng
+        h\u1ECDc ph\xE2n t\u1EED. Quan h\u1EC7 gi\u1EEFa \u0111\u1ED9ng n\u0103ng
+        ph\xE2n t\u1EED v\xE0 nhi\u1EC7t \u0111\u1ED9\""
+      page: 48
+    - chapter: 2
+      groupName: "KH\xCD L\xCD T\u01AF\u1EDENG"
+      lectureName: "B\xE0i 13. B\xE0i t\u1EADp v\u1EC1 kh\xED l\xED t\u01B0\u1EDFng"
+      page: 52
+    - chapter: 3
+      groupName: "T\u1EEA TR\u01AF\u1EDCNG"
+      lectureName: "B\xE0i 14. T\u1EEB tr\u01B0\u1EDDng"
+      page: 56
+    - chapter: 3
+      groupName: "T\u1EEA TR\u01AF\u1EDCNG"
+      lectureName: "B\xE0i 15. L\u1EF1c t\u1EEB t\xE1c d\u1EE5ng l\xEAn d\xE2y d\u1EABn
+        mang d\xF2ng \u0111i\u1EC7n. C\u1EA3m \u1EE9ng t\u1EEB"
+      page: 61
+    - chapter: 3
+      groupName: "T\u1EEA TR\u01AF\u1EDCNG"
+      lectureName: "B\xE0i 16. T\u1EEB th\xF4ng. Hi\u1EC7n t\u01B0\u1EE3ng c\u1EA3m
+        \u1EE9ng \u0111i\u1EC7n t\u1EEB"
+      page: 66
+    - chapter: 3
+      groupName: "T\u1EEA TR\u01AF\u1EDCNG"
+      lectureName: "B\xE0i 17. M\xE1y ph\xE1t \u0111i\u1EC7n xoay chi\u1EC1u"
+      page: 72
+    - chapter: 3
+      groupName: "T\u1EEA TR\u01AF\u1EDCNG"
+      lectureName: "B\xE0i 18. \u1EE8ng d\u1EE5ng hi\u1EC7n t\u01B0\u1EE3ng c\u1EA3m
+        \u1EE9ng \u0111i\u1EC7n t\u1EEB"
+      page: 78
+    - chapter: 3
+      groupName: "T\u1EEA TR\u01AF\u1EDCNG"
+      lectureName: "B\xE0i 19. \u0110i\u1EC7n t\u1EEB tr\u01B0\u1EDDng. M\xF4 h\xECnh
+        s\xF3ng \u0111i\u1EC7n t\u1EEB"
+      page: 82
+    - chapter: 3
+      groupName: "T\u1EEA TR\u01AF\u1EDCNG"
+      lectureName: "B\xE0i 20. B\xE0i t\u1EADp v\u1EC1 t\u1EEB tr\u01B0\u1EDDng"
+      page: 86
+    - chapter: 4
+      groupName: "V\u1EACT L\xCD H\u1EA0T NH\xC2N"
+      lectureName: "B\xE0i 21. C\u1EA5u tr\xFAc h\u1EA1t nh\xE2n"
+      page: 91
+    - chapter: 4
+      groupName: "V\u1EACT L\xCD H\u1EA0T NH\xC2N"
+      lectureName: "B\xE0i 22. Ph\u1EA3n \u1EE9ng h\u1EA1t nh\xE2n v\xE0 n\u0103ng
+        l\u01B0\u1EE3ng li\xEAn k\u1EBFt"
+      page: 96
+    - chapter: 4
+      groupName: "V\u1EACT L\xCD H\u1EA0T NH\xC2N"
+      lectureName: "B\xE0i 23. Hi\u1EC7n t\u01B0\u1EE3ng ph\xF3ng x\u1EA1"
+      page: 104
+    - chapter: 4
+      groupName: "V\u1EACT L\xCD H\u1EA0T NH\xC2N"
+      lectureName: "B\xE0i 24. C\xF4ng nghi\u1EC7p h\u1EA1t nh\xE2n"
+      page: 114
+    - chapter: 4
+      groupName: "V\u1EACT L\xCD H\u1EA0T NH\xC2N"
+      lectureName: "B\xE0i 25. B\xE0i t\u1EADp v\u1EC1 v\u1EADt l\xED h\u1EA1t nh\xE2n"
+      page: 119
+    cloudinaryFolder: pdf-pages/SGK VAT LY 12 KNTT
+    title: "V\u1EADt l\xFD 12"
+    note: 
+    grade: 12
+    category: "K\u1EBFt n\u1ED1i tri th\u1EE9c"
+    pages: 127
+    pdfUrl: 
+    imageUrls: []
+    localImagePaths: []
+    isCached: 1
+  - name: Toan12-Tap 1
+    description: 
+    lectures:
+    - chapter: 1
+      groupName: "\u1EE8NG D\u1EE4NG \u0110\u1EA0O H\xC0M \u0110\u1EC2 KH\u1EA2O
+        S\xC1T V\xC0 V\u1EBC \u0110\u1ED2 TH\u1ECA H\xC0M S\u1ED0"
+      lectureName: "B\xE0i 1. T\xEDnh \u0111\u01A1n \u0111i\u1EC7u v\xE0 c\u1EF1c
+        tr\u1ECB c\u1EE7a h\xE0m s\u1ED1"
+      page: 5
+    - chapter: 1
+      groupName: "\u1EE8NG D\u1EE4NG \u0110\u1EA0O H\xC0M \u0110\u1EC2 KH\u1EA2O
+        S\xC1T V\xC0 V\u1EBC \u0110\u1ED2 TH\u1ECA H\xC0M S\u1ED0"
+      lectureName: "B\xE0i 2. Gi\xE1 tr\u1ECB l\u1EDBn nh\u1EA5t v\xE0 gi\xE1 tr\u1ECB
+        nh\u1ECF nh\u1EA5t c\u1EE7a h\xE0m s\u1ED1"
+      page: 15
+    - chapter: 1
+      groupName: "\u1EE8NG D\u1EE4NG \u0110\u1EA0O H\xC0M \u0110\u1EC2 KH\u1EA2O
+        S\xC1T V\xC0 V\u1EBC \u0110\u1ED2 TH\u1ECA H\xC0M S\u1ED0"
+      lectureName: "B\xE0i 3. \u0110\u01B0\u1EDDng ti\u1EC7m c\u1EADn c\u1EE7a \u0111\u1ED3
+        th\u1ECB h\xE0m s\u1ED1"
+      page: 20
+    - chapter: 1
+      groupName: "\u1EE8NG D\u1EE4NG \u0110\u1EA0O H\xC0M \u0110\u1EC2 KH\u1EA2O
+        S\xC1T V\xC0 V\u1EBC \u0110\u1ED2 TH\u1ECA H\xC0M S\u1ED0"
+      lectureName: "B\xE0i 4. Kh\u1EA3o s\xE1t s\u1EF1 bi\u1EBFn thi\xEAn v\xE0 v\u1EBD
+        \u0111\u1ED3 th\u1ECB c\u1EE7a h\xE0m s\u1ED1"
+      page: 26
+    - chapter: 1
+      groupName: "\u1EE8NG D\u1EE4NG \u0110\u1EA0O H\xC0M \u0110\u1EC2 KH\u1EA2O
+        S\xC1T V\xC0 V\u1EBC \u0110\u1ED2 TH\u1ECA H\xC0M S\u1ED0"
+      lectureName: "B\xE0i 5. \u1EE8ng d\u1EE5ng \u0111\u1EA1o h\xE0m \u0111\u1EC3
+        gi\u1EA3i quy\u1EBFt m\u1ED9t s\u1ED1 v\u1EA5n \u0111\u1EC1 li\xEAn quan
+        \u0111\u1EBFn th\u1EF1c ti\u1EC5n"
+      page: 33
+    - chapter: 1
+      groupName: "\u1EE8NG D\u1EE4NG \u0110\u1EA0O H\xC0M \u0110\u1EC2 KH\u1EA2O
+        S\xC1T V\xC0 V\u1EBC \u0110\u1ED2 TH\u1ECA H\xC0M S\u1ED0"
+      lectureName: "B\xE0i t\u1EADp cu\u1ED1i ch\u01B0\u01A1ng I"
+      page: 42
+    - chapter: 2
+      groupName: "VECT\u01A0 V\xC0 H\u1EC6 TR\u1EE4C TO\u1EA0 \u0110\u1ED8 TRONG
+        KH\xD4NG GIAN"
+      lectureName: "B\xE0i 6. Vect\u01A1 trong kh\xF4ng gian"
+      page: 45
+    - chapter: 2
+      groupName: "VECT\u01A0 V\xC0 H\u1EC6 TR\u1EE4C TO\u1EA0 \u0110\u1ED8 TRONG
+        KH\xD4NG GIAN"
+      lectureName: "B\xE0i 7. H\u1EC7 tr\u1EE5c to\u1EA1 \u0111\u1ED9 trong kh\xF4ng
+        gian"
+      page: 60
+    - chapter: 2
+      groupName: "VECT\u01A0 V\xC0 H\u1EC6 TR\u1EE4C TO\u1EA0 \u0110\u1ED8 TRONG
+        KH\xD4NG GIAN"
+      lectureName: "B\xE0i 8. Bi\u1EC3u th\u1EE9c to\u1EA1 \u0111\u1ED9 c\u1EE7a
+        c\xE1c ph\xE9p to\xE1n vect\u01A1"
+      page: 67
+    - chapter: 2
+      groupName: "VECT\u01A0 V\xC0 H\u1EC6 TR\u1EE4C TO\u1EA0 \u0110\u1ED8 TRONG
+        KH\xD4NG GIAN"
+      lectureName: "B\xE0i t\u1EADp cu\u1ED1i ch\u01B0\u01A1ng II"
+      page: 73
+    - chapter: 3
+      groupName: "C\xC1C S\u1ED0 \u0110\u1EB6C TR\u01AFNG \u0110O M\u1EE8C \u0110\u1ED8
+        PH\xC2N T\xC1N C\u1EE6A M\u1EAAU S\u1ED0 LI\u1EC6U GH\xC9P NH\xD3M"
+      lectureName: "B\xE0i 9. Kho\u1EA3ng bi\u1EBFn thi\xEAn v\xE0 kho\u1EA3ng t\u1EE9
+        ph\xE2n v\u1ECB"
+      page: 75
+    - chapter: 3
+      groupName: "C\xC1C S\u1ED0 \u0110\u1EB6C TR\u01AFNG \u0110O M\u1EE8C \u0110\u1ED8
+        PH\xC2N T\xC1N C\u1EE6A M\u1EAAU S\u1ED0 LI\u1EC6U GH\xC9P NH\xD3M"
+      lectureName: "B\xE0i 10. Ph\u01B0\u01A1ng sai v\xE0 \u0111\u1ED9 l\u1EC7ch
+        chu\u1EA9n"
+      page: 80
+    - chapter: 3
+      groupName: "C\xC1C S\u1ED0 \u0110\u1EB6C TR\u01AFNG \u0110O M\u1EE8C \u0110\u1ED8
+        PH\xC2N T\xC1N C\u1EE6A M\u1EAAU S\u1ED0 LI\u1EC6U GH\xC9P NH\xD3M"
+      lectureName: "B\xE0i t\u1EADp cu\u1ED1i ch\u01B0\u01A1ng III"
+      page: 85
+    cloudinaryFolder: pdf-pages/SGK TOAN 12 TAP 1
+    title: "To\xE1n 12 - T\u1EADp 1"
+    note: 
+    grade: 12
+    category: "K\u1EBFt n\u1ED1i tri th\u1EE9c"
+    pages: 104
+    pdfUrl: 
+    imageUrls: []
+    localImagePaths: []
+    isCached: 1
+  - name: Toan12-Tap 2
+    description: 
+    lectures:
+    - chapter: 4
+      groupName: "NGUY\xCAN H\xC0M V\xC0 T\xCDCH PH\xC2N"
+      lectureName: "B\xE0i 11. Nguy\xEAn h\xE0m"
+      page: 4
+    - chapter: 4
+      groupName: "NGUY\xCAN H\xC0M V\xC0 T\xCDCH PH\xC2N"
+      lectureName: "B\xE0i 12. T\xEDch ph\xE2n"
+      page: 12
+    - chapter: 4
+      groupName: "NGUY\xCAN H\xC0M V\xC0 T\xCDCH PH\xC2N"
+      lectureName: "B\xE0i 13. \u1EE8ng d\u1EE5ng h\xECnh h\u1ECDc c\u1EE7a t\xEDch
+        ph\xE2n"
+      page: 19
+    - chapter: 4
+      groupName: "NGUY\xCAN H\xC0M V\xC0 T\xCDCH PH\xC2N"
+      lectureName: "B\xE0i t\u1EADp cu\u1ED1i ch\u01B0\u01A1ng IV"
+      page: 27
+    - chapter: 5
+      groupName: "PH\u01AF\u01A0NG PH\xC1P TO\u1EA0 \u0110\u1ED8 TRONG KH\xD4NG GIAN"
+      lectureName: "B\xE0i 14. Ph\u01B0\u01A1ng tr\xECnh m\u1EB7t ph\u1EB3ng"
+      page: 29
+    - chapter: 5
+      groupName: "PH\u01AF\u01A0NG PH\xC1P TO\u1EA0 \u0110\u1ED8 TRONG KH\xD4NG GIAN"
+      lectureName: "B\xE0i 15. Ph\u01B0\u01A1ng tr\xECnh \u0111\u01B0\u1EDDng th\u1EB3ng
+        trong kh\xF4ng gian"
+      page: 41
+    - chapter: 5
+      groupName: "PH\u01AF\u01A0NG PH\xC1P TO\u1EA0 \u0110\u1ED8 TRONG KH\xD4NG GIAN"
+      lectureName: "B\xE0i 16. C\xF4ng th\u1EE9c t\xEDnh g\xF3c trong kh\xF4ng gian"
+      page: 50
+    - chapter: 5
+      groupName: "PH\u01AF\u01A0NG PH\xC1P TO\u1EA0 \u0110\u1ED8 TRONG KH\xD4NG GIAN"
+      lectureName: "B\xE0i 17. Ph\u01B0\u01A1ng tr\xECnh m\u1EB7t c\u1EA7u"
+      page: 54
+    - chapter: 5
+      groupName: "PH\u01AF\u01A0NG PH\xC1P TO\u1EA0 \u0110\u1ED8 TRONG KH\xD4NG GIAN"
+      lectureName: "B\xE0i t\u1EADp cu\u1ED1i ch\u01B0\u01A1ng V"
+      page: 61
+    - chapter: 6
+      groupName: "X\xC1C SU\u1EA4T C\xD3 \u0110I\u1EC0U KI\u1EC6N"
+      lectureName: "B\xE0i 18. X\xE1c su\u1EA5t c\xF3 \u0111i\u1EC1u ki\u1EC7n"
+      page: 64
+    - chapter: 6
+      groupName: "X\xC1C SU\u1EA4T C\xD3 \u0110I\u1EC0U KI\u1EC6N"
+      lectureName: "B\xE0i 19. C\xF4ng th\u1EE9c x\xE1c su\u1EA5t to\xE0n ph\u1EA7n
+        v\xE0 c\xF4ng th\u1EE9c Bayes"
+      page: 72
+    - chapter: 6
+      groupName: "X\xC1C SU\u1EA4T C\xD3 \u0110I\u1EC0U KI\u1EC6N"
+      lectureName: "B\xE0i t\u1EADp cu\u1ED1i ch\u01B0\u01A1ng VI"
+      page: 79
+    cloudinaryFolder: pdf-pages/SGK TOAN 12 TAP 2
+    title: "To\xE1n 12 - T\u1EADp 2"
+    note: 
+    grade: 12
+    category: "K\u1EBFt n\u1ED1i tri th\u1EE9c"
+    pages: 99
+    pdfUrl: 
+    imageUrls: []
+    localImagePaths: []
+    isCached: 1
+  - name: HoaHoc-12
+    description: 
+    lectures:
+    - chapter: 1
+      groupName: ESTER - LIPID
+      lectureName: "B\xE0i 1. Ester - Lipid"
+      page: 6
+    - chapter: 1
+      groupName: ESTER - LIPID
+      lectureName: "B\xE0i 2. X\xE0 ph\xF2ng v\xE0 ch\u1EA5t gi\u1EB7t r\u1EEDa"
+      page: 14
+    - chapter: 1
+      groupName: ESTER - LIPID
+      lectureName: "\xD4n t\u1EADp ch\u01B0\u01A1ng 1"
+      page: 18
+    - chapter: 2
+      groupName: CARBOHYDRATE
+      lectureName: "\"B\xE0i 4. Gi\u1EDBi thi\u1EC7u v\u1EC1 carbohydrate. Glucose
+        v\xE0 fructose\""
+      page: 20
+    - chapter: 2
+      groupName: CARBOHYDRATE
+      lectureName: "B\xE0i 5. Saccharose v\xE0 maltose"
+      page: 25
+    - chapter: 2
+      groupName: CARBOHYDRATE
+      lectureName: "B\xE0i 6. Tinh b\u1ED9t v\xE0 cellulose"
+      page: 28
+    - chapter: 2
+      groupName: CARBOHYDRATE
+      lectureName: "\xD4n t\u1EADp ch\u01B0\u01A1ng 2"
+      page: 33
+    - chapter: 3
+      groupName: "H\u1EE2P CH\u1EA4T CH\u1EE8A NITROGEN"
+      lectureName: "B\xE0i 8. Amine"
+      page: 35
+    - chapter: 3
+      groupName: "H\u1EE2P CH\u1EA4T CH\u1EE8A NITROGEN"
+      lectureName: "B\xE0i 9. Amino acid v\xE0 peptide"
+      page: 41
+    - chapter: 3
+      groupName: "H\u1EE2P CH\u1EA4T CH\u1EE8A NITROGEN"
+      lectureName: "B\xE0i 10. Protein v\xE0 enzyme"
+      page: 46
+    - chapter: 3
+      groupName: "H\u1EE2P CH\u1EA4T CH\u1EE8A NITROGEN"
+      lectureName: "\xD4n t\u1EADp ch\u01B0\u01A1ng 3"
+      page: 49
+    - chapter: 4
+      groupName: POLYMER
+      lectureName: "B\xE0i 12. \u0110\u1EA1i c\u01B0\u01A1ng v\u1EC1 polymer"
+      page: 51
+    - chapter: 4
+      groupName: POLYMER
+      lectureName: "B\xE0i 13. V\u1EADt li\u1EC7u polymer"
+      page: 56
+    - chapter: 4
+      groupName: POLYMER
+      lectureName: "\xD4n t\u1EADp ch\u01B0\u01A1ng 4"
+      page: 65
+    - chapter: 5
+      groupName: "PIN \u0110I\u1EC6N V\xC0 \u0110I\u1EC6N PH\xC2N"
+      lectureName: "B\xE0i 15. Th\u1EBF \u0111i\u1EC7n c\u1EF1c v\xE0 ngu\u1ED3n
+        \u0111i\u1EC7n ho\xE1 h\u1ECDc"
+      page: 67
+    - chapter: 5
+      groupName: "PIN \u0110I\u1EC6N V\xC0 \u0110I\u1EC6N PH\xC2N"
+      lectureName: "B\xE0i 16. \u0110i\u1EC7n ph\xE2n"
+      page: 78
+    - chapter: 5
+      groupName: "PIN \u0110I\u1EC6N V\xC0 \u0110I\u1EC6N PH\xC2N"
+      lectureName: "\xD4n t\u1EADp ch\u01B0\u01A1ng 5"
+      page: 85
+    - chapter: 6
+      groupName: "\u0110\u1EA0I C\u01AF\u01A0NG V\u1EC0 KIM LO\u1EA0I"
+      lectureName: "B\xE0i 18. C\u1EA5u t\u1EA1o v\xE0 li\xEAn k\u1EBFt trong tinh
+        th\u1EC3 kim lo\u1EA1i"
+      page: 87
+    - chapter: 6
+      groupName: "\u0110\u1EA0I C\u01AF\u01A0NG V\u1EC0 KIM LO\u1EA0I"
+      lectureName: "B\xE0i 19. T\xEDnh ch\u1EA5t v\u1EADt l\xED v\xE0 t\xEDnh ch\u1EA5t
+        ho\xE1 h\u1ECDc c\u1EE7a kim lo\u1EA1i"
+      page: 89
+    - chapter: 6
+      groupName: "\u0110\u1EA0I C\u01AF\u01A0NG V\u1EC0 KIM LO\u1EA0I"
+      lectureName: "B\xE0i 20. Kim lo\u1EA1i trong t\u1EF1 nhi\xEAn v\xE0 ph\u01B0\u01A1ng
+        ph\xE1p t\xE1ch kim lo\u1EA1i"
+      page: 94
+    - chapter: 6
+      groupName: "\u0110\u1EA0I C\u01AF\u01A0NG V\u1EC0 KIM LO\u1EA0I"
+      lectureName: "B\xE0i 21. H\u1EE3p kim"
+      page: 99
+    - chapter: 6
+      groupName: "\u0110\u1EA0I C\u01AF\u01A0NG V\u1EC0 KIM LO\u1EA0I"
+      lectureName: "B\xE0i 22. S\u1EF1 \u0103n m\xF2n kim lo\u1EA1i"
+      page: 102
+    - chapter: 6
+      groupName: "\u0110\u1EA0I C\u01AF\u01A0NG V\u1EC0 KIM LO\u1EA0I"
+      lectureName: "\xD4n t\u1EADp ch\u01B0\u01A1ng 6"
+      page: 105
+    - chapter: 7
+      groupName: "NGUY\xCAN T\u1ED0 NH\xD3M IA V\xC0 NH\xD3M IIA"
+      lectureName: "B\xE0i 24. Nguy\xEAn t\u1ED1 nh\xF3m IA"
+      page: 108
+    - chapter: 7
+      groupName: "NGUY\xCAN T\u1ED0 NH\xD3M IA V\xC0 NH\xD3M IIA"
+      lectureName: "B\xE0i 25. Nguy\xEAn t\u1ED1 nh\xF3m IIA"
+      page: 116
+    - chapter: 7
+      groupName: "NGUY\xCAN T\u1ED0 NH\xD3M IA V\xC0 NH\xD3M IIA"
+      lectureName: "\xD4n t\u1EADp ch\u01B0\u01A1ng 7"
+      page: 126
+    - chapter: 8
+      groupName: "S\u01A0 L\u01AF\u1EE2C V\u1EC0 D\xC3Y KIM LO\u1EA0I CHUY\u1EC2N
+        TI\u1EBEP TH\u1EE8 NH\u1EA4T V\xC0 PH\u1EE8C CH\u1EA4T"
+      lectureName: "B\xE0i 27. \u0110\u1EA1i c\u01B0\u01A1ng v\u1EC1 kim lo\u1EA1i
+        chuy\u1EC3n ti\u1EBFp d\xE3y th\u1EE9 nh\u1EA5t"
+      page: 128
+    - chapter: 8
+      groupName: "S\u01A0 L\u01AF\u1EE2C V\u1EC0 D\xC3Y KIM LO\u1EA0I CHUY\u1EC2N
+        TI\u1EBEP TH\u1EE8 NH\u1EA4T V\xC0 PH\u1EE8C CH\u1EA4T"
+      lectureName: "B\xE0i 28. S\u01A1 l\u01B0\u1EE3c v\u1EC1 ph\u1EE9c ch\u1EA5t"
+      page: 134
+    - chapter: 8
+      groupName: "S\u01A0 L\u01AF\u1EE2C V\u1EC0 D\xC3Y KIM LO\u1EA0I CHUY\u1EC2N
+        TI\u1EBEP TH\u1EE8 NH\u1EA4T V\xC0 PH\u1EE8C CH\u1EA4T"
+      lectureName: "B\xE0i 29. M\u1ED9t s\u1ED1 t\xEDnh ch\u1EA5t v\xE0 \u1EE9ng
+        d\u1EE5ng c\u1EE7a ph\u1EE9c ch\u1EA5t"
+      page: 138
+    - chapter: 8
+      groupName: "S\u01A0 L\u01AF\u1EE2C V\u1EC0 D\xC3Y KIM LO\u1EA0I CHUY\u1EC2N
+        TI\u1EBEP TH\u1EE8 NH\u1EA4T V\xC0 PH\u1EE8C CH\u1EA4T"
+      lectureName: "\xD4n t\u1EADp ch\u01B0\u01A1ng 8"
+      page: 142
+    cloudinaryFolder: pdf-pages/SGK HOAHOC 12
+    title: "H\xF3a h\u1ECDc 12"
+    note: 
+    grade: 12
+    category: "K\u1EBFt n\u1ED1i tri th\u1EE9c"
+    pages: 148
+    pdfUrl: 
+    imageUrls: []
+    localImagePaths: []
+    isCached: 1
+  - name: Toan10-Tap1
+    description: 
+    lectures:
+    - chapter: 1
+      groupName: "M\u1EC6NH \u0110\u1EC0 V\xC0 T\u1EACP H\u1EE2P"
+      lectureName: "B\xE0i 1. M\u1EC7nh \u0111\u1EC1"
+      page: 5
+    - chapter: 1
+      groupName: "M\u1EC6NH \u0110\u1EC0 V\xC0 T\u1EACP H\u1EE2P"
+      lectureName: "B\xE0i 2. T\u1EADp h\u1EE3p v\xE0 c\xE1c ph\xE9p to\xE1n tr\xEAn
+        t\u1EADp h\u1EE3p"
+      page: 12
+    - chapter: 1
+      groupName: "M\u1EC6NH \u0110\u1EC0 V\xC0 T\u1EACP H\u1EE2P"
+      lectureName: "B\xE0i t\u1EADp cu\u1ED1i ch\u01B0\u01A1ng I"
+      page: 20
+    - chapter: 2
+      groupName: "B\u1EA4T PH\u01AF\u01A0NG TR\xCCNH V\xC0 H\u1EC6 B\u1EA4T PH\u01AF\u01A0NG
+        TR\xCCNH B\u1EACC NH\u1EA4T HAI \u1EA8N"
+      lectureName: "B\xE0i 3. B\u1EA5t ph\u01B0\u01A1ng tr\xECnh b\u1EADc nh\u1EA5t
+        hai \u1EA9n"
+      page: 22
+    - chapter: 2
+      groupName: "B\u1EA4T PH\u01AF\u01A0NG TR\xCCNH V\xC0 H\u1EC6 B\u1EA4T PH\u01AF\u01A0NG
+        TR\xCCNH B\u1EACC NH\u1EA4T HAI \u1EA8N"
+      lectureName: "B\xE0i 4. H\u1EC7 b\u1EA5t ph\u01B0\u01A1ng tr\xECnh b\u1EADc
+        nh\u1EA5t hai \u1EA9n"
+      page: 26
+    - chapter: 2
+      groupName: "B\u1EA4T PH\u01AF\u01A0NG TR\xCCNH V\xC0 H\u1EC6 B\u1EA4T PH\u01AF\u01A0NG
+        TR\xCCNH B\u1EACC NH\u1EA4T HAI \u1EA8N"
+      lectureName: "B\xE0i t\u1EADp cu\u1ED1i ch\u01B0\u01A1ng II"
+      page: 31
+    - chapter: 3
+      groupName: "H\u1EC6 TH\u1EE8C L\u01AF\u1EE2NG TRONG TAM GI\xC1C"
+      lectureName: "B\xE0i 5. Gi\xE1 tr\u1ECB l\u01B0\u1EE3ng gi\xE1c c\u1EE7a m\u1ED9t
+        g\xF3c t\u1EEB 0\xB0 \u0111\u1EBFn 180\xB0"
+      page: 33
+    - chapter: 3
+      groupName: "H\u1EC6 TH\u1EE8C L\u01AF\u1EE2NG TRONG TAM GI\xC1C"
+      lectureName: "B\xE0i 6. H\u1EC7 th\u1EE9c l\u01B0\u1EE3ng trong tam gi\xE1c"
+      page: 38
+    - chapter: 3
+      groupName: "H\u1EC6 TH\u1EE8C L\u01AF\u1EE2NG TRONG TAM GI\xC1C"
+      lectureName: "B\xE0i t\u1EADp cu\u1ED1i ch\u01B0\u01A1ng III"
+      page: 44
+    - chapter: 4
+      groupName: "VECT\u01A0"
+      lectureName: "B\xE0i 7. C\xE1c kh\xE1i ni\u1EC7m m\u1EDF \u0111\u1EA7u"
+      page: 46
+    - chapter: 4
+      groupName: "VECT\u01A0"
+      lectureName: "B\xE0i 8. T\u1ED5ng v\xE0 hi\u1EC7u c\u1EE7a hai vect\u01A1"
+      page: 51
+    - chapter: 4
+      groupName: "VECT\u01A0"
+      lectureName: "B\xE0i 9. T\xEDch c\u1EE7a m\u1ED9t vect\u01A1 v\u1EDBi m\u1ED9t
+        s\u1ED1"
+      page: 55
+    - chapter: 4
+      groupName: "VECT\u01A0"
+      lectureName: "B\xE0i 10. Vect\u01A1 trong m\u1EB7t ph\u1EB3ng to\u1EA1 \u0111\u1ED9"
+      page: 60
+    - chapter: 4
+      groupName: "VECT\u01A0"
+      lectureName: "B\xE0i 11. T\xEDch v\xF4 h\u01B0\u1EDBng c\u1EE7a hai vect\u01A1"
+      page: 66
+    - chapter: 4
+      groupName: "VECT\u01A0"
+      lectureName: "B\xE0i t\u1EADp cu\u1ED1i ch\u01B0\u01A1ng IV"
+      page: 71
+    - chapter: 5
+      groupName: "C\xC1C S\u1ED0 \u0110\u1EB6C TR\u01AFNG C\u1EE6A M\u1EAAU S\u1ED0
+        LI\u1EC6U KH\xD4NG GH\xC9P NH\xD3M"
+      lectureName: "B\xE0i 12. S\u1ED1 g\u1EA7n \u0111\xFAng v\xE0 sai s\u1ED1"
+      page: 73
+    - chapter: 5
+      groupName: "C\xC1C S\u1ED0 \u0110\u1EB6C TR\u01AFNG C\u1EE6A M\u1EAAU S\u1ED0
+        LI\u1EC6U KH\xD4NG GH\xC9P NH\xD3M"
+      lectureName: "B\xE0i 13. C\xE1c s\u1ED1 \u0111\u1EB7c tr\u01B0ng \u0111o xu
+        th\u1EBF trung t\xE2m"
+      page: 78
+    - chapter: 5
+      groupName: "C\xC1C S\u1ED0 \u0110\u1EB6C TR\u01AFNG C\u1EE6A M\u1EAAU S\u1ED0
+        LI\u1EC6U KH\xD4NG GH\xC9P NH\xD3M"
+      lectureName: "B\xE0i 14. C\xE1c s\u1ED1 \u0111\u1EB7c tr\u01B0ng \u0111o \u0111\u1ED9
+        ph\xE2n t\xE1n"
+      page: 84
+    - chapter: 5
+      groupName: "C\xC1C S\u1ED0 \u0110\u1EB6C TR\u01AFNG C\u1EE6A M\u1EAAU S\u1ED0
+        LI\u1EC6U KH\xD4NG GH\xC9P NH\xD3M"
+      lectureName: "B\xE0i t\u1EADp cu\u1ED1i ch\u01B0\u01A1ng V"
+      page: 89
+    cloudinaryFolder: pdf-pages/SGK TOAN 10 - TAP 1 KNTT
+    title: "To\xE1n 10 - T\u1EADp 1"
+    note: 
+    grade: 10
+    category: "K\u1EBFt n\u1ED1i tri th\u1EE9c"
+    pages: 106
+    pdfUrl: 
+    imageUrls: []
+    localImagePaths: []
+    isCached: 0
+  - name: Toan10-Tap2
+    description: 
+    lectures:
+    - chapter: 7
+      groupName: "PH\u01AF\u01A0NG PH\xC1P TO\u1EA0 \u0110\u1ED8 TRONG M\u1EB6T PH\u1EB2NG"
+      lectureName: "B\xE0i 19. Ph\u01B0\u01A1ng tr\xECnh \u0111\u01B0\u1EDDng th\u1EB3ng"
+      page: 30
+    - chapter: 7
+      groupName: "PH\u01AF\u01A0NG PH\xC1P TO\u1EA0 \u0110\u1ED8 TRONG M\u1EB6T PH\u1EB2NG"
+      lectureName: "B\xE0i 20. \u0110\u01B0\u1EDDng th\u1EB3ng trong m\u1EB7t ph\u1EB3ng
+        to\u1EA1 \u0111\u1ED9"
+      page: 36
+    - chapter: 7
+      groupName: "PH\u01AF\u01A0NG PH\xC1P TO\u1EA0 \u0110\u1ED8 TRONG M\u1EB6T PH\u1EB2NG"
+      lectureName: "B\xE0i 21. \u0110\u01B0\u1EDDng tr\xF2n trong m\u1EB7t ph\u1EB3ng
+        to\u1EA1 \u0111\u1ED9"
+      page: 43
+    - chapter: 7
+      groupName: "PH\u01AF\u01A0NG PH\xC1P TO\u1EA0 \u0110\u1ED8 TRONG M\u1EB6T PH\u1EB2NG"
+      lectureName: "B\xE0i 22. Ba \u0111\u01B0\u1EDDng conic"
+      page: 48
+    - chapter: 7
+      groupName: "PH\u01AF\u01A0NG PH\xC1P TO\u1EA0 \u0110\u1ED8 TRONG M\u1EB6T PH\u1EB2NG"
+      lectureName: "B\xE0i t\u1EADp cu\u1ED1i ch\u01B0\u01A1ng VII"
+      page: 58
+    - chapter: 8
+      groupName: "\u0110\u1EA0I S\u1ED0 T\u1ED4 H\u1EE2P"
+      lectureName: "B\xE0i 23. Quy t\u1EAFc \u0111\u1EBFm"
+      page: 60
+    - chapter: 8
+      groupName: "\u0110\u1EA0I S\u1ED0 T\u1ED4 H\u1EE2P"
+      lectureName: "B\xE0i 25. Nh\u1ECB th\u1EE9c Newton"
+      page: 72
+    - chapter: 8
+      groupName: "\u0110\u1EA0I S\u1ED0 T\u1ED4 H\u1EE2P"
+      lectureName: "B\xE0i t\u1EADp cu\u1ED1i ch\u01B0\u01A1ng VIII"
+      page: 76
+    - chapter: 9
+      groupName: "T\xCDNH X\xC1C SU\u1EA4T THEO \u0110\u1ECANH NGH\u0128A C\u1ED4
+        \u0110I\u1EC2N"
+      lectureName: "B\xE0i 26. Bi\u1EBFn c\u1ED1 v\xE0 \u0111\u1ECBnh ngh\u0129a
+        c\u1ED5 \u0111i\u1EC3n c\u1EE7a x\xE1c su\u1EA5t"
+      page: 77
+    - chapter: 9
+      groupName: "T\xCDNH X\xC1C SU\u1EA4T THEO \u0110\u1ECANH NGH\u0128A C\u1ED4
+        \u0110I\u1EC2N"
+      lectureName: "B\xE0i 27. Th\u1EF1c h\xE0nh t\xEDnh x\xE1c su\u1EA5t theo \u0111\u1ECBnh
+        ngh\u0129a c\u1ED5 \u0111i\u1EC3n"
+      page: 83
+    - chapter: 9
+      groupName: "T\xCDNH X\xC1C SU\u1EA4T THEO \u0110\u1ECANH NGH\u0128A C\u1ED4
+        \u0110I\u1EC2N"
+      lectureName: "B\xE0i t\u1EADp cu\u1ED1i ch\u01B0\u01A1ng IX"
+      page: 88
+    cloudinaryFolder: pdf-pages/SGK TOAN 10 - TAP 2 KNTT
+    title: "To\xE1n 10 - T\u1EADp 2"
+    note: 
+    grade: 10
+    category: "K\u1EBFt n\u1ED1i tri th\u1EE9c"
+    pages: 102
+    pdfUrl: 
+    imageUrls: []
+    localImagePaths: []
+    isCached: 0
+  - name: VatLy-10
+    description: 
+    lectures:
+    - chapter: 1
+      groupName: "M\u1EDE \u0110\u1EA6U"
+      lectureName: "B\xE0i 1. L\xE0m quen v\u1EDBi V\u1EADt l\xED"
+      page: 7
+    - chapter: 1
+      groupName: "M\u1EDE \u0110\u1EA6U"
+      lectureName: "B\xE0i 2. C\xE1c quy t\u1EAFc an to\xE0n trong ph\xF2ng th\u1EF1c
+        h\xE0nh V\u1EADt l\xED"
+      page: 12
+    - chapter: 1
+      groupName: "M\u1EDE \u0110\u1EA6U"
+      lectureName: "B\xE0i 3. Th\u1EF1c h\xE0nh t\xEDnh sai s\u1ED1 trong ph\xE9p
+        \u0111o. Ghi k\u1EBFt qu\u1EA3 \u0111o"
+      page: 17
+    - chapter: 2
+      groupName: "\u0110\u1ED8NG H\u1ECCC"
+      lectureName: "B\xE0i 4. \u0110\u1ED9 d\u1ECBch chuy\u1EC3n v\xE0 qu\xE3ng \u0111\u01B0\u1EDDng
+        \u0111i \u0111\u01B0\u1EE3c"
+      page: 21
+    - chapter: 2
+      groupName: "\u0110\u1ED8NG H\u1ECCC"
+      lectureName: "B\xE0i 5. T\u1ED1c \u0111\u1ED9 v\xE0 v\u1EADn t\u1ED1c"
+      page: 26
+    - chapter: 2
+      groupName: "\u0110\u1ED8NG H\u1ECCC"
+      lectureName: "B\xE0i 6. Th\u1EF1c h\xE0nh: \u0110o t\u1ED1c \u0111\u1ED9 c\u1EE7a
+        v\u1EADt chuy\u1EC3n \u0111\u1ED9ng"
+      page: 30
+    - chapter: 2
+      groupName: "\u0110\u1ED8NG H\u1ECCC"
+      lectureName: "B\xE0i 7. \u0110\u1ED3 th\u1ECB \u0111\u1ED9 d\u1ECBch chuy\u1EC3n
+        \u2013 th\u1EDDi gian"
+      page: 34
+    - chapter: 2
+      groupName: "\u0110\u1ED8NG H\u1ECCC"
+      lectureName: "B\xE0i 8. Chuy\u1EC3n \u0111\u1ED9ng bi\u1EBFn \u0111\u1ED5i.
+        Gia t\u1ED1c"
+      page: 37
+    - chapter: 2
+      groupName: "\u0110\u1ED8NG H\u1ECCC"
+      lectureName: "B\xE0i 9. Chuy\u1EC3n \u0111\u1ED9ng th\u1EB3ng bi\u1EBFn \u0111\u1ED5i
+        \u0111\u1EC1u"
+      page: 40
+    - chapter: 2
+      groupName: "\u0110\u1ED8NG H\u1ECCC"
+      lectureName: "B\xE0i 10. S\u1EF1 r\u01A1i t\u1EF1 do"
+      page: 44
+    - chapter: 2
+      groupName: "\u0110\u1ED8NG H\u1ECCC"
+      lectureName: "B\xE0i 11. Th\u1EF1c h\xE0nh: \u0110o gia t\u1ED1c r\u01A1i t\u1EF1
+        do"
+      page: 47
+    - chapter: 2
+      groupName: "\u0110\u1ED8NG H\u1ECCC"
+      lectureName: "B\xE0i 12. Chuy\u1EC3n \u0111\u1ED9ng n\xE9m"
+      page: 49
+    - chapter: 3
+      groupName: "\u0110\u1ED8NG L\u1EF0C H\u1ECCC"
+      lectureName: "B\xE0i 13. T\u1ED5ng h\u1EE3p v\xE0 ph\xE2n t\xEDch l\u1EF1c.
+        C\xE2n b\u1EB1ng l\u1EF1c"
+      page: 56
+    - chapter: 3
+      groupName: "\u0110\u1ED8NG L\u1EF0C H\u1ECCC"
+      lectureName: "B\xE0i 14. \u0110\u1ECBnh lu\u1EADt 1 Newton"
+      page: 60
+    - chapter: 3
+      groupName: "\u0110\u1ED8NG L\u1EF0C H\u1ECCC"
+      lectureName: "B\xE0i 15. \u0110\u1ECBnh lu\u1EADt 2 Newton"
+      page: 63
+    - chapter: 3
+      groupName: "\u0110\u1ED8NG L\u1EF0C H\u1ECCC"
+      lectureName: "B\xE0i 16. \u0110\u1ECBnh lu\u1EADt 3 Newton"
+      page: 67
+    - chapter: 3
+      groupName: "\u0110\u1ED8NG L\u1EF0C H\u1ECCC"
+      lectureName: "B\xE0i 17. Tr\u1ECDng l\u1EF1c v\xE0 l\u1EF1c c\u0103ng"
+      page: 69
+    - chapter: 3
+      groupName: "\u0110\u1ED8NG L\u1EF0C H\u1ECCC"
+      lectureName: "B\xE0i 18. L\u1EF1c ma s\xE1t"
+      page: 72
+    - chapter: 3
+      groupName: "\u0110\u1ED8NG L\u1EF0C H\u1ECCC"
+      lectureName: "B\xE0i 19. L\u1EF1c c\u1EA3n v\xE0 l\u1EF1c n\xE2ng"
+      page: 77
+    - chapter: 3
+      groupName: "\u0110\u1ED8NG L\u1EF0C H\u1ECCC"
+      lectureName: "B\xE0i 20. M\u1ED9t s\u1ED1 v\xED d\u1EE5 v\u1EC1 c\xE1ch gi\u1EA3i
+        c\xE1c b\xE0i to\xE1n thu\u1ED9c ph\u1EA7n \u0111\u1ED9ng l\u1EF1c h\u1ECDc"
+      page: 80
+    - chapter: 3
+      groupName: "\u0110\u1ED8NG L\u1EF0C H\u1ECCC"
+      lectureName: "B\xE0i 21. Moment l\u1EF1c. C\xE2n b\u1EB1ng c\u1EE7a v\u1EADt
+        r\u1EAFn"
+      page: 83
+    - chapter: 3
+      groupName: "\u0110\u1ED8NG L\u1EF0C H\u1ECCC"
+      lectureName: "B\xE0i 22. Th\u1EF1c h\xE0nh: T\u1ED5ng h\u1EE3p l\u1EF1c"
+      page: 86
+    - chapter: 5
+      groupName: "\u0110\u1ED8NG L\u01AF\u1EE2NG"
+      lectureName: "B\xE0i 28. \u0110\u1ED9ng l\u01B0\u1EE3ng"
+      page: 110
+    - chapter: 5
+      groupName: "\u0110\u1ED8NG L\u01AF\u1EE2NG"
+      lectureName: "B\xE0i 29. \u0110\u1ECBnh lu\u1EADt b\u1EA3o to\xE0n \u0111\u1ED9ng
+        l\u01B0\u1EE3ng"
+      page: 113
+    - chapter: 5
+      groupName: "\u0110\u1ED8NG L\u01AF\u1EE2NG"
+      lectureName: "B\xE0i 30. Th\u1EF1c h\xE0nh: X\xE1c \u0111\u1ECBnh \u0111\u1ED9ng
+        l\u01B0\u1EE3ng c\u1EE7a v\u1EADt tr\u01B0\u1EDBc v\xE0 sau va ch\u1EA1m"
+      page: 116
+    - chapter: 6
+      groupName: "CHUY\u1EC2N \u0110\u1ED8NG TR\xD2N"
+      lectureName: "B\xE0i 31. \u0110\u1ED9ng h\u1ECDc c\u1EE7a chuy\u1EC3n \u0111\u1ED9ng
+        tr\xF2n \u0111\u1EC1u"
+      page: 120
+    - chapter: 6
+      groupName: "CHUY\u1EC2N \u0110\u1ED8NG TR\xD2N"
+      lectureName: "B\xE0i 32. L\u1EF1c h\u01B0\u1EDBng t\xE2m v\xE0 gia t\u1ED1c
+        h\u01B0\u1EDBng t\xE2m"
+      page: 123
+    - chapter: 7
+      groupName: "BI\u1EBEN D\u1EA0NG C\u1EE6A V\u1EACT R\u1EAEN. \xC1P SU\u1EA4T
+        CH\u1EA4T L\u1ECENG"
+      lectureName: "B\xE0i 33. Bi\u1EBFn d\u1EA1ng c\u1EE7a v\u1EADt r\u1EAFn"
+      page: 128
+    - chapter: 7
+      groupName: "BI\u1EBEN D\u1EA0NG C\u1EE6A V\u1EACT R\u1EAEN. \xC1P SU\u1EA4T
+        CH\u1EA4T L\u1ECENG"
+      lectureName: "B\xE0i 34. Kh\u1ED1i l\u01B0\u1EE3ng ri\xEAng. \xC1p su\u1EA5t
+        ch\u1EA5t l\u1ECFng"
+      page: 131
+    cloudinaryFolder: pdf-pages/SGK VATLY 10 KNTT
+    title: "V\u1EADt L\xFD 10"
+    note: 
+    grade: 10
+    category: "K\u1EBFt n\u1ED1i tri th\u1EE9c"
+    pages: 142
+    pdfUrl: 
+    imageUrls: []
+    localImagePaths: []
+    isCached: 0
+  - name: SinhHoc-10
+    description: 
+    lectures:
+    - chapter: 1
+      groupName: "TH\xC0NH PH\u1EA6N HO\xC1 H\u1ECCC C\u1EE6A T\u1EBE B\xC0O"
+      lectureName: "B\xE0i 4. C\xE1c nguy\xEAn t\u1ED1 ho\xE1 h\u1ECDc v\xE0 n\u01B0\u1EDBc"
+      page: 23
+    - chapter: 1
+      groupName: "TH\xC0NH PH\u1EA6N HO\xC1 H\u1ECCC C\u1EE6A T\u1EBE B\xC0O"
+      lectureName: "B\xE0i 5. C\xE1c ph\xE2n t\u1EED sinh h\u1ECDc"
+      page: 28
+    - chapter: 1
+      groupName: "TH\xC0NH PH\u1EA6N HO\xC1 H\u1ECCC C\u1EE6A T\u1EBE B\xC0O"
+      lectureName: "B\xE0i 6. Th\u1EF1c h\xE0nh: Nh\u1EADn bi\u1EBFt m\u1ED9t s\u1ED1
+        ph\xE2n t\u1EED sinh h\u1ECDc"
+      page: 41
+    - chapter: 2
+      groupName: "C\u1EA4U TR\xDAC T\u1EBE B\xC0O"
+      lectureName: "B\xE0i 7. T\u1EBF b\xE0o nh\xE2n s\u01A1"
+      page: 44
+    - chapter: 2
+      groupName: "C\u1EA4U TR\xDAC T\u1EBE B\xC0O"
+      lectureName: "B\xE0i 8. T\u1EBF b\xE0o nh\xE2n th\u1EF1c"
+      page: 48
+    - chapter: 2
+      groupName: "C\u1EA4U TR\xDAC T\u1EBE B\xC0O"
+      lectureName: "B\xE0i 9. Th\u1EF1c h\xE0nh: Quan s\xE1t t\u1EBF b\xE0o"
+      page: 61
+    - chapter: 3
+      groupName: "TRAO \u0110\u1ED4I CH\u1EA4T QUA M\xC0NG V\xC0 TRUY\u1EC0N TIN
+        T\u1EBE B\xC0O"
+      lectureName: "B\xE0i 10. Trao \u0111\u1ED5i ch\u1EA5t qua m\xE0ng t\u1EBF b\xE0o"
+      page: 64
+    - chapter: 3
+      groupName: "TRAO \u0110\u1ED4I CH\u1EA4T QUA M\xC0NG V\xC0 TRUY\u1EC0N TIN
+        T\u1EBE B\xC0O"
+      lectureName: "B\xE0i 11. Th\u1EF1c h\xE0nh: Th\xED nghi\u1EC7m co v\xE0 ph\u1EA3n
+        co nguy\xEAn sinh"
+      page: 71
+    - chapter: 3
+      groupName: "TRAO \u0110\u1ED4I CH\u1EA4T QUA M\xC0NG V\xC0 TRUY\u1EC0N TIN
+        T\u1EBE B\xC0O"
+      lectureName: "B\xE0i 12. Truy\u1EC1n tin t\u1EBF b\xE0o"
+      page: 73
+    - chapter: 4
+      groupName: "CHUY\u1EC2N HO\xC1 N\u0102NG L\u01AF\u1EE2NG TRONG T\u1EBE B\xC0O"
+      lectureName: "B\xE0i 13. Kh\xE1i qu\xE1t v\u1EC1 chuy\u1EC3n ho\xE1 v\u1EADt
+        ch\u1EA5t v\xE0 n\u0103ng l\u01B0\u1EE3ng"
+      page: 78
+    - chapter: 4
+      groupName: "CHUY\u1EC2N HO\xC1 N\u0102NG L\u01AF\u1EE2NG TRONG T\u1EBE B\xC0O"
+      lectureName: "B\xE0i 14. Ph\xE2n gi\u1EA3i v\xE0 t\u1ED5ng h\u1EE3p c\xE1c
+        ch\u1EA5t trong t\u1EBF b\xE0o"
+      page: 85
+    - chapter: 4
+      groupName: "CHUY\u1EC2N HO\xC1 N\u0102NG L\u01AF\u1EE2NG TRONG T\u1EBE B\xC0O"
+      lectureName: "B\xE0i 15. Th\u1EF1c h\xE0nh: Th\xED nghi\u1EC7m ph\xE2n t\xEDch
+        \u1EA3nh h\u01B0\u1EDFng c\u1EE7a m\u1ED9t s\u1ED1 y\u1EBFu t\u1ED1 \u0111\u1EBFn
+        ho\u1EA1t t\xEDnh c\u1EE7a enzyme..."
+      page: 94
+    - chapter: 5
+      groupName: "CHU K\xCC T\u1EBE B\xC0O V\xC0 PH\xC2N B\xC0O"
+      lectureName: "B\xE0i 16. Chu k\xEC t\u1EBF b\xE0o v\xE0 nguy\xEAn ph\xE2n"
+      page: 97
+    - chapter: 5
+      groupName: "CHU K\xCC T\u1EBE B\xC0O V\xC0 PH\xC2N B\xC0O"
+      lectureName: "B\xE0i 17. Gi\u1EA3m ph\xE2n"
+      page: 104
+    - chapter: 5
+      groupName: "CHU K\xCC T\u1EBE B\xC0O V\xC0 PH\xC2N B\xC0O"
+      lectureName: "B\xE0i 18. Th\u1EF1c h\xE0nh: L\xE0m v\xE0 quan s\xE1t ti\xEAu
+        b\u1EA3n qu\xE1 tr\xECnh nguy\xEAn ph\xE2n v\xE0 gi\u1EA3m ph\xE2n"
+      page: 108
+    - chapter: 5
+      groupName: "CHU K\xCC T\u1EBE B\xC0O V\xC0 PH\xC2N B\xC0O"
+      lectureName: "B\xE0i 19. C\xF4ng ngh\u1EC7 t\u1EBF b\xE0o"
+      page: 110
+    - chapter: 6
+      groupName: "SINH H\u1ECCC VI SINH V\u1EACT"
+      lectureName: "B\xE0i 20. S\u1EF1 \u0111a d\u1EA1ng v\xE0 ph\u01B0\u01A1ng ph\xE1p
+        nghi\xEAn c\u1EE9u vi sinh v\u1EADt"
+      page: 116
+    - chapter: 6
+      groupName: "SINH H\u1ECCC VI SINH V\u1EACT"
+      lectureName: "B\xE0i 21. Trao \u0111\u1ED5i ch\u1EA5t; sinh tr\u01B0\u1EDFng
+        v\xE0 sinh s\u1EA3n \u1EDF vi sinh v\u1EADt"
+      page: 122
+    - chapter: 6
+      groupName: "SINH H\u1ECCC VI SINH V\u1EACT"
+      lectureName: "B\xE0i 22. Vai tr\xF2 v\xE0 \u1EE9ng d\u1EE5ng c\u1EE7a vi sinh
+        v\u1EADt"
+      page: 131
+    - chapter: 6
+      groupName: "SINH H\u1ECCC VI SINH V\u1EACT"
+      lectureName: "B\xE0i 23. Th\u1EF1c h\xE0nh: M\u1ED9t s\u1ED1 ph\u01B0\u01A1ng
+        ph\xE1p nghi\xEAn c\u1EE9u vi sinh v\u1EADt th\xF4ng d\u1EE5ng..."
+      page: 138
+    - chapter: 7
+      groupName: VIRUS
+      lectureName: "B\xE0i 24. Kh\xE1i qu\xE1t v\u1EC1 virus"
+      page: 141
+    - chapter: 7
+      groupName: VIRUS
+      lectureName: "B\xE0i 25. M\u1ED9t s\u1ED1 b\u1EC7nh do virus v\xE0 c\xE1c th\xE0nh
+        t\u1EF1u nghi\xEAn c\u1EE9u \u1EE9ng d\u1EE5ng virus"
+      page: 145
+    - chapter: 7
+      groupName: VIRUS
+      lectureName: "B\xE0i 26. Th\u1EF1c h\xE0nh: \u0110i\u1EC1u tra m\u1ED9t s\u1ED1
+        b\u1EC7nh do virus v\xE0 tuy\xEAn truy\u1EC1n ph\xF2ng ch\u1ED1ng b\u1EC7nh"
+      page: 155
+    cloudinaryFolder: pdf-pages/SGK SINHHOC 10 KNTT
+    title: "Sinh h\u1ECDc 10"
+    note: 
+    grade: 10
+    category: "K\u1EBFt n\u1ED1i tri th\u1EE9c"
+    pages: 162
+    pdfUrl: 
+    imageUrls: []
+    localImagePaths: []
+    isCached: 0
+  - name: SinhHoc-12
+    description: 
+    lectures:
+    - chapter: 1
+      groupName: "DI TRUY\u1EC0N PH\xC2N T\u1EEC"
+      lectureName: "B\xE0i 1. DNA v\xE0 c\u01A1 ch\u1EBF t\xE1i b\u1EA3n DNA"
+      page: 5
+    - chapter: 1
+      groupName: "DI TRUY\u1EC0N PH\xC2N T\u1EEC"
+      lectureName: "B\xE0i 2. Gene; qu\xE1 tr\xECnh truy\u1EC1n \u0111\u1EA1t th\xF4ng
+        tin di truy\u1EC1n v\xE0 h\u1EC7 gene"
+      page: 9
+    - chapter: 1
+      groupName: "DI TRUY\u1EC0N PH\xC2N T\u1EEC"
+      lectureName: "B\xE0i 3. \u0110i\u1EC1u ho\xE0 bi\u1EC3u hi\u1EC7n gene"
+      page: 18
+    - chapter: 1
+      groupName: "DI TRUY\u1EC0N PH\xC2N T\u1EEC"
+      lectureName: "B\xE0i 4. \u0110\u1ED9t bi\u1EBFn gene"
+      page: 23
+    - chapter: 1
+      groupName: "DI TRUY\u1EC0N PH\xC2N T\u1EEC"
+      lectureName: "B\xE0i 5. C\xF4ng ngh\u1EC7 di truy\u1EC1n"
+      page: 27
+    - chapter: 1
+      groupName: "DI TRUY\u1EC0N PH\xC2N T\u1EEC"
+      lectureName: "B\xE0i 6. Th\u1EF1c h\xE0nh: T\xE1ch chi\u1EBFt DNA"
+      page: 34
+    - chapter: 2
+      groupName: "DI TRUY\u1EC0N NHI\u1EC4M S\u1EAEC TH\u1EC2"
+      lectureName: "B\xE0i 7. C\u1EA5u tr\xFAc v\xE0 ch\u1EE9c n\u0103ng c\u1EE7a
+        nhi\u1EC5m s\u1EAFc th\u1EC3"
+      page: 36
+    - chapter: 2
+      groupName: "DI TRUY\u1EC0N NHI\u1EC4M S\u1EAEC TH\u1EC2"
+      lectureName: "B\xE0i 8. H\u1ECDc thuy\u1EBFt di truy\u1EC1n c\u1EE7a Mendel"
+      page: 40
+    - chapter: 2
+      groupName: "DI TRUY\u1EC0N NHI\u1EC4M S\u1EAEC TH\u1EC2"
+      lectureName: "B\xE0i 9. M\u1EDF r\u1ED9ng h\u1ECDc thuy\u1EBFt Mendel"
+      page: 46
+    - chapter: 2
+      groupName: "DI TRUY\u1EC0N NHI\u1EC4M S\u1EAEC TH\u1EC2"
+      lectureName: "B\xE0i 10. Di truy\u1EC1n gi\u1EDBi t\xEDnh v\xE0 di truy\u1EC1n
+        li\xEAn k\u1EBFt v\u1EDBi gi\u1EDBi t\xEDnh"
+      page: 50
+    - chapter: 2
+      groupName: "DI TRUY\u1EC0N NHI\u1EC4M S\u1EAEC TH\u1EC2"
+      lectureName: "B\xE0i 11. Li\xEAn k\u1EBFt gene v\xE0 ho\xE1n v\u1ECB gene"
+      page: 54
+    - chapter: 2
+      groupName: "DI TRUY\u1EC0N NHI\u1EC4M S\u1EAEC TH\u1EC2"
+      lectureName: "B\xE0i 12. \u0110\u1ED9t bi\u1EBFn nhi\u1EC5m s\u1EAFc th\u1EC3"
+      page: 60
+    - chapter: 2
+      groupName: "DI TRUY\u1EC0N NHI\u1EC4M S\u1EAEC TH\u1EC2"
+      lectureName: "B\xE0i 13. Di truy\u1EC1n h\u1ECDc ng\u01B0\u1EDDi v\xE0 di truy\u1EC1n
+        y h\u1ECDc"
+      page: 68
+    - chapter: 2
+      groupName: "DI TRUY\u1EC0N NHI\u1EC4M S\u1EAEC TH\u1EC2"
+      lectureName: "B\xE0i 14. Th\u1EF1c h\xE0nh: Quan s\xE1t m\u1ED9t s\u1ED1 d\u1EA1ng
+        \u0111\u1ED9t bi\u1EBFn nhi\u1EC5m s\u1EAFc th\u1EC3"
+      page: 75
+    - chapter: 3
+      groupName: "M\u1EDE R\u1ED8NG H\u1ECCC THUY\u1EBET DI TRUY\u1EC0N NHI\u1EC4M
+        S\u1EAEC TH\u1EC2"
+      lectureName: "B\xE0i 15. Di truy\u1EC1n gene ngo\xE0i nh\xE2n"
+      page: 78
+    - chapter: 3
+      groupName: "M\u1EDE R\u1ED8NG H\u1ECCC THUY\u1EBET DI TRUY\u1EC0N NHI\u1EC4M
+        S\u1EAEC TH\u1EC2"
+      lectureName: "B\xE0i 16. T\u01B0\u01A1ng t\xE1c gi\u1EEFa ki\u1EC3u gene v\u1EDBi
+        m\xF4i tr\u01B0\u1EDDng v\xE0 th\xE0nh t\u1EF1u ch\u1ECDn gi\u1ED1ng"
+      page: 83
+    - chapter: 3
+      groupName: "M\u1EDE R\u1ED8NG H\u1ECCC THUY\u1EBET DI TRUY\u1EC0N NHI\u1EC4M
+        S\u1EAEC TH\u1EC2"
+      lectureName: "B\xE0i 17. Th\u1EF1c h\xE0nh: Th\xED nghi\u1EC7m v\u1EC1 th\u01B0\u1EDDng
+        bi\u1EBFn \u1EDF c\xE2y tr\u1ED3ng"
+      page: 88
+    - chapter: 4
+      groupName: "DI TRUY\u1EC0N QU\u1EA6N TH\u1EC2"
+      lectureName: "B\xE0i 18. Di truy\u1EC1n qu\u1EA7n th\u1EC3"
+      page: 91
+    - chapter: 5
+      groupName: "B\u1EB0NG CH\u1EE8NG V\xC0 C\xC1C H\u1ECCC THUY\u1EBET TI\u1EBEN
+        HO\xC1"
+      lectureName: "B\xE0i 19. C\xE1c b\u1EB1ng ch\u1EE9ng ti\u1EBFn ho\xE1"
+      page: 97
+    - chapter: 5
+      groupName: "B\u1EB0NG CH\u1EE8NG V\xC0 C\xC1C H\u1ECCC THUY\u1EBET TI\u1EBEN
+        HO\xC1"
+      lectureName: "B\xE0i 20. Quan ni\u1EC7m c\u1EE7a Darwin v\u1EC1 ch\u1ECDn l\u1ECDc
+        t\u1EF1 nhi\xEAn v\xE0 h\xECnh th\xE0nh lo\xE0i"
+      page: 101
+    - chapter: 5
+      groupName: "B\u1EB0NG CH\u1EE8NG V\xC0 C\xC1C H\u1ECCC THUY\u1EBET TI\u1EBEN
+        HO\xC1"
+      lectureName: "B\xE0i 21. H\u1ECDc thuy\u1EBFt ti\u1EBFn ho\xE1 t\u1ED5ng h\u1EE3p
+        hi\u1EC7n \u0111\u1EA1i"
+      page: 106
+    - chapter: 5
+      groupName: "B\u1EB0NG CH\u1EE8NG V\xC0 C\xC1C H\u1ECCC THUY\u1EBET TI\u1EBEN
+        HO\xC1"
+      lectureName: "B\xE0i 22. Ti\u1EBFn ho\xE1 l\u1EDBn v\xE0 qu\xE1 tr\xECnh ph\xE1t
+        sinh ch\u1EE7ng lo\u1EA1i"
+      page: 113
+    - chapter: 6
+      groupName: "M\xD4I TR\u01AF\u1EDCNG V\xC0 SINH TH\xC1I H\u1ECCC QU\u1EA6N TH\u1EC2"
+      lectureName: "B\xE0i 23. M\xF4i tr\u01B0\u1EDDng v\xE0 c\xE1c nh\xE2n t\u1ED1
+        sinh th\xE1i"
+      page: 122
+    - chapter: 6
+      groupName: "M\xD4I TR\u01AF\u1EDCNG V\xC0 SINH TH\xC1I H\u1ECCC QU\u1EA6N TH\u1EC2"
+      lectureName: "B\xE0i 24. Sinh th\xE1i h\u1ECDc qu\u1EA7n th\u1EC3"
+      page: 128
+    - chapter: 7
+      groupName: "SINH TH\xC1I H\u1ECCC QU\u1EA6N X\xC3"
+      lectureName: "B\xE0i 26. Qu\u1EA7n x\xE3 sinh v\u1EADt"
+      page: 141
+    - chapter: 7
+      groupName: "SINH TH\xC1I H\u1ECCC QU\u1EA6N X\xC3"
+      lectureName: "B\xE0i 27. Th\u1EF1c h\xE0nh: T\xECm hi\u1EC3u m\u1ED9t s\u1ED1
+        \u0111\u1EB7c tr\u01B0ng c\u01A1 b\u1EA3n c\u1EE7a qu\u1EA7n x\xE3 trong
+        t\u1EF1 nhi\xEAn"
+      page: 150
+    - chapter: 7
+      groupName: "SINH TH\xC1I H\u1ECCC QU\u1EA6N X\xC3"
+      lectureName: "B\xE0i 28. H\u1EC7 sinh th\xE1i"
+      page: 152
+    - chapter: 7
+      groupName: "SINH TH\xC1I H\u1ECCC QU\u1EA6N X\xC3"
+      lectureName: "B\xE0i 29. Trao \u0111\u1ED5i v\u1EADt ch\u1EA5t v\xE0 chuy\u1EC3n
+        ho\xE1 n\u0103ng l\u01B0\u1EE3ng trong h\u1EC7 sinh th\xE1i"
+      page: 155
+    - chapter: 7
+      groupName: "SINH TH\xC1I H\u1ECCC QU\u1EA6N X\xC3"
+      lectureName: "B\xE0i 30. Di\u1EC5n th\u1EBF"
+      page: 161
+    - chapter: 7
+      groupName: "SINH TH\xC1I H\u1ECCC QU\u1EA6N X\xC3"
+      lectureName: "B\xE0i 32. Th\u1EF1c h\xE0nh: Thi\u1EBFt k\u1EBF m\u1ED9t h\u1EC7
+        sinh th\xE1i nh\xE2n t\u1EA1o"
+      page: 172
+    - chapter: 8
+      groupName: "SINH TH\xC1I H\u1ECCC PH\u1EE4C H\u1ED2I; B\u1EA2O T\u1ED2N V\xC0
+        PH\xC1T TRI\u1EC2N B\u1EC0N V\u1EEENG"
+      lectureName: "B\xE0i 33. Sinh th\xE1i h\u1ECDc ph\u1EE5c h\u1ED3i v\xE0 b\u1EA3o
+        t\u1ED3n \u0111a d\u1EA1ng"
+      page: 175
+    - chapter: 8
+      groupName: "SINH TH\xC1I H\u1ECCC PH\u1EE4C H\u1ED2I; B\u1EA2O T\u1ED2N V\xC0
+        PH\xC1T TRI\u1EC2N B\u1EC0N V\u1EEENG"
+      lectureName: "B\xE0i 34. Ph\xE1t tri\u1EC3n b\u1EC1n v\u1EEFng"
+      page: 180
+    - chapter: 8
+      groupName: "SINH TH\xC1I H\u1ECCC PH\u1EE4C H\u1ED2I; B\u1EA2O T\u1ED2N V\xC0
+        PH\xC1T TRI\u1EC2N B\u1EC0N V\u1EEENG"
+      lectureName: "B\xE0i 35. D\u1EF1 \xE1n: T\xECm hi\u1EC3u th\u1EF1c tr\u1EA1ng
+        b\u1EA3o t\u1ED3n sinh th\xE1i t\u1EA1i \u0111\u1ECBa ph\u01B0\u01A1ng v\xE0
+        \u0111\u1EC1 xu\u1EA5t gi\u1EA3i ph\xE1p b\u1EA3o t\u1ED3n"
+      page: 188
+    cloudinaryFolder: pdf-pages/SGK SINH 12 - KNTT
+    title: "Sinh h\u1ECDc 12"
+    note: 
+    grade: 12
+    category: "K\u1EBFt n\u1ED1i tri th\u1EE9c"
+    pages: 199
+    pdfUrl: 
+    imageUrls: []
+    localImagePaths: []
+    isCached: 1
+  - name: HoaHoc-10
+    description: 
+    lectures:
+    - chapter: 1
+      groupName: "C\u1EA5u t\u1EA1o nguy\xEAn t\u1EED"
+      lectureName: "B\xE0i 1. Th\xE0nh ph\u1EA7n c\u1EE7a nguy\xEAn t\u1EED"
+      page: 13
+    - chapter: 1
+      groupName: "C\u1EA5u t\u1EA1o nguy\xEAn t\u1EED"
+      lectureName: "B\xE0i 2. Nguy\xEAn t\u1ED1 ho\xE1 h\u1ECDc"
+      page: 17
+    - chapter: 1
+      groupName: "C\u1EA5u t\u1EA1o nguy\xEAn t\u1EED"
+      lectureName: "B\xE0i 3. C\u1EA5u tr\xFAc l\u1EDBp v\u1ECF electron nguy\xEAn
+        t\u1EED"
+      page: 21
+    - chapter: 1
+      groupName: "C\u1EA5u t\u1EA1o nguy\xEAn t\u1EED"
+      lectureName: "\xD4n t\u1EADp ch\u01B0\u01A1ng 1"
+      page: 26
+    - chapter: 2
+      groupName: "B\u1EA3ng tu\u1EA7n ho\xE0n c\xE1c nguy\xEAn t\u1ED1 ho\xE1 h\u1ECDc
+        v\xE0 \u0111\u1ECBnh lu\u1EADt tu\u1EA7n ho\xE0n"
+      lectureName: "B\xE0i 5. C\u1EA5u t\u1EA1o c\u1EE7a b\u1EA3ng tu\u1EA7n ho\xE0n
+        c\xE1c nguy\xEAn t\u1ED1 ho\xE1 h\u1ECDc"
+      page: 30
+    - chapter: 2
+      groupName: "B\u1EA3ng tu\u1EA7n ho\xE0n c\xE1c nguy\xEAn t\u1ED1 ho\xE1 h\u1ECDc
+        v\xE0 \u0111\u1ECBnh lu\u1EADt tu\u1EA7n ho\xE0n"
+      lectureName: "B\xE0i 6. Xu h\u01B0\u1EDBng bi\u1EBFn \u0111\u1ED5i m\u1ED9t
+        s\u1ED1 t\xEDnh ch\u1EA5t c\u1EE7a nguy\xEAn t\u1EED c\xE1c nguy\xEAn t\u1ED1
+        trong m\u1ED9t chu k\xEC v\xE0 trong m\u1ED9t nh\xF3m"
+      page: 34
+    - chapter: 2
+      groupName: "B\u1EA3ng tu\u1EA7n ho\xE0n c\xE1c nguy\xEAn t\u1ED1 ho\xE1 h\u1ECDc
+        v\xE0 \u0111\u1ECBnh lu\u1EADt tu\u1EA7n ho\xE0n"
+      lectureName: "B\xE0i 7. Xu h\u01B0\u1EDBng bi\u1EBFn \u0111\u1ED5i th\xE0nh
+        ph\u1EA7n v\xE0 m\u1ED9t s\u1ED1 t\xEDnh ch\u1EA5t c\u1EE7a h\u1EE3p ch\u1EA5t
+        trong m\u1ED9t chu k\xEC"
+      page: 40
+    - chapter: 2
+      groupName: "B\u1EA3ng tu\u1EA7n ho\xE0n c\xE1c nguy\xEAn t\u1ED1 ho\xE1 h\u1ECDc
+        v\xE0 \u0111\u1ECBnh lu\u1EADt tu\u1EA7n ho\xE0n"
+      lectureName: "B\xE0i 8. \u0110\u1ECBnh lu\u1EADt tu\u1EA7n ho\xE0n. \xDD ngh\u0129a
+        c\u1EE7a b\u1EA3ng tu\u1EA7n ho\xE0n c\xE1c nguy\xEAn t\u1ED1 ho\xE1 h\u1ECDc"
+      page: 43
+    - chapter: 2
+      groupName: "B\u1EA3ng tu\u1EA7n ho\xE0n c\xE1c nguy\xEAn t\u1ED1 ho\xE1 h\u1ECDc
+        v\xE0 \u0111\u1ECBnh lu\u1EADt tu\u1EA7n ho\xE0n"
+      lectureName: "\xD4n t\u1EADp ch\u01B0\u01A1ng 2"
+      page: 45
+    - chapter: 3
+      groupName: "Li\xEAn k\u1EBFt ho\xE1 h\u1ECDc"
+      lectureName: "B\xE0i 10. Quy t\u1EAFc octet"
+      page: 49
+    - chapter: 3
+      groupName: "Li\xEAn k\u1EBFt ho\xE1 h\u1ECDc"
+      lectureName: "B\xE0i 11. Li\xEAn k\u1EBFt ion"
+      page: 51
+    - chapter: 3
+      groupName: "Li\xEAn k\u1EBFt ho\xE1 h\u1ECDc"
+      lectureName: "B\xE0i 12. Li\xEAn k\u1EBFt c\u1ED9ng ho\xE1 tr\u1ECB"
+      page: 55
+    - chapter: 3
+      groupName: "Li\xEAn k\u1EBFt ho\xE1 h\u1ECDc"
+      lectureName: "B\xE0i 13. Li\xEAn k\u1EBFt hydrogen v\xE0 t\u01B0\u01A1ng t\xE1c
+        van der Waals"
+      page: 64
+    - chapter: 3
+      groupName: "Li\xEAn k\u1EBFt ho\xE1 h\u1ECDc"
+      lectureName: "\xD4n t\u1EADp ch\u01B0\u01A1ng 3"
+      page: 68
+    - chapter: 4
+      groupName: "Ph\u1EA3n \u1EE9ng oxi ho\xE1 \u2013 kh\u1EED"
+      lectureName: "B\xE0i 15. Ph\u1EA3n \u1EE9ng oxi ho\xE1 \u2013 kh\u1EED"
+      page: 71
+    - chapter: 4
+      groupName: "Ph\u1EA3n \u1EE9ng oxi ho\xE1 \u2013 kh\u1EED"
+      lectureName: "\xD4n t\u1EADp ch\u01B0\u01A1ng 4"
+      page: 78
+    - chapter: 5
+      groupName: "N\u0103ng l\u01B0\u1EE3ng ho\xE1 h\u1ECDc"
+      lectureName: "B\xE0i 17. Bi\u1EBFn thi\xEAn enthalpy trong c\xE1c ph\u1EA3n
+        \u1EE9ng ho\xE1 h\u1ECDc"
+      page: 81
+    - chapter: 5
+      groupName: "N\u0103ng l\u01B0\u1EE3ng ho\xE1 h\u1ECDc"
+      lectureName: "\xD4n t\u1EADp ch\u01B0\u01A1ng 5"
+      page: 89
+    - chapter: 6
+      groupName: "T\u1ED1c \u0111\u1ED9 ph\u1EA3n \u1EE9ng"
+      lectureName: "B\xE0i 19. T\u1ED1c \u0111\u1ED9 ph\u1EA3n \u1EE9ng"
+      page: 92
+    - chapter: 6
+      groupName: "T\u1ED1c \u0111\u1ED9 ph\u1EA3n \u1EE9ng"
+      lectureName: "\xD4n t\u1EADp ch\u01B0\u01A1ng 6"
+      page: 101
+    - chapter: 7
+      groupName: "Nguy\xEAn t\u1ED1 nh\xF3m halogen"
+      lectureName: "B\xE0i 21. Nh\xF3m halogen"
+      page: 104
+    - chapter: 7
+      groupName: "Nguy\xEAn t\u1ED1 nh\xF3m halogen"
+      lectureName: "B\xE0i 22. Hydrogen halide - Mu\u1ED1i halide"
+      page: 112
+    - chapter: 7
+      groupName: "Nguy\xEAn t\u1ED1 nh\xF3m halogen"
+      lectureName: "\xD4n t\u1EADp ch\u01B0\u01A1ng 7"
+      page: 117
+    cloudinaryFolder: pdf-pages/SGK HH10 KNTT
+    title: "H\xF3a h\u1ECDc 10"
+    note: 
+    grade: 10
+    category: "K\u1EBFt n\u1ED1i tri th\u1EE9c"
+    pages: 122
+    pdfUrl: 
+    imageUrls: []
+    localImagePaths: []
+    isCached: 0

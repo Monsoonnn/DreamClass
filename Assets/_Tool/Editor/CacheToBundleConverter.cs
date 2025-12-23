@@ -13,6 +13,16 @@ public class CacheToBundleConverter : EditorWindow
     private string logMessages = "";
     private BuildTarget buildTarget = BuildTarget.Android; // Default to Android
 
+    // --- OPTIMIZATION SETTINGS ---
+    private int maxTextureSizeIndex = 3; // Default 2048
+    private int[] maxTextureSizes = { 256, 512, 1024, 2048, 4096, 8192 };
+    private string[] maxTextureSizeStrings = { "256", "512", "1024", "2048", "4096", "8192" };
+
+    private bool useCrunchCompression = true;
+    private int compressionQuality = 75; // 0-100
+    private bool incrementalBuild = true;
+    // -----------------------------
+
     [MenuItem("Tools/DreamClass/Bundles/Convert PDFCache to Bundles")]
     public static void OpenWindow()
     {
@@ -33,16 +43,31 @@ public class CacheToBundleConverter : EditorWindow
         else style.normal.textColor = Color.cyan;
         
         GUILayout.Label($"-> Output Folder: {outputPath}", style);
-        // ------------------------------
 
         GUILayout.Space(10);
+        GUILayout.Label("Optimization Settings", EditorStyles.boldLabel);
+        
+        maxTextureSizeIndex = EditorGUILayout.Popup("Max Texture Size:", maxTextureSizeIndex, maxTextureSizeStrings);
+        useCrunchCompression = EditorGUILayout.Toggle("Use Crunch Compression:", useCrunchCompression);
+        if (useCrunchCompression)
+        {
+            compressionQuality = EditorGUILayout.IntSlider("Quality (0-100):", compressionQuality, 0, 100);
+        }
 
-        if (GUILayout.Button("START CONVERT (FULL CLEAN)", GUILayout.Height(40)))        
+        GUILayout.Space(10);
+        GUILayout.Label("Build Settings", EditorStyles.boldLabel);
+        incrementalBuild = EditorGUILayout.Toggle("Incremental Build:", incrementalBuild);
+        GUILayout.Label("   (Checks files and only rebuilds changes. Much faster!)", EditorStyles.miniLabel);
+
+        GUILayout.Space(15);
+
+        if (GUILayout.Button(incrementalBuild ? "UPDATE BUNDLES (INCREMENTAL)" : "BUILD ALL (FULL REBUILD)", GUILayout.Height(40)))        
         {
             Convert();
         }
 
-        // --- NÚT MỚI ---
+        // --- TOOLS ---
+        GUILayout.BeginHorizontal();
         if (GUILayout.Button("Force Clear Temp Folder", GUILayout.Height(25)))
         {
             if (Directory.Exists(TEMP_ASSET_PATH))
@@ -57,6 +82,18 @@ public class CacheToBundleConverter : EditorWindow
                 Log("Không tìm thấy folder tạm.");
             }
         }
+
+        if (GUILayout.Button("Clear Output Folder", GUILayout.Height(25)))
+        {
+            if (Directory.Exists(outputPath))
+            {
+                Directory.Delete(outputPath, true);
+                if (File.Exists(outputPath + ".meta")) File.Delete(outputPath + ".meta");
+                AssetDatabase.Refresh();
+                Log($"Đã xóa folder đích: {outputPath}");
+            }
+        }
+        GUILayout.EndHorizontal();
         // ----------------
 
         if (GUILayout.Button("Open Output Folder", GUILayout.Height(30)))       
@@ -105,7 +142,7 @@ public class CacheToBundleConverter : EditorWindow
     public void Convert()
     {
         logMessages = "";
-        Log($"=== BẮT ĐẦU CONVERT (Target: {buildTarget}) ===");
+        Log($"=== BẮT ĐẦU CONVERT (Target: {buildTarget} | Inc: {incrementalBuild}) ===");
 
         string outputPath = GetOutputPath();
         Log($"Output Path: {outputPath}");
@@ -119,20 +156,30 @@ public class CacheToBundleConverter : EditorWindow
             return;
         }
 
-        // 2. CHUẨN BỊ FOLDER TẠM (CLEAN TEMP)
-        if (Directory.Exists(TEMP_ASSET_PATH))
+        // 2. CHUẨN BỊ FOLDER TẠM
+        if (!incrementalBuild)
         {
-            FileUtil.DeleteFileOrDirectory(TEMP_ASSET_PATH);
-            FileUtil.DeleteFileOrDirectory(TEMP_ASSET_PATH + ".meta");
+            // Full Rebuild -> Xóa sạch Temp
+            if (Directory.Exists(TEMP_ASSET_PATH))
+            {
+                FileUtil.DeleteFileOrDirectory(TEMP_ASSET_PATH);
+                FileUtil.DeleteFileOrDirectory(TEMP_ASSET_PATH + ".meta");
+                Log("Đã xóa sạch Temp Folder (Full Rebuild)");
+            }
         }
         Directory.CreateDirectory(TEMP_ASSET_PATH);
 
-        // 5. XỬ LÝ Ở FOLDER ĐÍCH (QUAN TRỌNG)
-        if (Directory.Exists(outputPath))
+        // 3. CHUẨN BỊ FOLDER ĐÍCH
+        if (!Directory.Exists(outputPath))
         {
+            Directory.CreateDirectory(outputPath);
+        }
+        else if (!incrementalBuild)
+        {
+            // Full Rebuild -> Xóa sạch Output
             Log($"Xóa sạch folder đích để build mới: {outputPath}");
             Directory.Delete(outputPath, true);
-            if (File.Exists(outputPath + ".meta")) File.Delete(outputPath + ".meta");  
+            Directory.CreateDirectory(outputPath);
         }
         
         // Ensure parent directories exist
@@ -141,17 +188,16 @@ public class CacheToBundleConverter : EditorWindow
         {
             Directory.CreateDirectory(directoryPath);
         }
-        Directory.CreateDirectory(outputPath);
-
-        Log("Đã tạo folder tạm. Dọn dẹp folder tạm");
-        AssetDatabase.Refresh();
-
-        // 3. COPY FILE TỪ CACHE VÀO TEMP
-        CopyDirectory(cachePath, TEMP_ASSET_PATH);
 
         AssetDatabase.Refresh();
 
-        // 4. TẠO BUILD MAP
+        // 4. COPY FILE TỪ CACHE VÀO TEMP (SMART COPY)
+        Log("Đang copy/sync files từ Cache sang Temp...");
+        SmartCopyDirectory(cachePath, TEMP_ASSET_PATH);
+
+        AssetDatabase.Refresh();
+
+        // 5. TẠO BUILD MAP & APPLY IMPORT SETTINGS
         List<AssetBundleBuild> buildMap = new List<AssetBundleBuild>();
         DirectoryInfo tempRootInfo = new DirectoryInfo(TEMP_ASSET_PATH);
         ProcessFolderForBuild(tempRootInfo, tempRootInfo.FullName, buildMap);
@@ -167,10 +213,16 @@ public class CacheToBundleConverter : EditorWindow
 
         try
         {
+            // Build options: ChunkBasedCompression is good for performance
+            // Use UncompressedAssetBundle if using Crunch Compression on Textures to avoid double compression? 
+            // Usually ChunkBased is still fine.
+            BuildAssetBundleOptions options = BuildAssetBundleOptions.ChunkBasedCompression;
+            if (!incrementalBuild) options |= BuildAssetBundleOptions.ForceRebuildAssetBundle;
+
             AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(
                 outputPath,
                 buildMap.ToArray(),
-                BuildAssetBundleOptions.ChunkBasedCompression | BuildAssetBundleOptions.ForceRebuildAssetBundle,
+                options,
                 buildTarget
             );
 
@@ -178,15 +230,17 @@ public class CacheToBundleConverter : EditorWindow
             {
                 Log("<color=green>=== THÀNH CÔNG ===</color>");
 
-                if (Directory.Exists(TEMP_ASSET_PATH))
+                if (!incrementalBuild)
                 {
-                    FileUtil.DeleteFileOrDirectory(TEMP_ASSET_PATH);
-                    FileUtil.DeleteFileOrDirectory(TEMP_ASSET_PATH + ".meta");
+                    // Cleanup only on full rebuild to save space? 
+                    // Or keep it for next incremental build? 
+                    // Keeping it allows incremental to work next time.
+                    Log("Temp folder giữ lại để hỗ trợ Incremental Build lần sau.");
                 }
 
                 AssetDatabase.Refresh();
                 EditorUtility.RevealInFinder(outputPath);
-                EditorUtility.DisplayDialog("Thành công", $"Đã tạo {buildMap.Count} bundles!", "OK");
+                EditorUtility.DisplayDialog("Thành công", $"Đã tạo/update {buildMap.Count} bundles!", "OK");
             }
             else
             {
@@ -207,6 +261,8 @@ public class CacheToBundleConverter : EditorWindow
         foreach (var fileInfo in files)
         {
             if (fileInfo.Name.EndsWith(".meta")) continue;
+            // Skip system files like .DS_Store
+            if (fileInfo.Name.StartsWith(".")) continue;
 
             string fullPath = fileInfo.FullName;
             int assetsIndex = fullPath.IndexOf("Assets", System.StringComparison.OrdinalIgnoreCase);
@@ -216,17 +272,44 @@ public class CacheToBundleConverter : EditorWindow
 
             TextureImporter importer = AssetImporter.GetAtPath(unityPath) as TextureImporter;
 
+            // Check if settings need update
+            bool settingsChanged = false;
+
             if (importer == null)
             {
                 AssetDatabase.ImportAsset(unityPath, ImportAssetOptions.ForceUpdate);    
                 importer = AssetImporter.GetAtPath(unityPath) as TextureImporter;        
+                settingsChanged = true;
             }
 
             if (importer != null)
             {
-                importer.textureType = TextureImporterType.Sprite;
-                importer.mipmapEnabled = false;
-                importer.SaveAndReimport();
+                // Verify settings
+                if (importer.textureType != TextureImporterType.Sprite) { importer.textureType = TextureImporterType.Sprite; settingsChanged = true; }
+                if (importer.mipmapEnabled) { importer.mipmapEnabled = false; settingsChanged = true; }
+                
+                int targetSize = maxTextureSizes[maxTextureSizeIndex];
+                if (importer.maxTextureSize != targetSize) { importer.maxTextureSize = targetSize; settingsChanged = true; }
+                
+                if (useCrunchCompression)
+                {
+                    if (importer.textureCompression != TextureImporterCompression.Compressed) { importer.textureCompression = TextureImporterCompression.Compressed; settingsChanged = true; }
+                    if (!importer.crunchedCompression) { importer.crunchedCompression = true; settingsChanged = true; }
+                    if (importer.compressionQuality != compressionQuality) { importer.compressionQuality = compressionQuality; settingsChanged = true; }
+                }
+                else
+                {
+                    // Normal compression or none? Usually compressed.
+                    if (importer.textureCompression != TextureImporterCompression.Compressed) { importer.textureCompression = TextureImporterCompression.Compressed; settingsChanged = true; }
+                    if (importer.crunchedCompression) { importer.crunchedCompression = false; settingsChanged = true; }
+                }
+
+                if (settingsChanged)
+                {
+                    importer.SaveAndReimport();
+                    // Log($"Applied settings to: {fileInfo.Name}");
+                }
+                
                 validAssetPaths.Add(unityPath);
             }
         }
@@ -250,7 +333,7 @@ public class CacheToBundleConverter : EditorWindow
             build.assetNames = validAssetPaths.ToArray();
             buildMap.Add(build);
 
-            Log($"Added Bundle: {bundleName} ({validAssetPaths.Count} files)");
+            Log($"Included Bundle: {bundleName} ({validAssetPaths.Count} assets)");
         }
 
         foreach (var subDir in currentDir.GetDirectories())
@@ -259,23 +342,47 @@ public class CacheToBundleConverter : EditorWindow
         }
     }
 
-    static void CopyDirectory(string sourceDir, string destinationDir)
+    /// <summary>
+    /// Smart copy: Chỉ copy file nếu file đích không tồn tại hoặc khác kích thước/thời gian.
+    /// Giúp tránh re-import không cần thiết trong Unity.
+    /// </summary>
+    static void SmartCopyDirectory(string sourceDir, string destinationDir)
     {
         DirectoryInfo dir = new DirectoryInfo(sourceDir);
         if (!dir.Exists) return;
 
-        Directory.CreateDirectory(destinationDir);
+        if (!Directory.Exists(destinationDir)) Directory.CreateDirectory(destinationDir);
 
         foreach (FileInfo file in dir.GetFiles())
         {
             string targetFilePath = Path.Combine(destinationDir, file.Name);
-            file.CopyTo(targetFilePath, true);
+            FileInfo targetFile = new FileInfo(targetFilePath);
+
+            bool needsCopy = true;
+            if (targetFile.Exists)
+            {
+                // Simple check: Length matches?
+                // Note: LastWriteTime might differ due to copy, so Length is safer check for binary match.
+                // For exact match, hash is better but slow. 
+                // Since these are static images, length + name is decent proxy.
+                if (targetFile.Length == file.Length)
+                {
+                    needsCopy = false;
+                }
+            }
+
+            if (needsCopy)
+            {
+                file.CopyTo(targetFilePath, true);
+                // Preserve original modification time to help tracking? 
+                // Unity relies on its own hash/meta.
+            }
         }
 
         foreach (DirectoryInfo subDir in dir.GetDirectories())
         {
             string newDestDir = Path.Combine(destinationDir, subDir.Name);
-            CopyDirectory(subDir.FullName, newDestDir);
+            SmartCopyDirectory(subDir.FullName, newDestDir);
         }
     }
 }

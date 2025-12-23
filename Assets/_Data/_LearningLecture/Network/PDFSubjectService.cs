@@ -27,6 +27,11 @@ namespace DreamClass.Subjects
         [SerializeField] private ApiClient apiClient;
         [SerializeField] private string listEndpoint = "/api/pdfs/list/books";
 
+        [Header("Cloudinary Optimization")]
+        [SerializeField] private bool useCloudinaryOptimization = true;
+        [SerializeField] private CloudinaryQuality cloudinaryQuality = CloudinaryQuality.Auto;
+        [SerializeField] private CloudinaryFormat cloudinaryFormat = CloudinaryFormat.Auto;
+
         [Header("Subject Database")]
         [SerializeField] private SubjectDatabase subjectDatabase;
         [SerializeField] private bool onlyLoadMatchingSubjects = true;
@@ -60,6 +65,8 @@ namespace DreamClass.Subjects
         [SerializeField] private float loadDelaySeconds = 0.01f;
         [Tooltip("Use UnityWebRequest for loading (more optimized than File.ReadAllBytes)")]
         [SerializeField] private bool useWebRequestLoader = true;
+        [Tooltip("Number of parallel downloads allowed (Increase for faster download speed)")]
+        [SerializeField] private int maxConcurrentDownloads = 8;
 
         [Header("Bundle Settings")]
         [SerializeField] private bool checkLocalBundleFirst = true;
@@ -1375,10 +1382,19 @@ namespace DreamClass.Subjects
                 return;
             }
 
-            StartCoroutine(FetchSubjectsCoroutine());
+            if (Application.isPlaying)
+            {
+                StartCoroutine(FetchSubjectsCoroutine(null, null));
+            }
+#if UNITY_EDITOR
+            else
+            {
+                RunEditorCoroutine(FetchSubjectsCoroutine(null, null));
+            }
+#endif
         }
 
-        private IEnumerator FetchSubjectsCoroutine()
+        private IEnumerator FetchSubjectsCoroutine(string gradeFilter = null, CloudinarySettings settings = null)
         {
             Log("Fetching PDF subjects from API...");
 
@@ -1406,6 +1422,12 @@ namespace DreamClass.Subjects
 
                     foreach (var pdfInfo in listResponse.data)
                     {
+                        // Filter by Grade if specified
+                        if (!string.IsNullOrEmpty(gradeFilter) && !string.Equals(pdfInfo.grade, gradeFilter, StringComparison.OrdinalIgnoreCase))
+                        {
+                            continue;
+                        }
+
                         if (onlyLoadMatchingSubjects && RuntimeSubjects != null)
                         {
                             bool hasMatch = RuntimeSubjects.Exists(s => s.MatchesCloudinaryFolder(pdfInfo.cloudinaryFolder));
@@ -1527,10 +1549,11 @@ namespace DreamClass.Subjects
             }
 
             // Download images AFTER successfully fetching (outside try-catch để dùng yield)
-            if (autoCacheAfterFetch && hasFetched)
+            // If gradeFilter is set, we assume we WANT to download/cache them now.
+            if ((autoCacheAfterFetch || !string.IsNullOrEmpty(gradeFilter)) && hasFetched)
             {
                 Log("[CACHE] Starting auto-cache before marking ready...");
-                yield return StartCoroutine(AutoCacheAllSubjects());
+                yield return StartCoroutine(AutoCacheAllSubjects(settings));
                 Log("[CACHE] Auto-cache completed");
             }
 
@@ -1637,7 +1660,7 @@ namespace DreamClass.Subjects
         }
 
         // Các methods còn lại giữ nguyên...
-        private IEnumerator AutoCacheAllSubjects()
+        private IEnumerator AutoCacheAllSubjects(CloudinarySettings settings = null)
         {
             Log("Starting auto-cache for all subjects...");
 
@@ -1669,7 +1692,7 @@ namespace DreamClass.Subjects
                 Log($"[CACHE] Caching '{remote.GetIdentifier()}' ({i + 1}/{totalSubjects}) - {remote.imageUrls.Count} images");
 
                 // Cache this subject
-                yield return StartCoroutine(CacheSubjectCoroutine(remote));
+                yield return StartCoroutine(CacheSubjectCoroutine(remote, settings));
 
                 cachedCount++;
 
@@ -1692,7 +1715,7 @@ namespace DreamClass.Subjects
         /// <summary>
         /// Cache images for a single subject - downloads from server and saves to local cache
         /// </summary>
-        private IEnumerator CacheSubjectCoroutine(RemoteSubjectInfo subject)
+        private IEnumerator CacheSubjectCoroutine(RemoteSubjectInfo subject, CloudinarySettings settings = null)
         {
             if (subject.imageUrls == null || subject.imageUrls.Count == 0)
             {
@@ -1738,42 +1761,78 @@ namespace DreamClass.Subjects
             int downloadedCount = 0;
             int totalImages = subject.imageUrls.Count;
 
+            // Sort paths by index to keep order in list
+            string[] finalPaths = new string[totalImages];
+            List<DownloadJob> activeJobs = new List<DownloadJob>();
+
+            // Loop through all images
             for (int i = 0; i < totalImages; i++)
             {
                 string imageUrl = subject.imageUrls[i];
+                
+                // OPTIMIZATION: Cloudinary URL Transformation
+                if (useCloudinaryOptimization)
+                {
+                    imageUrl = GenerateCloudinaryUrl(imageUrl, settings);
+                }
+                
+                // Fix double-encoded URLs
+                try
+                {
+                    if (imageUrl.Contains("%C3%83") || imageUrl.Contains("%C2%") || imageUrl.Contains("%25"))
+                    {
+                        imageUrl = Uri.UnescapeDataString(imageUrl);
+                    }
+                }
+                catch { }
+
                 string extension = cacheAsPNG ? ".png" : GetExtensionFromUrl(imageUrl);
                 string fileName = $"page_{i:D3}{extension}";
                 string localPath = Path.Combine(subjectFolder, fileName);
 
-                Log($"[CACHE] Downloading image {i + 1}/{totalImages}: {imageUrl}");
+                // Start Job
+                UnityWebRequest request = UnityWebRequest.Get(imageUrl);
+                request.SendWebRequest(); // Start immediately
 
-                // Download and save image
-                bool success = false;
-                yield return StartCoroutine(DownloadAndSaveImageCoroutine(imageUrl, localPath, cacheAsPNG, (result) =>
+                DownloadJob job = new DownloadJob
                 {
-                    success = result;
-                    Log($"[CACHE] Download result for image {i + 1}: {(result ? "SUCCESS" : "FAILED")} -> {localPath}");
-                }));
+                    index = i,
+                    request = request,
+                    localPath = localPath,
+                    convertToPNG = cacheAsPNG,
+                    url = imageUrl
+                };
+                
+                activeJobs.Add(job);
+                Log($"[CACHE] Started download {i + 1}/{totalImages}: {imageUrl}");
 
-                if (success)
+                // Wait if max concurrent reached
+                while (activeJobs.Count >= maxConcurrentDownloads)
                 {
-                    cacheData.cachedImagePaths.Add(localPath);
-                    downloadedCount++;
+                    // Check for finished jobs
+                    yield return ProcessFinishedJobs(activeJobs, finalPaths, (success) => {
+                        if (success) downloadedCount++;
+                        float progress = (float)downloadedCount / totalImages;
+                        OnSubjectCacheProgress?.Invoke(subject, progress);
+                    });
+                }
+            }
 
-                    // Report progress
+            // Wait for remaining jobs
+            while (activeJobs.Count > 0)
+            {
+                 yield return ProcessFinishedJobs(activeJobs, finalPaths, (success) => {
+                    if (success) downloadedCount++;
                     float progress = (float)downloadedCount / totalImages;
                     OnSubjectCacheProgress?.Invoke(subject, progress);
-                }
-                else
-                {
-                    LogError($"[CACHE] Failed to download image {i} for '{subject.GetIdentifier()}'");
-                }
+                });
+            }
 
-                // Small delay between downloads to avoid overwhelming the server
-                if ((i + 1) % 5 == 0)
-                {
-                    yield return new WaitForSeconds(0.1f);
-                }
+            // Collect valid paths
+            cacheData.cachedImagePaths.Clear();
+            foreach (var p in finalPaths)
+            {
+                if (!string.IsNullOrEmpty(p)) cacheData.cachedImagePaths.Add(p);
             }
 
             // ============================================================
@@ -1801,6 +1860,152 @@ namespace DreamClass.Subjects
 
             Log($"[CACHE] Completed '{subject.GetIdentifier()}': {downloadedCount}/{totalImages} images");
             OnSubjectCacheComplete?.Invoke(subject);
+        }
+
+        private IEnumerator ProcessFinishedJobs(List<DownloadJob> activeJobs, string[] finalPaths, Action<bool> onComplete)
+        {
+            // Wait a frame
+            yield return null;
+
+            for (int i = activeJobs.Count - 1; i >= 0; i--)
+            {
+                var job = activeJobs[i];
+                if (job.request.isDone)
+                {
+                    bool success = false;
+                    
+                    if (job.request.result == UnityWebRequest.Result.Success)
+                    {
+                        try
+                        {
+                            byte[] data = job.request.downloadHandler.data;
+                            if (job.convertToPNG)
+                            {
+                                // Decode WebP/Image -> Texture -> PNG
+                                WebP.Error error;
+                                Texture2D texture = WebP.Texture2DExt.CreateTexture2DFromWebP(data, lMipmaps: false, lLinear: false, out error);
+                                if (error == WebP.Error.Success && texture != null)
+                                {
+                                     // Encode and Save
+                                     byte[] pngData = texture.EncodeToPNG();
+                                     File.WriteAllBytes(job.localPath, pngData);
+                                     UnityEngine.Object.Destroy(texture);
+                                     success = true;
+                                }
+                                else
+                                {
+                                     LogError($"[CACHE] Failed to decode image {job.index}: {error}");
+                                }
+                            }
+                            else
+                            {
+                                File.WriteAllBytes(job.localPath, data);
+                                success = true;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            LogError($"[CACHE] Failed to save {job.index}: {ex.Message}");
+                        }
+                    }
+                    else
+                    {
+                        LogError($"[CACHE] Failed to download {job.index}: {job.request.error}");
+                    }
+
+                    if (success)
+                    {
+                        finalPaths[job.index] = job.localPath;
+                        Log($"[CACHE] Finished {job.index + 1}");
+                    }
+
+                    job.request.Dispose();
+                    activeJobs.RemoveAt(i);
+                    onComplete?.Invoke(success);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Generates an optimized Cloudinary URL based on current settings
+        /// </summary>
+        private string GenerateCloudinaryUrl(string originalUrl, CloudinarySettings settings = null)
+        {
+            if (string.IsNullOrEmpty(originalUrl)) return originalUrl;
+            if (!originalUrl.Contains("res.cloudinary.com")) return originalUrl; // Only optimize Cloudinary URLs
+
+            // 1. Check if already has transformations (simple check for now)
+            // Cloudinary URLs: /image/upload/v1234... or /image/upload/w_100.../v1234...
+            // We want to insert transformations after /upload/
+
+            string uploadToken = "/upload/";
+            int uploadIndex = originalUrl.IndexOf(uploadToken, StringComparison.OrdinalIgnoreCase);
+
+            if (uploadIndex == -1) return originalUrl;
+
+            // Build transformation string
+            List<string> paramsList = new List<string>();
+
+            // Get settings or defaults
+            int targetSize = settings != null ? settings.textureSize : maxTextureSize;
+            CloudinaryQuality targetQuality = settings != null ? settings.quality : cloudinaryQuality;
+            CloudinaryFormat targetFormat = settings != null ? settings.format : cloudinaryFormat;
+
+            // SIZE (Resize/Crop)
+            // Use maxTextureSize as the target width/height
+            // c_fill is usually good for fitting into a box, but for PDF pages we likely want to limit width/height (c_limit or c_fit)
+            // User requested "custom fill" -> likely c_fill or c_fit with w/h
+            if (targetSize > 0)
+            {
+                paramsList.Add($"w_{targetSize}");
+                paramsList.Add($"h_{targetSize}");
+                paramsList.Add("c_limit"); // Use limit to maintain aspect ratio and not upscale
+            }
+
+            // QUALITY
+            string q = GetQualityString(targetQuality);
+            if (!string.IsNullOrEmpty(q)) paramsList.Add(q);
+
+            // FORMAT
+            string f = GetFormatString(targetFormat);
+            if (!string.IsNullOrEmpty(f)) paramsList.Add(f);
+
+            if (paramsList.Count == 0) return originalUrl;
+
+            string transformString = string.Join(",", paramsList);
+
+            // Insert transformation
+            string prefix = originalUrl.Substring(0, uploadIndex + uploadToken.Length);
+            string suffix = originalUrl.Substring(uploadIndex + uploadToken.Length);
+
+            return $"{prefix}{transformString}/{suffix}";
+        }
+
+        private string GetQualityString(CloudinaryQuality quality)
+        {
+            switch (quality)
+            {
+                case CloudinaryQuality.Auto: return "q_auto";
+                case CloudinaryQuality.Best: return "q_auto:best";
+                case CloudinaryQuality.Good: return "q_auto:good";
+                case CloudinaryQuality.Eco: return "q_auto:eco";
+                case CloudinaryQuality.Low: return "q_auto:low";
+                case CloudinaryQuality.Fixed_80: return "q_80";
+                case CloudinaryQuality.Fixed_60: return "q_60";
+                default: return "q_auto";
+            }
+        }
+
+        private string GetFormatString(CloudinaryFormat format)
+        {
+            switch (format)
+            {
+                case CloudinaryFormat.Auto: return "f_auto";
+                case CloudinaryFormat.Jpg: return "f_jpg";
+                case CloudinaryFormat.Png: return "f_png";
+                case CloudinaryFormat.WebP: return "f_webp";
+                default: return "f_auto";
+            }
         }
 
         /// <summary>
@@ -1957,10 +2162,155 @@ namespace DreamClass.Subjects
             return true;
         }
 
+        public void DownloadSubject(string subjectIdentifier, CloudinarySettings settings = null)
+        {
+            if (Application.isPlaying)
+            {
+                StartCoroutine(DownloadSubjectCoroutine(subjectIdentifier, settings));
+            }
+#if UNITY_EDITOR
+            else
+            {
+                RunEditorCoroutine(DownloadSubjectCoroutine(subjectIdentifier, settings));
+            }
+#endif
+        }
 
+        [ProButton]
+        public void DownloadSubjectManual(string identifier, int size = 1024, CloudinaryQuality quality = CloudinaryQuality.Auto, CloudinaryFormat format = CloudinaryFormat.Auto)
+        {
+             CloudinarySettings settings = new CloudinarySettings(size, quality, format);
+             DownloadSubject(identifier, settings);
+        }
 
+        private IEnumerator DownloadSubjectCoroutine(string subjectIdentifier, CloudinarySettings settings)
+        {
+            if (string.IsNullOrEmpty(subjectIdentifier))
+            {
+                LogError("[DownloadSubject] Identifier cannot be empty");
+                yield break;
+            }
 
+            if (apiClient == null)
+            {
+                LoadApiClient();
+                if (apiClient == null)
+                {
+                    LogError("[DownloadSubject] ApiClient not found");
+                    yield break;
+                }
+            }
 
+            // Ensure remote subjects are fetched
+            if (remoteSubjects == null || remoteSubjects.Count == 0)
+            {
+                Log("[DownloadSubject] Fetching list from API...");
+                ApiRequest request = new ApiRequest(listEndpoint, "GET");
+                ApiResponse response = null;
+                yield return apiClient.SendRequest(request, (res) => response = res);
+
+                if (response != null && response.IsSuccess)
+                {
+                    try
+                    {
+                        PDFListResponse listResponse = JsonUtility.FromJson<PDFListResponse>(response.Text);
+                        if (listResponse != null && listResponse.data != null)
+                        {
+                            remoteSubjects.Clear();
+                            foreach (var pdfInfo in listResponse.data)
+                            {
+                                remoteSubjects.Add(new RemoteSubjectInfo(pdfInfo));
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        LogError($"[DownloadSubject] Parse error: {ex.Message}");
+                    }
+                }
+            }
+
+            // Find remote subject
+            var remoteSubject = remoteSubjects.Find(r => r.MatchesCloudinaryFolder(subjectIdentifier) || r.name == subjectIdentifier);
+            if (remoteSubject == null)
+            {
+                LogError($"[DownloadSubject] Remote subject not found for: {subjectIdentifier}");
+                yield break;
+            }
+
+            Log($"[DownloadSubject] Downloading {remoteSubject.name} with settings: Size={(settings != null ? settings.textureSize : maxTextureSize)}, Quality={(settings != null ? settings.quality : cloudinaryQuality)}");
+
+            yield return StartCoroutine(CacheSubjectCoroutine(remoteSubject, settings));
+
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                UpdateSubjectDatabaseWithRemoteData();
+            }
+#endif
+        }
+
+#if UNITY_EDITOR
+        [ProButton]
+        public void DownloadGrade(string grade)
+        {
+             if (string.IsNullOrEmpty(grade))
+             {
+                 LogError("[DownloadGrade] Grade cannot be empty");
+                 return;
+             }
+
+             // Get settings from class fields
+             CloudinarySettings settings = new CloudinarySettings(maxTextureSize, cloudinaryQuality, cloudinaryFormat);
+             
+             if (Application.isPlaying)
+             {
+                 StartCoroutine(FetchSubjectsCoroutine(grade, settings));
+             }
+             else
+             {
+                 // Ensure RuntimeSubjects is valid for matching
+                 if (RuntimeSubjects == null || RuntimeSubjects.Count == 0) InitializeRuntimeSubjects();
+                 
+                 StartCoroutine(FetchSubjectsCoroutine(grade, settings));
+             }
+        }
+
+        private static void RunEditorCoroutine(IEnumerator routine)
+        {
+            UnityEditor.EditorApplication.CallbackFunction update = null;
+            Stack<IEnumerator> stack = new Stack<IEnumerator>();
+            stack.Push(routine);
+
+            update = () =>
+            {
+                if (stack.Count == 0)
+                {
+                    UnityEditor.EditorApplication.update -= update;
+                    return;
+                }
+
+                IEnumerator current = stack.Peek();
+                object currentYield = current.Current;
+
+                if (currentYield is UnityEngine.AsyncOperation asyncOp && !asyncOp.isDone)
+                {
+                    return; // Wait for AsyncOperation
+                }
+                if (currentYield is IEnumerator nested)
+                {
+                    stack.Push(nested);
+                    return;
+                }
+
+                if (!current.MoveNext())
+                {
+                    stack.Pop();
+                }
+            };
+            UnityEditor.EditorApplication.update += update;
+        }
+#endif
 
         private void Log(string message)
         {

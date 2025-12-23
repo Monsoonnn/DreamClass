@@ -11,7 +11,7 @@ namespace DreamClass.Account
     /// Service để fetch và quản lý user profile
     /// Tự động fetch sau khi login thành công
     /// </summary>
-    public class ProfileService : MonoBehaviour
+    public class ProfileService : SingletonCtrl<ProfileService>
     {
         [Header("References")]
         [SerializeField] private ApiClient apiClient;

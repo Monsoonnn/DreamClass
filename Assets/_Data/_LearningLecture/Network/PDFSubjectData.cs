@@ -93,7 +93,7 @@ namespace DreamClass.Subjects
 
         public LocalSubjectCacheData GetSubjectCacheByFolder(string cloudinaryFolder)
         {
-            return subjects.Find(s => !string.IsNullOrEmpty(s.cloudinaryFolder) && 
+            return subjects.Find(s => !string.IsNullOrEmpty(s.cloudinaryFolder) &&
                 s.cloudinaryFolder.Equals(cloudinaryFolder, StringComparison.OrdinalIgnoreCase));
         }
 
@@ -103,7 +103,7 @@ namespace DreamClass.Subjects
             var existing = !string.IsNullOrEmpty(cacheData.cloudinaryFolder) ?
                 GetSubjectCacheByFolder(cacheData.cloudinaryFolder) :
                 GetSubjectCache(cacheData.subjectName);
-            
+
             if (existing != null)
             {
                 subjects.Remove(existing);
@@ -113,7 +113,7 @@ namespace DreamClass.Subjects
             {
                 Log($"[CACHE MANIFEST] Added new subject: {cacheData.cloudinaryFolder ?? cacheData.subjectName}");
             }
-            
+
             subjects.Add(cacheData);
         }
 
@@ -223,5 +223,49 @@ namespace DreamClass.Subjects
                 isCached = this.isCached
             };
         }
+    }
+    public enum CloudinaryQuality
+    {
+        Auto,       // q_auto
+        Best,       // q_auto:best
+        Good,       // q_auto:good
+        Eco,        // q_auto:eco
+        Low,        // q_auto:low
+        Fixed_80,   // q_80
+        Fixed_60    // q_60
+    }
+
+    public enum CloudinaryFormat
+    {
+        Auto,       // f_auto
+        Jpg,        // f_jpg
+        Png,        // f_png
+        WebP        // f_webp
+    }
+
+    [Serializable]
+    public class CloudinarySettings
+    {
+        public int textureSize = 1024;
+        public CloudinaryQuality quality = CloudinaryQuality.Auto;
+        public CloudinaryFormat format = CloudinaryFormat.Auto;
+
+        public CloudinarySettings() { }
+
+        public CloudinarySettings(int size, CloudinaryQuality quality, CloudinaryFormat format)
+        {
+            this.textureSize = size;
+            this.quality = quality;
+            this.format = format;
+        }
+    }
+
+    public class DownloadJob
+    {
+        public int index;
+        public UnityEngine.Networking.UnityWebRequest request;
+        public string localPath;
+        public bool convertToPNG;
+        public string url;
     }
 }

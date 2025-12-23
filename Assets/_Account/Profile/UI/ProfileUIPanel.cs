@@ -87,7 +87,7 @@ namespace DreamClass.Account.UI
             // Try to find references if not assigned
             if (profileService == null)
             {
-                profileService = FindAnyObjectByType<ProfileService>();
+                profileService = ProfileService.Instance;
             }
 
             if (userProfile == null && profileService != null)
